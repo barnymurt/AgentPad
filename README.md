@@ -33,6 +33,7 @@ This system uses a 3-layer architecture that separates probabilistic LLM decisio
 
 - `directives/` - Workflow SOPs and instructions
 - `execution/` - Python scripts for deterministic tasks
+- `skills/` - Reusable skill templates from Anthropic for implementing common tasks
 - `.tmp/` - Temporary intermediate files (not committed)
 - `.env` - Environment variables and API keys (not committed)
 
