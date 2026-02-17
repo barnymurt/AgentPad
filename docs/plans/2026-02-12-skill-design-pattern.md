@@ -176,6 +176,16 @@ Skills are built in batches aligned with the product roadmap. Each batch is comp
 8. User Researcher: Feedback Synthesis
 9. Data Analyst: SaaS Metrics Analysis
 
+### MVP Deliverable: Validation Pack
+
+With Batches 1-2 complete, 7 of the 9 skills chain into the **Validation Pack** — a single shareable artifact that answers "Is this idea worth building, and what should I build first?" The pack runs skills in sequence (Requirements Elicitation → User Persona Creation → Competitor Research → Business Case Modeling → Devil's Advocate → Feature Prioritization → User Journey Mapping), with 3 decision gates that can halt the flow with a GO / PAUSE / KILL recommendation.
+
+- **Design:** [`docs/plans/validation-pack-design.md`](validation-pack-design.md)
+- **Orchestration directive:** [`directives/run_validation_pack.md`](../../directives/run_validation_pack.md)
+- **Output schema:** [`skills/validation-pack/output-schema.md`](../../skills/validation-pack/output-schema.md)
+
+Feedback Synthesis and SaaS Metrics Analysis are excluded from the MVP pack (they require existing user data) but become relevant in the Pro tier.
+
 ### Batch 3: Strategic Skills (9 skills -- Phase 2/3)
 
 10-13. Security Officer (4 skills)
@@ -207,3 +217,4 @@ Skills are built in batches aligned with the product roadmap. Each batch is comp
 2. **Build directive** -- `directives/build_skill.md` encoding the full creation process
 3. **Quality checklist** -- Reference file used during skill review
 4. **First skill built** -- Competitor Research, as the proof-of-concept that validates the pattern
+5. **Validation Pack** -- `directives/run_validation_pack.md` + `skills/validation-pack/output-schema.md` — the orchestrated skill chain that produces the MVP deliverable
