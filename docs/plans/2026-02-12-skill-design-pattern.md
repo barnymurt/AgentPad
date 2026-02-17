@@ -1,8 +1,12 @@
 # AgentPad Skill Design Pattern
 
 **Date:** 2026-02-12
-**Status:** Approved
+**Status:** Approved (Historical - see note below)
 **Author:** Brainstorm session between owner and AI
+
+---
+
+> **Note:** This is the original design document used for planning. The **canonical working process** is now in [`directives/build_skill.md`](../../directives/build_skill.md), which uses review gates and max-1-revision constraints for credit efficiency. All committed skills (Batch 0 + Batch 1) were built using the directive. This document remains for historical context and high-level understanding of the skill architecture.
 
 ---
 
