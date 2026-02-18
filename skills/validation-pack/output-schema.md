@@ -262,20 +262,54 @@ Rules:
 - Time to produce (conditional): If tracked
 - Key limitations (required): What could change the conclusions (minimum 2)
 - Recommended follow-up (required): Top 3 actions the user should take after reading this pack
+
+---
+
+## 9. Notion Workspace Specification (required for full packs, excluded from partial packs)
+
+After producing Sections 1-8, generate a Notion workspace specification using the prompt template in `skills/validation-pack/references/notion-workspace-prompt.md`.
+
+### Purpose
+Transforms the static Validation Pack into an actionable, interactive Notion workspace with databases, views, and decision-specific pages. This is the "what to do next" artifact — while Sections 1-8 answer "should I build this?", the workspace answers "how do I organize the build?"
+
+### Decision Mapping
+The workspace adapts its structure based on the Validation Scorecard verdict:
+- **GO** → Sprint planning pages + Launch Checklist
+- **PAUSE** → Mapped to PIVOT: Hypothesis Board + Pivot Decision Log + Original Idea Archive
+- **KILL** → Mapped to NO-GO: Post-Mortem + Transferable Assets + Market Insights Archive + Future Opportunity Radar
+
+### Required Components (all decisions)
+1. Start Here page with pre-flight checklist
+2. Dashboard with embedded database views
+3. Product Overview page
+4. Assumption Tracker database (pre-populated from Section 4)
+5. MVP Backlog database (pre-populated from Section 6)
+6. Risk Register database (pre-populated from Section 7)
+7. Competitive Landscape table (pre-populated from Section 3)
+8. Roadmap database with auto-seeded items
+
+### Validation Rules
+- All template variables resolved against actual pack data (no `{{variable}}` in output)
+- Empty source arrays produce placeholder rows with `[FILL IN]`
+- Decision-specific pages match the mapped verdict only
+- Field mappings follow the Data Mapping table in the prompt template
+- Priority and Sprint auto-assignment rules applied to MVP Backlog
+- Severity auto-assignment rules applied to Risk Register
 ```
 
 ## Validation Rules
 
-1. All 7 sections populated (or partial pack sections if gates triggered early)
+1. All 9 sections populated for full packs (or partial pack sections if gates triggered early — Section 9 excluded from partial packs)
 2. Validation Scorecard has all 7 metrics with ratings and a clear GO/PAUSE/KILL verdict
 3. Three matrices each have plotted data points and 2-3 sentence interpretations
 4. Assumption Register has minimum 8 entries, sorted by priority, with validation tests for all "Validate First" items
 5. Objection Bank has 5-7 objections with rebuttals and a landscape summary
 6. MVP Scope Definition has a clear feature list with persona pain mapping and journey stage mapping
 7. Risk Register has exactly 5 risks with specific mitigations
-8. No placeholder text: no `[TODO]`, `[TBD]`, `[placeholder]`, or `[...]` in the final output
+8. No placeholder text in Sections 1-8: no `[TODO]`, `[TBD]`, `[placeholder]`, or `[...]` (Section 9 uses `[FILL IN]` intentionally for user-completed fields)
 9. Cross-references are consistent: features in MVP Scope match Tier 1 from Feature Prioritization, assumptions in the register match those challenged by Devil's Advocate
 10. Recommendation logic is correctly applied (GO/PAUSE/KILL matches metric ratings per the stated thresholds)
+11. Section 9 (Notion Workspace): all template variables resolved, decision-specific pages match mapped verdict, databases pre-populated from Sections 3-7
 
 ## Partial Pack Validation Rules (when gates trigger early)
 
