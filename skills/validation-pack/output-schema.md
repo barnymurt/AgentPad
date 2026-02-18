@@ -254,14 +254,33 @@ Rules:
 
 ---
 
-## 8. Methodology Notes (required)
+## 8. What to Do Next (required)
+
+### Recommended Next Skills (required, 3-5 recommendations)
+
+Based on the pack results, recommend specific AgentPad skills the founder should run next. Each recommendation must reference a specific finding from the pack that creates the need.
+
+**Conditional logic (apply all that match, in order):**
+
+| Condition | Recommendation |
+|-----------|---------------|
+| Assumption Register has 3+ "Validate First" items | **Interview Guide Creation** — "You have [N] unvalidated assumptions. Generate a targeted interview script to test your top assumptions ([list top 2-3]) with real users before building." |
+| Objection Bank has any Strength 3-4 objections | **Brand Messaging Framework** — "Your strongest objection ('[objection text]') needs positioning that addresses it head-on. Generate messaging that reframes this objection." |
+| Business Case verdict is "Conditionally Viable" or unit economics Warning | **Pricing Strategy** — "Your unit economics are conditional on pricing holding at [price]. Model optimal price points using your competitive positioning data." |
+| Validation Scorecard has any Warning metrics | **Survey Design** — "Your [metric name] metric rated Warning. Design a quick validation survey to gather data and strengthen this score." |
+| Always include | **Go-to-Market Strategy** — "Turn this validation into a launch plan. Generate a GTM strategy based on your competitive gaps and persona pain points." |
+
+Format (required):
+> **Recommended: [Skill Name]**
+> [1-2 sentences explaining WHY this skill is relevant to THIS specific pack, referencing specific data points]
+
+### Methodology Appendix (required)
 
 - Skills executed (required): Ordered list of all 7 skills run (or fewer if gates triggered early)
 - Gates evaluated (required): Which gates were reached, what the outcome was
 - Data quality (required): Overall % of inputs at High / Medium / Low confidence
 - Time to produce (conditional): If tracked
 - Key limitations (required): What could change the conclusions (minimum 2)
-- Recommended follow-up (required): Top 3 actions the user should take after reading this pack
 
 ---
 
@@ -280,13 +299,14 @@ The workspace adapts its structure based on the Validation Scorecard verdict:
 
 ### Required Components (all decisions)
 1. Start Here page with pre-flight checklist
-2. Dashboard with embedded database views
-3. Product Overview page
-4. Assumption Tracker database (pre-populated from Section 4)
+2. Dashboard with embedded database views (including Active Experiments)
+3. Assumption Tracker database (pre-populated from Section 4)
+4. Validation Experiments database (auto-seeded from "Validate First" assumptions, with Skill Tips)
 5. MVP Backlog database (pre-populated from Section 6)
 6. Risk Register database (pre-populated from Section 7)
 7. Competitive Landscape table (pre-populated from Section 3)
-8. Roadmap database with auto-seeded items
+8. Roadmap database with auto-seeded items (including Skill Tips in Launch phase notes)
+9. Weekly Review Template page
 
 ### Validation Rules
 - All template variables resolved against actual pack data (no `{{variable}}` in output)
@@ -295,6 +315,10 @@ The workspace adapts its structure based on the Validation Scorecard verdict:
 - Field mappings follow the Data Mapping table in the prompt template
 - Priority and Sprint auto-assignment rules applied to MVP Backlog
 - Severity auto-assignment rules applied to Risk Register
+- Validation Experiments database auto-seeded from "Validate First" assumptions
+- Skill Tips included in Validation Experiments callout, Roadmap Launch phase notes, and Launch Checklist callout
+- Weekly Review Template page present for all decisions
+- Launch Checklist (GO path) references pack-specific data, not generic items
 ```
 
 ## Validation Rules
@@ -309,7 +333,7 @@ The workspace adapts its structure based on the Validation Scorecard verdict:
 8. No placeholder text in Sections 1-8: no `[TODO]`, `[TBD]`, `[placeholder]`, or `[...]` (Section 9 uses `[FILL IN]` intentionally for user-completed fields)
 9. Cross-references are consistent: features in MVP Scope match Tier 1 from Feature Prioritization, assumptions in the register match those challenged by Devil's Advocate
 10. Recommendation logic is correctly applied (GO/PAUSE/KILL matches metric ratings per the stated thresholds)
-11. Section 9 (Notion Workspace): all template variables resolved, decision-specific pages match mapped verdict, databases pre-populated from Sections 3-7
+11. Section 9 (Notion Workspace): all template variables resolved, decision-specific pages match mapped verdict, databases pre-populated from Sections 3-7, Validation Experiments auto-seeded, Weekly Review Template present, Launch Checklist (GO) references pack-specific data, Skill Tips included
 
 ## Partial Pack Validation Rules (when gates trigger early)
 
@@ -321,7 +345,7 @@ The workspace adapts its structure based on the Validation Scorecard verdict:
 
 ## Confidence Tagging
 
-The Validation Pack inherits confidence from its source skills. The Methodology Notes section must report the aggregate confidence distribution.
+The Validation Pack inherits confidence from its source skills. The Methodology Appendix (Section 8) must report the aggregate confidence distribution.
 
 - **High:** Metric or finding backed by multiple corroborating sources across skills (e.g., competitive risk identified by both Competitor Research and Devil's Advocate)
 - **Medium:** Metric or finding from a single skill with Medium+ confidence data
