@@ -9,11 +9,13 @@
 **Tools/Scripts:**
 - Skills (run in order): `skills/requirements-elicitation/`, `skills/user-persona-creation/`, `skills/competitor-research/`, `skills/business-case-modeling/`, `skills/devils-advocate/`, `skills/feature-prioritization/`, `skills/user-journey-mapping/`
 - Output schema: `skills/validation-pack/output-schema.md`
+- Notion workspace prompt: `skills/validation-pack/references/notion-workspace-prompt.md`
 - Design reference: `docs/plans/validation-pack-design.md`
 
 **Outputs:**
 - A complete Validation Pack document conforming to `skills/validation-pack/output-schema.md`
-- OR a partial pack with PAUSE/KILL recommendation if a decision gate triggers
+- A Notion workspace specification (for full packs) generated using `skills/validation-pack/references/notion-workspace-prompt.md`
+- OR a partial pack with PAUSE/KILL recommendation if a decision gate triggers (no workspace spec for partial packs)
 
 ---
 
@@ -370,9 +372,75 @@ Top 5 risks, deduplicated, sorted by Likelihood × Impact. Each with specific mi
 
 ---
 
-**Validate the final pack against `skills/validation-pack/output-schema.md`.** Every required field must be populated. No placeholders.
+**Validate Sections 1-8 of the pack against `skills/validation-pack/output-schema.md`.** Every required field must be populated. No placeholders.
 
-**Present the complete Validation Pack to the user.**
+**Present Sections 1-8 of the Validation Pack to the user.**
+
+---
+
+### Step 9: Notion Workspace Generation
+
+**Skip this step if:** the pack is a partial pack (any gate triggered PAUSE/KILL and the user chose to stop).
+
+**Load:** `skills/validation-pack/references/notion-workspace-prompt.md`
+
+This step transforms the Validation Pack into an actionable Notion workspace specification. The workspace gives users an organized, interactive environment to execute on the pack's recommendations.
+
+**Input:** All accumulated context + the completed Validation Pack (Sections 1-8).
+
+**Process:**
+
+#### 9a. Map the decision
+
+Convert the Validation Scorecard verdict to the workspace decision:
+- GO → GO (sprint planning + launch focus)
+- PAUSE → PIVOT (hypothesis testing + pivot focus)
+- KILL → NO-GO (post-mortem + asset preservation focus)
+
+#### 9b. Resolve template variables
+
+Using the Data Mapping table in the prompt template, resolve every `{{template_variable}}` against actual pack data:
+- `template_version` = "1.0"
+- `generated_date` = date the pack was produced
+- `product_name` = from Step 0 input
+- `validation_decision` = mapped verdict from 9a
+- `persona_summary` = from `context.personas` primary persona
+- `problem_statement` = from `context.requirements`
+- `differentiators` = from `context.competitors` differentiation levers
+- `success_metrics` = from Section 6 success criteria
+- `assumptions` = from Section 4 Assumption Register rows
+- `mvp_features` = from Section 6 Feature List rows
+- `risks` = from Section 7 Risk Register rows
+- `competitors` = from Section 3 Competitive Positioning Map rows
+- `recommended_next_steps` = from Section 8 recommended follow-up
+
+#### 9c. Pre-populate databases
+
+Apply the field mappings and auto-assignment rules defined in the prompt template:
+
+1. **Assumption Tracker** — map importance (Fatal→High, Major→Medium, Minor→Low), evidence level (Validated→Validated, Partial→Assumed, Unvalidated→Unknown), populate test methods
+2. **MVP Backlog** — map impact/effort, assign quadrants, auto-assign priority (Quick Win+High Impact→P0, High Impact→P1, Medium→P2, Low→P3), auto-assign sprints (P0→Sprint 1, P1 up to 3→Sprint 1, rest→Backlog)
+3. **Risk Register** — map fields, auto-assign severity (High likelihood OR impact→High, both Medium→Medium, else→Low)
+4. **Competitive Landscape** — populate from competitor profiles
+5. **Roadmap** — auto-seed Validate phase (high-importance unvalidated assumptions, max 3), Build MVP phase (Sprint 1 features), Launch phase (5 standard placeholders)
+
+#### 9d. Generate decision-specific pages
+
+Generate ONLY the pages matching the mapped decision from 9a. Do not generate pages for other decisions.
+
+#### 9e. Run output checklist
+
+Verify against the checklist in the prompt template:
+- [ ] Start Here page exists and is first
+- [ ] Pre-flight Check callout lists incomplete sections
+- [ ] All databases have defined properties with correct types
+- [ ] All specified views are created
+- [ ] Empty arrays resulted in template placeholder rows
+- [ ] Decision-specific pages match validation_decision
+- [ ] No invented data — only Validation Pack content used
+- [ ] Quick Links are accurate
+
+**Present the Notion workspace specification to the user alongside the Validation Pack.**
 
 ---
 

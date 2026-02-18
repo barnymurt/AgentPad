@@ -254,28 +254,86 @@ Rules:
 
 ---
 
-## 8. Methodology Notes (required)
+## 8. What to Do Next (required)
+
+### Recommended Next Skills (required, 3-5 recommendations)
+
+Based on the pack results, recommend specific AgentPad skills the founder should run next. Each recommendation must reference a specific finding from the pack that creates the need.
+
+**Conditional logic (apply all that match, in order):**
+
+| Condition | Recommendation |
+|-----------|---------------|
+| Assumption Register has 3+ "Validate First" items | **Interview Guide Creation** — "You have [N] unvalidated assumptions. Generate a targeted interview script to test your top assumptions ([list top 2-3]) with real users before building." |
+| Objection Bank has any Strength 3-4 objections | **Brand Messaging Framework** — "Your strongest objection ('[objection text]') needs positioning that addresses it head-on. Generate messaging that reframes this objection." |
+| Business Case verdict is "Conditionally Viable" or unit economics Warning | **Pricing Strategy** — "Your unit economics are conditional on pricing holding at [price]. Model optimal price points using your competitive positioning data." |
+| Validation Scorecard has any Warning metrics | **Survey Design** — "Your [metric name] metric rated Warning. Design a quick validation survey to gather data and strengthen this score." |
+| Always include | **Go-to-Market Strategy** — "Turn this validation into a launch plan. Generate a GTM strategy based on your competitive gaps and persona pain points." |
+
+Format (required):
+> **Recommended: [Skill Name]**
+> [1-2 sentences explaining WHY this skill is relevant to THIS specific pack, referencing specific data points]
+
+### Methodology Appendix (required)
 
 - Skills executed (required): Ordered list of all 7 skills run (or fewer if gates triggered early)
 - Gates evaluated (required): Which gates were reached, what the outcome was
 - Data quality (required): Overall % of inputs at High / Medium / Low confidence
 - Time to produce (conditional): If tracked
 - Key limitations (required): What could change the conclusions (minimum 2)
-- Recommended follow-up (required): Top 3 actions the user should take after reading this pack
+
+---
+
+## 9. Notion Workspace Specification (required for full packs, excluded from partial packs)
+
+After producing Sections 1-8, generate a Notion workspace specification using the prompt template in `skills/validation-pack/references/notion-workspace-prompt.md`.
+
+### Purpose
+Transforms the static Validation Pack into an actionable, interactive Notion workspace with databases, views, and decision-specific pages. This is the "what to do next" artifact — while Sections 1-8 answer "should I build this?", the workspace answers "how do I organize the build?"
+
+### Decision Mapping
+The workspace adapts its structure based on the Validation Scorecard verdict:
+- **GO** → Sprint planning pages + Launch Checklist
+- **PAUSE** → Mapped to PIVOT: Hypothesis Board + Pivot Decision Log + Original Idea Archive
+- **KILL** → Mapped to NO-GO: Post-Mortem + Transferable Assets + Market Insights Archive + Future Opportunity Radar
+
+### Required Components (all decisions)
+1. Start Here page with pre-flight checklist
+2. Dashboard with embedded database views (including Active Experiments)
+3. Assumption Tracker database (pre-populated from Section 4)
+4. Validation Experiments database (auto-seeded from "Validate First" assumptions, with Skill Tips)
+5. MVP Backlog database (pre-populated from Section 6)
+6. Risk Register database (pre-populated from Section 7)
+7. Competitive Landscape table (pre-populated from Section 3)
+8. Roadmap database with auto-seeded items (including Skill Tips in Launch phase notes)
+9. Weekly Review Template page
+
+### Validation Rules
+- All template variables resolved against actual pack data (no `{{variable}}` in output)
+- Empty source arrays produce placeholder rows with `[FILL IN]`
+- Decision-specific pages match the mapped verdict only
+- Field mappings follow the Data Mapping table in the prompt template
+- Priority and Sprint auto-assignment rules applied to MVP Backlog
+- Severity auto-assignment rules applied to Risk Register
+- Validation Experiments database auto-seeded from "Validate First" assumptions
+- Skill Tips included in Validation Experiments callout, Roadmap Launch phase notes, and Launch Checklist callout
+- Weekly Review Template page present for all decisions
+- Launch Checklist (GO path) references pack-specific data, not generic items
 ```
 
 ## Validation Rules
 
-1. All 7 sections populated (or partial pack sections if gates triggered early)
+1. All 9 sections populated for full packs (or partial pack sections if gates triggered early — Section 9 excluded from partial packs)
 2. Validation Scorecard has all 7 metrics with ratings and a clear GO/PAUSE/KILL verdict
 3. Three matrices each have plotted data points and 2-3 sentence interpretations
 4. Assumption Register has minimum 8 entries, sorted by priority, with validation tests for all "Validate First" items
 5. Objection Bank has 5-7 objections with rebuttals and a landscape summary
 6. MVP Scope Definition has a clear feature list with persona pain mapping and journey stage mapping
 7. Risk Register has exactly 5 risks with specific mitigations
-8. No placeholder text: no `[TODO]`, `[TBD]`, `[placeholder]`, or `[...]` in the final output
+8. No placeholder text in Sections 1-8: no `[TODO]`, `[TBD]`, `[placeholder]`, or `[...]` (Section 9 uses `[FILL IN]` intentionally for user-completed fields)
 9. Cross-references are consistent: features in MVP Scope match Tier 1 from Feature Prioritization, assumptions in the register match those challenged by Devil's Advocate
 10. Recommendation logic is correctly applied (GO/PAUSE/KILL matches metric ratings per the stated thresholds)
+11. Section 9 (Notion Workspace): all template variables resolved, decision-specific pages match mapped verdict, databases pre-populated from Sections 3-7, Validation Experiments auto-seeded, Weekly Review Template present, Launch Checklist (GO) references pack-specific data, Skill Tips included
 
 ## Partial Pack Validation Rules (when gates trigger early)
 
@@ -287,7 +345,7 @@ Rules:
 
 ## Confidence Tagging
 
-The Validation Pack inherits confidence from its source skills. The Methodology Notes section must report the aggregate confidence distribution.
+The Validation Pack inherits confidence from its source skills. The Methodology Appendix (Section 8) must report the aggregate confidence distribution.
 
 - **High:** Metric or finding backed by multiple corroborating sources across skills (e.g., competitive risk identified by both Competitor Research and Devil's Advocate)
 - **Medium:** Metric or finding from a single skill with Medium+ confidence data
