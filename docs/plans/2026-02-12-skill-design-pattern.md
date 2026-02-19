@@ -186,11 +186,37 @@ With Batches 1-2 complete, 7 of the 9 skills chain into the **Validation Pack** 
 
 Feedback Synthesis and SaaS Metrics Analysis are excluded from the MVP pack (they require existing user data) but become relevant in the Pro tier.
 
-### Batch 3: Strategic Skills (9 skills -- Phase 2/3)
+### Batch 3: Strategic Skills (7 skills -- Phase 2/3)
 
-10-13. Security Officer (4 skills)
-14-17. Compliance Expert (4 skills)
-18. Systems Architect: Architecture Design
+> **Restructured** based on devil's advocate assessment (see plan file). Original 9 skills had critical gaps: no bridge from validation to architecture, underweight Systems Architect, 60% overlap between Security/Compliance data skills, no orchestration, GDPR-centric bias, premature SOC 2 and Incident Response, and commodity Privacy Policy. Restructured to 7 skills + 1 orchestration directive.
+
+**Systems Architect (1 skill):**
+10. Architecture Design — Data flows, component boundaries, auth approach, storage decisions. Tightly scoped to Container-level C4; defers API specs, infra, scalability to Batch 6.
+
+**Security Officer (4 skills):**
+11. Security Requirements Baseline (NEW, replaces Incident Response Planning) — Minimum security posture for launch, based on OWASP ASVS Level 1.
+12. Threat Modeling — STRIDE analysis on Architecture Design output.
+13. Security Architecture Review — Evaluate architecture for weaknesses (auth, data handling, API security, dependencies).
+14. Data Protection Assessment (EXPANDED, absorbs Data Processing Mapping) — Full data lifecycle: inventory, flows, PII exposure, access controls, retention, and protection recommendations.
+
+**Compliance Expert (2 skills, was 4):**
+15. Privacy Regulation Assessment (REPLACES GDPR Audit) — Triage which regulations apply (GDPR, CCPA, HIPAA, PCI-DSS, etc.), deep-dive on relevant ones. Privacy policy generated as output artifact.
+16. Security & Compliance Roadmap (REPLACES SOC 2) — Which certs/frameworks to pursue and when, mapped to business milestones.
+
+**Removed:**
+- Data Processing Mapping → merged into Data Protection Assessment (60% overlap)
+- GDPR Compliance Audit → replaced by Privacy Regulation Assessment (multi-regulation)
+- SOC 2 Readiness Assessment → replaced by Security & Compliance Roadmap (premature for audience)
+- Incident Response Planning → deferred to post-launch batch (no deployed system)
+- Privacy Policy Generation → demoted to output artifact (commodity)
+
+### Batch 3 Deliverable: Technical Readiness Pack
+
+With Batch 3 complete, all 7 skills chain into the **Technical Readiness Pack** — a single shareable artifact that answers "Is this architecture secure, compliant, and ready to build?" The pack runs skills in sequence (Architecture Design → Security Requirements Baseline → Threat Modeling → Security Architecture Review → Data Protection Assessment → Privacy Regulation Assessment → Security & Compliance Roadmap), with 2 decision gates that can halt the flow with a READY / NEEDS WORK / REDESIGN recommendation.
+
+- **Design:** [`docs/plans/technical-readiness-pack-design.md`](technical-readiness-pack-design.md)
+- **Orchestration directive:** [`directives/run_technical_readiness_pack.md`](../../directives/run_technical_readiness_pack.md)
+- **Output schema:** [`skills/technical-readiness-pack/output-schema.md`](../../skills/technical-readiness-pack/output-schema.md)
 
 ### Batch 4: Remaining Research Skills (11 skills)
 
@@ -218,3 +244,4 @@ Feedback Synthesis and SaaS Metrics Analysis are excluded from the MVP pack (the
 3. **Quality checklist** -- Reference file used during skill review
 4. **First skill built** -- Competitor Research, as the proof-of-concept that validates the pattern
 5. **Validation Pack** -- `directives/run_validation_pack.md` + `skills/validation-pack/output-schema.md` — the orchestrated skill chain that produces the MVP deliverable
+6. **Technical Readiness Pack** -- `directives/run_technical_readiness_pack.md` + `skills/technical-readiness-pack/output-schema.md` — the orchestrated skill chain that produces the Batch 3 deliverable
