@@ -28,6 +28,35 @@ Before reviewing anything, establish the complete security context:
 
 ### Step 2: Review Authentication Flows End-to-End
 
+**Cloud-Specific Authentication Controls:**
+
+| Control | AWS | Azure | GCP |
+|---------|-----|-------|-----|
+| MFA | IAM MFA, Cognito | Conditional Access, MFA | 2SV, IAM |
+| Secrets | Secrets Manager, Parameter Store | Key Vault | Secret Manager |
+| SSO | IAM Identity Center | Azure AD | Identity-Aware Proxy |
+| WAF | WAF, Shield | WAF, Application Gateway | Cloud Armor |
+
+For the identified cloud provider, verify the following controls are properly configured:
+
+**AWS:**
+- IAM: Least privilege roles, no inline policies, MFA on root
+- Cognito: User pool MFA required, advanced security enabled
+- Secrets Manager: All secrets rotated, not in code
+- VPC: Private subnets for DBs, security groups restrictive
+
+**Azure:**
+- Conditional Access: MFA policies enabled
+- Key Vault: Soft delete enabled, RBAC configured
+- Azure AD: Privileged Identity Management, identity protection
+
+**GCP:**
+- IAM: Principle of least privilege, no broad permissions
+- Secret Manager: Not in code, rotation enabled
+- VPC: Private Google Access, firewall rules restrictive
+
+---
+
 For each user type defined in the architecture, trace the complete auth lifecycle:
 
 1. **Registration/onboarding flow:** How are accounts created? What verification exists? Can an attacker create fraudulent accounts at scale?
@@ -108,6 +137,24 @@ Synthesize all findings into actionable output:
    - **Priority = severity x inverse effort** — fix high-severity, low-effort issues first
 
 3. **Produce tech-stack-specific remediation actions:** Every recommendation must reference the actual technology stack. Not "implement rate limiting" but "add `@upstash/ratelimit` middleware to Next.js API routes with 100 req/min per Clerk user ID"
+
+**Severity Rating with Business Impact:**
+
+| Severity | Definition | Business Impact | Examples |
+|----------|------------|----------------|----------|
+| **Critical** | Immediate data breach or system compromise | Regulatory fines, major reputational damage, legal liability | Unencrypted PII, SQL injection, auth bypass |
+| **High** | Significant security weakness | Data exposure risk, service disruption potential | Missing MFA, weak encryption, no rate limiting |
+| **Medium** | Security weakness that could be exploited | Limited impact, requires specific conditions | Verbose errors, weak session tokens |
+| **Low** | Minor security improvement | Minimal business impact | Missing security headers, outdated dependencies |
+
+**Priority Calculation:**
+
+| | Low Effort | Medium Effort | High Effort |
+|---|---|---|---|
+| **Critical** | P1 - Immediate | P2 - This Sprint | P3 - This Month |
+| **High** | P2 - This Sprint | P3 - This Month | P4 - Backlog |
+| **Medium** | P3 - This Month | P4 - Backlog | P5 - Consider |
+| **Low** | P4 - Backlog | P5 - Consider | P5 - Consider |
 
 4. **Generate review summary:** Total findings by severity, top 3 critical findings, overall security posture assessment, and handoff notes for downstream skills
 

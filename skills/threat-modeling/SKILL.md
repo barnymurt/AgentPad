@@ -11,6 +11,29 @@ Produce a structured, STRIDE-based threat model for SaaS and digital product arc
 
 ### Step 1: Gather Architecture Context
 
+**If No Architecture Exists:**
+
+If the user cannot provide an architecture design, use a lightweight approach:
+
+1. **Request minimum context:**
+   - What type of application? (web, mobile, API, etc.)
+   - What data does it handle? (PII, financial, health, none)
+   - Who are the users? (public, authenticated, admin)
+   - What integrations exist? (payment, third-party APIs)
+   - What is the deployment? (cloud, on-prem, serverless)
+
+2. **Create minimal architecture assumption:**
+   - Standard web architecture: Browser → Load Balancer → API → Database
+   - Note assumptions explicitly
+   - Flag as "inferred" vs "confirmed"
+
+3. **Scope appropriately:**
+   - Acknowledge gaps in inferred architecture
+   - Recommend full architecture design as follow-up
+   - Focus on generic threats that apply regardless of specific architecture
+
+---
+
 Before modeling threats, establish what you're analyzing:
 
 1. **Identify the input source:** Is there Architecture Design output available (containers, data flows, auth design, storage, trust boundaries)? Or is this a standalone request?
@@ -68,11 +91,43 @@ Attack trees expose compound threats that single-category STRIDE analysis misses
 
 ### Step 5: Rate Risks (Likelihood x Impact)
 
-For every identified threat, assign a risk rating:
+For every identified threat, assign a risk rating using the detailed criteria below:
 
-1. **Likelihood (1-5):** How probable is this attack, given the threat actors identified in Step 1 and the existing controls?
-2. **Impact (1-5):** How severe are the consequences if this attack succeeds (data breach, financial loss, reputational damage, regulatory penalty)?
-3. **Risk Level = Likelihood x Impact:** Classify as Critical (20-25), High (12-19), Medium (6-11), or Low (1-5)
+**Likelihood Scoring (1-5):**
+
+| Score | Rating | Criteria |
+|-------|--------|----------|
+| 1 | Very Unlikely | No known exploits, strong controls, high attacker skill required |
+| 2 | Unlikely | Possible with specific conditions, some controls in place |
+| 3 | Possible | Exploitable under normal conditions, partial controls |
+| 4 | Likely | Exploitable by opportunistic attacker, weak/no controls |
+| 5 | Very Likely | Trivial to exploit, no controls, active threats exist |
+
+**Likelihood Factors to Consider:**
+- Threat actor capability (script kiddie vs APT)
+- Attack complexity (one-click vs multi-step)
+- Required privileges (none vs admin)
+- Existing controls (defense in depth vs single control)
+- Public availability of exploit (none vs well-known)
+
+**Impact Scoring (1-5):**
+
+| Score | Rating | Criteria |
+|-------|--------|----------|
+| 1 | Negligible | No data loss, no service impact, no reputational effect |
+| 2 | Minor | Limited data exposure, brief downtime, minor reputational |
+| 3 | Moderate | Significant data exposure, extended downtime, regulatory notice |
+| 4 | Major | Large-scale breach, sustained outage, legal liability |
+| 5 | Catastrophic | Business-ending breach, massive liability, criminal investigation |
+
+**Risk Level = Likelihood x Impact:**
+
+| Score | Rating | Action |
+|-------|--------|--------|
+| 20-25 | Critical | Immediate action required |
+| 12-19 | High | Address within sprint |
+| 6-11 | Medium | Plan for next iteration |
+| 1-5 | Low | Address when time permits |
 
 Use the rating criteria defined in [references/framework.md](references/framework.md). Apply consistently — do not rate every threat as "High" without differentiation.
 
@@ -89,6 +144,23 @@ For each threat in the Risk Register (starting with Critical, then High):
 5. **Residual risk:** What risk remains after mitigation and whether it's acceptable
 
 Prioritize mitigations by risk-reduction-per-effort: a Low-effort mitigation that reduces a Critical risk is higher priority than a High-effort mitigation that reduces a Medium risk.
+
+### Remediation Priority Matrix
+
+Use this matrix to prioritize which threats to address first:
+
+| | Low Effort | Medium Effort | High Effort |
+|---|---|---|---|
+| **Critical Risk** | **P1 - IMMEDIATE** | **P2 - This Sprint** | **P3 - Plan Now** |
+| **High Risk** | **P2 - This Sprint** | **P3 - Plan Now** | **P4 - Backlog** |
+| **Medium Risk** | **P3 - Plan Now** | **P4 - Backlog** | **P5 - Consider** |
+| **Low Risk** | **P4 - Backlog** | **P5 - Consider** | **P5 - Consider** |
+
+**Decision Rules:**
+1. Any Critical risk with Low effort → Address immediately
+2. High risk + Low effort → Address in current sprint
+3. If multiple P1 items exist, prioritize by risk reduction magnitude
+4. Document why items are deprioritized
 
 ### Step 7: Synthesize Threat Model Summary
 

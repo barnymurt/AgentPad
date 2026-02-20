@@ -11,6 +11,34 @@ Produce a prioritized security requirements checklist for SaaS products transiti
 
 ### Step 1: Assess Security Context
 
+**Framework Selection Decision Tree:**
+
+Choose the appropriate framework based on your context:
+
+| If... | Use... | Rationale |
+|-------|--------|-----------|
+| General SaaS, web app | OWASP ASVS Level 1 | Industry standard for web apps |
+| Healthcare data | OWASP ASVS + HIPAA | Healthcare-specific requirements |
+| Financial data | OWASP ASVS + PCI-DSS | Payment card industry requirements |
+| Enterprise/corporate | NIST CSF | Comprehensive enterprise framework |
+| Government/critical | NIST SP 800-53 + ISO 27001 | Highest assurance requirements |
+| UK/EU focused | ISO 27001 + GDPR | International standards |
+
+**Product-Type Templates:**
+
+Use the appropriate template for your product type:
+
+| Product Type | Key Focus Areas |
+|--------------|----------------|
+| **SaaS (B2B)** | Multi-tenancy, role-based access, API security, subscription enforcement |
+| **SaaS (B2C)** | Consumer data protection, social auth, high-volume auth |
+| **E-commerce** | Payment handling, PCI-DSS, cart security, order data protection |
+| **Healthcare** | HIPAA, PHI handling, audit logging, data encryption |
+| **Fintech** | PCI-DSS, transaction security, fraud prevention, SOC 2 |
+| **Startup MVP** | Core essentials: auth, encryption, input validation |
+
+---
+
 Before defining requirements, understand what you're securing:
 
 1. **Gather architecture inputs:**
@@ -52,6 +80,42 @@ Apply the OWASP Application Security Verification Standard Level 1 requirements 
 For each category, produce specific, actionable requirements (not "use encryption" — instead "enable TLS 1.2+ on all API endpoints and database connections").
 
 ### Step 3: Prioritize by Launch Criticality
+
+**Business Tier Templates:**
+
+| Tier | Description | P0 (Must Have) | P1 (3 Months) | P2 (6 Months) |
+|------|-------------|----------------|----------------|----------------|
+| **Startup** | < 100 users, solo/founders | Auth, encryption, input validation | Logging, rate limiting | WAF, monitoring |
+| **Growth** | 100-10K users, small team | All P0 + audit logging, 2FA | All P1 + monitoring, penetration test | All P2 + SOC 2 prep |
+| **Enterprise** | 10K+ users, dedicated team | All growth + compliance | All compliance prep | Continuous pen testing |
+
+**Minimum Requirements by Tier:**
+
+**Startup (P0 only):**
+- Secure authentication (hashed passwords or trusted provider)
+- HTTPS everywhere
+- Input validation on all endpoints
+- Parameterized queries (no SQL injection)
+- Environment variables for secrets (no hardcoded)
+- Basic logging (errors, auth failures)
+
+**Growth (P0 + P1):**
+- All Startup requirements
+- Multi-factor authentication
+- Role-based access control
+- Audit logging for sensitive actions
+- Rate limiting on auth endpoints
+- API key management
+
+**Enterprise (All tiers):**
+- All Growth requirements
+- SOC 2 compliance controls
+- Advanced monitoring/SIEM
+- Regular penetration testing
+- Incident response plan
+- Vendor security assessments
+
+---
 
 Classify each requirement into one of three tiers:
 

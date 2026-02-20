@@ -45,6 +45,24 @@ Catalog every data type in the system:
    - Backups (where, how long, encrypted?)
 3. **Flag data that appears in multiple stores** — this is where PII sprawl happens.
 
+**Encryption Standards Reference:**
+
+| Data State | Recommended | Minimum |
+|-----------|-------------|---------|
+| At Rest - Database | AES-256 | AES-128 |
+| At Rest - Files | AES-256 | AES-128 |
+| In Transit - API | TLS 1.3 | TLS 1.2 |
+| Backups | AES-256 + separate key | AES-128 |
+| Passwords | bcrypt/Argon2 | PBKDF2 |
+
+**Key Management:**
+- Use KMS (AWS KMS, Azure Key Vault, GCP Secret Manager)
+- Rotate keys annually (quarterly for sensitive)
+- Least privilege access to keys
+- Never store keys in code
+
+---
+
 ### Step 3: Map Data Flows with Classification
 
 Trace data through the system with sensitivity classification at every hop:

@@ -32,6 +32,33 @@ Before recommending any certifications, consolidate the full security picture:
 
 ### Step 2: Identify Applicable Certification Universe
 
+**Regulation Selection Decision Tree:**
+
+| Question | Answer | Regulation |
+|----------|--------|------------|
+| Do you process EU personal data? | Yes | GDPR |
+| Do you serve California residents? | Yes | CCPA/CPRA |
+| Do you handle health data? | Yes | HIPAA |
+| Do you process payments? | Yes | PCI-DSS |
+| Do you serve US government? | Yes | FedRAMP |
+| Do B2B customers ask for SOC 2? | Yes | SOC 2 |
+| Do EU customers ask for ISO 27001? | Yes | ISO 27001 |
+| Do you serve children under 13? | Yes | COPPA |
+| Do you handle student data? | Yes | FERPA |
+
+**Framework Selection Guide:**
+
+| Framework | When Required | Typical Timeline | Annual Cost |
+|-----------|---------------|------------------|-------------|
+| **SOC 2** | Enterprise B2B customers | 2-4 months | $15K-50K |
+| **ISO 27001** | EU/enterprise customers | 6-12 months | $30K-80K |
+| **HIPAA** | Health data processing | 3-6 months | $20K-60K |
+| **PCI-DSS** | Direct payment processing | 2-4 months | $10K-30K |
+| **GDPR** | EU data subjects | 3-6 months | $10K-40K |
+| **SOC 1** | Financial data processing | 2-4 months | $15K-40K |
+
+---
+
 Evaluate every major certification and framework for relevance to this specific product:
 
 1. **Evaluate each framework against the product's profile:**
@@ -76,6 +103,26 @@ For each certification on the roadmap, provide realistic estimates:
 7. **Prerequisites:** What must be in place before starting (e.g., SOC 2 requires existing security policies, access controls, incident response plan)
 
 Use the effort estimation methodology in [references/framework.md](references/framework.md). Flag estimates as ranges — certification costs vary significantly by company size and scope.
+
+**Evidence Requirements by Framework:**
+
+| Framework | Evidence Required | Examples |
+|-----------|------------------|----------|
+| **SOC 2** | Policies, logs, access records | Access control policy, audit logs, vendor assessments |
+| **ISO 27001** | ISMS documentation, risk assessment | Risk treatment plan, Statement of Applicability |
+| **HIPAA** | BAA, policies, training records | Business Associate Agreement, PHI handling procedures |
+| **GDPR** | DPIA, privacy policy, consent records | Data Processing Impact Assessment, consent management |
+| **PCI-DSS** | Network diagrams, scan reports | Quarterly vulnerability scans, penetration test reports |
+
+**Compliance Cost Estimation:**
+
+| Company Size | SOC 2 | ISO 27001 | HIPAA |
+|-------------|-------|-----------|-------|
+| Startup (<50) | $15-30K | $30-50K | $15-30K |
+| Growth (50-200) | $30-50K | $50-80K | $30-50K |
+| Enterprise (200+) | $50-100K+ | $80-150K+ | $50-100K+ |
+
+*Includes: Audit fees, tooling, implementation time*
 
 ### Step 5: Identify Quick Wins
 

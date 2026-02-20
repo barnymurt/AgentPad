@@ -61,6 +61,29 @@ Apply the regulation triage framework from [references/framework.md](references/
 
 For each regulation, record: Applies (Yes/No/Partial), Confidence (High/Medium/Low), and Rationale.
 
+**Data Subject Rights by Regulation:**
+
+| Right | GDPR | CCPA | HIPAA | LGPD |
+|-------|------|------|-------|------|
+| Access | ✅ | ✅ | ✅ | ✅ |
+| Deletion | ✅ | ✅ | ✅ | ✅ |
+| Portability | ✅ | ✅ | ✅ | ✅ |
+| Correction | ✅ | ✅ | ✅ | ✅ |
+| Objection | ✅ | ✅ | N/A | ✅ |
+| Opt-out (sale) | N/A | ✅ | N/A | ✅ |
+| Restrict processing | ✅ | N/A | N/A | ✅ |
+
+**Breach Notification Requirements:**
+
+| Regulation | Notification Timeline | Who Notified | Penalty |
+|------------|----------------------|--------------|---------|
+| GDPR | 72 hours | Supervisory authority | Up to €20M or 4% revenue |
+| CCPA | Business discretion | Users (if material) | $7,500/intentional |
+| HIPAA | 60 days | HHS + individuals | Up to $1.5M/violation |
+| State laws | 30-60 days | Affected individuals | Varies |
+
+---
+
 ### Step 3: Per-Regulation Compliance Assessment
 
 For each regulation marked Yes or Partial in the triage:
@@ -112,6 +135,21 @@ Produce a complete privacy policy tailored to the product's actual data practice
 3. **Reference actual data handling** identified in Steps 1 and 4 — not boilerplate
 4. **Cover all applicable jurisdictions** with regulation-specific sections where needed
 5. **Flag sections requiring legal review** — mark anything that needs attorney validation before publishing
+
+**Practical Implementation Checklist:**
+
+| Requirement | Implementation |
+|-------------|----------------|
+| Lawful basis | Document legal basis for each processing activity |
+| Consent management | Implement consent capture and preference center |
+| Right to access | Build data export functionality |
+| Right to deletion | Implement data deletion pipeline |
+| Privacy policy | Publish and link from all collection points |
+| DPA | Execute with all third-party processors |
+| Data inventory | Maintain current list of data processed |
+| Breach response | Document incident response procedures |
+
+---
 
 ## Output Format
 
