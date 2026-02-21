@@ -14,7 +14,7 @@
 | 2 | Architecture | 9 | ✅ | ✅ | ✅ Complete |
 | 3 | Completion | 2 | Partial | ❌ | Needs audit |
 | 4 | Research | 16 | ✅ | ✅ | ✅ Complete |
-| 5 | Go-to-Market | 14 | ❌ | ❌ | Not started |
+| 5 | Go-to-Market | 14 | ✅ | ✅ | ✅ Complete |
 | 6 | Technical | 13 | ❌ | ❌ | Not started |
 
 **Total Skills:** 63+ skills
@@ -126,16 +126,31 @@
 
 ---
 
-## Batch 5: Go-to-Market (NOT STARTED)
+## Batch 5: Go-to-Market (14 skills)
 
-| Category | Skills (Planned) | Count |
-|----------|-----------------|-------|
-| Marketing Expert | TBD | 4 |
-| Product Marketing Expert | TBD | 4 |
-| SEO Expert | TBD | 4 |
-| Devil's Advocate | TBD | 2 |
+| Phase | Skill | Role | Status |
+|-------|-------|------|--------|
+| Minimal | launch-planning | Product Manager | ✅ Complete |
+| Minimal | messaging-framework | Product Marketing | ✅ Complete |
+| Recommended | content-strategy | Marketing Expert | ✅ Complete |
+| Recommended | channel-strategy | Marketing Expert | ✅ Complete |
+| Recommended | launch-analytics | Data Analyst | ✅ Complete |
+| Recommended | seo-foundation | SEO Expert | ✅ Complete |
+| Extended | paid-acquisition | Marketing Expert | ✅ Complete |
+| Extended | sales-enablement | Product Marketing | ✅ Complete |
+| Extended | community-building | Marketing Expert | ✅ Complete |
+| Extended | partner-strategy | Product Manager | ✅ Complete |
+| Full | pricing-launch | Product Marketing | ✅ Complete |
+| Full | referral-program | Marketing Expert | ✅ Complete |
+| Full | analyst-relations | Product Marketing | ✅ Complete |
+| Full | devils-advocate-gtm | Devil's Advocate | ✅ Complete |
 
-**Design Doc:** ❌ Not created
+**Design Docs:** 
+- docs/plans/batch-5-gtm.md ✅
+
+**Devil's Advocate Review:** ✅ Complete
+
+**Status:** ✅ Complete
 
 ---
 
