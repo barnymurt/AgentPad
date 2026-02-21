@@ -334,5 +334,54 @@ All 6 skills were reviewed and improved with:
 
 ---
 
-**Document Status**: Reviewed with Devil's Advocate
-**Next Step**: Update existing skills with improvements, or proceed to next batch
+## 8. Updated Integration with Complete Skill Framework
+
+*Added 2026-02-21 after all batches designed*
+
+### Full Batch Integration Map
+
+| Batch | How It Uses Batch 0 Skills |
+|-------|---------------------------|
+| **Batch 1: Validation Pack** | Security requirements inform validation criteria; Technical Readiness Pack consults all Batch 0 skills |
+| **Batch 2: Architecture** | threat-modeling, security-architecture-review consulted during architecture design |
+| **Batch 3: Completion** | security-compliance-roadmap used for market-specific compliance |
+| **Batch 4: Research** | privacy-regulation-assessment informs research ethics; data-protection-assessment for user data handling |
+| **Batch 5: GTM** | security requirements for launch; compliance roadmap for market entry |
+| **Batch 6: Technical** | All technical skills (database, frontend, DevOps) consult Batch 0 for security |
+
+### Security in Development Cycle
+
+```mermaid
+flowchart LR
+    B0[Batch 0: Security] --> B1[Batch 1: Validation]
+    B1 --> B2[Batch 2: Architecture]
+    B2 --> B6[Batch 6: Technical]
+    
+    B6 -->|Findings| B0
+    B0 -->|Requirements| B6
+```
+
+### Key Integration Points
+
+| From Batch 0 | To | Purpose |
+|--------------|---|---------|
+| threat-modeling | Batch 2 (architecture-design) | Security context for architecture |
+| security-requirements-baseline | Batch 6 (all technical) | Security requirements for implementation |
+| security-architecture-review | Batch 6 (api-design) | API security review |
+| data-protection-assessment | Batch 6 (database skills) | Data security implementation |
+| privacy-regulation-assessment | Batch 5 (GTM) | Privacy compliance for launch |
+| security-compliance-roadmap | Batch 1 (Technical Readiness) | Compliance timeline |
+
+### Updated Security-First Workflow
+
+For any product development:
+1. **Start with Batch 0** → Run threat-modeling, security-requirements-baseline
+2. **Then Batch 1** → Validation includes security criteria
+3. **Then Batch 2** → Architecture incorporates security
+4. **Then Batch 6** → Technical implementation follows security requirements
+5. **Iterate** → Security review at each stage
+
+---
+
+**Document Status**: Complete - Updated with full batch integration
+**Updated**: 2026-02-21

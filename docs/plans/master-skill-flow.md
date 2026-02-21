@@ -1,240 +1,446 @@
 # Master Skill Flow
 
-**Date:** 2026-02-20
-**Status:** Phase 1 - Lightweight (will be updated after Batch 5/6 design)
+**Date:** 2026-02-21
+**Status:** Complete - AI Agent Ready
 
 ---
 
 ## Overview
 
-This document shows the complete skill architecture for AgentPad, organized into 7 batches. It defines dependencies, team configurations, and data flows.
+This document shows the complete skill architecture for AgentPad, organized into 7 batches. It defines dependencies, team configurations, and data flows. AI agents should follow this flow to determine which skills to use based on user goals.
 
 ---
 
-## Batch Structure
+## High-Level Flow (Mermaid)
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                        AGENTPAD SKILLS                          │
-├─────────┬─────────┬─────────┬─────────┬─────────┬─────────────┤
-│ Batch 0 │ Batch 1 │ Batch 2 │ Batch 3 │ Batch 4 │ Batch 5-6   │
-│ Security│Validation│ Arch.   │Complete │Research │ Not Designed│
-│   7    │    2    │   9+    │   2+    │   16    │    27       │
-└─────────┴─────────┴─────────┴─────────┴─────────┴─────────────┘
-     ↓         ↓         ↓         ↓         ↓
-   Founda-   →  Ready  →  Ready  →  Ready  → Research &
-     tion              for Dev    for       Analysis
-                                  Launch
-```
+```mermaid
+flowchart TB
+    subgraph BATCH0["Batch 0: Security Foundation"]
+        direction TB
+        S0A[security-baseline-pack]
+        S0B[security-requirements-baseline]
+        S0C[threat-modeling]
+        S0D[security-architecture-review]
+        S0E[data-protection-assessment]
+        S0F[privacy-regulation-assessment]
+        S0G[security-compliance-roadmap]
+    end
 
----
+    subgraph BATCH1["Batch 1: Validation Packs"]
+        direction TB
+        V1[validation-pack]
+        V2[technical-readiness-pack]
+    end
 
-## Batch 0: Security Foundation
+    subgraph BATCH2["Batch 2: Architecture & Foundation"]
+        direction TB
+        A1[architecture-design]
+        A2[requirements-elicitation]
+        A3[feature-prioritization]
+        A4[user-persona-creation]
+        A5[user-journey-mapping]
+        A6[feedback-synthesis]
+        A7[saas-metrics-analysis]
+        A8[devils-advocate]
+        A9[business-case-modeling]
+    end
 
-**Purpose:** Core security skills required before any product development
+    subgraph BATCH3["Batch 3: Completion"]
+        direction TB
+        C1[competitor-research]
+        C2[business-case-modeling]
+    end
 
-| Skill | Role | Purpose |
-|-------|------|---------|
-| security-baseline-pack | Security Engineer | Define baseline security requirements |
-| security-requirements-baseline | Security Engineer | Security requirements for projects |
-| security-architecture-review | Security Architect | Review technical architecture |
-| security-compliance-roadmap | Compliance Officer | Compliance mapping |
-| threat-modeling | Security Architect | Identify threats |
-| data-protection-assessment | Privacy Officer | Data handling assessment |
-| privacy-regulation-assessment | Privacy Officer | Privacy compliance |
+    subgraph BATCH4["Batch 4: Research Squad"]
+        direction TB
+        R1[user-story-generation]
+        R2[pricing-strategy]
+        R3[roadmap-planning]
+        R4[gap-analysis]
+        R5[process-mapping]
+        R6[stakeholder-analysis]
+        R7[information-architecture]
+        R8[wireframing]
+        R9[heuristic-evaluation]
+        R10[interview-guide-creation]
+        R11[survey-design]
+        R12[usability-test-planning]
+        R13[cohort-analysis]
+        R14[funnel-analysis]
+        R15[ab-test-design]
+        R16[data-visualization]
+    end
 
-**Feeds into:** All other batches (security is foundational)
+    subgraph BATCH5["Batch 5: Go-to-Market"]
+        direction TB
+        G1[launch-planning]
+        G2[messaging-framework]
+        G3[content-strategy]
+        G4[channel-strategy]
+        G5[launch-analytics]
+        G6[seo-foundation]
+        G7[paid-acquisition]
+        G8[sales-enablement]
+        G9[community-building]
+        G10[partner-strategy]
+        G11[pricing-launch]
+        G12[referral-program]
+        G13[analyst-relations]
+        G14[devils-advocate-gtm]
+    end
 
----
+    subgraph BATCH6["Batch 6: Technical"]
+        direction TB
+        T1[data-modeling]
+        T2[schema-design]
+        T3[migration-planning]
+        T4[performance-tuning]
+        T5[data-security]
+        T6[backup-recovery]
+        T7[component-architecture]
+        T8[ui-patterns]
+        T9[design-system]
+        T10[animation-motion]
+        T11[state-management]
+        T12[accessibility-review]
+        T13[responsive-patterns]
+        T14[frontend-performance]
+        T15[test-strategy]
+        T16[automation-framework]
+        T17[tdd]
+        T18[infrastructure-as-code]
+        T19[ci-cd-pipeline]
+        T20[monitoring-observability]
+        T21[cloud-platforms]
+        T22[api-design]
+        T23[mobile-ios]
+        T24[mobile-android]
+        T25[serverless-development]
+        T26[ml-llm-integration]
+        T27[edge-computing]
+        T28[ticket-refinement]
+    end
 
-## Batch 1: Validation Pack
-
-**Purpose:** Ensure product is ready for development
-
-| Skill | Role | Purpose |
-|-------|------|---------|
-| validation-pack | QA Engineer | Validation testing |
-| technical-readiness-pack | Technical Lead | Technical readiness |
-
-**Consults:** security-baseline-pack (Batch 0)
-**Feeds into:** Batch 2 (Architecture)
-
----
-
-## Batch 2: Architecture & Foundation
-
-**Purpose:** Define product requirements and technical approach
-
-| Skill | Role | Purpose |
-|-------|------|---------|
-| architecture-design | Systems Architect | Technical architecture |
-| requirements-elicitation | Business Analyst | Gather requirements |
-| feature-prioritization | Product Manager | Prioritize features |
-| user-persona-creation | UX Researcher | Define user types |
-| user-journey-mapping | UX Researcher | Map user journeys |
-| feedback-synthesis | UX Researcher | Synthesize feedback |
-| saas-metrics-analysis | Data Analyst | Define SaaS metrics |
-| devils-advocate | Devil's Advocate | Challenge assumptions |
-| business-case-modeling | Business Analyst | Financial modeling |
-
-**Consults:** validation-pack (Batch 1), security skills (Batch 0)
-**Feeds into:** Batch 3, Batch 4
-
----
-
-## Batch 3: Completion
-
-**Purpose:** Final validation and market context
-
-| Skill | Role | Purpose |
-|-------|------|---------|
-| competitor-research | Product Manager | Market analysis |
-| business-case-modeling | Business Analyst | Financial case |
-
-**Consults:** Batch 2 skills
-**Feeds into:** Batch 4 (Research Squad)
-
----
-
-## Batch 4: Research Squad
-
-**Purpose:** Deep research and analysis skills (PM, BA, UX, Data)
-
-### Phase 4.1: PM + BA Core
-| Skill | Role |
-|-------|------|
-| user-story-generation | Product Manager |
-| pricing-strategy | Product Manager |
-| roadmap-planning | Product Manager |
-| gap-analysis | Business Analyst |
-
-### Phase 4.2: BA + UX Core
-| Skill | Role |
-|-------|------|
-| process-mapping | Business Analyst |
-| stakeholder-analysis | Business Analyst |
-| information-architecture | UI/UX Designer |
-| wireframing | UI/UX Designer |
-
-### Phase 4.3: UX + Research Core
-| Skill | Role |
-|-------|------|
-| heuristic-evaluation | UI/UX Designer |
-| interview-guide-creation | User Researcher |
-| survey-design | User Researcher |
-| usability-test-planning | User Researcher |
-
-### Phase 4.4: Data Analysis Core
-| Skill | Role |
-|-------|------|
-| cohort-analysis | Data Analyst |
-| funnel-analysis | Data Analyst |
-| ab-test-design | Data Analyst |
-| data-visualization | Data Analyst |
-
----
-
-## Batch 5: Go-to-Market (NOT DESIGNED YET)
-
-**Planned Categories:**
-- Marketing Expert (4 skills)
-- Product Marketing Expert (4 skills)
-- SEO Expert (4 skills)
-- Devil's Advocate (2 skills)
-
-**Consults:** Batch 4 (Research Squad)
-**Feeds into:** Deployment/Release
-
----
-
-## Batch 6: Technical (NOT DESIGNED YET)
-
-**Planned Categories:**
-- Systems Architect (remaining skills)
-- Database Expert (3 skills)
-- Frontend Expert (4 skills)
-- QA/Testing (3 skills)
-- 3 Amigos Squad (PM + Dev + QA)
-
-**Consults:** Batch 2 (Architecture)
-**Feeds into:** Implementation
-
----
-
-## Standard Squads
-
-| Squad | Members | Purpose |
-|-------|---------|---------|
-| Discovery Squad | PM (Competitor Research) + BA (Requirements) + User Researcher | Early exploration |
-| Design Squad | UX Designer (IA) + UX Designer (Wireframe) + User Researcher | Design decisions |
-| Analysis Squad | BA (Gap Analysis) + Data Analyst (Cohort, Funnel) + PM (Prioritization) | Metrics & gaps |
-| Research Squad | User Researcher (Interview, Survey, Feedback) | Research |
-| Roadmap Squad | PM (User Story) + PM (Roadmap) + BA (Stakeholder) | Planning |
-| Pricing Squad | PM (Pricing) + BA (Business Case) + Data Analyst (A/B) | Pricing decisions |
-| 3 Amigos Squad | PM + Dev + QA | Ticket refinement |
-
----
-
-## Known Dependencies
-
-### Critical Path
-```
-security-baseline-pack (0) 
-  → validation-pack (1) 
-    → architecture-design (2)
-      → requirements-elicitation (2)
-        → user-story-generation (4)
-          → roadmap-planning (4)
-```
-
-### Research Path
-```
-user-persona-creation (2) + user-journey-mapping (2)
-  → interview-guide-creation (4)
-    → survey-design (4)
-      → cohort-analysis (4)
-        → ab-test-design (4)
+    BATCH0 --> BATCH1
+    BATCH1 --> BATCH2
+    BATCH2 --> BATCH3
+    BATCH3 --> BATCH4
+    BATCH4 --> BATCH5
+    BATCH5 --> BATCH6
 ```
 
 ---
 
-## Data Flow Examples
+## Detailed Flow with Data Contracts
 
-### Example 1: New Feature Request
-```
-1. requirements-elicitation (Batch 2)
-2. user-persona-creation (Batch 2) [consulted]
-3. user-story-generation (Batch 4)
-4. gap-analysis (Batch 4)
-5. roadmap-planning (Batch 4)
-```
+```mermaid
+flowchart LR
+    subgraph INPUT["User Input"]
+        I1[Product Idea]
+        I2[Existing Artifacts]
+    end
 
-### Example 2: UX Improvement
-```
-1. user-journey-mapping (Batch 2)
-2. wireframing (Batch 4)
-3. heuristic-evaluation (Batch 4)
-4. ab-test-design (Batch 4)
-5. data-visualization (Batch 4) [for results]
-```
+    INPUT --> BATCH0
 
-### Example 3: Security Review
-```
-1. threat-modeling (Batch 0)
-2. security-architecture-review (Batch 0)
-3. security-requirements-baseline (Batch 0)
-4. security-compliance-roadmap (Batch 0)
+    subgraph BATCH0["Batch 0: Security"]
+        B0A[threat-modeling]
+        B0B[security-requirements-baseline]
+        B0C[security-architecture-review]
+        B0D[data-protection-assessment]
+        B0E[privacy-regulation-assessment]
+        B0F[security-compliance-roadmap]
+    end
+
+    BATCH0 -->|Feeds into| BATCH1
+
+    subgraph BATCH1["Batch 1: Validation"]
+        B1A[validation-pack<br/>GO/PAUSE/KILL]
+        B1B[technical-readiness-pack<br/>READY/NEEDS WORK]
+    end
+
+    BATCH1 -->|If GO| BATCH2
+
+    subgraph BATCH2["Batch 2: Foundation"]
+        B2A[requirements-elicitation]
+        B2B[user-persona-creation]
+        B2C[user-journey-mapping]
+        B2D[feature-prioritization]
+        B2E[devils-advocate]
+        B2F[business-case-modeling]
+        B2G[architecture-design]
+        B2H[saas-metrics-analysis]
+        B2I[feedback-synthesis]
+    end
+
+    BATCH2 --> BATCH3
+
+    subgraph BATCH3["Batch 3: Completion"]
+        B3A[competitor-research]
+        B3B[business-case-modeling]
+    end
+
+    BATCH3 --> BATCH4
+
+    subgraph BATCH4["Batch 4: Research"]
+        B4A[user-story-generation]
+        B4B[pricing-strategy]
+        B4C[roadmap-planning]
+        B4D[gap-analysis]
+        B4E[process-mapping]
+        B4F[stakeholder-analysis]
+        B4G[information-architecture]
+        B4H[wireframing]
+        B4I[heuristic-evaluation]
+        B4J[interview-guide-creation]
+        B4K[survey-design]
+        B4L[usability-test-planning]
+        B4M[cohort-analysis]
+        B4N[funnel-analysis]
+        B4O[ab-test-design]
+        B4P[data-visualization]
+    end
+
+    BATCH4 --> BATCH5
+
+    subgraph BATCH5["Batch 5: GTM"]
+        B5A[launch-planning]
+        B5B[messaging-framework]
+        B5C[content-strategy]
+        B5D[channel-strategy]
+        B5E[launch-analytics]
+        B5F[seo-foundation]
+        B5G[paid-acquisition]
+        B5H[sales-enablement]
+        B5I[community-building]
+        B5J[partner-strategy]
+        B5K[pricing-launch]
+        B5L[referral-program]
+        B5M[analyst-relations]
+    end
+
+    BATCH5 --> BATCH6
+
+    subgraph BATCH6["Batch 6: Technical"]
+        B6A[data-modeling]
+        B6B[schema-design]
+        B6C[migration-planning]
+        B6D[performance-tuning]
+        B6E[data-security]
+        B6F[backup-recovery]
+        B6G[component-architecture]
+        B6H[ui-patterns]
+        B6I[design-system]
+        B6J[animation-motion]
+        B6K[state-management]
+        B6L[accessibility-review]
+        B6M[responsive-patterns]
+        B6N[frontend-performance]
+        B6O[test-strategy]
+        B6P[automation-framework]
+        B6Q[tdd]
+        B6R[infrastructure-as-code]
+        B6S[ci-cd-pipeline]
+        B6T[monitoring-observability]
+        B6U[cloud-platforms]
+        B6V[api-design]
+        B6W[mobile-ios]
+        B6X[mobile-android]
+        B6Y[serverless-development]
+        B6Z[ml-llm-integration]
+        B6AA[edge-computing]
+        B6AB[ticket-refinement]
+    end
 ```
 
 ---
 
-## Notes
+## Squad Configurations (Team Setups)
 
-- This is Phase 1 - lightweight version
-- Batches 5-6 need design documents
-- Batch 0 needs redesign (currently incomplete)
-- Batches 1-3 need audit to determine if rebuild needed
+```mermaid
+flowchart TB
+    subgraph SQUADS["Available Squads"]
+        SQ1[Discovery Squad]
+        SQ2[Design Squad]
+        SQ3[Research Squad]
+        SQ4[Roadmap Squad]
+        SQ5[Analysis Squad]
+        SQ6[GTM Squad]
+        SQ7[3 Amigos Squad]
+    end
+
+    SQ1 -->|Uses| SQB1[competitor-research<br/>requirements-elicitation<br/>feedback-synthesis]
+    SQ2 -->|Uses| SQB2[information-architecture<br/>wireframing<br/>user-journey-mapping]
+    SQ3 -->|Uses| SQB3[interview-guide-creation<br/>survey-design<br/>usability-test-planning]
+    SQ4 -->|Uses| SQB4[user-story-generation<br/>roadmap-planning<br/>feature-prioritization]
+    SQ5 -->|Uses| SQB5[cohort-analysis<br/>funnel-analysis<br/>gap-analysis]
+    SQ6 -->|Uses| SQB6[messaging-framework<br/>channel-strategy<br/>content-strategy]
+    SQ7 -->|Uses| SQB7[ticket-refinement]
+```
 
 ---
 
-*This document will be updated after Batches 5-6 are designed and Batches 0-3 are audited.*
+## Decision Flow for AI Agents
+
+```mermaid
+flowchart TD
+    START["User Request"] --> ASK{What is the goal?}
+
+    ASK -->|Validate idea| VALIDATE[Run Validation Pack]
+    VALIDATE -->|GO| TECH[Run Technical Readiness Pack]
+    TECH -->|READY| FOUNDATION[Run Foundation Skills]
+    
+    ASK -->|Design product| FOUNDATION
+    
+    ASK -->|Research| RESEARCH[Run Research Squad]
+    
+    ASK -->|Launch| GTM[Run GTM Skills]
+    
+    ASK -->|Build feature| TECHBATCH[Run Technical Skills]
+    
+    ASK -->|Refine tickets| AMIGOS[Run 3 Amigos]
+
+    FOUNDATION --> OUTPUT[Deliverable]
+    RESEARCH --> OUTPUT
+    GTM --> OUTPUT
+    TECHBATCH --> OUTPUT
+    AMIGOS --> OUTPUT
+```
+
+---
+
+## Skill-to-Squad Mapping
+
+| Squad | Primary Skills | Secondary Skills |
+|-------|---------------|------------------|
+| Discovery Squad | competitor-research, requirements-elicitation, feedback-synthesis | user-persona-creation, user-journey-mapping |
+| Design Squad | information-architecture, wireframing, user-journey-mapping | heuristic-evaluation, usability-test-planning |
+| Research Squad | interview-guide-creation, survey-design, usability-test-planning | feedback-synthesis, cohort-analysis |
+| Roadmap Squad | user-story-generation, roadmap-planning, feature-prioritization | stakeholder-analysis, gap-analysis |
+| Analysis Squad | cohort-analysis, funnel-analysis, gap-analysis | ab-test-design, data-visualization |
+| GTM Squad | launch-planning, messaging-framework, channel-strategy, content-strategy, launch-analytics, seo-foundation | All Batch 5 skills |
+| 3 Amigos Squad | ticket-refinement | All Batch 6 skills as needed |
+
+---
+
+## Data Contracts: Key Handoffs
+
+### Batch 0 → Batch 1
+
+| Output | Input To |
+|--------|----------|
+| threat-model findings | technical-readiness-pack |
+| security requirements | validation-pack (optional) |
+
+### Batch 1 → Batch 2
+
+| Output | Input To |
+|--------|----------|
+| GO/PAUSE/KILL verdict | All Batch 2 skills |
+| validated requirements | requirements-elicitation |
+| MVP scope | feature-prioritization |
+
+### Batch 2 → Batch 3
+
+| Output | Input To |
+|--------|----------|
+| requirements | competitor-research |
+| personas | competitor-research |
+| business case | competitor-research |
+
+### Batch 2 → Batch 4
+
+| Output | Input To |
+|--------|----------|
+| requirements | user-story-generation |
+| personas | interview-guide-creation |
+| journey | wireframing, heuristic-evaluation |
+| metrics | cohort-analysis, ab-test-design |
+
+### Batch 3 → Batch 4
+
+| Output | Input To |
+|--------|----------|
+| competitive analysis | pricing-strategy |
+| market sizing | cohort-analysis |
+
+### Batch 4 → Batch 5
+
+| Output | Input To |
+|--------|----------|
+| user insights | messaging-framework |
+| pricing data | pricing-launch |
+| roadmap | launch-planning |
+
+### Batch 5 → Batch 6
+
+| Output | Input To |
+|--------|----------|
+| launch requirements | All Batch 6 skills |
+| channel specs | api-design |
+
+---
+
+## Iteration Loops
+
+```mermaid
+flowchart LR
+    subgraph LOOP1["Product Development Cycle"]
+        direction LR
+        L1A[Build] --> L1B[Test]
+        L1B --> L1C[Launch]
+        L1C --> L1D[Measure]
+        L1D --> L1E[Learn]
+        L1E --> L1A
+    end
+
+    subgraph LOOP2["Research Cycle"]
+        direction LR
+        L2A[Research] --> L2B[Analyze]
+        L2B --> L2C[Prioritize]
+        L2C --> L2D[Build]
+        L2D --> L2A
+    end
+```
+
+---
+
+## Quick Reference: Which Batch?
+
+| User Goal | Use These Batches |
+|-----------|------------------|
+| "Is this idea worth building?" | Batch 1 (Validation Pack) |
+| "Is the product ready technically?" | Batch 1 (Technical Readiness) |
+| "What should we build?" | Batch 2 → Batch 4 |
+| "How do users behave?" | Batch 2 → Batch 4 (Research) |
+| "How do we launch?" | Batch 5 (GTM) |
+| "How do we build it?" | Batch 6 (Technical) |
+| "How do we improve?" | Batch 4 → Batch 6 (iteration) |
+| "What security is needed?" | Batch 0 (always) |
+
+---
+
+## Total Skills by Batch
+
+| Batch | Name | Skills |
+|-------|------|--------|
+| 0 | Security Foundation | 7 |
+| 1 | Validation Packs | 2 |
+| 2 | Architecture & Foundation | 9 |
+| 3 | Completion | 2 |
+| 4 | Research Squad | 16 |
+| 5 | Go-to-Market | 14 |
+| 6 | Technical | 28 |
+| **Total** | | **78** |
+
+---
+
+## Document Status
+
+**Status:** Complete
+**Last Updated:** 2026-02-21
+
+This document is designed for AI agents to:
+1. Understand the overall skill architecture
+2. Determine which skills to use based on user goals
+3. Follow data contracts between skills
+4. Assemble squads for specific tasks

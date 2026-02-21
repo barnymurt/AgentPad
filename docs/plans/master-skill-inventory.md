@@ -9,7 +9,7 @@
 
 | Batch | Name | Skills | Design Doc | Devil's Advocate | Status |
 |-------|------|--------|------------|------------------|--------|
-| 0 | Security | 7 | ❌ | ❌ | Needs design |
+| 0 | Security | 7 | ✅ | ✅ | ✅ Complete |
 | 1 | Validation | 2 | ✅ | ✅ | ✅ Complete |
 | 2 | Architecture | 9 | ✅ | ✅ | ✅ Complete |
 | 3 | Completion | 2 | Partial | ❌ | Needs audit |
@@ -25,17 +25,19 @@
 
 | Skill | Has SKILL.md | Has References | Notes |
 |-------|-------------|----------------|-------|
-| security-baseline-pack | ✅ | ❌ (output-schema only) | Missing framework, worked-example |
-| security-requirements-baseline | ✅ | ❌ | Missing references folder |
-| security-architecture-review | ✅ | ❌ | Missing references folder |
-| security-compliance-roadmap | ✅ | ❌ | Missing references folder |
-| threat-modeling | ✅ | ❌ | Missing references folder |
-| data-protection-assessment | ✅ | ❌ | Missing references folder |
-| privacy-regulation-assessment | ✅ | ❌ | Missing references folder |
+| security-baseline-pack | ✅ | ✅ | Complete |
+| security-requirements-baseline | ✅ | ✅ | Complete |
+| threat-modeling | ✅ | ✅ | Complete |
+| security-architecture-review | ✅ | ✅ | Complete |
+| data-protection-assessment | ✅ | ✅ | Complete |
+| privacy-regulation-assessment | ✅ | ✅ | Complete |
+| security-compliance-roadmap | ✅ | ✅ | Complete |
 
-**Issues:** 
-- No design doc found
-- Missing reference files (framework.md, output-schema.md, worked-example.md) for most skills
+**Design Doc:** docs/plans/batch-0-security-foundation.md ✅
+
+**Devil's Advocate Review:** ✅ Complete
+
+**Status:** ✅ Complete
 
 ---
 
