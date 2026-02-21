@@ -10,8 +10,8 @@
 | Batch | Name | Skills | Design Doc | Devil's Advocate | Status |
 |-------|------|--------|------------|------------------|--------|
 | 0 | Security | 7 | ❌ | ❌ | Needs design |
-| 1 | Validation | 2 | ✅ | ❌ | Needs review |
-| 2 | Architecture | 9+ | Partial | ❌ | Needs audit |
+| 1 | Validation | 2 | ✅ | ✅ | ✅ Complete |
+| 2 | Architecture | 9 | ✅ | ✅ | ✅ Complete |
 | 3 | Completion | 2 | Partial | ❌ | Needs audit |
 | 4 | Research | 16 | ✅ | ✅ | ✅ Complete |
 | 5 | Go-to-Market | 14 | ❌ | ❌ | Not started |
@@ -43,15 +43,17 @@
 
 | Skill | Has SKILL.md | Has References | Notes |
 |-------|-------------|----------------|-------|
-| validation-pack | ✅ | ✅ (partial) | Has output-schema, references |
-| technical-readiness-pack | ✅ | ✅ (partial) | Has output-schema |
+| validation-pack | ✅ | ✅ | Has output-schema, framework.md, worked-example.md |
+| technical-readiness-pack | ✅ | ✅ | Has output-schema, framework.md, worked-example.md |
 
 **Design Docs:** 
 - docs/plans/validation-pack-design.md ✅
 - docs/plans/validation-pack-manual-test-guide.md ✅
 - docs/plans/technical-readiness-pack-design.md ✅
 
-**Issues:** No Devil's Advocate review done
+**Devil's Advocate Review:** ✅ Complete (2026-02-21)
+
+**Status:** ✅ Complete
 
 ---
 
@@ -61,20 +63,24 @@
 |-------|-------------|----------------|-------|
 | architecture-design | ✅ | ✅ | Complete |
 | requirements-elicitation | ✅ | ✅ | Complete |
-| feature-prioritization | ✅ | ❌ | Missing references |
+| feature-prioritization | ✅ | ✅ | Complete |
 | user-persona-creation | ✅ | ✅ | Complete |
 | user-journey-mapping | ✅ | ✅ | Complete |
-| feedback-synthesis | ✅ | ❌ | Missing references |
-| saas-metrics-analysis | ✅ | ❌ | Missing references |
+| feedback-synthesis | ✅ | ✅ | Complete |
+| saas-metrics-analysis | ✅ | ✅ | Complete |
 | devils-advocate | ✅ | ✅ | Complete |
 | business-case-modeling | ✅ | ✅ | Complete |
 
-**Design Docs:** None found for this batch
+**Design Docs:** 
+- docs/plans/batch-2-architecture-foundation.md ✅
+
+**Devil's Advocate Review:** ✅ Complete (2026-02-21)
 
 **Issues:** 
-- Inconsistent reference files
-- No design doc
-- No Devil's Advocate review
+- ✅ Fixed: Entry point clarity (added "Start Here" section)
+- ✅ Fixed: Partial input handling (added skip protocol)
+- ✅ Fixed: Gate criteria configurable (added override option)
+- ✅ Fixed: Source of truth (added section)
 
 ---
 
