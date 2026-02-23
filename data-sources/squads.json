@@ -1,0 +1,197 @@
+{
+  "version": "1.0",
+  "description": "Squad definitions for Data Source Framework",
+  "squads": {
+    "discovery": {
+      "name": "Discovery",
+      "description": "Validating a product idea, researching market, building business case",
+      "example_data_sources": "Customer interview transcripts, competitor analysis docs, market research, survey results",
+      "skills": [
+        "validation-pack",
+        "requirements-elicitation",
+        "user-persona-creation",
+        "competitor-research",
+        "business-case-modeling",
+        "devils-advocate",
+        "devils-advocate-gtm",
+        "feature-prioritization",
+        "user-journey-mapping",
+        "gap-analysis",
+        "survey-design",
+        "interview-guide-creation",
+        "feedback-synthesis",
+        "stakeholder-analysis",
+        "roadmap-planning"
+      ]
+    },
+    "design": {
+      "name": "Design",
+      "description": "Creating wireframes, UI patterns, user flows, design systems",
+      "example_data_sources": "User research recordings, usability test videos, design mockups, style guides",
+      "skills": [
+        "wireframing",
+        "ui-patterns",
+        "information-architecture",
+        "heuristic-evaluation",
+        "usability-test-planning",
+        "accessibility-review",
+        "design-system",
+        "animation-motion",
+        "responsive-patterns",
+        "component-architecture"
+      ]
+    },
+    "data": {
+      "name": "Data",
+      "description": "Analyzing metrics, building visualizations, cohort analysis",
+      "example_data_sources": "Analytics exports, database schemas, SQL queries, data dictionaries",
+      "skills": [
+        "data-visualization",
+        "cohort-analysis",
+        "funnel-analysis",
+        "data-modeling",
+        "ab-test-design",
+        "saas-metrics-analysis"
+      ]
+    },
+    "security": {
+      "name": "Security",
+      "description": "Threat modeling, compliance assessment, security architecture",
+      "example_data_sources": "Security audit reports, compliance certifications, architecture diagrams",
+      "skills": [
+        "security-requirements-baseline",
+        "security-compliance-roadmap",
+        "security-architecture-review",
+        "threat-modeling",
+        "data-security",
+        "data-protection-assessment",
+        "privacy-regulation-assessment",
+        "backup-recovery"
+      ]
+    },
+    "gtm-launch": {
+      "name": "GTM/Launch",
+      "description": "Planning launches, pricing strategy, marketing channels",
+      "example_data_sources": "Market research, pricing data, channel performance, customer feedback",
+      "skills": [
+        "launch-planning",
+        "launch-analytics",
+        "pricing-strategy",
+        "pricing-launch",
+        "channel-strategy",
+        "paid-acquisition",
+        "partner-strategy",
+        "content-strategy",
+        "community-building",
+        "referral-program",
+        "seo-foundation",
+        "analyst-relations",
+        "sales-enablement",
+        "messaging-framework"
+      ]
+    },
+    "technical": {
+      "name": "Technical",
+      "description": "Architecture design, technical planning, development",
+      "example_data_sources": "API documentation, system architecture, technical specs, code repositories",
+      "skills": [
+        "architecture-design",
+        "schema-design",
+        "api-design",
+        "user-story-generation",
+        "technical-readiness-pack",
+        "ticket-refinement",
+        "state-management",
+        "frontend-performance",
+        "monitoring-observability",
+        "ci-cd-pipeline",
+        "infrastructure-as-code",
+        "cloud-platforms",
+        "serverless-development",
+        "mobile-ios",
+        "mobile-android",
+        "ml-llm-integration",
+        "automation-framework",
+        "tdd",
+        "test-strategy",
+        "migration-planning",
+        "performance-tuning",
+        "edge-computing"
+      ]
+    },
+    "product": {
+      "name": "Product",
+      "description": "Roadmapping, prioritization, stakeholder management",
+      "example_data_sources": "Feature requests, user feedback, priority matrices, stakeholder contacts",
+      "skills": [
+        "roadmap-planning",
+        "feature-prioritization",
+        "requirements-elicitation",
+        "stakeholder-analysis"
+      ]
+    },
+    "research": {
+      "name": "Research",
+      "description": "User interviews, surveys, usability testing",
+      "example_data_sources": "Interview recordings, survey responses, research synthesis, persona documents",
+      "skills": [
+        "survey-design",
+        "interview-guide-creation",
+        "feedback-synthesis",
+        "usability-test-planning"
+      ]
+    },
+    "growth": {
+      "name": "Growth",
+      "description": "Experimentation, acquisition, retention analysis",
+      "example_data_sources": "A/B test results, funnel data, cohort analysis, acquisition costs",
+      "skills": [
+        "ab-test-design",
+        "paid-acquisition",
+        "referral-program",
+        "channel-strategy",
+        "funnel-analysis"
+      ]
+    },
+    "infrastructure": {
+      "name": "Infrastructure",
+      "description": "Cloud setup, CI/CD, monitoring, DevOps",
+      "example_data_sources": "Infrastructure diagrams, deployment logs, monitoring dashboards, cost reports",
+      "skills": [
+        "cloud-platforms",
+        "infrastructure-as-code",
+        "serverless-development",
+        "ci-cd-pipeline",
+        "monitoring-observability"
+      ]
+    }
+  },
+  "templates": {
+    "product_validation": {
+      "name": "Product Validation",
+      "description": "Validating a new product idea",
+      "squads": ["discovery", "research"]
+    },
+    "build_mvp": {
+      "name": "Build MVP",
+      "description": "Building and designing an MVP",
+      "squads": ["technical", "design"]
+    },
+    "launch": {
+      "name": "Launch",
+      "description": "Planning and executing a launch",
+      "squads": ["gtm-launch", "growth"]
+    },
+    "analytics": {
+      "name": "Analytics",
+      "description": "Analyzing product metrics",
+      "squads": ["data", "growth"]
+    },
+    "full_stack": {
+      "name": "Full Stack",
+      "description": "Complete product development lifecycle",
+      "squads": ["discovery", "design", "data", "security", "gtm-launch", "technical", "product", "research", "growth", "infrastructure"]
+    }
+  },
+  "custom_squads": []
+}

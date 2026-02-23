@@ -1,0 +1,9 @@
+{
+  "version": "1.0",
+  "description": "Data Source Registry - stores metadata about connected data sources",
+  "data_sources": [],
+  "metadata": {
+    "created_at": null,
+    "updated_at": "2026-02-23T12:25:10.893025"
+  }
+}

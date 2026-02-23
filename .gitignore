@@ -44,3 +44,8 @@ Thumbs.db
 
 # Antigravity
 .gemini/
+
+# Data Sources Framework
+data-sources/keychain.enc
+data-sources/audit.log
+data-sources/*.lock

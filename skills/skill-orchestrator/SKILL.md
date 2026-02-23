@@ -29,6 +29,44 @@ This skill DOES NOT execute individual tasks — it delegates to other skills (D
   - Without domain context, you cannot select the right skills
 - If domain context is unclear, ask clarifying questions before proceeding
 
+### Step 1b: Check for Data Sources
+
+**After understanding the goal, check if the user has connected data sources:**
+
+1. **Check if data sources exist:**
+   - Look for any data sources in `data-sources/registry.json`
+   - If none exist, optionally prompt: "Would you like to connect any existing research, data, or credentials to enhance this work?"
+
+2. **Identify relevant data sources:**
+   - Based on the skill(s) being run, identify which squads are needed
+   - Check which data sources are accessible to those squads
+   - Match user's stated goal to appropriate data sources
+
+3. **Data source integration options:**
+   - **Auto-detect (default):** Automatically use data sources relevant to the skill being run
+   - **Manual selection:** User explicitly specifies which data source to use
+   - **Template:** Use a squad template (e.g., "Product Validation" = Discovery + Research squads)
+
+4. **If credentials are needed:**
+   - For encrypted data sources, prompt for passphrase
+   - Decrypt credentials at runtime (never store decrypted)
+   - Pass credentials to skill context only when needed
+
+5. **Inject into skill context:**
+   ```json
+   {
+     "data_sources": {
+       "data_source_id": {
+         "name": "...",
+         "type": "...",
+         "location": "...",
+         "format": "...",
+         "credential": "decrypted_credential_if_needed"
+       }
+     }
+   }
+   ```
+
 ### Step 2: Skill Strategy
 
 Determine the best approach to achieve the goal:
@@ -199,6 +237,39 @@ The output follows the structure defined in [references/output-schema.md](refere
 - **Output structure contract:** [references/output-schema.md](references/output-schema.md)
 - **Worked example:** [references/worked-example.md](references/worked-example.md)
 
+## Data Source Handling
+
+### Credential Warning System
+
+**If user pastes what appears to be a credential in conversation:**
+
+Detect patterns that look like credentials:
+- API keys (starts with `sk_`, `pk_`, `api_`, etc.)
+- Connection strings (`postgresql://`, `mysql://`, etc.)
+- Passwords in URLs (`user:pass@host`)
+- Token-like strings (long random-looking strings)
+
+**When detected, warn the user:**
+
+```
+⚠️ I notice you've pasted what looks like a [API key / credential / connection string].
+
+For security, I recommend storing credentials in the Data Source Registry instead.
+This keeps them:
+- Encrypted at rest
+- Out of conversation history
+- Accessible only to authorized squads
+
+Would you like to add this as a data source instead?
+```
+
+### Data Source References
+
+For more details on data sources, see:
+- **Design spec:** `docs/plans/data-source-framework-design.md`
+- **CLI tool:** `execution/manage_data_sources.py`
+- **User guide:** `docs/guides/data-sources.md`
+
 ## Common Mistakes
 
 1. **Over-orchestrating:** Using orchestrator for simple tasks that don't need it. Use one-on-one for simple goals.
@@ -207,3 +278,4 @@ The output follows the structure defined in [references/output-schema.md](refere
 4. **Ignoring skill limitations:** Not understanding what each skill can do.
 5. **Poor handoffs:** Not ensuring skills pass clear outputs to each other.
 6. **Not escalating:** Letting blockers persist instead of using Delivery Manager blocker resolution or escalating.
+7. **Exposing credentials:** Never include decrypted credentials in skill context when not needed, never log credentials.
