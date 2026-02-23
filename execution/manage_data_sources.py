@@ -39,6 +39,14 @@ SALT_FILE = DATA_SOURCES_DIR / ".salt"
 ITERATIONS = 100000
 KEY_LENGTH = 32
 
+VALID_URL_SCHEMES = [
+    'http://', 'https://',
+    'postgresql://', 'mysql://', 'mongodb://', 'sqlite://',
+    'redis://', 'amqp://', 'grpc://', 'ws://', 'wss://',
+    's3://', 'gs://', 'azure://',
+    'file://', 'ssh://', 'ftp://'
+]
+
 
 def load_json(file_path, default=None):
     """Load JSON file or return default if doesn't exist."""
@@ -82,12 +90,44 @@ def derive_key(passphrase: str, salt: bytes) -> bytes:
     return kdf.derive(passphrase.encode())
 
 
-def encrypt_value(value: str, passphrase: str) -> str:
-    """Encrypt a value using AES-256-GCM."""
-    if not passphrase:
-        return value
+def validate_location(location: str, data_type: str) -> bool:
+    """Validate location URL/scheme."""
+    location_lower = location.lower().strip()
     
-    salt = get_or_create_salt()
+    if data_type == 'url':
+        return location_lower.startswith(('http://', 'https://'))
+    
+    if data_type == 'file':
+        return True
+    
+    if data_type in ('database', 'api', 'cloud_storage', 'spreadsheet'):
+        for scheme in VALID_URL_SCHEMES:
+            if location_lower.startswith(scheme):
+                return True
+        
+        if location_lower.startswith('localhost'):
+            return True
+        
+        print(f"Warning: Location doesn't start with a recognized scheme.")
+        print(f"Expected one of: {', '.join(VALID_URL_SCHEMES[:5])}...")
+        response = input("Continue anyway? (y/n): ")
+        return response.lower() == 'y'
+    
+    return True
+
+
+def encrypt_value(value: str, passphrase: str, salt: bytes = None) -> tuple:
+    """Encrypt a value using AES-256-GCM with per-credential salt.
+    
+    Returns tuple of (encrypted_data, salt) where salt is base64 encoded.
+    """
+    if not passphrase:
+        print("Warning: No passphrase provided. Credential will NOT be encrypted.")
+        return (value, "")
+    
+    if salt is None:
+        salt = os.urandom(16)
+    
     key = derive_key(passphrase, salt)
     aesgcm = AESGCM(key)
     
@@ -95,11 +135,11 @@ def encrypt_value(value: str, passphrase: str) -> str:
     encrypted = aesgcm.encrypt(nonce, value.encode(), None)
     
     import base64
-    return base64.b64encode(nonce + encrypted).decode()
+    return (base64.b64encode(nonce + encrypted).decode(), base64.b64encode(salt).decode())
 
 
-def decrypt_value(encrypted_value: str, passphrase: str) -> str:
-    """Decrypt a value using AES-256-GCM."""
+def decrypt_value(encrypted_value: str, passphrase: str, salt_b64: str = None) -> str:
+    """Decrypt a value using AES-256-GCM with provided or stored salt."""
     if not passphrase:
         return encrypted_value
     
@@ -109,7 +149,11 @@ def decrypt_value(encrypted_value: str, passphrase: str) -> str:
         nonce = data[:12]
         ciphertext = data[12:]
         
-        salt = get_or_create_salt()
+        if salt_b64:
+            salt = base64.b64decode(salt_b64)
+        else:
+            salt = get_or_create_salt()
+        
         key = derive_key(passphrase, salt)
         aesgcm = AESGCM(key)
         
@@ -118,17 +162,23 @@ def decrypt_value(encrypted_value: str, passphrase: str) -> str:
         raise ValueError("Decryption failed. Wrong passphrase or corrupted data.")
 
 
-def save_keychain_entry(credential_id: str, encrypted_credential: str):
-    """Save encrypted credential to keychain."""
+def save_keychain_entry(credential_id: str, encrypted_credential: str, salt_b64: str = ""):
+    """Save encrypted credential with salt to keychain."""
     keychain = load_json(KEYCHAIN_FILE, {"credentials": {}})
-    keychain["credentials"][credential_id] = encrypted_credential
+    keychain["credentials"][credential_id] = {
+        "encrypted": encrypted_credential,
+        "salt": salt_b64
+    }
     save_json(KEYCHAIN_FILE, keychain)
 
 
-def get_keychain_entry(credential_id: str) -> str:
-    """Get encrypted credential from keychain."""
+def get_keychain_entry(credential_id: str) -> dict:
+    """Get encrypted credential and salt from keychain."""
     keychain = load_json(KEYCHAIN_FILE, {"credentials": {}})
-    return keychain["credentials"].get(credential_id, "")
+    entry = keychain["credentials"].get(credential_id, {})
+    if isinstance(entry, str):
+        return {"encrypted": entry, "salt": ""}
+    return entry
 
 
 def delete_keychain_entry(credential_id: str):
@@ -187,28 +237,33 @@ def cmd_add(args):
     
     data_source_id = str(uuid.uuid4())[:8]
     
+    if not validate_location(args.location, args.type):
+        print("Error: Invalid location.")
+        return 1
+    
     credential_key = None
     if args.encrypt and args.type in ["database", "api", "cloud_storage"]:
-        if args.credential:
-            credential = args.credential
-        else:
-            credential = getpass("Enter credential (API key, password, etc.): ")
+        credential = getpass("Enter credential (API key, password, etc.): ")
         
-        if args.passphrase:
-            passphrase = args.passphrase
+        passphrase = getpass("Enter passphrase for encryption: ")
+        if not passphrase:
+            print("Warning: Empty passphrase. Credential will NOT be encrypted.")
+            save_keychain_entry(f"cred_{data_source_id}", credential, "")
+            credential_key = f"cred_{data_source_id}"
         else:
-            passphrase = getpass("Enter passphrase for encryption: ")
             passphrase_confirm = getpass("Confirm passphrase: ")
             if passphrase != passphrase_confirm:
                 print("Error: Passphrases do not match.")
                 return 1
-        
-        credential_key = f"cred_{data_source_id}"
-        encrypted_cred = encrypt_value(credential, passphrase)
-        save_keychain_entry(credential_key, encrypted_cred)
-        print(f"[*] Credential encrypted and stored securely")
+            
+            credential_key = f"cred_{data_source_id}"
+            encrypted_cred, salt_b64 = encrypt_value(credential, passphrase)
+            save_keychain_entry(credential_key, encrypted_cred, salt_b64)
+            print(f"[*] Credential encrypted with unique salt and stored securely")
     elif args.credential and args.type in ["database", "api", "cloud_storage"]:
         print("Warning: Credential provided but encryption not enabled. Storing as plaintext.")
+        credential_key = f"cred_{data_source_id}"
+        save_keychain_entry(credential_key, args.credential, "")
     
     squad_list = validate_squads(args.squads) if args.squads else []
     
@@ -325,15 +380,23 @@ def cmd_decrypt(args):
         print(f"No credential stored for '{ds['name']}'.")
         return 1
     
-    encrypted = get_keychain_entry(ds["credential_key"])
-    if not encrypted:
+    keychain_entry = get_keychain_entry(ds["credential_key"])
+    if not keychain_entry:
         print("Error: Credential not found in keychain.")
         return 1
     
-    passphrase = args.passphrase if args.passphrase else getpass("Enter passphrase: ")
+    encrypted = keychain_entry.get("encrypted", "")
+    salt_b64 = keychain_entry.get("salt", "")
+    
+    if not salt_b64:
+        print(f"\n[*] Credential for '{ds['name']}' (stored plaintext):")
+        print(f"  {encrypted}")
+        return 0
+    
+    passphrase = getpass("Enter passphrase: ")
     
     try:
-        decrypted = decrypt_value(encrypted, passphrase)
+        decrypted = decrypt_value(encrypted, passphrase, salt_b64)
         print(f"\n[*] Decrypted credential for '{ds['name']}':")
         print(f"  {decrypted}")
     except ValueError as e:
@@ -413,8 +476,7 @@ Examples:
     parser_add.add_argument("--description", help="Description")
     parser_add.add_argument("--squads", nargs="+", help="Squads that can access this data source")
     parser_add.add_argument("--encrypt", action="store_true", help="Encrypt credential with passphrase")
-    parser_add.add_argument("--credential", help="Credential value (if encrypting)")
-    parser_add.add_argument("--passphrase", help="Passphrase for encryption (for scripting)")
+    parser_add.add_argument("--credential", help="[DEPRECATED - will prompt interactively] Credential value")
     
     parser_list = subparsers.add_parser("list", help="List all data sources")
     parser_list.add_argument("-v", "--verbose", action="store_true", help="Show detailed information")
@@ -425,7 +487,6 @@ Examples:
     
     parser_decrypt = subparsers.add_parser("decrypt", help="Decrypt and display credential")
     parser_decrypt.add_argument("id", help="Data source ID")
-    parser_decrypt.add_argument("--passphrase", help="Passphrase (for scripting)")
     
     parser_squads = subparsers.add_parser("squads", help="List available squads")
     
