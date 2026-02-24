@@ -268,7 +268,7 @@ export default function Home() {
               <div className="p-6">
                 {jobOutput ? (
                   <div className="prose prose-sm dark:prose-invert max-w-none">
-                    <ReactMarkdown className="text-gray-700 dark:text-gray-300">
+                    <ReactMarkdown>
                       {jobOutput}
                     </ReactMarkdown>
                     
