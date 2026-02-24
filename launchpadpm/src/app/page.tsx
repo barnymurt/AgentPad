@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import SquadCard from '@/components/SquadCard';
 import PaywallModal from '@/components/PaywallModal';
 import { signIn, signOut, useSession } from 'next-auth/react';
+import ReactMarkdown from 'react-markdown';
 
 interface Squad {
   id: string;
@@ -267,9 +268,9 @@ export default function Home() {
               <div className="p-6">
                 {jobOutput ? (
                   <div className="prose prose-sm dark:prose-invert max-w-none">
-                    <div className="whitespace-pre-wrap text-sm text-gray-700 dark:text-gray-300">
+                    <ReactMarkdown className="text-gray-700 dark:text-gray-300">
                       {jobOutput}
-                    </div>
+                    </ReactMarkdown>
                     
                     {/* Download CTA */}
                     <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
