@@ -1,0 +1,22 @@
+{
+  "version": "1.0",
+  "description": "MVP skills available to paid users. Based on Validation Pack.",
+  "mvpSkills": [
+    "requirements-elicitation",
+    "user-persona-creation",
+    "competitor-research",
+    "business-case-modeling",
+    "devils-advocate",
+    "feature-prioritization",
+    "user-journey-mapping"
+  ],
+  "validationPackSkills": [
+    "requirements-elicitation",
+    "user-persona-creation",
+    "competitor-research",
+    "business-case-modeling",
+    "devils-advocate",
+    "feature-prioritization",
+    "user-journey-mapping"
+  ]
+}
