@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import SquadCard from '@/components/SquadCard';
 import PaywallModal from '@/components/PaywallModal';
+import { signIn, signOut, useSession } from 'next-auth/react';
 
 interface Squad {
   id: string;
@@ -13,6 +14,7 @@ interface Squad {
 }
 
 export default function Home() {
+  const { data: session } = useSession();
   const [squads, setSquads] = useState<Squad[]>([]);
   const [loading, setLoading] = useState(true);
   const [userInput, setUserInput] = useState('');
@@ -24,6 +26,8 @@ export default function Home() {
   const [showPreview, setShowPreview] = useState(false);
   const [capturedEmail, setCapturedEmail] = useState<string | null>(null);
   const [paywallSkill, setPaywallSkill] = useState({ name: 'Validation Pack', id: 'validation-pack' });
+  const [showSignIn, setShowSignIn] = useState(false);
+  const [showPayment, setShowPayment] = useState(false);
 
   useEffect(() => {
     fetch('/api/squads')
@@ -140,16 +144,41 @@ export default function Home() {
             <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
               LaunchPadPM
             </h1>
-            <nav className="flex gap-4">
+            <nav className="flex items-center gap-4">
               <a href="#squads" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
                 Squads
               </a>
               <a href="#skills" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
                 Skills
               </a>
-              <a href="#data-sources" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
-                Data Sources
-              </a>
+              {session ? (
+                <div className="flex items-center gap-3">
+                  <button 
+                    onClick={() => setShowPayment(true)}
+                    className="px-3 py-1 bg-gradient-to-r from-purple-600 to-blue-600 text-white text-sm rounded-full hover:from-purple-700 hover:to-blue-700"
+                  >
+                    Upgrade to Pro
+                  </button>
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-medium">
+                      {session.user?.email?.charAt(0).toUpperCase() || 'U'}
+                    </div>
+                    <button 
+                      onClick={() => signOut()}
+                      className="text-sm text-gray-500 hover:text-gray-700"
+                    >
+                      Sign Out
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <button 
+                  onClick={() => setShowSignIn(true)}
+                  className="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700"
+                >
+                  Sign In
+                </button>
+              )}
             </nav>
           </div>
         </div>
@@ -216,31 +245,76 @@ export default function Home() {
 
           {/* Results Display */}
           {(jobStatus || jobOutput) && (
-            <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="font-medium text-gray-900 dark:text-white">
-                  {jobStatus === 'completed' ? 'Results' : jobStatus === 'failed' ? 'Error' : 'Processing...'}
-                </h3>
-                {jobStatus && jobStatus !== 'completed' && jobStatus !== 'failed' && (
-                  <span className="text-sm text-blue-600 dark:text-blue-400">
-                    {jobStatus === 'pending' ? 'Queued' : 'Running'}
-                  </span>
+            <div className="mt-6 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+              <div className="bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="font-semibold text-white">
+                      {jobStatus === 'completed' ? '🎉 Your Validation Pack is Ready!' : jobStatus === 'failed' ? '❌ Error' : '⏳ Processing...'}
+                    </h3>
+                    <p className="text-blue-100 text-sm">AI-powered validation analysis</p>
+                  </div>
+                  {jobStatus === 'completed' && (
+                    <div className="bg-white/20 px-3 py-1 rounded-full">
+                      <span className="text-white text-sm font-medium">✓ Complete</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+              
+              <div className="p-6">
+                {jobOutput ? (
+                  <div className="prose prose-sm dark:prose-invert max-w-none">
+                    <div className="whitespace-pre-wrap text-sm text-gray-700 dark:text-gray-300">
+                      {jobOutput}
+                    </div>
+                    
+                    {/* Download CTA */}
+                    <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h4 className="font-medium text-blue-900 dark:text-blue-100">📥 Download Full Report</h4>
+                          <p className="text-sm text-blue-700 dark:text-blue-300">Get the complete 15-page Validation Pack</p>
+                        </div>
+                        {capturedEmail ? (
+                          <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium text-sm">
+                            Download PDF
+                          </button>
+                        ) : (
+                          <button 
+                            onClick={() => setShowPaywall(true)}
+                            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium text-sm"
+                          >
+                            Enter Email
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ) : jobStatus === 'failed' ? (
+                  <div className="text-center py-8">
+                    <div className="text-red-500 mb-4">⚠️</div>
+                    <p className="text-red-600 dark:text-red-400 mb-4">Something went wrong. Please try again.</p>
+                    <button 
+                      onClick={() => {
+                        setJobOutput(null);
+                        setJobStatus(null);
+                      }}
+                      className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                    >
+                      Try Again
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center py-8">
+                    <div className="text-center">
+                      <div className="animate-spin rounded-full h-8 w-8 border-4 border-blue-600 border-t-transparent mx-auto mb-4"></div>
+                      <p className="text-gray-500 dark:text-gray-400">Running 7 validation skills...</p>
+                      <p className="text-sm text-gray-400 dark:text-gray-500 mt-2">This usually takes 10-20 seconds</p>
+                    </div>
+                  </div>
                 )}
               </div>
-              {jobOutput ? (
-                <div className="prose prose-sm dark:prose-invert max-w-none">
-                  <pre className="whitespace-pre-wrap text-sm text-gray-700 dark:text-gray-300 font-mono bg-white dark:bg-gray-800 p-3 rounded border border-gray-200 dark:border-gray-600 max-h-96 overflow-auto">
-                    {jobOutput}
-                  </pre>
-                </div>
-              ) : jobStatus === 'failed' ? (
-                <p className="text-red-600 dark:text-red-400 text-sm">Something went wrong. Please try again.</p>
-              ) : (
-                <div className="flex items-center gap-2">
-                  <div className="animate-spin rounded-full h-4 w-4 border-2 border-blue-600 border-t-transparent"></div>
-                  <span className="text-sm text-gray-500 dark:text-gray-400">Processing your request...</span>
-                </div>
-              )}
             </div>
           )}
         </section>
@@ -421,9 +495,142 @@ export default function Home() {
               )}
               
               <p className="mt-4 text-center text-sm text-gray-500">
-                Or <button onClick={() => setShowPaywall(true)} className="text-blue-600 hover:underline">sign in</button> if you're already a member
+                Or <button onClick={() => { setShowPreview(false); setShowSignIn(true); }} className="text-blue-600 hover:underline">sign in</button> if you're already a member
               </p>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Sign In Modal */}
+      {showSignIn && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full mx-4 p-6">
+            <div className="flex justify-between items-start mb-6">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                Welcome Back
+              </h2>
+              <button
+                onClick={() => setShowSignIn(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <div className="space-y-3">
+              <button 
+                onClick={() => signIn('google', { callbackUrl: '/' })}
+                className="w-full flex items-center justify-center gap-3 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+              >
+                <svg className="w-5 h-5" viewBox="0 0 24 24">
+                  <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                  <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                  <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                  <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                </svg>
+                <span className="text-gray-700 dark:text-gray-300">Continue with Google</span>
+              </button>
+
+              <button 
+                onClick={() => signIn('apple', { callbackUrl: '/' })}
+                className="w-full flex items-center justify-center gap-3 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+              >
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+                </svg>
+                <span className="text-gray-700 dark:text-gray-300">Continue with Apple</span>
+              </button>
+            </div>
+
+            <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+              <p className="text-center text-sm text-gray-500 mb-4">Or enter your email</p>
+              <form onSubmit={(e) => { e.preventDefault(); setShowSignIn(false); setShowPaywall(true); }}>
+                <input
+                  type="email"
+                  placeholder="you@example.com"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <button
+                  type="submit"
+                  className="w-full mt-3 px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium"
+                >
+                  Continue with Email
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Payment Modal */}
+      {showPayment && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full mx-4 p-6">
+            <div className="flex justify-between items-start mb-6">
+              <div>
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                  Upgrade to Pro
+                </h2>
+                <p className="text-sm text-gray-500 mt-1">Unlock unlimited access</p>
+              </div>
+              <button
+                onClick={() => setShowPayment(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <div className="bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-lg p-4 mb-6">
+              <div className="flex items-center justify-between mb-2">
+                <span className="font-semibold text-gray-900 dark:text-white">Pro Plan</span>
+                <span className="text-2xl font-bold text-gray-900 dark:text-white">$29<span className="text-sm font-normal text-gray-500">/mo</span></span>
+              </div>
+              <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-2">
+                <li className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
+                  Unlimited skill executions
+                </li>
+                <li className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
+                  All 78+ skills unlocked
+                </li>
+                <li className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
+                  Priority support
+                </li>
+                <li className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
+                  Export to Notion
+                </li>
+              </ul>
+            </div>
+
+            <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Card Number</label>
+                <input type="text" placeholder="1234 5678 9012 3456" className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Expiry</label>
+                  <input type="text" placeholder="MM/YY" className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">CVC</label>
+                  <input type="text" placeholder="123" className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </div>
+              </div>
+              <button type="submit" className="w-full px-4 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 font-medium">
+                Start Pro Trial
+              </button>
+              <p className="text-xs text-center text-gray-500">7-day free trial, then $29/mo. Cancel anytime.</p>
+            </form>
           </div>
         </div>
       )}
