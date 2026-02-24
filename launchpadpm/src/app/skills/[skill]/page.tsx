@@ -1,6 +1,8 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import PaywallModal from '@/components/PaywallModal';
 
 const skillCapabilities: Record<string, { description: string; capabilities: string[]; squads: string[] }> = {
   'validation-pack': {
@@ -140,6 +142,89 @@ function getSkillData(skillName: string) {
 export default function SkillPage({ params }: { params: { skill: string } }) {
   const skillName = params?.skill || '';
   const skillData = getSkillData(skillName);
+  const [isExecuting, setIsExecuting] = useState(false);
+  const [jobId, setJobId] = useState<string | null>(null);
+  const [jobStatus, setJobStatus] = useState<string | null>(null);
+  const [jobOutput, setJobOutput] = useState<string | null>(null);
+  const [showPaywall, setShowPaywall] = useState(false);
+  const [skillInput, setSkillInput] = useState('');
+
+  const handleRunSkill = async () => {
+    if (!skillInput.trim()) {
+      alert('Please enter some input for this skill');
+      return;
+    }
+
+    setIsExecuting(true);
+    setJobOutput(null);
+    setJobStatus(null);
+
+    try {
+      const response = await fetch('/api/run-skill', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          skillId: skillName,
+          input: skillInput,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.status === 403) {
+        setShowPaywall(true);
+        setIsExecuting(false);
+        return;
+      }
+
+      if (data.jobId) {
+        setJobId(data.jobId);
+        pollJobStatus(data.jobId);
+      }
+    } catch (err) {
+      console.error('Error starting skill:', err);
+      setIsExecuting(false);
+    }
+  };
+
+  const pollJobStatus = async (id: string) => {
+    const poll = async () => {
+      try {
+        const res = await fetch(`/api/jobs/${id}`);
+        const jobData = await res.json();
+        setJobStatus(jobData.status);
+
+        if (jobData.status === 'completed') {
+          setJobOutput(jobData.output);
+          setIsExecuting(false);
+        } else if (jobData.status === 'failed') {
+          setJobOutput(jobData.error || 'Skill execution failed');
+          setIsExecuting(false);
+        } else {
+          setTimeout(poll, 2000);
+        }
+      } catch (err) {
+        console.error('Error polling job:', err);
+        setTimeout(poll, 2000);
+      }
+    };
+    poll();
+  };
+
+  const handleEmailSubmit = async (email: string) => {
+    const response = await fetch('/api/capture-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    });
+
+    const data = await response.json();
+
+    if (data.success && skillInput) {
+      setShowPaywall(false);
+      handleRunSkill();
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -222,14 +307,61 @@ export default function SkillPage({ params }: { params: { skill: string } }) {
           </div>
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex gap-4 mb-8">
-          <button className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium">
-            Run Skill
-          </button>
-          <button className="px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 font-medium">
-            Add to Squad
-          </button>
+        {/* Input & Action Buttons */}
+        <div className="mb-8">
+          <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 mb-4">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+              Run This Skill
+            </h2>
+            <textarea
+              value={skillInput}
+              onChange={(e) => setSkillInput(e.target.value)}
+              placeholder={`Enter your ${skillName.replace(/-/g, ' ')} input...`}
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent min-h-[120px]"
+              disabled={isExecuting}
+            />
+          </div>
+
+          {/* Results Display */}
+          {(jobStatus || jobOutput) && (
+            <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 mb-4">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="font-medium text-gray-900 dark:text-white">
+                  {jobStatus === 'completed' ? 'Results' : jobStatus === 'failed' ? 'Error' : 'Processing...'}
+                </h3>
+                {jobStatus && jobStatus !== 'completed' && jobStatus !== 'failed' && (
+                  <span className="text-sm text-blue-600 dark:text-blue-400">
+                    {jobStatus === 'pending' ? 'Queued' : 'Running'}
+                  </span>
+                )}
+              </div>
+              {jobOutput ? (
+                <pre className="whitespace-pre-wrap text-sm text-gray-700 dark:text-gray-300 font-mono bg-gray-50 dark:bg-gray-900 p-4 rounded border border-gray-200 dark:border-gray-700 max-h-96 overflow-auto">
+                  {jobOutput}
+                </pre>
+              ) : jobStatus === 'failed' ? (
+                <p className="text-red-600 dark:text-red-400 text-sm">Something went wrong. Please try again.</p>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <div className="animate-spin rounded-full h-4 w-4 border-2 border-blue-600 border-t-transparent"></div>
+                  <span className="text-sm text-gray-500 dark:text-gray-400">Processing your request...</span>
+                </div>
+              )}
+            </div>
+          )}
+
+          <div className="flex gap-4">
+            <button 
+              onClick={handleRunSkill}
+              disabled={isExecuting || !skillInput.trim()}
+              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isExecuting ? 'Running...' : 'Run Skill'}
+            </button>
+            <button className="px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 font-medium">
+              Add to Squad
+            </button>
+          </div>
         </div>
 
         {/* Squad Membership */}
@@ -271,6 +403,15 @@ export default function SkillPage({ params }: { params: { skill: string } }) {
           </div>
         </div>
       </main>
+
+      {/* Paywall Modal */}
+      <PaywallModal
+        isOpen={showPaywall}
+        onClose={() => setShowPaywall(false)}
+        skillName={skillData.name || skillName.replace(/-/g, ' ')}
+        skillId={skillName}
+        onEmailSubmit={handleEmailSubmit}
+      />
     </div>
   );
 }

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import SquadCard from '@/components/SquadCard';
+import PaywallModal from '@/components/PaywallModal';
 
 interface Squad {
   id: string;
@@ -14,6 +15,13 @@ interface Squad {
 export default function Home() {
   const [squads, setSquads] = useState<Squad[]>([]);
   const [loading, setLoading] = useState(true);
+  const [userInput, setUserInput] = useState('');
+  const [isExecuting, setIsExecuting] = useState(false);
+  const [jobId, setJobId] = useState<string | null>(null);
+  const [jobStatus, setJobStatus] = useState<string | null>(null);
+  const [jobOutput, setJobOutput] = useState<string | null>(null);
+  const [showPaywall, setShowPaywall] = useState(false);
+  const [paywallSkill, setPaywallSkill] = useState({ name: 'Validation Pack', id: 'validation-pack' });
 
   useEffect(() => {
     fetch('/api/squads')
@@ -27,6 +35,88 @@ export default function Home() {
         setLoading(false);
       });
   }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!userInput.trim()) return;
+
+    setIsExecuting(true);
+    setJobOutput(null);
+    setJobStatus(null);
+
+    try {
+      const response = await fetch('/api/run-skill', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          skillId: 'validation-pack',
+          input: userInput,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.status === 403) {
+        if (data.error === 'email_required' || data.error === 'limit_reached') {
+          setShowPaywall(true);
+          setIsExecuting(false);
+          return;
+        }
+        if (data.error === 'upgrade_required') {
+          setShowPaywall(true);
+          setIsExecuting(false);
+          return;
+        }
+      }
+
+      if (data.jobId) {
+        setJobId(data.jobId);
+        pollJobStatus(data.jobId);
+      }
+    } catch (err) {
+      console.error('Error starting skill:', err);
+      setIsExecuting(false);
+    }
+  };
+
+  const pollJobStatus = async (id: string) => {
+    const poll = async () => {
+      try {
+        const res = await fetch(`/api/jobs/${id}`);
+        const jobData = await res.json();
+        setJobStatus(jobData.status);
+
+        if (jobData.status === 'completed') {
+          setJobOutput(jobData.output);
+          setIsExecuting(false);
+        } else if (jobData.status === 'failed') {
+          setJobOutput(jobData.error || 'Skill execution failed');
+          setIsExecuting(false);
+        } else {
+          setTimeout(poll, 2000);
+        }
+      } catch (err) {
+        console.error('Error polling job:', err);
+        setTimeout(poll, 2000);
+      }
+    };
+    poll();
+  };
+
+  const handleEmailSubmit = async (email: string) => {
+    const response = await fetch('/api/capture-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    });
+
+    const data = await response.json();
+
+    if (data.success && userInput) {
+      setShowPaywall(false);
+      handleSubmit(new Event('submit') as any);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -80,14 +170,21 @@ export default function Home() {
             </h2>
             
             {/* Conversation Input */}
-            <form className="relative" onSubmit={(e) => e.preventDefault()}>
+            <form className="relative" onSubmit={handleSubmit}>
               <input
                 type="text"
+                value={userInput}
+                onChange={(e) => setUserInput(e.target.value)}
                 placeholder='Try "I have an idea to validate" or "I want to build a SaaS product"'
                 className="w-full px-4 py-3 pr-28 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                disabled={isExecuting}
               />
-              <button type="submit" className="absolute right-1 top-1/2 -translate-y-1/2 px-4 py-1.5 bg-blue-600 text-white rounded-md hover:bg-blue-700 font-medium text-sm">
-                Validate Now
+              <button 
+                type="submit" 
+                disabled={isExecuting || !userInput.trim()}
+                className="absolute right-1 top-1/2 -translate-y-1/2 px-4 py-1.5 bg-blue-600 text-white rounded-md hover:bg-blue-700 font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isExecuting ? 'Running...' : 'Validate Now'}
               </button>
             </form>
 
@@ -95,6 +192,36 @@ export default function Home() {
               Or browse squads below to get started
             </p>
           </div>
+
+          {/* Results Display */}
+          {(jobStatus || jobOutput) && (
+            <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="font-medium text-gray-900 dark:text-white">
+                  {jobStatus === 'completed' ? 'Results' : jobStatus === 'failed' ? 'Error' : 'Processing...'}
+                </h3>
+                {jobStatus && jobStatus !== 'completed' && jobStatus !== 'failed' && (
+                  <span className="text-sm text-blue-600 dark:text-blue-400">
+                    {jobStatus === 'pending' ? 'Queued' : 'Running'}
+                  </span>
+                )}
+              </div>
+              {jobOutput ? (
+                <div className="prose prose-sm dark:prose-invert max-w-none">
+                  <pre className="whitespace-pre-wrap text-sm text-gray-700 dark:text-gray-300 font-mono bg-white dark:bg-gray-800 p-3 rounded border border-gray-200 dark:border-gray-600 max-h-96 overflow-auto">
+                    {jobOutput}
+                  </pre>
+                </div>
+              ) : jobStatus === 'failed' ? (
+                <p className="text-red-600 dark:text-red-400 text-sm">Something went wrong. Please try again.</p>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <div className="animate-spin rounded-full h-4 w-4 border-2 border-blue-600 border-t-transparent"></div>
+                  <span className="text-sm text-gray-500 dark:text-gray-400">Processing your request...</span>
+                </div>
+              )}
+            </div>
+          )}
         </section>
 
         {/* Squads Grid */}
@@ -151,6 +278,15 @@ export default function Home() {
           </p>
         </div>
       </footer>
+
+      {/* Paywall Modal */}
+      <PaywallModal
+        isOpen={showPaywall}
+        onClose={() => setShowPaywall(false)}
+        skillName={paywallSkill.name}
+        skillId={paywallSkill.id}
+        onEmailSubmit={handleEmailSubmit}
+      />
     </div>
   );
 }
