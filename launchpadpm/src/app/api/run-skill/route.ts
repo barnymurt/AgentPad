@@ -48,20 +48,27 @@ export async function POST(request: NextRequest) {
     }
     
     if (!user) {
-      if (isValidationPack && email) {
-        const { createUser } = await import('@/lib/db');
-        user = createUser(email);
-      } else if (isValidationPack) {
-        return NextResponse.json(
-          { error: 'email_required', message: 'Please enter your email to generate a Validation Pack' },
-          { status: 403 }
-        );
-      } else {
-        return NextResponse.json(
-          { error: 'unauthorized', message: 'Please sign in to run skills' },
-          { status: 403 }
-        );
+      // For validation pack, allow anonymous generation (first one is free)
+      if (isValidationPack) {
+        const { createJob } = await import('@/lib/db');
+        
+        // Create a job without user association for anonymous validation pack
+        const jobInput = input || `Generate Validation Pack`;
+        const job = createJob(null, skillId, jobInput);
+        
+        executeSkillAsync(job.id, skillId, jobInput);
+        
+        return NextResponse.json({
+          jobId: job.id,
+          status: job.status,
+          message: 'Skill execution started',
+        });
       }
+      
+      return NextResponse.json(
+        { error: 'unauthorized', message: 'Please sign in to run skills' },
+        { status: 403 }
+      );
     }
     
     if (user.tier !== 'paid' && !isValidationPack) {
