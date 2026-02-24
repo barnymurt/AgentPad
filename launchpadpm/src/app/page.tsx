@@ -275,12 +275,12 @@ export default function Home() {
                     <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
                       <div className="flex items-center justify-between">
                         <div>
-                          <h4 className="font-medium text-blue-900 dark:text-blue-100">📥 Download Full Report</h4>
-                          <p className="text-sm text-blue-700 dark:text-blue-300">Get the complete 15-page Validation Pack</p>
+                          <h4 className="font-medium text-blue-900 dark:text-blue-100">Get Your Full Validation Pack</h4>
+                          <p className="text-sm text-blue-700 dark:text-blue-300">Download the complete report with action steps</p>
                         </div>
                         {capturedEmail ? (
                           <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium text-sm">
-                            Download PDF
+                            Download
                           </button>
                         ) : (
                           <button 

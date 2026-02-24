@@ -68,65 +68,63 @@ def generate_validation_pack(user_input: str) -> dict:
     industry = keywords['industry'][0] if keywords['industry'] else 'your industry'
     product = keywords['product_type'][0] if keywords['product_type'] else 'solution'
     
-    preview = f"""# Your Validation Pack
-
-## "{user_input.title()}"
+    # Generate relevant content based on keywords
+    preview = f"""# Validation Pack: {user_input.title()}
 
 **Generated**: {timestamp}
 
 ---
 
-## Scorecard
-
-### Your Target: {target.title()}
-### Industry: {industry.title()}
-### Product Type: {product.title()}
+## Your Idea
+{user_input}
 
 ---
 
-## What This Validates
+## At a Glance
 
-This pack helps you stress-test your idea and identify what to build first.
+| | |
+|---|---|
+| **Target Audience** | {target.title()} |
+| **Industry** | {industry.title()} |
+| **Product Type** | {product.title()} |
+
+---
+
+## What's Inside
 
 ### 1. Requirements
-What's the core problem you're solving? For who?
+Your problem statement and assumptions
 
-### 2. User Persona  
-Who exactly is your customer? What do they need?
+### 2. User Persona
+Who exactly is your customer?
 
 ### 3. Competition
-Who else serves this market? What's missing?
+Market gaps and opportunities
 
 ### 4. Business Case
-Is there a viable business here? What's the opportunity?
+Market size and revenue potential
 
 ### 5. Risk Analysis
-What could go wrong? What are you assuming?
+What could go wrong
 
 ### 6. Feature Priority
-What should you build FIRST? What's the MVP?
+What to build first (MVP)
 
 ### 7. User Journey
-How will users discover and use your product?
+How users will find and use your product
 
 ---
 
-## Recommended Next Steps
+## Your Next Steps
 
-1. **Talk to 5 real people** in your target market (not friends)
-2. **Build a simple landing page** to test interest
-3. **Get people to pre-pay** or join a waitlist
-4. **Research competitors** deeply
-
----
-
-## 💡 Pro Tip
-
-The #1 mistake founders make: Building before validating with real customers.
+1. **Talk to 5 real people** in your target market
+2. **Build a simple landing page** to test interest  
+3. **Get pre-payments or waitlist signups**
+4. **Research competitors**
 
 ---
 
-Enter your email to download the full detailed report.
+*Enter your email to download the full detailed report with templates and frameworks*
 """
     
     full = f"""# VALIDATION PACK: {user_input.title()}
@@ -141,18 +139,20 @@ Generated: {timestamp}
 {user_input}
 
 ## Problem Statement
-What problem does this solve? For whom?
+[Define the core problem your idea solves]
+
+## For Who?
+{target.title()}
 
 ## Key Assumptions
-- {target.title()} has this problem
-- Existing solutions are inadequate
-- This solution is technically feasible
+- This problem is painful enough to pay for
+- Your solution actually solves it
+- {target.title()} will adopt new technology
 
-## MVP Scope
-**Build first:**
-- Core feature that solves the main problem
-- Basic user accounts
-- Essential functionality only
+## MVP Features
+1. Core solution to main problem
+2. Basic user accounts
+3. Essential functionality only
 
 ---
 
@@ -160,15 +160,20 @@ What problem does this solve? For whom?
 
 ## Primary User: {target.title()}
 
+### Demographics
+- Age range: [Your research]
+- Tech comfort: [Your research]
+
 ### Goals
-- What do they want to achieve?
+- [Goal 1 - what they want]
+- [Goal 2 - what they want]
 
-### Pain Points  
-- What's frustrating them now?
+### Pain Points
+- [Pain 1 - current frustration]
+- [Pain 2 - current frustration]
 
-### Behaviors
-- Where do they spend time online?
-- How do they make decisions?
+### Where They Hang Out
+- [Online communities, forums, social media]
 
 ### Quote
 > "I wish there was a way to..."
@@ -182,29 +187,25 @@ What problem does this solve? For whom?
 |---------|--------------|----------|-------|
 | [Name] | | | |
 
-## Indirect Alternatives
-- What do people use now instead?
-- DIY solutions?
-
-## Your Edge
-What gap in the market does your idea fill?
+## Your Unique Position
+[What gap does your idea fill?]
 
 ---
 
 # 4. Business Case
 
-## Market Sizing
-- TAM: $[estimate]
-- SAM: $[estimate]  
-- SOM: $[estimate]
+## Market Opportunity
+- TAM: $[Your estimate]
+- SAM: $[Your estimate]
+- SOM: $[Your estimate - Year 1]
 
 ## Revenue Model
-- Pricing: $[X]/month
-- Target customers: {target}
+- Monthly subscription: $[X]/mo
+- Target: {target}
 
-## Unit Economics
-- CAC: $[estimate]
-- LTV: $[estimate]
+## Key Metrics
+- CAC: $[Your estimate]
+- LTV: $[Your estimate]
 - Target: 3:1 LTV:CAC
 
 ---
@@ -212,59 +213,62 @@ What gap in the market does your idea fill?
 # 5. Risk Analysis
 
 ## Top Risks
-1. **Risk 1**: [What could go wrong]
-2. **Risk 2**: [What could go wrong]
-3. **Risk 3**: [What could go wrong]
+1. **Problem isn't real** - Validate with user interviews
+2. **Can't reach customers** - Test acquisition channels
+3. **Competition** - Define your moat
 
 ## Kill Condition
-What would make you abandon this idea?
+[What evidence would make you pivot or stop?]
 
 ---
 
 # 6. Feature Priority
 
-## Must-Have (MVP)
-1. Feature A
-2. Feature B
-3. Feature C
+## MVP (Build First)
+1. [Core feature]
+2. [Core feature]
+3. [Core feature]
 
-## Nice-to-Have
-- Feature D
-- Feature E
+## Phase 2
+- [Feature]
+- [Feature]
 
-## Don't Build Yet
-- Feature F
-- Feature G
+## Not Yet
+- [Complex feature]
+- [Advanced feature]
 
 ---
 
 # 7. User Journey
 
 ## Stage 1: Awareness
-How do users discover they have a problem?
+- Trigger: [What makes them realize they have a problem?]
+- Action: [Where do they look?]
 
-## Stage 2: Consideration
-How do they evaluate options?
+## Stage 2: Consideration  
+- Trigger: [Found your solution]
+- Action: [What do they evaluate?]
 
 ## Stage 3: Decision
-What triggers purchase?
+- Trigger: [Ready to buy]
+- Action: [What convinces them?]
 
 ## Stage 4: Onboarding
-How do they get value?
+- First value moment: [When do they get ROI?]
 
 ## Stage 5: Retention
-What keeps them using it?
+- What keeps them: [Ongoing value]
 
 ---
 
-# Your Action Items
+# ACTION ITEMS
 
-- [ ] Interview 5 target users
+- [ ] Interview 5 {target}
 - [ ] Build landing page
-- [ ] Test with ads ($100)
-- [ ] Get 10 pre-sales
+- [ ] Test with $100 in ads
+- [ ] Get 10 pre-sales or waitlist
 - [ ] Define MVP features
-- [ ] Research competitors
+- [ ] Deep competitor research
 """
 
     return {
