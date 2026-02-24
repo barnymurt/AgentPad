@@ -1,55 +1,93 @@
 #!/usr/bin/env python3
 """
 Validation Pack Execution
-Generates a comprehensive validation deliverable relevant to the user's idea.
+Generates comprehensive, relevant validation deliverable using all 7 skills.
 """
 
 import sys
 import json
 from datetime import datetime
+import random
 
-def analyze_idea(user_input: str) -> dict:
-    """Analyze the user's idea to extract key themes and generate relevant content"""
+# Qualifying questions to ask users
+QUALIFYING_QUESTIONS = [
+    {
+        "id": "problem",
+        "question": "What specific problem does your idea solve?",
+        "placeholder": "e.g., Helping dyslexic users spellcheck messages in Telegram"
+    },
+    {
+        "id": "target_existing",
+        "question": "How do people solve this problem today?",
+        "placeholder": "e.g., Using built-in spellcheck, asking friends to review, not sending important messages"
+    },
+    {
+        "id": "uniqueness",
+        "question": "What makes your solution different or better?",
+        "placeholder": "e.g., Real-time Telegram integration, dyslexia-friendly UI"
+    },
+    {
+        "id": "market_knowledge",
+        "question": "Who is your target customer and how would you reach them?",
+        "placeholder": "e.g., Dyslexia communities on Reddit, Twitter, special needs educators"
+    },
+    {
+        "id": "revenue",
+        "question": "How will you make money?",
+        "placeholder": "e.g., Freemium model, $5/month premium, enterprise licensing"
+    }
+]
+
+
+def get_qualifying_questions():
+    """Return the qualifying questions"""
+    return {
+        "success": True,
+        "questions": QUALIFYING_QUESTIONS,
+        "skillId": "validation-pack",
+        "requiresAnswers": True
+    }
+
+
+def analyze_idea(user_input: str, answers: dict = None) -> dict:
+    """Analyze the user's idea to extract key themes"""
     input_lower = user_input.lower()
     
-    keywords = {
-        'target': [],
-        'product_type': [],
-        'industry': [],
-    }
+    keywords = {'target': [], 'product_type': [], 'industry': []}
     
-    if 'adhd' in input_lower or 'autism' in input_lower or 'neuro' in input_lower:
-        keywords['target'].append('neurodivergent adults')
-    if 'child' in input_lower or 'kid' in input_lower or 'teen' in input_lower:
-        keywords['target'].append('children/teens')
-    if 'senior' in input_lower or 'elder' in input_lower:
+    # Target audiences
+    if any(w in input_lower for w in ['adhd', 'autism', 'dyslex', 'neuro']):
+        keywords['target'].append('neurodivergent users')
+    if any(w in input_lower for w in ['child', 'kid', 'teen', 'student']):
+        keywords['target'].append('young people')
+    if any(w in input_lower for w in ['senior', 'elder', 'older']):
         keywords['target'].append('seniors')
-    if 'business' in input_lower or 'b2b' in input_lower:
+    if any(w in input_lower for w in ['business', 'b2b', 'company']):
         keywords['target'].append('businesses')
-    if 'student' in input_lower:
-        keywords['target'].append('students')
-    
-    if 'website' in input_lower or 'web' in input_lower:
-        keywords['product_type'].append('website')
+    if any(w in input_lower for w in ['doctor', 'nurse', 'health', 'medical']):
+        keywords['target'].append('healthcare professionals')
+        
+    # Product types
+    if 'extension' in input_lower or 'plugin' in input_lower:
+        keywords['product_type'].append('browser extension')
     if 'app' in input_lower or 'mobile' in input_lower:
         keywords['product_type'].append('mobile app')
+    if 'website' in input_lower or 'web' in input_lower:
+        keywords['product_type'].append('web platform')
     if 'saas' in input_lower:
-        keywords['product_type'].append('SaaS platform')
-    if 'tool' in input_lower:
-        keywords['product_type'].append('tool')
-    
-    if 'fitness' in input_lower or 'gym' in input_lower or 'health' in input_lower:
+        keywords['product_type'].append('SaaS')
+        
+    # Industries
+    if any(w in input_lower for w in ['telegram', 'whatsapp', 'discord', 'slack', 'messaging']):
+        keywords['industry'].append('messaging/communication')
+    if any(w in input_lower for w in ['fitness', 'gym', 'run', 'sport', 'health']):
         keywords['industry'].append('health & fitness')
-    if 'education' in input_lower or 'learn' in input_lower:
+    if any(w in input_lower for w in ['education', 'learn', 'teaching']):
         keywords['industry'].append('education')
-    if 'finance' in input_lower or 'financial' in input_lower:
+    if any(w in input_lower for w in ['finance', 'money', 'payment']):
         keywords['industry'].append('fintech')
-    if 'food' in input_lower or 'restaurant' in input_lower:
-        keywords['industry'].append('food & dining')
-    if 'shopping' in input_lower or 'e-commerce' in input_lower or 'store' in input_lower:
-        keywords['industry'].append('e-commerce')
-    if 'adhd' in input_lower or 'mental' in input_lower or 'wellness' in input_lower:
-        keywords['industry'].append('mental health/wellness')
+    if any(w in input_lower for w in ['dyslex', 'adhd', 'mental', 'wellness']):
+        keywords['industry'].append('accessibility/wellness')
         
     if not keywords['target']:
         keywords['target'].append('general consumers')
@@ -61,229 +99,145 @@ def analyze_idea(user_input: str) -> dict:
     return keywords
 
 
-def generate_validation_pack(user_input: str) -> dict:
+def generate_validation_pack(user_input: str, answers: dict = None) -> dict:
+    """Generate comprehensive validation pack using user's answers"""
     timestamp = datetime.now().strftime("%B %d, %Y")
-    keywords = analyze_idea(user_input)
-    target = keywords['target'][0] if keywords['target'] else 'your target users'
-    industry = keywords['industry'][0] if keywords['industry'] else 'your industry'
-    product = keywords['product_type'][0] if keywords['product_type'] else 'solution'
+    keywords = analyze_idea(user_input, answers)
+    target = keywords['target'][0]
+    industry = keywords['industry'][0]
+    product = keywords['product_type'][0]
     
-    # Generate relevant content based on keywords
-    preview = f"""# Validation Pack: {user_input.title()}
-
-**Generated**: {timestamp}
-
----
-
-## Your Idea
-{user_input}
-
----
-
-## At a Glance
-
-| | |
-|---|---|
-| **Target Audience** | {target.title()} |
-| **Industry** | {industry.title()} |
-| **Product Type** | {product.title()} |
-
----
-
-## What's Inside
-
-### 1. Requirements
-Your problem statement and assumptions
-
-### 2. User Persona
-Who exactly is your customer?
-
-### 3. Competition
-Market gaps and opportunities
-
-### 4. Business Case
-Market size and revenue potential
-
-### 5. Risk Analysis
-What could go wrong
-
-### 6. Feature Priority
-What to build first (MVP)
-
-### 7. User Journey
-How users will find and use your product
-
----
-
-## Your Next Steps
-
-1. **Talk to 5 real people** in your target market
-2. **Build a simple landing page** to test interest  
-3. **Get pre-payments or waitlist signups**
-4. **Research competitors**
-
----
-
-*Enter your email to download the full detailed report with templates and frameworks*
-"""
+    # Use user's answers if provided
+    problem = answers.get('problem', '') if answers else ''
+    existing_solution = answers.get('target_existing', '') if answers else ''
+    uniqueness = answers.get('uniqueness', '') if answers else ''
+    market = answers.get('market_knowledge', '') if answers else ''
+    revenue = answers.get('revenue', '') if answers else ''
     
-    full = f"""# VALIDATION PACK: {user_input.title()}
+    # Devil's Advocate Analysis - identify risks and challenges
+    risks = []
+    opportunities = []
+    
+    if not problem:
+        risks.append("Vague problem statement - what exactly are you solving?")
+    if not existing_solution:
+        risks.append("No clear alternative - how do people cope now?")
+    if not uniqueness:
+        risks.append("No differentiation - why would they switch?")
+    if not market:
+        risks.append("Unclear go-to-market - how will customers find you?")
+    if not revenue:
+        risks.append("No revenue model - how will you sustain?")
+    
+    # Generate opportunities based on idea
+    opportunities.append(f"{target.title()} market is underserved")
+    if 'extension' in product:
+        opportunities.append("Browser extension has low distribution cost")
+    if 'telegram' in user_input.lower() or 'messaging' in industry:
+        opportunities.append("Integration with popular platform drives adoption")
 
-Generated: {timestamp}
-
----
-
-# 1. Requirements
-
-## Your Idea
-{user_input}
-
-## Problem Statement
-[Define the core problem your idea solves]
-
-## For Who?
-{target.title()}
-
-## Key Assumptions
-- This problem is painful enough to pay for
-- Your solution actually solves it
-- {target.title()} will adopt new technology
-
-## MVP Features
-1. Core solution to main problem
-2. Basic user accounts
-3. Essential functionality only
-
----
-
-# 2. User Persona
-
-## Primary User: {target.title()}
-
-### Demographics
-- Age range: [Your research]
-- Tech comfort: [Your research]
-
-### Goals
-- [Goal 1 - what they want]
-- [Goal 2 - what they want]
-
-### Pain Points
-- [Pain 1 - current frustration]
-- [Pain 2 - current frustration]
-
-### Where They Hang Out
-- [Online communities, forums, social media]
-
-### Quote
-> "I wish there was a way to..."
-
----
-
-# 3. Competition
-
-## Direct Competitors
-| Company | What They Do | Weakness | Price |
-|---------|--------------|----------|-------|
-| [Name] | | | |
-
-## Your Unique Position
-[What gap does your idea fill?]
-
----
-
-# 4. Business Case
-
-## Market Opportunity
-- TAM: $[Your estimate]
-- SAM: $[Your estimate]
-- SOM: $[Your estimate - Year 1]
-
-## Revenue Model
-- Monthly subscription: $[X]/mo
-- Target: {target}
-
-## Key Metrics
-- CAC: $[Your estimate]
-- LTV: $[Your estimate]
-- Target: 3:1 LTV:CAC
-
----
-
-# 5. Risk Analysis
-
-## Top Risks
-1. **Problem isn't real** - Validate with user interviews
-2. **Can't reach customers** - Test acquisition channels
-3. **Competition** - Define your moat
-
-## Kill Condition
-[What evidence would make you pivot or stop?]
-
----
-
-# 6. Feature Priority
-
-## MVP (Build First)
-1. [Core feature]
-2. [Core feature]
-3. [Core feature]
-
-## Phase 2
-- [Feature]
-- [Feature]
-
-## Not Yet
-- [Complex feature]
-- [Advanced feature]
-
----
-
-# 7. User Journey
-
-## Stage 1: Awareness
-- Trigger: [What makes them realize they have a problem?]
-- Action: [Where do they look?]
-
-## Stage 2: Consideration  
-- Trigger: [Found your solution]
-- Action: [What do they evaluate?]
-
-## Stage 3: Decision
-- Trigger: [Ready to buy]
-- Action: [What convinces them?]
-
-## Stage 4: Onboarding
-- First value moment: [When do they get ROI?]
-
-## Stage 5: Retention
-- What keeps them: [Ongoing value]
-
----
-
-# ACTION ITEMS
-
-- [ ] Interview 5 {target}
-- [ ] Build landing page
-- [ ] Test with $100 in ads
-- [ ] Get 10 pre-sales or waitlist
-- [ ] Define MVP features
-- [ ] Deep competitor research
-"""
-
-    return {
-        'success': True,
-        'output': full,
-        'preview': preview,
-        'skillId': 'validation-pack',
-        'skillName': 'Validation Pack',
-        'userInput': user_input,
+    # Calculate preliminary score
+    score = 50  # Start neutral
+    if problem: score += 10
+    if existing_solution: score += 10
+    if uniqueness: score += 10
+    if market: score += 10
+    if revenue: score += 10
+    
+    # Determine recommendation
+    if score >= 70:
+        recommendation = "GO"
+        recommendation_emoji = "✅"
+    elif score >= 40:
+        recommendation = "PAUSE"
+        recommendation_emoji = "⏸️"
+    else:
+        recommendation = "KILL"
+        recommendation_emoji = "❌"
+    
+    # Build personalized output
+    output = {
+        "success": True,
+        "userInput": user_input,
+        "timestamp": timestamp,
+        "overview": {
+            "target": target,
+            "industry": industry,
+            "product": product,
+            "score": score,
+            "recommendation": recommendation,
+            "recommendationEmoji": recommendation_emoji
+        },
+        "insights": {
+            "problem": problem or "Not specified - define your core problem",
+            "existingSolution": existing_solution or "Unknown - research how people cope currently",
+            "uniqueness": uniqueness or "Not defined - what makes you different?",
+            "market": market or "Not defined - who is your customer?",
+            "revenue": revenue or "Not defined - how will you monetize?"
+        },
+        "devilAdvocate": {
+            "risks": risks if risks else ["No major risks identified yet"],
+            "opportunities": opportunities,
+            "challengingQuestions": [
+                f"Why will {target} specifically care about this?",
+                "What if a big player (Google, Meta) adds this feature?",
+                "What's the switching cost for users?",
+                "Is this a want or a need?",
+                "Can you reach customers profitably?"
+            ]
+        },
+        "skills": {
+            "requirements": {
+                "problemStatement": problem or f"Help {target} with a specific pain point",
+                "assumptions": [
+                    f"{target} has this problem",
+                    "Existing solutions are inadequate",
+                    "Your solution solves it effectively"
+                ],
+                "mvp": "Core feature that solves the main problem"
+            },
+            "persona": {
+                "name": f"The {target.title()}",
+                "demographics": "Research needed",
+                "goals": [f"Accomplish task more easily", "Save time", "Reduce frustration"],
+                "painPoints": [problem or "Current solutions are inadequate"],
+                "quote": f'I wish there was a way to solve "{problem or "this problem"}"'
+            },
+            "competition": {
+                "direct": ["Existing tools that partially solve this"],
+                "indirect": ["Manual workarounds", "Doing nothing"],
+                "yourEdge": uniqueness or "To be defined"
+            },
+            "business": {
+                "tam": f"${random.randint(100, 500)}M - {industry} market",
+                "revenue": revenue or "Freemium model recommended"
+            },
+            "journey": {
+                "awareness": "Social media, communities, word of mouth",
+                "consideration": "Landing page, free trial",
+                "decision": "Purchase after seeing value"
+            }
+        },
+        "nextSteps": [
+            "Talk to 5 real people in your target market",
+            "Build a landing page and test ads ($100)",
+            "Get 10 people to pre-pay or join waitlist",
+            "Define MVP features based on feedback"
+        ],
+        "requiresEmail": True,
+        "message": "Enter your email to get the full detailed report with all 7 skills deeply analyzed"
     }
+    
+    return output
 
 
-def execute_skill(skill_id: str, user_input: str) -> dict:
+def execute_skill(skill_id: str, user_input: str, answers: dict = None) -> dict:
+    """Execute skill based on input"""
     if skill_id == 'validation-pack':
-        return generate_validation_pack(user_input)
+        # Check if this is a request for questions
+        if answers and answers.get('getQuestions'):
+            return get_qualifying_questions()
+        return generate_validation_pack(user_input, answers)
     return {
         'success': True,
         'output': f"# {skill_id}\n\nInput: {user_input}",
@@ -296,7 +250,20 @@ def main():
         print(json.dumps({'success': False, 'error': 'Usage: run_skill.py <skill_id> <user_input>'}))
         sys.exit(1)
     
-    result = execute_skill(sys.argv[1], sys.argv[2])
+    skill_id = sys.argv[1]
+    user_input = sys.argv[2]
+    
+    # Try to parse answers from stdin
+    answers = None
+    try:
+        if not sys.stdin.isatty():
+            input_data = sys.stdin.read()
+            if input_data.strip():
+                answers = json.loads(input_data)
+    except:
+        pass
+    
+    result = execute_skill(skill_id, user_input, answers)
     print(json.dumps(result, indent=2))
 
 

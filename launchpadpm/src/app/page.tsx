@@ -22,13 +22,26 @@ export default function Home() {
   const [isExecuting, setIsExecuting] = useState(false);
   const [jobId, setJobId] = useState<string | null>(null);
   const [jobStatus, setJobStatus] = useState<string | null>(null);
-  const [jobOutput, setJobOutput] = useState<string | null>(null);
+  const [jobOutput, setJobOutput] = useState<any>(null);
   const [showPaywall, setShowPaywall] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [capturedEmail, setCapturedEmail] = useState<string | null>(null);
   const [paywallSkill, setPaywallSkill] = useState({ name: 'Validation Pack', id: 'validation-pack' });
   const [showSignIn, setShowSignIn] = useState(false);
   const [showPayment, setShowPayment] = useState(false);
+  
+  // Qualifying questions flow
+  const [showQuestions, setShowQuestions] = useState(false);
+  const [qualifyingAnswers, setQualifyingAnswers] = useState<Record<string, string>>({});
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  
+  const qualifyingQuestions = [
+    { id: 'problem', question: 'What specific problem does your idea solve?', placeholder: 'e.g., Helping dyslexic users spellcheck messages in Telegram' },
+    { id: 'target_existing', question: 'How do people solve this problem today?', placeholder: 'e.g., Using built-in spellcheck, asking friends to review' },
+    { id: 'uniqueness', question: 'What makes your solution different or better?', placeholder: 'e.g., Real-time Telegram integration, dyslexia-friendly UI' },
+    { id: 'market_knowledge', question: 'Who is your target customer and how would you reach them?', placeholder: 'e.g., Dyslexia communities on Reddit, special needs educators' },
+    { id: 'revenue', question: 'How will you make money?', placeholder: 'e.g., Freemium model, $5/month premium' }
+  ];
 
   useEffect(() => {
     fetch('/api/squads')
@@ -43,9 +56,25 @@ export default function Home() {
       });
   }, []);
 
-  const handleSubmit = async (e?: React.FormEvent, email?: string) => {
-    e?.preventDefault();
+  // Start validation - show qualifying questions first
+  const handleStartValidation = () => {
+    if (!userInput.trim()) return;
+    setShowQuestions(true);
+    setCurrentQuestion(0);
+    setQualifyingAnswers({});
+  };
 
+  const handleAnswerSubmit = async () => {
+    if (currentQuestion < qualifyingQuestions.length - 1) {
+      setCurrentQuestion(currentQuestion + 1);
+    } else {
+      // All questions answered - generate validation pack
+      setShowQuestions(false);
+      generateValidationPack();
+    }
+  };
+
+  const generateValidationPack = async () => {
     setIsExecuting(true);
     setJobOutput(null);
     setJobStatus(null);
@@ -56,8 +85,9 @@ export default function Home() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           skillId: 'validation-pack',
-          input: userInput || 'Generate Validation Pack',
-          email: email || capturedEmail,
+          input: userInput,
+          answers: qualifyingAnswers,
+          email: capturedEmail,
         }),
       });
 
@@ -79,11 +109,22 @@ export default function Home() {
       if (data.jobId) {
         setJobId(data.jobId);
         pollJobStatus(data.jobId);
+      } else if (data.output) {
+        // Direct output returned
+        setJobOutput(data);
+        setJobStatus('completed');
+        setIsExecuting(false);
       }
     } catch (err) {
       console.error('Error starting skill:', err);
       setIsExecuting(false);
     }
+  };
+
+  const handleSubmit = async (e?: React.FormEvent, email?: string) => {
+    e?.preventDefault();
+    // Start with qualifying questions instead of immediate generation
+    handleStartValidation();
   };
 
   const pollJobStatus = async (id: string) => {
@@ -94,8 +135,13 @@ export default function Home() {
         setJobStatus(jobData.status);
 
         if (jobData.status === 'completed') {
-          // Use preview field if available, otherwise fall back to output
-          const displayOutput = jobData.preview || jobData.output;
+          // Try to parse as JSON if it's the new format
+          let displayOutput;
+          try {
+            displayOutput = JSON.parse(jobData.output);
+          } catch {
+            displayOutput = jobData.output;
+          }
           setJobOutput(displayOutput);
           setIsExecuting(false);
         } else if (jobData.status === 'failed') {
@@ -245,6 +291,60 @@ export default function Home() {
               </button>
             </div>
           </div>
+
+          {/* Qualifying Questions Modal */}
+          {showQuestions && (
+            <div className="mt-6 bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 rounded-xl border border-orange-200 dark:border-orange-800 p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-2xl">🤔</span>
+                <div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white">Devil's Advocate Review</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Let's dig deeper into your idea</p>
+                </div>
+              </div>
+              
+              <div className="mb-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center text-white text-xs font-medium">
+                    {currentQuestion + 1}
+                  </div>
+                  <span className="text-sm text-gray-500">
+                    Question {currentQuestion + 1} of {qualifyingQuestions.length}
+                  </span>
+                </div>
+                
+                <label className="block text-lg font-medium text-gray-900 dark:text-white mb-2">
+                  {qualifyingQuestions[currentQuestion].question}
+                </label>
+                
+                <textarea
+                  value={qualifyingAnswers[qualifyingQuestions[currentQuestion].id] || ''}
+                  onChange={(e) => setQualifyingAnswers({
+                    ...qualifyingAnswers,
+                    [qualifyingQuestions[currentQuestion].id]: e.target.value
+                  })}
+                  placeholder={qualifyingQuestions[currentQuestion].placeholder}
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  rows={3}
+                />
+              </div>
+              
+              <div className="flex items-center justify-between">
+                <button
+                  onClick={() => setShowQuestions(false)}
+                  className="text-sm text-gray-500 hover:text-gray-700"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleAnswerSubmit}
+                  className="px-6 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 font-medium"
+                >
+                  {currentQuestion < qualifyingQuestions.length - 1 ? 'Next Question' : 'Generate Report'}
+                </button>
+              </div>
+            </div>
+          )}
 
           {/* Results Display */}
           {(jobStatus || jobOutput) && (
