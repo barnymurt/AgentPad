@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react';
 import SquadCard from '@/components/SquadCard';
 import PaywallModal from '@/components/PaywallModal';
+import ValidationPackDisplay from '@/components/ValidationPackDisplay';
 import { signIn, signOut, useSession } from 'next-auth/react';
-import ReactMarkdown from 'react-markdown';
 
 interface Squad {
   id: string;
@@ -267,33 +267,10 @@ export default function Home() {
               
               <div className="p-6">
                 {jobOutput ? (
-                  <div className="prose prose-sm dark:prose-invert max-w-none">
-                    <ReactMarkdown>
-                      {jobOutput}
-                    </ReactMarkdown>
-                    
-                    {/* Download CTA */}
-                    <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h4 className="font-medium text-blue-900 dark:text-blue-100">Get Your Full Validation Pack</h4>
-                          <p className="text-sm text-blue-700 dark:text-blue-300">Download the complete report with action steps</p>
-                        </div>
-                        {capturedEmail ? (
-                          <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium text-sm">
-                            Download
-                          </button>
-                        ) : (
-                          <button 
-                            onClick={() => setShowPaywall(true)}
-                            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium text-sm"
-                          >
-                            Enter Email
-                          </button>
-                        )}
-                      </div>
-                    </div>
-                  </div>
+                  <ValidationPackDisplay 
+                    output={jobOutput} 
+                    userInput={userInput || 'Your idea'} 
+                  />
                 ) : jobStatus === 'failed' ? (
                   <div className="text-center py-8">
                     <div className="text-red-500 mb-4">⚠️</div>
