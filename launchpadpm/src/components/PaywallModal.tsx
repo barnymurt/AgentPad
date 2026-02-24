@@ -10,6 +10,7 @@ interface PaywallModalProps {
   onEmailSubmit: (email: string) => Promise<void>;
   remainingPacks?: number | 'unlimited';
   resetTime?: string | null;
+  isLimitReached?: boolean;
 }
 
 export default function PaywallModal({
@@ -20,6 +21,7 @@ export default function PaywallModal({
   onEmailSubmit,
   remainingPacks,
   resetTime,
+  isLimitReached,
 }: PaywallModalProps) {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -90,6 +92,20 @@ export default function PaywallModal({
             </p>
           </div>
         )}
+
+        {isLimitReached && (
+          <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+            <div className="flex items-start gap-3">
+              <svg className="w-5 h-5 text-red-500 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+              </svg>
+              <div>
+                <p className="text-red-800 font-medium text-sm">Limit Reached</p>
+                <p className="text-red-600 text-sm mt-1">You've used all your free Validation Packs. Upgrade to Pro for unlimited access.</p>
+              </div>
+            </div>
+          </div>
+        )}
         
         <div className="mb-6">
           <p className="text-gray-600 mb-4">
@@ -148,6 +164,19 @@ export default function PaywallModal({
             {isLoading ? 'Processing...' : isValidationPack ? 'Get My Validation Pack' : 'Sign In to Continue'}
           </button>
         </form>
+        
+        {/* Upgrade Option */}
+        <div className="mt-6 pt-6 border-t border-gray-200">
+          <div className="text-center">
+            <p className="text-sm text-gray-500 mb-3">Want unlimited access to all skills?</p>
+            <button className="w-full px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-medium rounded-md hover:from-purple-700 hover:to-blue-700 transition-colors">
+              Upgrade to Pro - $29/mo
+            </button>
+            <p className="mt-2 text-xs text-gray-400">
+              Unlimited skill executions • All 78+ skills • Priority support
+            </p>
+          </div>
+        </div>
         
         {!isValidationPack && (
           <p className="mt-4 text-center text-sm text-gray-500">

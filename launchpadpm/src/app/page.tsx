@@ -21,6 +21,8 @@ export default function Home() {
   const [jobStatus, setJobStatus] = useState<string | null>(null);
   const [jobOutput, setJobOutput] = useState<string | null>(null);
   const [showPaywall, setShowPaywall] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
+  const [capturedEmail, setCapturedEmail] = useState<string | null>(null);
   const [paywallSkill, setPaywallSkill] = useState({ name: 'Validation Pack', id: 'validation-pack' });
 
   useEffect(() => {
@@ -36,9 +38,8 @@ export default function Home() {
       });
   }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!userInput.trim()) return;
+  const handleSubmit = async (e?: React.FormEvent, email?: string) => {
+    e?.preventDefault();
 
     setIsExecuting(true);
     setJobOutput(null);
@@ -50,7 +51,8 @@ export default function Home() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           skillId: 'validation-pack',
-          input: userInput,
+          input: userInput || 'Generate Validation Pack',
+          email: email || capturedEmail,
         }),
       });
 
@@ -112,9 +114,20 @@ export default function Home() {
 
     const data = await response.json();
 
-    if (data.success && userInput) {
+    if (data.success) {
+      setCapturedEmail(email);
       setShowPaywall(false);
-      handleSubmit(new Event('submit') as any);
+      // Automatically start validation after email capture
+      handleSubmit(undefined, email);
+    }
+  };
+
+  const handleStartValidation = () => {
+    if (capturedEmail) {
+      handleSubmit(undefined, capturedEmail);
+    } else {
+      setShowPreview(false);
+      setShowPaywall(true);
     }
   };
 
@@ -170,7 +183,7 @@ export default function Home() {
             </h2>
             
             {/* Conversation Input */}
-            <form className="relative" onSubmit={handleSubmit}>
+            <form className="relative" onSubmit={(e) => handleSubmit(e)}>
               <input
                 type="text"
                 value={userInput}
@@ -181,16 +194,24 @@ export default function Home() {
               />
               <button 
                 type="submit" 
-                disabled={isExecuting || !userInput.trim()}
+                disabled={isExecuting}
                 className="absolute right-1 top-1/2 -translate-y-1/2 px-4 py-1.5 bg-blue-600 text-white rounded-md hover:bg-blue-700 font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isExecuting ? 'Running...' : 'Validate Now'}
               </button>
             </form>
 
-            <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">
-              Or browse squads below to get started
-            </p>
+            <div className="mt-4 flex items-center justify-between">
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                Or browse squads below to get started
+              </p>
+              <button 
+                onClick={() => setShowPreview(true)}
+                className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+              >
+                Preview Validation Pack →
+              </button>
+            </div>
           </div>
 
           {/* Results Display */}
@@ -287,6 +308,125 @@ export default function Home() {
         skillId={paywallSkill.id}
         onEmailSubmit={handleEmailSubmit}
       />
+
+      {/* Preview Modal */}
+      {showPreview && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-auto">
+            <div className="p-6">
+              <div className="flex justify-between items-start mb-4">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                  What's Included in the Validation Pack?
+                </h2>
+                <button
+                  onClick={() => setShowPreview(false)}
+                  className="text-gray-400 hover:text-gray-600"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              <div className="space-y-4 mb-6">
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-400 font-semibold text-sm flex-shrink-0">1</div>
+                  <div>
+                    <h4 className="font-medium text-gray-900 dark:text-white">Requirements Elicitation</h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">Extract and document functional requirements from your idea</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-400 font-semibold text-sm flex-shrink-0">2</div>
+                  <div>
+                    <h4 className="font-medium text-gray-900 dark:text-white">User Persona Creation</h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">Build detailed user personas to understand target customers</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-400 font-semibold text-sm flex-shrink-0">3</div>
+                  <div>
+                    <h4 className="font-medium text-gray-900 dark:text-white">Competitor Research</h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">Map competitive landscape and identify market gaps</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-400 font-semibold text-sm flex-shrink-0">4</div>
+                  <div>
+                    <h4 className="font-medium text-gray-900 dark:text-white">Business Case Modeling</h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">Model TAM/SAM/SOM, revenue scenarios, and unit economics</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-400 font-semibold text-sm flex-shrink-0">5</div>
+                  <div>
+                    <h4 className="font-medium text-gray-900 dark:text-white">Devil's Advocate</h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">Stress-test assumptions and model customer objections</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-400 font-semibold text-sm flex-shrink-0">6</div>
+                  <div>
+                    <h4 className="font-medium text-gray-900 dark:text-white">Feature Prioritization</h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">Score features using RICE framework into build/validate/park tiers</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-400 font-semibold text-sm flex-shrink-0">7</div>
+                  <div>
+                    <h4 className="font-medium text-gray-900 dark:text-white">User Journey Mapping</h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">Map MVP features through user journey stages</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4 mb-6">
+                <h4 className="font-medium text-green-800 dark:text-green-200 mb-2">Your Deliverable Includes:</h4>
+                <ul className="text-sm text-green-700 dark:text-green-300 space-y-1">
+                  <li>✓ GO/PAUSE/KILL Validation Scorecard</li>
+                  <li>✓ Importance vs. Proof Matrix</li>
+                  <li>✓ Risk-Value Assessment</li>
+                  <li>✓ Impact-Effort Roadmap</li>
+                  <li>✓ Competitive Positioning Map</li>
+                  <li>✓ MVP Scope Definition</li>
+                </ul>
+              </div>
+
+              <div className="flex gap-4">
+                {capturedEmail ? (
+                  <button
+                    onClick={handleStartValidation}
+                    disabled={isExecuting}
+                    className="flex-1 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium disabled:opacity-50"
+                  >
+                    {isExecuting ? 'Generating...' : 'Generate My Validation Pack'}
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => {
+                      setShowPreview(false);
+                      setShowPaywall(true);
+                    }}
+                    className="flex-1 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium"
+                  >
+                    Get My Validation Pack - Free
+                  </button>
+                )}
+              </div>
+              
+              {capturedEmail && (
+                <p className="mt-3 text-center text-sm text-gray-500">
+                  Signed in as {capturedEmail}
+                </p>
+              )}
+              
+              <p className="mt-4 text-center text-sm text-gray-500">
+                Or <button onClick={() => setShowPaywall(true)} className="text-blue-600 hover:underline">sign in</button> if you're already a member
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

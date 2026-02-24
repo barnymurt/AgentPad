@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { auth, canRunValidationPack } from '@/lib/auth';
-import { createJob, getJob, getUserById, incrementValidationPackCount, canGenerateValidationPack } from '@/lib/db';
+import { auth } from '@/lib/auth';
+import { createJob, getJob, getUserById, getUserByEmail, incrementValidationPackCount, canGenerateValidationPack, getRemainingPacks, getResetTime } from '@/lib/db';
 import { spawn } from 'child_process';
 import path from 'path';
 import fs from 'fs';
@@ -19,14 +19,12 @@ const VALIDATION_PACK_SKILLS = ['validation-pack'];
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await auth();
-    
     const body = await request.json();
-    const { skillId, input } = body;
+    const { skillId, input, email } = body;
     
-    if (!skillId || !input) {
+    if (!skillId) {
       return NextResponse.json(
-        { error: 'Missing required fields: skillId, input' },
+        { error: 'Missing required field: skillId' },
         { status: 400 }
       );
     }
@@ -34,26 +32,36 @@ export async function POST(request: NextRequest) {
     const isValidationPack = VALIDATION_PACK_SKILLS.includes(skillId);
     const isMvpSkill = MVP_SKILLS.includes(skillId);
     
-    if (!session?.user) {
-      if (isValidationPack) {
+    let user = null;
+    let session = null;
+    
+    try {
+      session = await auth();
+    } catch (e) {
+      // Auth might fail, continue
+    }
+    
+    if (session?.user) {
+      user = getUserById(session.user.id);
+    } else if (email) {
+      user = getUserByEmail(email);
+    }
+    
+    if (!user) {
+      if (isValidationPack && email) {
+        const { createUser } = await import('@/lib/db');
+        user = createUser(email);
+      } else if (isValidationPack) {
         return NextResponse.json(
           { error: 'email_required', message: 'Please enter your email to generate a Validation Pack' },
           { status: 403 }
         );
+      } else {
+        return NextResponse.json(
+          { error: 'unauthorized', message: 'Please sign in to run skills' },
+          { status: 403 }
+        );
       }
-      return NextResponse.json(
-        { error: 'unauthorized', message: 'Please sign in to run skills' },
-        { status: 403 }
-      );
-    }
-    
-    const user = getUserById(session.user.id);
-    
-    if (!user) {
-      return NextResponse.json(
-        { error: 'user_not_found' },
-        { status: 404 }
-      );
     }
     
     if (user.tier !== 'paid' && !isValidationPack) {
@@ -78,16 +86,20 @@ export async function POST(request: NextRequest) {
       }
     }
     
-    const job = createJob(user.id, skillId, input);
+    const skillInput = input || `Generate ${isValidationPack ? 'Validation Pack' : skillId} for user idea`;
+    const job = createJob(user.id, skillId, skillInput);
     
-    executeSkillAsync(job.id, skillId, input);
+    executeSkillAsync(job.id, skillId, skillInput);
     
-    incrementValidationPackCount(user.id);
+    if (isValidationPack) {
+      incrementValidationPackCount(user.id);
+    }
     
     return NextResponse.json({
       jobId: job.id,
       status: job.status,
       message: 'Skill execution started',
+      userId: user.id,
     });
   } catch (error) {
     console.error('Error starting skill execution:', error);
@@ -96,13 +108,6 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
-}
-
-function getResetTime(user: ReturnType<typeof getUserById>) {
-  if (!user || !user.lastValidationPackDate) return null;
-  const resetTime = new Date(user.lastValidationPackDate);
-  resetTime.setHours(resetTime.getHours() + 24);
-  return resetTime > new Date() ? resetTime.toISOString() : null;
 }
 
 async function executeSkillAsync(jobId: string, skillId: string, input: string) {
