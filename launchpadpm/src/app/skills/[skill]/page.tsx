@@ -408,7 +408,7 @@ export default function SkillPage({ params }: { params: { skill: string } }) {
       <PaywallModal
         isOpen={showPaywall}
         onClose={() => setShowPaywall(false)}
-        skillName={skillData.name || skillName.replace(/-/g, ' ')}
+        skillName={skillName.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
         skillId={skillName}
         onEmailSubmit={handleEmailSubmit}
       />
