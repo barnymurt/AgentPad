@@ -93,7 +93,9 @@ export default function Home() {
         setJobStatus(jobData.status);
 
         if (jobData.status === 'completed') {
-          setJobOutput(jobData.output);
+          // Use preview field if available, otherwise fall back to output
+          const displayOutput = jobData.preview || jobData.output;
+          setJobOutput(displayOutput);
           setIsExecuting(false);
         } else if (jobData.status === 'failed') {
           setJobOutput(jobData.error || 'Skill execution failed');
