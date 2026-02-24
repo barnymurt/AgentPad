@@ -10,7 +10,14 @@ interface ValidationPackDisplayProps {
 export default function ValidationPackDisplay({ output, userInput }: ValidationPackDisplayProps) {
   const [showFullReport, setShowFullReport] = useState(false);
 
-  // Check if output is the new structured format or old string format
+  // Check if output is the new structured format with skillResults
+  const isNewFormat = output && typeof output === 'object' && output.skillResults;
+  
+  if (isNewFormat) {
+    return <NewValidationPack output={output} userInput={userInput} />;
+  }
+  
+  // Check if output is the old structured format
   const isStructured = output && typeof output === 'object' && output.overview;
   
   if (isStructured) {
@@ -19,6 +26,189 @@ export default function ValidationPackDisplay({ output, userInput }: ValidationP
   
   // Fallback for old string format
   return <LegacyValidationPack output={output} userInput={userInput} />;
+}
+
+function NewValidationPack({ output, userInput }: { output: any; userInput: string }) {
+  const { overview, skillResults, scorecard, skillsExecuted, skillsSuccessful } = output;
+  
+  // Extract key insights from skill results
+  const devilsAdvocateResult = skillResults?.['devils-advocate'];
+  const requirementsResult = skillResults?.['requirements-elicitation'];
+  const competitorResult = skillResults?.['competitor-research'];
+  const businessCaseResult = skillResults?.['business-case-modeling'];
+  
+  const getPreview = (result: any) => {
+    if (!result?.output) return 'No output';
+    return result.output.slice(0, 300) + '...';
+  };
+  
+  return (
+    <div className="space-y-6">
+      {/* Header with Score */}
+      <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl p-6 text-white">
+        <div className="flex items-start justify-between">
+          <div>
+            <h2 className="text-2xl font-bold mb-2">🎯 Validation Pack</h2>
+            <p className="text-blue-100 text-lg">{userInput}</p>
+            <p className="text-blue-200 text-sm mt-2">
+              {skillsExecuted} skills executed • {output.timestamp || new Date().toLocaleDateString()}
+            </p>
+          </div>
+          <div className="text-center">
+            <div className="text-4xl mb-1">
+              {scorecard?.recommendation === 'GO' ? '✅' : scorecard?.recommendation === 'PAUSE' ? '⏸️' : '❌'}
+            </div>
+            <div className="text-2xl font-bold">{scorecard?.recommendation || overview?.recommendation || 'PAUSE'}</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Score Bar */}
+      <div className="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Validation Score</span>
+          <span className="text-sm font-bold text-gray-900 dark:text-white">{scorecard?.score || overview?.score || 50}/100</span>
+        </div>
+        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+          <div 
+            className={`h-3 rounded-full ${(scorecard?.score || 50) >= 70 ? 'bg-green-500' : (scorecard?.score || 50) >= 40 ? 'bg-yellow-500' : 'bg-red-500'}`}
+            style={{ width: `${scorecard?.score || 50}%` }}
+          />
+        </div>
+      </div>
+
+      {/* Quick Stats */}
+      <div className="grid grid-cols-3 gap-4">
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 text-center">
+          <div className="text-2xl mb-1">👥</div>
+          <div className="text-xs text-gray-500 uppercase">Target</div>
+          <div className="font-semibold text-gray-900 dark:text-white text-sm">{overview?.target || 'General'}</div>
+        </div>
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 text-center">
+          <div className="text-2xl mb-1">🏭</div>
+          <div className="text-xs text-gray-500 uppercase">Industry</div>
+          <div className="font-semibold text-gray-900 dark:text-white text-sm">{overview?.industry || 'Various'}</div>
+        </div>
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 text-center">
+          <div className="text-2xl mb-1">📱</div>
+          <div className="text-xs text-gray-500 uppercase">Skills Run</div>
+          <div className="font-semibold text-gray-900 dark:text-white text-sm">{skillsExecuted}/{skillsSuccessful} OK</div>
+        </div>
+      </div>
+
+      {/* Devil's Advocate Result */}
+      {devilsAdvocateResult && (
+        <div className="bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 rounded-xl border border-red-200 dark:border-red-800 overflow-hidden">
+          <div className="bg-red-100 dark:bg-red-900/30 px-4 py-3 border-b border-red-200 dark:border-red-800">
+            <div className="flex items-center gap-2">
+              <span className="text-xl">😈</span>
+              <h3 className="font-semibold text-red-900 dark:text-red-200">Devil's Advocate Analysis</h3>
+              {devilsAdvocateResult.success && <span className="text-green-500 text-sm">✓</span>}
+            </div>
+          </div>
+          <div className="p-4">
+            <pre className="whitespace-pre-wrap text-sm text-gray-700 dark:text-gray-300 max-h-64 overflow-y-auto">
+              {getPreview(devilsAdvocateResult)}
+            </pre>
+          </div>
+        </div>
+      )}
+
+      {/* Requirements Elicitation Result */}
+      {requirementsResult && (
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+          <div className="bg-gray-50 dark:bg-gray-700/50 px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex items-center gap-2">
+              <span className="text-xl">📋</span>
+              <h3 className="font-semibold text-gray-900 dark:text-white">Requirements Elicitation</h3>
+              {requirementsResult.success && <span className="text-green-500 text-sm">✓</span>}
+            </div>
+          </div>
+          <div className="p-4">
+            <pre className="whitespace-pre-wrap text-sm text-gray-700 dark:text-gray-300 max-h-64 overflow-y-auto">
+              {getPreview(requirementsResult)}
+            </pre>
+          </div>
+        </div>
+      )}
+
+      {/* Competitor Research Result */}
+      {competitorResult && (
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+          <div className="bg-gray-50 dark:bg-gray-700/50 px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex items-center gap-2">
+              <span className="text-xl">🔍</span>
+              <h3 className="font-semibold text-gray-900 dark:text-white">Competitor Research</h3>
+              {competitorResult.success && <span className="text-green-500 text-sm">✓</span>}
+            </div>
+          </div>
+          <div className="p-4">
+            <pre className="whitespace-pre-wrap text-sm text-gray-700 dark:text-gray-300 max-h-64 overflow-y-auto">
+              {getPreview(competitorResult)}
+            </pre>
+          </div>
+        </div>
+      )}
+
+      {/* Business Case Result */}
+      {businessCaseResult && (
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+          <div className="bg-gray-50 dark:bg-gray-700/50 px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex items-center gap-2">
+              <span className="text-xl">💰</span>
+              <h3 className="font-semibold text-gray-900 dark:text-white">Business Case</h3>
+              {businessCaseResult.success && <span className="text-green-500 text-sm">✓</span>}
+            </div>
+          </div>
+          <div className="p-4">
+            <pre className="whitespace-pre-wrap text-sm text-gray-700 dark:text-gray-300 max-h-64 overflow-y-auto">
+              {getPreview(businessCaseResult)}
+            </pre>
+          </div>
+        </div>
+      )}
+
+      {/* Next Steps */}
+      {scorecard?.nextSteps && (
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+          <div className="bg-gray-50 dark:bg-gray-700/50 px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex items-center gap-2">
+              <span className="text-xl">🚀</span>
+              <h3 className="font-semibold text-gray-900 dark:text-white">Next Steps</h3>
+            </div>
+          </div>
+          <div className="p-4 space-y-3">
+            {(Array.isArray(scorecard.nextSteps) ? scorecard.nextSteps : []).map((step: string, i: number) => (
+              <div key={i} className="flex items-center gap-3">
+                <div className="w-6 h-6 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-400 text-xs font-medium flex-shrink-0">
+                  {i + 1}
+                </div>
+                <span className="text-sm text-gray-700 dark:text-gray-300">{step}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Summary */}
+      {scorecard?.summary && (
+        <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl p-6 text-white">
+          <h3 className="font-bold mb-2">Validation Summary</h3>
+          <p className="text-blue-100">{scorecard.summary}</p>
+        </div>
+      )}
+
+      {/* Upgrade CTA */}
+      <div className="bg-white dark:bg-gray-800 rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-600 p-6 text-center">
+        <div className="text-4xl mb-3">📥</div>
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Get Full Access</h3>
+        <p className="text-gray-600 dark:text-gray-400 mb-4">Upgrade to run all 7 skills and unlock unlimited validations</p>
+        <button className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-purple-700">
+          Upgrade to Pro - $29/mo
+        </button>
+      </div>
+    </div>
+  );
 }
 
 function StructuredValidationPack({ output, userInput }: { output: any; userInput: string }) {

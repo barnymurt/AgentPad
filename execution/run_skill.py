@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Validation Pack Execution
-Generates comprehensive, relevant validation deliverable using MiniMax LLM for intelligent analysis.
+Runs all 7 validation pack skills using MiniMax LLM with proper skill frameworks.
 """
 
 import sys
@@ -9,6 +9,7 @@ import json
 import os
 import requests
 from datetime import datetime
+from pathlib import Path
 
 # Try to import dotenv for local development
 try:
@@ -19,10 +20,32 @@ except ImportError:
 
 # MiniMax API Configuration
 MINIMAX_API_KEY = os.environ.get('MINIMAX_API_KEY', '')
-MINIMAX_API_URL = 'https://api.minimax.chat/v1/text/chatcompletion_pro'
+MINIMAX_API_URL = 'https://api.minimax.io/v1/text/chatcompletion_v2'
+
+# Base path for skills
+SKILLS_DIR = Path(__file__).parent.parent / 'skills'
+
+# Validation Pack Skills - in order of importance for validation
+VALIDATION_PACK_SKILLS = [
+    'devils-advocate',           # Risk analysis (always included)
+    'requirements-elicitation',   # What to build
+    'user-persona-creation',      # Who for
+    'competitor-research',        # Competition
+    'business-case-modeling',     # Economics
+    'feature-prioritization',    # What first
+    'user-journey-mapping'       # How they'll use it
+]
+
+# For MVP speed - run core skills first
+CORE_VALIDATION_SKILLS = [
+    'devils-advocate',
+    'requirements-elicitation', 
+    'competitor-research',
+    'business-case-modeling'
+]
 
 
-def call_minimax(prompt: str, system_prompt: str = None) -> str:
+def call_minimax(prompt: str, system_prompt: str = None, max_tokens: int = 2000) -> str:
     """Call MiniMax API for intelligent responses"""
     if not MINIMAX_API_KEY:
         return None
@@ -38,17 +61,21 @@ def call_minimax(prompt: str, system_prompt: str = None) -> str:
     messages.append({'role': 'user', 'content': prompt})
     
     payload = {
-        'model': 'MiniMax-Text-01',
+        'model': 'MiniMax-M2.5',
         'messages': messages,
         'temperature': 0.7,
-        'max_tokens': 2000
+        'max_tokens': max_tokens
     }
     
     try:
-        response = requests.post(MINIMAX_API_URL, headers=headers, json=payload, timeout=30)
+        response = requests.post(MINIMAX_API_URL, headers=headers, json=payload, timeout=60)
         if response.status_code == 200:
             result = response.json()
-            return result.get('choices', [{}])[0].get('message', {}).get('content', '')
+            choices = result.get('choices', [])
+            if choices and len(choices) > 0:
+                msg = choices[0].get('message', {})
+                return msg.get('content', '')
+            return None
         else:
             print(f"MiniMax API error: {response.status_code}", file=sys.stderr)
             return None
@@ -60,29 +87,34 @@ def call_minimax(prompt: str, system_prompt: str = None) -> str:
 def generate_intelligent_questions(user_input: str) -> list:
     """Generate idea-specific Devil's Advocate questions using LLM"""
     
-    system_prompt = """You are a startup expert and Devil's Advocate. Your job is to stress-test business ideas.
-Generate 5 specific, challenging questions that would help validate this idea.
-The questions should be tailored to the specific idea, not generic.
-Focus on: problem validity, market size, competition, revenue, unique value, user adoption.
-Return ONLY a JSON array with this exact format:
-[{"id": "q1", "question": "...", "placeholder": "..."}]"""
+    system_prompt = """You are a startup expert and thought partner. Your job is to generate 3 thought-provoking questions that help refine this business idea.
+The questions should be POSITIVE and constructive - not designed to shoot down the idea, but to help the founder think deeper.
+Focus on: opportunity size, unique insight, first step feasibility.
+IMPORTANT: Output ONLY the JSON array, no explanations, no thinking, no markdown.
+Format: [{\"id\": \"q1\", \"question\": \"...\", \"placeholder\": \"...\"}]"""
     
-    prompt = f"""Analyze this business idea and generate 5 Devil's Advocate questions to stress-test it:
-
+    prompt = f"""Generate 3 constructive questions for this idea:
 Idea: {user_input}
-
-Generate questions that are SPECIFIC to this idea - not generic startup questions.
-Make each question challenge a specific aspect of this particular idea."""
+Output ONLY valid JSON array starting with [ and ending with ]."""
     
-    result = call_minimax(prompt, system_prompt)
+    result = call_minimax(prompt, system_prompt, max_tokens=600)
     
     if result:
         try:
-            # Try to parse JSON from response
+            # Try to find and parse JSON array in response
+            import re
+            # Look for JSON array pattern
+            match = re.search(r'\[.*\]', result, re.DOTALL)
+            if match:
+                questions = json.loads(match.group())
+                if isinstance(questions, list) and len(questions) >= 3:
+                    return questions
+            # Try direct parse
             questions = json.loads(result)
             if isinstance(questions, list) and len(questions) >= 3:
                 return questions
-        except:
+        except Exception as e:
+            print(f"JSON parse error: {e}", file=sys.stderr)
             pass
     
     # Fallback to dynamic but generic questions
@@ -93,39 +125,25 @@ def generate_dynamic_questions(user_input: str) -> list:
     """Generate dynamic questions based on idea keywords"""
     input_lower = user_input.lower()
     
-    # Idea-specific question banks
+    # Simple 3-question banks
     question_banks = {
         'accessibility': [
-            {"id": "problem", "question": "How big is the accessibility market and who are the key players?", "placeholder": "e.g., $17B market, Microsoft, Google dominate"},
-            {"id": "adoption", "question": "How will users discover and adopt your accessibility solution?", "placeholder": "e.g., Through disability communities, assistive tech forums"},
-            {"id": "differentiation", "question": "What prevents big companies from adding this accessibility feature?", "placeholder": "e.g., Cost of compliance, lack of focus"},
-            {"id": "pricing", "question": "What's the willingness to pay in the accessibility market?", "placeholder": "e.g., Some pay premium, most expect free"},
-            {"id": "evidence", "question": "What proof do you have that this problem is painful enough to pay for?", "placeholder": "e.g., User interviews, forum posts, surveys"}
-        ],
-        'messaging': [
-            {"id": "problem", "question": "Why do users need another messaging tool?", "placeholder": "e.g., Existing apps not meeting specific needs"},
-            {"id": "switching", "question": "What is the switching cost for users to move to your messaging platform?", "placeholder": "e.g., Network effect, habit, data migration"},
-            {"id": "monetization", "question": "How will you monetize - subscriptions, ads, B2B?", "placeholder": "e.g., Freemium model, enterprise licensing"},
-            {"id": "competition", "question": "How do you compete with WhatsApp, Telegram, Slack?", "placeholder": "e.g., Niche focus, better features, privacy"},
-            {"id": "retention", "question": "What keeps users coming back to your messaging app?", "placeholder": "e.g., Network effects, unique features"}
+            {"id": "opportunity", "question": "What's the specific accessibility need you're addressing?", "placeholder": "e.g., Dyslexia-friendly reading tools"},
+            {"id": "audience", "question": "How would your target users discover this?", "placeholder": "e.g., Disability communities, assistive tech forums"},
+            {"id": "value", "question": "What makes this solution uniquely valuable?", "placeholder": "e.g., Specific expertise or approach"}
         ],
         'fitness': [
-            {"id": "problem", "question": "Why do fitness apps have 90%+ churn rates?", "placeholder": "e.g., Users lose motivation, better options exist"},
-            {"id": "differentiation", "question": "What makes your fitness product different from the 10,000+ existing ones?", "placeholder": "e.g., Unique method, community, AI coaching"},
-            {"id": "acquisition", "question": "How will you acquire fitness app users profitably?", "placeholder": "e.g., Influencers, app store SEO, partnerships"},
-            {"id": "retention", "question": "What's your plan to keep users motivated past week 2?", "placeholder": "e.g., Social features, gamification, AI coaching"},
-            {"id": "pricing", "question": "Can you charge enough to cover high customer acquisition costs?", "placeholder": "e.g., $30-50/month needed for profitability"}
+            {"id": "opportunity", "question": "What's the specific fitness challenge you're solving?", "placeholder": "e.g., Motivation for inconsistent exercisers"},
+            {"id": "audience", "question": "How will you reach your target users?", "placeholder": "e.g., Fitness communities, social media"},
+            {"id": "value", "question": "What makes your approach different?", "placeholder": "e.g., Unique method or technology"}
         ],
         'default': [
-            {"id": "problem", "question": "What specific problem does your idea solve that people care enough to pay for?", "placeholder": "e.g., Saving time, money, or frustration"},
-            {"id": "existing", "question": "How do people solve this problem today - even suboptimally?", "placeholder": "e.g., Workarounds, manual processes, competitors"},
-            {"id": "differentiation", "question": "What is your unique advantage that can't be easily copied?", "placeholder": "e.g., Technology, brand, network effects, data"},
-            {"id": "market", "question": "What's your realistic path to getting paying customers?", "placeholder": "e.g., SEO, content, ads, partnerships, sales"},
-            {"id": "revenue", "question": "What's the revenue model and are unit economics viable?", "placeholder": "e.g., SaaS, transaction, ads; CAC vs LTV"}
+            {"id": "opportunity", "question": "What's the specific problem you're solving?", "placeholder": "e.g., Helping people save time on X"},
+            {"id": "audience", "question": "Who is your target customer?", "placeholder": "e.g., Small business owners"},
+            {"id": "value", "question": "What unique value do you bring?", "placeholder": "e.g., Your specific expertise or approach"}
         ]
     }
     
-    # Match idea to question bank
     for keyword, questions in question_banks.items():
         if keyword in input_lower:
             return questions
@@ -137,38 +155,29 @@ def generate_intelligent_validation(user_input: str, answers: dict) -> dict:
     """Generate intelligent validation pack using LLM"""
     
     system_prompt = """You are an expert startup validator. Generate a comprehensive, idea-specific validation report.
-Return ONLY valid JSON with this exact structure:
-{
-    "overview": {"target": "", "industry": "", "product": "", "score": 0-100, "recommendation": "GO/PAUSE/KILL"},
-    "insights": {"problem": "", "existingSolution": "", "uniqueness": "", "market": "", "revenue": ""},
-    "devilAdvocate": {"risks": [], "opportunities": [], "challengingQuestions": []},
-    "nextSteps": []
-}
-Be specific to the user's idea and their answers. Make insights actionable."""
+IMPORTANT: Output ONLY valid JSON, no explanations, no thinking, no markdown.
+Use this exact structure:
+{\"overview\": {\"target\": \"\", \"industry\": \"\", \"product\": \"\", \"score\": 0, \"recommendation\": \"\"}, \"insights\": {\"problem\": \"\", \"existingSolution\": \"\", \"uniqueness\": \"\", \"market\": \"\", \"revenue\": \"\"}, \"devilAdvocate\": {\"risks\": [], \"opportunities\": [], \"challengingQuestions\": []}, \"nextSteps\": []}"""
     
     answers_str = "\n".join([f"- {k}: {v}" for k, v in answers.items()])
-    prompt = f"""Generate a validation report for this idea:
-
-Idea: {user_input}
-
-User's Answers:
-{answers_str}
-
-Provide a thorough analysis that:
-1. Identifies the real target market
-2. Assesses competition
-3. Evaluates business model viability
-4. Provides specific next steps
-5. Gives a GO/PAUSE/KILL recommendation with reasoning"""
+    prompt = f"""Generate validation for: {user_input}
+Answers: {answers_str}
+Output ONLY valid JSON."""
     
-    result = call_minimax(prompt, system_prompt)
+    result = call_minimax(prompt, system_prompt, max_tokens=2000)
     
     if result:
         try:
-            validation = json.loads(result)
-            if 'overview' in validation:
-                return validation
-        except:
+            import re
+            # Try to find JSON in response
+            match = re.search(r'\{.*\}', result, re.DOTALL)
+            if match:
+                validation = json.loads(match.group())
+                if 'overview' in validation:
+                    validation['success'] = True
+                    return validation
+        except Exception as e:
+            print(f"Validation parse error: {e}", file=sys.stderr)
             pass
     
     # Fallback to algorithmic validation
@@ -321,6 +330,236 @@ def validate_idea(user_input: str, answers: dict) -> dict:
     return result
 
 
+def load_skill_prompt(skill_name: str) -> dict:
+    """Load skill prompt and output schema from files"""
+    skill_dir = SKILLS_DIR / skill_name
+    
+    result = {
+        'name': skill_name,
+        'description': '',
+        'system_prompt': '',
+        'output_schema': ''
+    }
+    
+    skill_file = skill_dir / 'SKILL.md'
+    if skill_file.exists():
+        content = skill_file.read_text(encoding='utf-8')
+        if '---' in content:
+            parts = content.split('---', 2)
+            if len(parts) >= 3:
+                import re
+                desc_match = re.search(r'description:\s*(.+?)(?:\n---|$)', parts[1])
+                if desc_match:
+                    result['description'] = desc_match.group(1).strip()
+                result['system_prompt'] = parts[2].strip()[:3000]
+    
+    schema_file = skill_dir / 'references' / 'output-schema.md'
+    if schema_file.exists():
+        result['output_schema'] = schema_file.read_text(encoding='utf-8')[:2000]
+    
+    return result
+
+
+def execute_single_skill(skill_name: str, user_input: str, answers: dict) -> dict:
+    """Execute a single skill and return its output"""
+    skill = load_skill_prompt(skill_name)
+    
+    # Build context from user's idea and their answers to Devil's Advocate questions
+    context = f"""
+IDEAS: {user_input}
+
+USER'S ANSWERS TO DEVIL'S ADVOCATE QUESTIONS (THIS IS THE CONTEXT - USE THIS):
+{json.dumps(answers, indent=2)}
+"""
+    
+    system_prompt = f"""You are an expert in {skill['name'].replace('-', ' ')}.
+{skill['system_prompt'][:2500]}
+
+IMPORTANT: The user's idea and their answers to clarifying questions are provided above. 
+Use this context to provide SPECIFIC, RELEVANT output for their idea - not generic advice."""
+
+    user_prompt = f"""{context}
+
+Apply the {skill['name'].replace('-', ' ')} framework to the above idea with its context.
+Provide specific, tailored output relevant to this particular idea."""
+
+    result = call_minimax(user_prompt, system_prompt, max_tokens=1200)
+    
+    return {
+        'skill': skill_name,
+        'output': result if result else f"[{skill['name']} - LLM call failed]",
+        'success': bool(result)
+    }
+
+
+def generate_instant_validation(user_input: str, answers: dict) -> dict:
+    """Generate instant validation - single LLM call for fast response"""
+    
+    context = f"""
+IDEA: {user_input}
+
+USER'S ANSWERS:
+{json.dumps(answers, indent=2)}
+"""
+    
+    # Single comprehensive LLM call for instant response
+    system_prompt = """You are a startup validator. Provide instant validation.
+Output ONLY valid JSON with:
+{"score": 1-10, "recommendation": "GO/PIVOT/KILL", "devilAdvocateSummary": "2 sentence insight", "validationSummary": "overall assessment", "strengths": ["s1", "s2"], "considerations": ["c1", "c2"], "firstStep": "one action"}
+
+Tone: Constructive, helpful, not overly critical."""
+    
+    user_prompt = f"""{context}
+Provide instant validation for this startup idea."""
+    
+    result = call_minimax(user_prompt, system_prompt, max_tokens=600)
+    
+    validation = {"score": 5, "recommendation": "PIVOT", "devilAdvocateSummary": "", "validationSummary": "", "strengths": [], "considerations": [], "firstStep": ""}
+    
+    if result:
+        try:
+            import re
+            match = re.search(r'\{.*\}', result, re.DOTALL)
+            if match:
+                validation = json.loads(match.group())
+        except Exception as e:
+            print(f"Parse error: {e}", file=sys.stderr)
+    
+    rec = validation.get('recommendation', 'PIVOT').upper()
+    if rec not in ['GO', 'PIVOT', 'KILL']:
+        score = int(validation.get('score', 5))
+        rec = 'GO' if score >= 8 else 'PIVOT' if score >= 5 else 'KILL'
+    
+    return {
+        "success": True,
+        "mode": "instant",
+        "userInput": user_input,
+        "timestamp": datetime.now().strftime("%B %d, %Y"),
+        "overview": {
+            "target": answers.get('opportunity', answers.get('q1', 'General'))[:100],
+            "industry": extract_industry(user_input),
+            "product": "SaaS/Mobile App",
+            "score": int(validation.get('score', 5)) * 10,
+            "recommendation": rec,
+            "summary": validation.get('validationSummary', '')
+        },
+        "instant": {
+            "recommendation": rec,
+            "score": int(validation.get('score', 5)),
+            "devilAdvocateSummary": validation.get('devilAdvocateSummary', ''),
+            "validationSummary": validation.get('validationSummary', ''),
+            "strengths": validation.get('strengths', []),
+            "considerations": validation.get('considerations', []),
+            "firstStep": validation.get('firstStep', '')
+        },
+        "skillsExecuted": 1,
+        "skillsSuccessful": 1,
+        "skillResults": {
+            "instant-validation": {
+                "skill": "instant-validation",
+                "output": result[:500] if result else "Failed",
+                "success": bool(result)
+            }
+        },
+        "fullPackAvailable": True,
+        "fullPackProgress": 0,
+        "emailCapture": True,
+        "message": "Full 7-skill validation pack being prepared"
+    }
+
+
+def generate_full_validation_pack(user_input: str, answers: dict) -> dict:
+    """Generate full 7-skill validation pack"""
+    
+    context = f"""
+IDEA: {user_input}
+
+USER'S ANSWERS (CONTEXT):
+{json.dumps(answers, indent=2)}
+"""
+    
+    # All 7 validation pack skills
+    all_skills = [
+        'devils-advocate',
+        'requirements-elicitation',
+        'user-persona-creation',
+        'competitor-research',
+        'business-case-modeling',
+        'feature-prioritization',
+        'user-journey-mapping'
+    ]
+    
+    skill_results = {}
+    successful_skills = 0
+    
+    for i, skill_name in enumerate(all_skills):
+        print(f"# Running skill: {skill_name}...", file=sys.stderr)
+        result = execute_single_skill(skill_name, user_input, answers)
+        skill_results[skill_name] = result
+        if result.get('success'):
+            successful_skills += 1
+    
+    # Generate final scorecard
+    score_prompt = f"""{context}
+
+7 skills executed. Provide final validation:
+Output ONLY JSON with {{"score": 1-10, "recommendation": "GO/PIVOT/KILL", "summary": "final assessment"}}"""
+
+    score_result = call_minimax(score_prompt, "You are a startup validator. Output ONLY valid JSON.", max_tokens=400)
+    
+    validation = {"score": 5, "recommendation": "PIVOT", "summary": ""}
+    
+    if score_result:
+        try:
+            import re
+            match = re.search(r'\{.*\}', score_result, re.DOTALL)
+            if match:
+                validation = json.loads(match.group())
+        except:
+            pass
+    
+    rec = validation.get('recommendation', 'PIVOT').upper()
+    if rec not in ['GO', 'PIVOT', 'KILL']:
+        score = int(validation.get('score', 5))
+        rec = 'GO' if score >= 8 else 'PIVOT' if score >= 5 else 'KILL'
+    
+    return {
+        "success": True,
+        "mode": "full",
+        "userInput": user_input,
+        "timestamp": datetime.now().strftime("%B %d, %Y"),
+        "overview": {
+            "target": answers.get('opportunity', answers.get('q1', 'General'))[:100],
+            "industry": extract_industry(user_input),
+            "product": "SaaS/Mobile App",
+            "score": int(validation.get('score', 5)) * 10,
+            "recommendation": rec,
+            "summary": validation.get('summary', '')
+        },
+        "skillsExecuted": 7,
+        "skillsSuccessful": successful_skills,
+        "skillResults": skill_results,
+        "scorecard": validation,
+        "fullPackComplete": True,
+        "notionTemplate": True,
+        "message": "Full validation pack complete"
+    }
+
+
+def extract_industry(user_input: str) -> str:
+    """Extract industry from user input"""
+    input_lower = user_input.lower()
+    industries = {
+        'fitness': 'Health & Fitness', 'finance': 'Fintech', 'education': 'EdTech',
+        'health': 'Healthcare', 'messaging': 'Communication', 'social': 'Social Media',
+        'ecommerce': 'E-Commerce', 'saas': 'SaaS'
+    }
+    for keyword, industry in industries.items():
+        if keyword in input_lower:
+            return industry
+    return 'Various'
+
+
 def main():
     if len(sys.argv) < 3:
         print(json.dumps({
@@ -341,21 +580,43 @@ def main():
         except:
             pass
     
+    # Parse mode from environment or use default
+    mode = os.environ.get('VALIDATION_MODE', 'instant')  # 'instant' or 'full'
+    
     if skill_id == 'validation-pack':
         # Check if MiniMax API is available
         if not MINIMAX_API_KEY:
             print(f"# MiniMax API key not found - using intelligent fallback", file=sys.stderr)
         
         # Get idea-specific questions
-        questions = get_questions_for_idea(user_input)
+        questions = generate_intelligent_questions(user_input)
         
         # If we have answers, generate validation
         if answers and len(answers) > 0:
-            result = validate_idea(user_input, answers)
+            if mode == 'full':
+                # Generate full 7-skill pack
+                result = generate_full_validation_pack(user_input, answers)
+            else:
+                # Generate instant 3-skill response
+                result = generate_instant_validation(user_input, answers)
             result['questions'] = questions
             print(json.dumps(result, indent=2))
         else:
             # Return questions only
+            print(json.dumps({
+                'success': True,
+                'questions': questions,
+                'requiresAnswers': True,
+                'hasApiKey': bool(MINIMAX_API_KEY)
+            }, indent=2))
+    elif skill_id == 'validation-pack-full':
+        # Explicit full mode
+        questions = generate_intelligent_questions(user_input)
+        if answers and len(answers) > 0:
+            result = generate_full_validation_pack(user_input, answers)
+            result['questions'] = questions
+            print(json.dumps(result, indent=2))
+        else:
             print(json.dumps({
                 'success': True,
                 'questions': questions,

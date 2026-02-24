@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import SquadCard from '@/components/SquadCard';
 import PaywallModal from '@/components/PaywallModal';
 import ValidationPackDisplay from '@/components/ValidationPackDisplay';
+import InstantScorecard from '@/components/InstantScorecard';
 import { signIn, signOut, useSession } from 'next-auth/react';
 
 interface Squad {
@@ -29,19 +30,14 @@ export default function Home() {
   const [paywallSkill, setPaywallSkill] = useState({ name: 'Validation Pack', id: 'validation-pack' });
   const [showSignIn, setShowSignIn] = useState(false);
   const [showPayment, setShowPayment] = useState(false);
+  const [validationResult, setValidationResult] = useState<any>(null);
   
   // Qualifying questions flow
   const [showQuestions, setShowQuestions] = useState(false);
   const [qualifyingAnswers, setQualifyingAnswers] = useState<Record<string, string>>({});
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  
-  const qualifyingQuestions = [
-    { id: 'problem', question: 'What specific problem does your idea solve?', placeholder: 'e.g., Helping dyslexic users spellcheck messages in Telegram' },
-    { id: 'target_existing', question: 'How do people solve this problem today?', placeholder: 'e.g., Using built-in spellcheck, asking friends to review' },
-    { id: 'uniqueness', question: 'What makes your solution different or better?', placeholder: 'e.g., Real-time Telegram integration, dyslexia-friendly UI' },
-    { id: 'market_knowledge', question: 'Who is your target customer and how would you reach them?', placeholder: 'e.g., Dyslexia communities on Reddit, special needs educators' },
-    { id: 'revenue', question: 'How will you make money?', placeholder: 'e.g., Freemium model, $5/month premium' }
-  ];
+  const [qualifyingQuestions, setQualifyingQuestions] = useState<{id: string, question: string, placeholder: string}[]>([]);
+  const [questionsLoading, setQuestionsLoading] = useState(false);
 
   useEffect(() => {
     fetch('/api/squads')
@@ -57,8 +53,49 @@ export default function Home() {
   }, []);
 
   // Start validation - show qualifying questions first
-  const handleStartValidation = () => {
+  const handleStartValidation = async () => {
     if (!userInput.trim()) return;
+    
+    // Fetch dynamic questions from the API
+    setQuestionsLoading(true);
+    try {
+      const response = await fetch('/api/run-skill', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          skillId: 'validation-pack',
+          input: userInput,
+          getQuestions: true, // Signal to just get questions
+        }),
+      });
+      
+      const data = await response.json();
+      
+      if (data.questions && Array.isArray(data.questions)) {
+        setQualifyingQuestions(data.questions);
+      } else {
+        // Fallback to default questions
+        setQualifyingQuestions([
+          { id: 'problem', question: 'What specific problem does your idea solve?', placeholder: 'e.g., Helping dyslexic users spellcheck messages' },
+          { id: 'existing', question: 'How do people solve this problem today?', placeholder: 'e.g., Using built-in spellcheck' },
+          { id: 'uniqueness', question: 'What makes your solution different or better?', placeholder: 'e.g., Real-time integration' },
+          { id: 'market', question: 'Who is your target customer?', placeholder: 'e.g., Dyslexia communities' },
+          { id: 'revenue', question: 'How will you make money?', placeholder: 'e.g., Freemium model' }
+        ]);
+      }
+    } catch (err) {
+      console.error('Error fetching questions:', err);
+      // Fallback questions
+      setQualifyingQuestions([
+        { id: 'problem', question: 'What specific problem does your idea solve?', placeholder: 'e.g., Helping dyslexic users spellcheck messages' },
+        { id: 'existing', question: 'How do people solve this problem today?', placeholder: 'e.g., Using built-in spellcheck' },
+        { id: 'uniqueness', question: 'What makes your solution different or better?', placeholder: 'e.g., Real-time integration' },
+        { id: 'market', question: 'Who is your target customer?', placeholder: 'e.g., Dyslexia communities' },
+        { id: 'revenue', question: 'How will you make money?', placeholder: 'e.g., Freemium model' }
+      ]);
+    }
+    
+    setQuestionsLoading(false);
     setShowQuestions(true);
     setCurrentQuestion(0);
     setQualifyingAnswers({});
@@ -68,7 +105,7 @@ export default function Home() {
     if (currentQuestion < qualifyingQuestions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
     } else {
-      // All questions answered - generate validation pack
+      // All 3 questions answered - generate validation pack
       setShowQuestions(false);
       generateValidationPack();
     }
@@ -78,6 +115,7 @@ export default function Home() {
     setIsExecuting(true);
     setJobOutput(null);
     setJobStatus(null);
+    setValidationResult(null);
 
     try {
       const response = await fetch('/api/run-skill', {
@@ -106,6 +144,20 @@ export default function Home() {
         }
       }
 
+      // Handle instant response (new format)
+      if (data.instant) {
+        setValidationResult(data);
+        setIsExecuting(false);
+        
+        // Start polling for full pack if job ID provided
+        if (data.fullPackJobId) {
+          setJobId(data.fullPackJobId);
+          pollJobStatus(data.fullPackJobId);
+        }
+        return;
+      }
+
+      // Fallback to old format
       if (data.jobId) {
         setJobId(data.jobId);
         pollJobStatus(data.jobId);
@@ -253,20 +305,21 @@ export default function Home() {
             
             {/* Conversation Input */}
             <form className="relative" onSubmit={(e) => handleSubmit(e)}>
-              <input
-                type="text"
+              <textarea
                 value={userInput}
                 onChange={(e) => setUserInput(e.target.value)}
                 placeholder='Try "I have an idea to validate" or "I want to build a SaaS product"'
-                className="w-full px-4 py-3 pr-28 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                disabled={isExecuting}
+                className="w-full px-4 py-3 pr-28 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                disabled={isExecuting || questionsLoading}
+                rows={2}
+                style={{ minHeight: '60px' }}
               />
               <button 
                 type="submit" 
-                disabled={isExecuting}
+                disabled={isExecuting || questionsLoading}
                 className="absolute right-1 top-1/2 -translate-y-1/2 px-4 py-1.5 bg-blue-600 text-white rounded-md hover:bg-blue-700 font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isExecuting ? 'Running...' : 'Validate Now'}
+                {questionsLoading ? 'Loading...' : isExecuting ? 'Running...' : 'Validate Now'}
               </button>
             </form>
 
@@ -357,7 +410,14 @@ export default function Home() {
               </div>
               
               <div className="p-6">
-                {jobOutput ? (
+                {validationResult ? (
+                  <InstantScorecard 
+                    result={validationResult} 
+                    userInput={userInput || 'Your idea'}
+                    onEmailCapture={(email) => setCapturedEmail(email)}
+                    onUpgrade={() => setShowPayment(true)}
+                  />
+                ) : jobOutput ? (
                   <ValidationPackDisplay 
                     output={jobOutput} 
                     userInput={userInput || 'Your idea'} 
