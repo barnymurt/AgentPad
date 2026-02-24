@@ -170,17 +170,8 @@ export default function Home() {
     if (data.success) {
       setCapturedEmail(email);
       setShowPaywall(false);
-      // Automatically start validation after email capture
-      handleSubmit(undefined, email);
-    }
-  };
-
-  const handleStartValidation = () => {
-    if (capturedEmail) {
-      handleSubmit(undefined, capturedEmail);
-    } else {
-      setShowPreview(false);
-      setShowPaywall(true);
+      // Start validation with questions
+      handleStartValidation();
     }
   };
 
