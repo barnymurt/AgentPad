@@ -11,11 +11,12 @@ interface InstantScorecardProps {
 }
 
 export default function InstantScorecard({ result, userInput, onEmailCapture, onUpgrade, progress = 0 }: InstantScorecardProps) {
-  const { instant, fullPackJobId, fullPackProgress, emailCapture } = result;
+  const { instant, fullPackJobId, fullPackProgress, emailCapture, fullPackReady, fullPackOutput } = result;
   const displayProgress = progress || fullPackProgress || 0;
   const [email, setEmail] = useState('');
   const [emailSubmitted, setEmailSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showFullPack, setShowFullPack] = useState(false);
 
   const recommendation = instant?.recommendation || 'PIVOT';
   const score = instant?.score || 5;
@@ -210,19 +211,49 @@ export default function InstantScorecard({ result, userInput, onEmailCapture, on
         </div>
       )}
 
-      {/* Full Pack Progress */}
+      {/* Full Pack Progress / Ready */}
       <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4 border border-gray-200 dark:border-gray-600">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Preparing Full Validation Pack</span>
-          <span className="text-sm text-gray-500">{displayProgress}%</span>
-        </div>
-        <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2 mb-2">
-          <div 
-            className="h-2 rounded-full bg-blue-500"
-            style={{ width: `${displayProgress}%` }}
-          />
-        </div>
-        <p className="text-xs text-gray-500">Full 7-skill pack will be sent to your email when complete</p>
+        {displayProgress === 100 || fullPackReady ? (
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">✅ Full Validation Pack Ready</span>
+              <button
+                onClick={() => setShowFullPack(!showFullPack)}
+                className="text-sm text-blue-600 hover:underline"
+              >
+                {showFullPack ? 'Hide' : 'View'} Details
+              </button>
+            </div>
+            {showFullPack && fullPackOutput && (
+              <div className="mt-4 space-y-4">
+                {Object.entries(fullPackOutput.skillResults || {}).map(([skillId, skillResult]: [string, any]) => (
+                  <div key={skillId} className="bg-white dark:bg-gray-800 rounded-lg p-3 border border-gray-200 dark:border-gray-600">
+                    <h4 className="font-medium text-gray-900 dark:text-white text-sm capitalize mb-2">
+                      {skillId.replace(/-/g, ' ')}
+                    </h4>
+                    <div className="text-xs text-gray-600 dark:text-gray-400 max-h-32 overflow-y-auto whitespace-pre-wrap">
+                      {skillResult?.output || 'No output'}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        ) : (
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Preparing Full Validation Pack</span>
+              <span className="text-sm text-gray-500">{displayProgress}%</span>
+            </div>
+            <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2 mb-2">
+              <div 
+                className="h-2 rounded-full bg-blue-500"
+                style={{ width: `${displayProgress}%` }}
+              />
+            </div>
+            <p className="text-xs text-gray-500">Full 7-skill pack will be available when complete</p>
+          </div>
+        )}
       </div>
 
       {/* Email Capture */}

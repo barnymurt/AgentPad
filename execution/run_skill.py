@@ -626,25 +626,44 @@ USER'S ANSWERS:
 """
     
     # Single comprehensive LLM call for instant response
-    system_prompt = """You are a startup validator. Provide instant validation using ALL available context (user input, connected data sources, and user's answers).
-Output ONLY valid JSON with:
-{"score": 1-10, "recommendation": "GO/PIVOT/KILL", "devilAdvocateSummary": "2 sentence insight", "validationSummary": "overall assessment", "strengths": ["s1", "s2"], "considerations": ["c1", "c2"], "firstStep": "one action"}
+    system_prompt = """You are a startup validator. Output ONLY valid JSON - no explanations, no thinking, no markdown. 
 
-Tone: Constructive, helpful, not overly critical. Use the data sources to provide SPECIFIC insights."""
+JSON format required:
+{"score": 1-10, "recommendation": "GO", "devilAdvocateSummary": "2 sentence insight about this idea", "validationSummary": "2 sentence overview of validation", "strengths": ["strength 1", "strength 2", "strength 3"], "considerations": ["consideration 1", "consideration 2", "consideration 3"], "firstStep": "specific first action"}
+
+IMPORTANT: Output ONLY the JSON. No text before or after."""
     
     user_prompt = f"""{context}
-Provide instant validation for this startup idea. Reference any connected data sources in your analysis."""
+
+Provide instant validation for this startup idea. Return ONLY valid JSON."""
     
-    result = call_minimax(user_prompt, system_prompt, max_tokens=600)
+    result = call_minimax(user_prompt, system_prompt, max_tokens=800)
     
     validation = {"score": 5, "recommendation": "PIVOT", "devilAdvocateSummary": "", "validationSummary": "", "strengths": [], "considerations": [], "firstStep": ""}
     
     if result:
         try:
+            # Try to extract JSON from response
             import re
-            match = re.search(r'\{.*\}', result, re.DOTALL)
-            if match:
-                validation = json.loads(match.group())
+            
+            # First try: find complete JSON object
+            json_match = re.search(r'\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}', result, re.DOTALL)
+            if json_match:
+                try:
+                    parsed = json.loads(json_match.group())
+                    if 'score' in parsed or 'recommendation' in parsed:
+                        validation = parsed
+                except:
+                    pass
+            
+            # Second try: look for JSON array pattern
+            if not validation.get('score'):
+                match = re.search(r'\{.*\}', result, re.DOTALL)
+                if match:
+                    try:
+                        validation = json.loads(match.group())
+                    except:
+                        pass
         except Exception as e:
             print(f"Parse error: {e}", file=sys.stderr)
     

@@ -275,6 +275,14 @@ export default function Home() {
             displayOutput = jobData.output;
           }
           setJobOutput(displayOutput);
+          // Also update validationResult to include full pack
+          if (displayOutput && displayOutput.skillResults) {
+            setValidationResult((prev: any) => ({
+              ...prev,
+              fullPackReady: true,
+              fullPackOutput: displayOutput
+            }));
+          }
           setIsExecuting(false);
         } else if (jobData.status === 'failed') {
           // Check if there are partial results despite failure
@@ -586,6 +594,13 @@ export default function Home() {
               </div>
               
               <div className="p-6">
+                {/* Full Pack Results - Show when ready */}
+                {jobStatus === 'completed' && jobOutput && (
+                  <div className="mb-6">
+                    <ValidationPackDisplay output={jobOutput} userInput={userInput || 'Your idea'} />
+                  </div>
+                )}
+                
                 {validationResult ? (
                   <InstantScorecard 
                     result={validationResult} 
