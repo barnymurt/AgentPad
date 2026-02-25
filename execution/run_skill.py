@@ -85,8 +85,66 @@ def call_minimax(prompt: str, system_prompt: str = None, max_tokens: int = 2000)
         return None
 
 
+def fetch_google_sheet_content(spreadsheet_url: str, max_rows: int = 50) -> str:
+    """Fetch content from a Google Sheets URL"""
+    try:
+        import re
+        # Extract spreadsheet ID from URL
+        match = re.search(r'/d/([a-zA-Z0-9_-]+)', spreadsheet_url)
+        if not match:
+            return ""
+        
+        spreadsheet_id = match.group(1)
+        
+        # First try: CSV export (works for publicly shared sheets)
+        csv_url = f'https://docs.google.com/spreadsheets/d/{spreadsheet_id}/export?format=csv'
+        
+        try:
+            response = requests.get(csv_url, timeout=15)
+            if response.status_code == 200 and response.text.strip():
+                lines = response.text.strip().split('\n')
+                if not lines:
+                    return ""
+                
+                content_lines = []
+                for line in lines[1:max_rows+1]:  # Skip header
+                    if line.strip():
+                        # Parse CSV line
+                        values = line.split(',')
+                        content_lines.append(' | '.join([v.strip() for v in values if v.strip()]))
+                
+                return "\n".join(content_lines)
+            elif response.status_code == 401:
+                return "[Authentication required - make sheet public or provide API key]"
+        except Exception as e:
+            print(f"Google Sheets CSV error: {e}", file=sys.stderr)
+        
+        # Second try: API (requires API key)
+        api_key = os.environ.get('GOOGLE_SHEETS_API_KEY')
+        if api_key:
+            api_url = f"https://sheets.googleapis.com/v4/spreadsheets/{spreadsheet_id}/values/Sheet1?key={api_key}"
+            try:
+                response = requests.get(api_url, timeout=10)
+                if response.status_code == 200:
+                    data = response.json()
+                    rows = data.get('values', [])
+                    if rows:
+                        content_lines = []
+                        for row in rows[1:max_rows+1]:
+                            if any(row):
+                                content_lines.append(' | '.join([v for v in row if v]))
+                        return "\n".join(content_lines)
+            except Exception as e:
+                print(f"Google Sheets API error: {e}", file=sys.stderr)
+        
+        return "[Content not accessible - check sheet sharing settings]"
+    except Exception as e:
+        print(f"Error fetching Google Sheet: {e}", file=sys.stderr)
+        return ""
+
+
 def get_connected_data_sources_context() -> str:
-    """Get context from connected data sources"""
+    """Get context from connected data sources including actual content"""
     try:
         from data_source_helpers import load_json
         DATA_SOURCES_DIR = Path(__file__).parent.parent / "data-sources"
@@ -98,10 +156,29 @@ def get_connected_data_sources_context() -> str:
             return ""
         
         context_parts = ["CONNECTED DATA SOURCES:"]
+        
         for ds in data_sources:
-            context_parts.append(f"- {ds.get('name', 'Unnamed')} ({ds.get('type', 'unknown')})")
-            if ds.get('location'):
-                context_parts.append(f"  Location: {ds.get('location')}")
+            ds_name = ds.get('name', 'Unnamed')
+            ds_type = ds.get('type', 'unknown')
+            ds_location = ds.get('location', '')
+            
+            context_parts.append(f"\n### {ds_name} ({ds_type})")
+            
+            # Try to fetch content based on type
+            content = ""
+            if ds_type == 'spreadsheet' and ds_location:
+                if 'docs.google.com/spreadsheets' in ds_location:
+                    content = fetch_google_sheet_content(ds_location)
+                else:
+                    content = f"Location: {ds_location}"
+            elif ds_location:
+                content = f"Location: {ds_location}"
+            
+            if content:
+                # Truncate if too long
+                if len(content) > 3000:
+                    content = content[:3000] + "\n... (truncated)"
+                context_parts.append(f"Content:\n{content}")
         
         return "\n".join(context_parts)
     except Exception as e:
