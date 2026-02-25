@@ -24,6 +24,7 @@ export default function SquadRunClient({ squad, skills }: SquadPageProps) {
   const [input, setInput] = useState('');
   const [isRunning, setIsRunning] = useState(false);
   const [results, setResults] = useState<Record<string, any> | null>(null);
+  const [expandedResults, setExpandedResults] = useState<Set<string>>(new Set());
   const [error, setError] = useState<string | null>(null);
 
   const toggleSkill = (skillName: string) => {
@@ -34,6 +35,16 @@ export default function SquadRunClient({ squad, skills }: SquadPageProps) {
       newSelected.add(skillName);
     }
     setSelectedSkills(newSelected);
+  };
+
+  const toggleResult = (skillName: string) => {
+    const newExpanded = new Set(expandedResults);
+    if (newExpanded.has(skillName)) {
+      newExpanded.delete(skillName);
+    } else {
+      newExpanded.add(skillName);
+    }
+    setExpandedResults(newExpanded);
   };
 
   const selectAll = () => {
@@ -205,27 +216,47 @@ export default function SquadRunClient({ squad, skills }: SquadPageProps) {
         {results && (
           <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
             <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-              Results
+              Results ({Object.keys(results).length} skills)
             </h2>
             
-            {Object.entries(results).map(([skillName, result]: [string, any]) => (
-              <div key={skillName} className="mb-6 last:mb-0">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 capitalize">
-                  {skillName.replace(/-/g, ' ')}
-                </h3>
-                <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                  {result.success ? (
-                    <div className="prose prose-sm dark:prose-invert max-w-none whitespace-pre-wrap">
-                      {result.output}
+            {Object.entries(results).map(([skillName, result]: [string, any]) => {
+              const isExpanded = expandedResults.has(skillName);
+              return (
+                <div key={skillName} className="mb-4 last:mb-0 border border-gray-200 dark:border-gray-600 rounded-lg overflow-hidden">
+                  <button
+                    onClick={() => toggleResult(skillName)}
+                    className="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
+                  >
+                    <span className="font-semibold text-gray-900 dark:text-white capitalize">
+                      {skillName.replace(/-/g, ' ')}
+                    </span>
+                    <div className="flex items-center gap-2">
+                      {result.success ? (
+                        <span className="text-xs text-green-600 dark:text-green-400">✓</span>
+                      ) : (
+                        <span className="text-xs text-red-600 dark:text-red-400">✗</span>
+                      )}
+                      <span className={`transform transition-transform ${isExpanded ? 'rotate-180' : ''}`}>
+                        ▼
+                      </span>
                     </div>
-                  ) : (
-                    <div className="text-red-600 dark:text-red-400">
-                      Failed: {result.output}
+                  </button>
+                  {isExpanded && (
+                    <div className="p-4 bg-white dark:bg-gray-800">
+                      {result.success ? (
+                        <div className="prose prose-sm dark:prose-invert max-w-none whitespace-pre-wrap text-gray-700 dark:text-gray-300">
+                          {result.output}
+                        </div>
+                      ) : (
+                        <div className="text-red-600 dark:text-red-400">
+                          Failed: {result.output}
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
 
