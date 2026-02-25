@@ -23,10 +23,19 @@ export default function SquadRunClient({ squad, skills }: SquadPageProps) {
   const [selectedSkills, setSelectedSkills] = useState<Set<string>>(new Set());
   const [input, setInput] = useState('');
   const [context, setContext] = useState('');
+  const [dataSources, setDataSources] = useState<any[]>([]);
+  const [showContextPrompt, setShowContextPrompt] = useState(false);
   const [isRunning, setIsRunning] = useState(false);
   const [results, setResults] = useState<Record<string, any> | null>(null);
   const [expandedResults, setExpandedResults] = useState<Set<string>>(new Set());
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch('/api/data-sources')
+      .then(res => res.json())
+      .then(data => setDataSources(data.data_sources || []))
+      .catch(() => setDataSources([]));
+  }, []);
 
   const toggleSkill = (skillName: string) => {
     const newSelected = new Set(selectedSkills);
@@ -63,6 +72,15 @@ export default function SquadRunClient({ squad, skills }: SquadPageProps) {
     }
     if (selectedSkills.size === 0) {
       setError('Please select at least one skill');
+      return;
+    }
+
+    // Check if context or data sources exist
+    const hasContext = context.trim().length > 0;
+    const hasDataSources = dataSources.length > 0;
+    
+    if (!hasContext && !hasDataSources) {
+      setShowContextPrompt(true);
       return;
     }
 
@@ -185,11 +203,11 @@ export default function SquadRunClient({ squad, skills }: SquadPageProps) {
               </div>
             </div>
             
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 max-h-48 overflow-y-auto border border-gray-200 dark:border-gray-600 rounded-lg p-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-64 overflow-y-auto border border-gray-200 dark:border-gray-600 rounded-lg p-2">
               {skills.map((skill) => (
                 <label
                   key={skill.name}
-                  className={`flex items-center gap-2 p-2 rounded cursor-pointer text-sm ${
+                  className={`flex items-start gap-2 p-2 rounded cursor-pointer text-sm ${
                     selectedSkills.has(skill.name)
                       ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300'
                       : 'hover:bg-gray-50 dark:hover:bg-gray-700'
@@ -200,9 +218,12 @@ export default function SquadRunClient({ squad, skills }: SquadPageProps) {
                     checked={selectedSkills.has(skill.name)}
                     onChange={() => toggleSkill(skill.name)}
                     disabled={isRunning}
-                    className="rounded"
+                    className="mt-0.5 rounded"
                   />
-                  <span className="truncate">{skill.name.replace(/-/g, ' ')}</span>
+                  <div className="min-w-0">
+                    <span className="font-medium block truncate">{skill.name.replace(/-/g, ' ')}</span>
+                    <span className="text-xs opacity-70 block truncate">{skill.description}</span>
+                  </div>
                 </label>
               ))}
             </div>
@@ -212,6 +233,38 @@ export default function SquadRunClient({ squad, skills }: SquadPageProps) {
           {error && (
             <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg text-red-700 dark:text-red-300 text-sm">
               {error}
+            </div>
+          )}
+
+          {/* Context Prompt */}
+          {showContextPrompt && (
+            <div className="mb-4 p-4 bg-orange-50 dark:bg-orange-900/30 border border-orange-200 dark:border-orange-800 rounded-lg">
+              <h4 className="font-semibold text-orange-800 dark:text-orange-200 mb-2">
+                Context needed for better results
+              </h4>
+              <p className="text-sm text-orange-700 dark:text-orange-300 mb-3">
+                For more accurate suggestions, add context from a validation pack or connect your data sources.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                <a
+                  href="/"
+                  className="px-3 py-1.5 bg-orange-600 text-white text-sm rounded-lg hover:bg-orange-700"
+                >
+                  Run Validation Pack
+                </a>
+                <button
+                  onClick={() => setShowContextPrompt(false)}
+                  className="px-3 py-1.5 border border-orange-300 dark:border-orange-600 text-orange-700 dark:text-orange-300 text-sm rounded-lg"
+                >
+                  Add Context Manually
+                </button>
+                <button
+                  onClick={() => setShowContextPrompt(false)}
+                  className="px-3 py-1.5 text-orange-600 dark:text-orange-400 text-sm underline"
+                >
+                  Continue without context
+                </button>
+              </div>
             </div>
           )}
 

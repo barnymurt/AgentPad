@@ -5,6 +5,7 @@ import SquadCard from '@/components/SquadCard';
 import PaywallModal from '@/components/PaywallModal';
 import ValidationPackDisplay from '@/components/ValidationPackDisplay';
 import InstantScorecard from '@/components/InstantScorecard';
+import DataSourceManager from '@/components/DataSourceManager';
 import { signIn, signOut, useSession } from 'next-auth/react';
 
 interface Squad {
@@ -316,9 +317,7 @@ export default function Home() {
                   Add research, analytics, or credentials to enhance analysis
                 </p>
               </div>
-              <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium text-sm">
-                Add Data
-              </button>
+              <DataSourceManager />
             </div>
           </div>
         </section>
