@@ -85,7 +85,7 @@ def call_minimax(prompt: str, system_prompt: str = None, max_tokens: int = 2000)
         return None
 
 
-def fetch_google_sheet_content(spreadsheet_url: str, max_rows: int = 50) -> str:
+def fetch_google_sheet_content(spreadsheet_url: str, auth: dict = None, max_rows: int = 50) -> str:
     """Fetch content from a Google Sheets URL"""
     try:
         import re
@@ -95,6 +95,9 @@ def fetch_google_sheet_content(spreadsheet_url: str, max_rows: int = 50) -> str:
             return ""
         
         spreadsheet_id = match.group(1)
+        
+        # Use provided API key or fall back to env
+        api_key = (auth.get('apiKey') if auth else None) or os.environ.get('GOOGLE_SHEETS_API_KEY')
         
         # First try: CSV export (works for publicly shared sheets)
         csv_url = f'https://docs.google.com/spreadsheets/d/{spreadsheet_id}/export?format=csv'
@@ -115,12 +118,15 @@ def fetch_google_sheet_content(spreadsheet_url: str, max_rows: int = 50) -> str:
                 
                 return "\n".join(content_lines)
             elif response.status_code == 401:
-                return "[Authentication required - make sheet public or provide API key]"
+                if api_key:
+                    # Try with API key
+                    pass
+                else:
+                    return "[Authentication required - make sheet public or provide API key]"
         except Exception as e:
             print(f"Google Sheets CSV error: {e}", file=sys.stderr)
         
         # Second try: API (requires API key)
-        api_key = os.environ.get('GOOGLE_SHEETS_API_KEY')
         if api_key:
             api_url = f"https://sheets.googleapis.com/v4/spreadsheets/{spreadsheet_id}/values/Sheet1?key={api_key}"
             try:
@@ -134,10 +140,12 @@ def fetch_google_sheet_content(spreadsheet_url: str, max_rows: int = 50) -> str:
                             if any(row):
                                 content_lines.append(' | '.join([v for v in row if v]))
                         return "\n".join(content_lines)
+                elif response.status_code == 403:
+                    return "[API key invalid or insufficient permissions]"
             except Exception as e:
                 print(f"Google Sheets API error: {e}", file=sys.stderr)
         
-        return "[Content not accessible - check sheet sharing settings]"
+        return "[Content not accessible - check sheet sharing settings or provide API key]"
     except Exception as e:
         print(f"Error fetching Google Sheet: {e}", file=sys.stderr)
         return ""
@@ -161,6 +169,7 @@ def get_connected_data_sources_context() -> str:
             ds_name = ds.get('name', 'Unnamed')
             ds_type = ds.get('type', 'unknown')
             ds_location = ds.get('location', '')
+            ds_auth = ds.get('auth', {})
             
             context_parts.append(f"\n### {ds_name} ({ds_type})")
             
@@ -168,9 +177,17 @@ def get_connected_data_sources_context() -> str:
             content = ""
             if ds_type == 'spreadsheet' and ds_location:
                 if 'docs.google.com/spreadsheets' in ds_location:
-                    content = fetch_google_sheet_content(ds_location)
+                    content = fetch_google_sheet_content(ds_location, ds_auth)
+                elif ds_location.endswith('.csv') or ds_location.endswith('.xlsx'):
+                    content = f"File: {ds_location}"
                 else:
                     content = f"Location: {ds_location}"
+            elif ds_type == 'api' and ds_location:
+                content = f"API Endpoint: {ds_location}"
+            elif ds_type == 'database' and ds_location:
+                content = f"[Database connection available: {ds_location}]"
+            elif ds_type == 'cloud_storage' and ds_location:
+                content = f"[Cloud storage bucket: {ds_location}]"
             elif ds_location:
                 content = f"Location: {ds_location}"
             

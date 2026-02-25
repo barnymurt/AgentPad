@@ -16,7 +16,15 @@ export default function DataSourceManager() {
   const [dataSources, setDataSources] = useState<DataSource[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAddForm, setShowAddForm] = useState(false);
-  const [newSource, setNewSource] = useState({ name: '', type: 'spreadsheet', location: '' });
+  const [newSource, setNewSource] = useState({
+    name: '',
+    type: 'spreadsheet',
+    location: '',
+    authType: 'none',
+    apiKey: '',
+    username: '',
+    password: ''
+  });
   const [status, setStatus] = useState<{ type: 'success' | 'error' | null; message: string }>({ type: null, message: '' });
 
   useEffect(() => {
@@ -163,24 +171,104 @@ export default function DataSourceManager() {
                   <label className="block text-sm text-gray-700 dark:text-gray-300 mb-1">Type</label>
                   <select
                     value={newSource.type}
-                    onChange={(e) => setNewSource({ ...newSource, type: e.target.value })}
+                    onChange={(e) => setNewSource({ ...newSource, type: e.target.value, authType: 'none', apiKey: '', username: '', password: '' })}
                     className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                   >
-                    <option value="spreadsheet">Spreadsheet (Google Sheets, Excel)</option>
+                    <option value="spreadsheet">Spreadsheet (Google Sheets)</option>
                     <option value="database">Database (PostgreSQL, MySQL)</option>
-                    <option value="api">API</option>
-                    <option value="url">URL</option>
+                    <option value="api">API Endpoint</option>
+                    <option value="url">URL (public)</option>
                     <option value="file">File</option>
-                    <option value="cloud_storage">Cloud Storage</option>
+                    <option value="cloud_storage">Cloud Storage (S3, GCS)</option>
                   </select>
                 </div>
+                
+                {/* Auth Type based on data source */}
                 <div>
-                  <label className="block text-sm text-gray-700 dark:text-gray-300 mb-1">Location (optional)</label>
+                  <label className="block text-sm text-gray-700 dark:text-gray-300 mb-1">Authentication</label>
+                  <select
+                    value={newSource.authType}
+                    onChange={(e) => setNewSource({ ...newSource, authType: e.target.value })}
+                    className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                  >
+                    <option value="none">None (public)</option>
+                    <option value="apiKey">API Key</option>
+                    <option value="basic">Username & Password</option>
+                    <option value="oauth">OAuth Token</option>
+                  </select>
+                </div>
+
+                {/* Show auth fields based on type */}
+                {newSource.authType === 'apiKey' && (
+                  <div>
+                    <label className="block text-sm text-gray-700 dark:text-gray-300 mb-1">API Key</label>
+                    <input
+                      type="password"
+                      value={newSource.apiKey}
+                      onChange={(e) => setNewSource({ ...newSource, apiKey: e.target.value })}
+                      placeholder="Enter your API key"
+                      className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                    />
+                  </div>
+                )}
+                
+                {newSource.authType === 'basic' && (
+                  <>
+                    <div>
+                      <label className="block text-sm text-gray-700 dark:text-gray-300 mb-1">Username</label>
+                      <input
+                        type="text"
+                        value={newSource.username}
+                        onChange={(e) => setNewSource({ ...newSource, username: e.target.value })}
+                        placeholder="Username"
+                        className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm text-gray-700 dark:text-gray-300 mb-1">Password</label>
+                      <input
+                        type="password"
+                        value={newSource.password}
+                        onChange={(e) => setNewSource({ ...newSource, password: e.target.value })}
+                        placeholder="Password"
+                        className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                      />
+                    </div>
+                  </>
+                )}
+
+                {newSource.authType === 'oauth' && (
+                  <div>
+                    <label className="block text-sm text-gray-700 dark:text-gray-300 mb-1">OAuth Token</label>
+                    <input
+                      type="password"
+                      value={newSource.apiKey}
+                      onChange={(e) => setNewSource({ ...newSource, apiKey: e.target.value })}
+                      placeholder="Enter OAuth token"
+                      className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                    />
+                  </div>
+                )}
+                
+                <div>
+                  <label className="block text-sm text-gray-700 dark:text-gray-300 mb-1">
+                    {newSource.type === 'spreadsheet' ? 'Spreadsheet URL' : 
+                     newSource.type === 'database' ? 'Connection String' :
+                     newSource.type === 'api' ? 'API Endpoint URL' :
+                     newSource.type === 'url' ? 'URL' :
+                     newSource.type === 'cloud_storage' ? 'Bucket/Container Name' : 'File Path'}
+                  </label>
                   <input
                     type="text"
                     value={newSource.location}
                     onChange={(e) => setNewSource({ ...newSource, location: e.target.value })}
-                    placeholder="URL, file path, or connection string"
+                    placeholder={
+                      newSource.type === 'spreadsheet' ? 'https://docs.google.com/spreadsheets/d/...' :
+                      newSource.type === 'database' ? 'postgresql://user:pass@host:5432/db' :
+                      newSource.type === 'api' ? 'https://api.example.com/v1/...' :
+                      newSource.type === 'url' ? 'https://example.com/data' :
+                      newSource.type === 'cloud_storage' ? 's3://my-bucket or gs://my-bucket' : '/path/to/file.csv'
+                    }
                     className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                   />
                 </div>
@@ -189,7 +277,7 @@ export default function DataSourceManager() {
                     type="submit"
                     className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
                   >
-                    Add
+                    Connect
                   </button>
                   <button
                     type="button"

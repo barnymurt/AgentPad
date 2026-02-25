@@ -3,16 +3,16 @@
   "description": "Data Source Registry - stores metadata about connected data sources",
   "data_sources": [
     {
-      "id": "ds_1772039574352",
-      "name": "pt verbs",
+      "id": "ds_1772040465473",
+      "name": "pt data",
       "type": "spreadsheet",
       "location": "https://docs.google.com/spreadsheets/d/1bYDgWbErAnuSyTaPNOM4Wsk-BjVciFSZ5p3LGIeVnkE/edit?pli=1&gid=2030327584#gid=2030327584",
       "squads": [],
-      "created_at": "2026-02-25T17:12:54.352Z"
+      "created_at": "2026-02-25T17:27:45.473Z"
     }
   ],
   "metadata": {
     "created_at": null,
-    "updated_at": "2026-02-25T17:12:54.352Z"
+    "updated_at": "2026-02-25T17:27:45.473Z"
   }
 }

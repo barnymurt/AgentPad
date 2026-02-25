@@ -21,7 +21,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, type, location, squads } = body;
+    const { name, type, location, squads, authType, apiKey, username, password } = body;
 
     if (!name || !type) {
       return NextResponse.json(
@@ -36,6 +36,15 @@ export async function POST(request: NextRequest) {
       registry = JSON.parse(fs.readFileSync(REGISTRY_FILE, 'utf-8'));
     }
 
+    // Build auth object (only store what was provided)
+    const auth: Record<string, string> = {};
+    if (authType && authType !== 'none') {
+      auth.type = authType;
+      if (apiKey) auth.apiKey = apiKey;
+      if (username) auth.username = username;
+      if (password) auth.password = password;
+    }
+
     // Add new data source
     const newSource = {
       id: `ds_${Date.now()}`,
@@ -43,6 +52,7 @@ export async function POST(request: NextRequest) {
       type,
       location: location || '',
       squads: squads || [],
+      auth: Object.keys(auth).length > 0 ? auth : undefined,
       created_at: new Date().toISOString(),
     };
 
@@ -51,7 +61,11 @@ export async function POST(request: NextRequest) {
 
     fs.writeFileSync(REGISTRY_FILE, JSON.stringify(registry, null, 2));
 
-    return NextResponse.json({ success: true, data_source: newSource });
+    // Return without sensitive data
+    const safeSource = { ...newSource };
+    delete (safeSource as any).auth;
+    
+    return NextResponse.json({ success: true, data_source: safeSource });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
