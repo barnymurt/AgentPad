@@ -185,15 +185,16 @@ export async function POST(request: NextRequest) {
               instant: {
                 recommendation: 'PIVOT',
                 score: 50,
-                devilAdvocateSummary: 'Validation timed out',
-                validationSummary: 'Full pack being generated in background'
+                devilAdvocateSummary: 'Validation timed out - full pack being generated in background',
+                validationSummary: 'Your full validation pack is being prepared. Check back shortly for complete results.'
               },
               fullPackJobId: fullJob.id,
               fullPackProgress: 0,
-              emailCapture: true
+              emailCapture: true,
+              message: 'Validation in progress'
             }));
           }
-        }, 30000);
+        }, 60000);
       });
     }
     

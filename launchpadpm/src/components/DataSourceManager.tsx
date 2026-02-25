@@ -17,6 +17,7 @@ export default function DataSourceManager() {
   const [loading, setLoading] = useState(true);
   const [showAddForm, setShowAddForm] = useState(false);
   const [newSource, setNewSource] = useState({ name: '', type: 'spreadsheet', location: '' });
+  const [status, setStatus] = useState<{ type: 'success' | 'error' | null; message: string }>({ type: null, message: '' });
 
   useEffect(() => {
     if (isOpen) {
@@ -39,6 +40,7 @@ export default function DataSourceManager() {
 
   const addDataSource = async (e: React.FormEvent) => {
     e.preventDefault();
+    setStatus({ type: null, message: '' });
     try {
       const res = await fetch('/api/data-sources', {
         method: 'POST',
@@ -46,12 +48,17 @@ export default function DataSourceManager() {
         body: JSON.stringify(newSource),
       });
       if (res.ok) {
+        setStatus({ type: 'success', message: 'Data source connected successfully!' });
         fetchDataSources();
         setShowAddForm(false);
         setNewSource({ name: '', type: 'spreadsheet', location: '' });
+        setTimeout(() => setStatus({ type: null, message: '' }), 3000);
+      } else {
+        const data = await res.json();
+        setStatus({ type: 'error', message: data.error || 'Failed to connect' });
       }
     } catch (err) {
-      console.error('Failed to add data source:', err);
+      setStatus({ type: 'error', message: 'Connection failed. Please check the URL and try again.' });
     }
   };
 
@@ -95,6 +102,14 @@ export default function DataSourceManager() {
         </div>
 
         <div className="p-6 overflow-y-auto max-h-96">
+          {status.type && (
+            <div className={`mb-4 p-3 rounded-lg ${
+              status.type === 'success' ? 'bg-green-50 dark:bg-green-900/30 text-green-800 dark:text-green-200' : 'bg-red-50 dark:bg-red-900/30 text-red-800 dark:text-red-200'
+            }`}>
+              {status.message}
+            </div>
+          )}
+          
           {loading ? (
             <p className="text-center text-gray-500">Loading...</p>
           ) : dataSources.length === 0 ? (
