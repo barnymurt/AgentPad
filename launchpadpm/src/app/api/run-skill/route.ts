@@ -20,7 +20,7 @@ const VALIDATION_PACK_SKILLS = ['validation-pack'];
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { skillId, input, answers, email, getQuestions } = body;
+    const { skillId, input, answers, email, getQuestions, dataSourceIds } = body;
     
     if (!skillId) {
       return NextResponse.json(
@@ -132,7 +132,7 @@ export async function POST(request: NextRequest) {
           }
           
           // Spawn background job for full pack (don't wait)
-          executeSkillAsync(fullJob.id, 'validation-pack-full', fullJobInput, answers);
+          executeSkillAsync(fullJob.id, 'validation-pack-full', fullJobInput, answers, dataSourceIds);
           
           // Build instant result with robust fallback
           const instant = instantResult.instant || {};
@@ -160,7 +160,7 @@ export async function POST(request: NextRequest) {
         
         pythonProcess.on('error', (error) => {
           // Still spawn background job
-          executeSkillAsync(fullJob.id, 'validation-pack-full', fullJobInput, answers);
+          executeSkillAsync(fullJob.id, 'validation-pack-full', fullJobInput, answers, dataSourceIds);
           
           resolve(NextResponse.json({
             instant: {
@@ -180,7 +180,7 @@ export async function POST(request: NextRequest) {
           if (pythonProcess.exitCode === null) {
             pythonProcess.kill();
             // Still return with background job
-            executeSkillAsync(fullJob.id, 'validation-pack-full', fullJobInput, answers);
+            executeSkillAsync(fullJob.id, 'validation-pack-full', fullJobInput, answers, dataSourceIds);
             resolve(NextResponse.json({
               instant: {
                 recommendation: 'PIVOT',
@@ -231,7 +231,7 @@ export async function POST(request: NextRequest) {
     const skillInput = input || `Generate ${isValidationPack ? 'Validation Pack' : skillId} for user idea`;
     const job = createJob(user.id, skillId, skillInput);
     
-    executeSkillAsync(job.id, skillId, skillInput, answers);
+    executeSkillAsync(job.id, skillId, skillInput, answers, dataSourceIds);
     
     if (isValidationPack) {
       incrementValidationPackCount(user.id);
@@ -252,7 +252,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
-async function executeSkillAsync(jobId: string, skillId: string, input: string, answers?: Record<string, string>) {
+async function executeSkillAsync(jobId: string, skillId: string, input: string, answers?: Record<string, string>, dataSourceIds?: string[]) {
   const { updateJobStatus } = await import('@/lib/db');
   
   updateJobStatus(jobId, 'running');
@@ -266,8 +266,18 @@ async function executeSkillAsync(jobId: string, skillId: string, input: string, 
   }
   
   const args = [scriptPath, skillId, input];
+  
+  // Build context object with answers and data source filter
+  const context: Record<string, any> = {};
   if (answers && Object.keys(answers).length > 0) {
-    args.push(JSON.stringify(answers));
+    context.answers = answers;
+  }
+  if (dataSourceIds && dataSourceIds.length > 0) {
+    context.dataSourceIds = dataSourceIds;
+  }
+  
+  if (Object.keys(context).length > 0) {
+    args.push(JSON.stringify(context));
   }
   
   const pythonProcess = spawn('python', args, {

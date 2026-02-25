@@ -151,8 +151,12 @@ def fetch_google_sheet_content(spreadsheet_url: str, auth: dict = None, max_rows
         return ""
 
 
-def get_connected_data_sources_context() -> str:
-    """Get context from connected data sources including actual content"""
+def get_connected_data_sources_context(selected_ids: list = None) -> str:
+    """Get context from connected data sources including actual content
+    
+    Args:
+        selected_ids: Optional list of data source IDs to include. If None, includes all.
+    """
     try:
         from data_source_helpers import load_json
         DATA_SOURCES_DIR = Path(__file__).parent.parent / "data-sources"
@@ -160,6 +164,13 @@ def get_connected_data_sources_context() -> str:
         registry = load_json(REGISTRY_FILE)
         
         data_sources = registry.get("data_sources", [])
+        if not data_sources:
+            return ""
+        
+        # Filter by selected IDs if provided
+        if selected_ids:
+            data_sources = [ds for ds in data_sources if ds.get('id') in selected_ids]
+        
         if not data_sources:
             return ""
         
@@ -203,11 +214,11 @@ def get_connected_data_sources_context() -> str:
         return ""
 
 
-def generate_intelligent_questions(user_input: str) -> list:
+def generate_intelligent_questions(user_input: str, data_source_ids: list = None) -> list:
     """Generate idea-specific Devil's Advocate questions using LLM"""
     
-    # Check for connected data sources
-    data_context = get_connected_data_sources_context()
+    # Check for connected data sources (pass data_source_ids if available)
+    data_context = get_connected_data_sources_context(data_source_ids)
     
     system_prompt = """You are a startup expert and thought partner. Your job is to generate 3 thought-provoking questions that help refine this business idea.
 The questions should be POSITIVE and constructive - not designed to shoot down the idea, but to help the founder think deeper.
@@ -274,17 +285,21 @@ def generate_dynamic_questions(user_input: str) -> list:
     return question_banks['default']
 
 
-def generate_intelligent_validation(user_input: str, answers: dict) -> dict:
+def generate_intelligent_validation(user_input: str, answers: dict, data_source_ids: list = None) -> dict:
     """Generate intelligent validation pack using LLM"""
+    
+    # Get connected data sources context
+    data_context = get_connected_data_sources_context(data_source_ids)
     
     system_prompt = """You are an expert startup validator. Generate a comprehensive, idea-specific validation report.
 IMPORTANT: Output ONLY valid JSON, no explanations, no thinking, no markdown.
 Use this exact structure:
-{\"overview\": {\"target\": \"\", \"industry\": \"\", \"product\": \"\", \"score\": 0, \"recommendation\": \"\"}, \"insights\": {\"problem\": \"\", \"existingSolution\": \"\", \"uniqueness\": \"\", \"market\": \"\", \"revenue\": \"\"}, \"devilAdvocate\": {\"risks\": [], \"opportunities\": [], \"challengingQuestions\": []}, \"nextSteps\": []}"""
+{"overview": {"target": "", "industry": "", "product": "", "score": 0, "recommendation": ""}, "insights": {"problem": "", "existingSolution": "", "uniqueness": "", "market": "", "revenue": ""}, "devilAdvocate": {"risks": [], "opportunities": [], "challengingQuestions": []}, "nextSteps": []}"""
     
     answers_str = "\n".join([f"- {k}: {v}" for k, v in answers.items()])
     prompt = f"""Generate validation for: {user_input}
 Answers: {answers_str}
+{f"Data sources: {data_context}" if data_context else ""}
 Output ONLY valid JSON."""
     
     result = call_minimax(prompt, system_prompt, max_tokens=2000)
@@ -439,17 +454,17 @@ def analyze_idea_keywords(user_input: str) -> dict:
     return keywords
 
 
-def get_questions_for_idea(user_input: str) -> list:
+def get_questions_for_idea(user_input: str, data_source_ids: list = None) -> list:
     """Get questions - uses LLM if available, otherwise dynamic fallback"""
     # Try LLM first
-    questions = generate_intelligent_questions(user_input)
+    questions = generate_intelligent_questions(user_input, data_source_ids)
     return questions
 
 
-def validate_idea(user_input: str, answers: dict) -> dict:
+def validate_idea(user_input: str, answers: dict, data_source_ids: list = None) -> dict:
     """Validate idea - uses LLM if available, otherwise fallback"""
     # Try LLM first
-    result = generate_intelligent_validation(user_input, answers)
+    result = generate_intelligent_validation(user_input, answers, data_source_ids)
     return result
 
 
@@ -595,11 +610,11 @@ Provide specific, tailored output relevant to this particular idea."""
     }
 
 
-def generate_instant_validation(user_input: str, answers: dict) -> dict:
+def generate_instant_validation(user_input: str, answers: dict, data_source_ids: list = None) -> dict:
     """Generate instant validation - single LLM call for fast response"""
     
     # Check for connected data sources
-    data_context = get_connected_data_sources_context()
+    data_context = get_connected_data_sources_context(data_source_ids)
     
     context = f"""
 IDEA: {user_input}
@@ -683,11 +698,16 @@ def execute_skill_wrapper(skill_name: str, user_input: str, answers: dict) -> tu
     return (skill_name, result)
 
 
-def generate_full_validation_pack(user_input: str, answers: dict) -> dict:
+def generate_full_validation_pack(user_input: str, answers: dict, data_source_ids: list = None) -> dict:
     """Generate full 7-skill validation pack using parallel execution"""
+    
+    # Get connected data sources context
+    data_context = get_connected_data_sources_context(data_source_ids)
     
     context = f"""
 IDEA: {user_input}
+
+{f"{data_context}" if data_context else ""}
 
 USER'S ANSWERS (CONTEXT):
 {json.dumps(answers, indent=2)}
@@ -787,7 +807,7 @@ def main():
     if len(sys.argv) < 3:
         print(json.dumps({
             'success': False, 
-            'error': 'Usage: run_skill.py <skill_id> <user_input> [answers_json]',
+            'error': 'Usage: run_skill.py <skill_id> <user_input> [context_json]',
             'hasApiKey': bool(MINIMAX_API_KEY)
         }))
         sys.exit(1)
@@ -795,11 +815,17 @@ def main():
     skill_id = sys.argv[1]
     user_input = sys.argv[2]
     answers = {}
+    data_source_ids = None
     
-    # Parse answers from command line
+    # Parse context from command line (can contain answers and/or dataSourceIds)
     if len(sys.argv) > 3:
         try:
-            answers = json.loads(sys.argv[3])
+            context = json.loads(sys.argv[3])
+            if isinstance(context, dict):
+                answers = context.get('answers', {})
+                data_source_ids = context.get('dataSourceIds')
+            else:
+                answers = context
         except:
             pass
     
@@ -812,16 +838,16 @@ def main():
             print(f"# MiniMax API key not found - using intelligent fallback", file=sys.stderr)
         
         # Get idea-specific questions
-        questions = generate_intelligent_questions(user_input)
+        questions = generate_intelligent_questions(user_input, data_source_ids)
         
         # If we have answers, generate validation
         if answers and len(answers) > 0:
             if mode == 'full':
                 # Generate full 7-skill pack
-                result = generate_full_validation_pack(user_input, answers)
+                result = generate_full_validation_pack(user_input, answers, data_source_ids)
             else:
                 # Generate instant 3-skill response
-                result = generate_instant_validation(user_input, answers)
+                result = generate_instant_validation(user_input, answers, data_source_ids)
             result['questions'] = questions
             print(json.dumps(result, indent=2))
         else:
@@ -834,9 +860,9 @@ def main():
             }, indent=2))
     elif skill_id == 'validation-pack-full':
         # Explicit full mode
-        questions = generate_intelligent_questions(user_input)
+        questions = generate_intelligent_questions(user_input, data_source_ids)
         if answers and len(answers) > 0:
-            result = generate_full_validation_pack(user_input, answers)
+            result = generate_full_validation_pack(user_input, answers, data_source_ids)
             result['questions'] = questions
             print(json.dumps(result, indent=2))
         else:

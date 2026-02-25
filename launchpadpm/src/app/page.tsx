@@ -29,6 +29,7 @@ export default function Home() {
   const [showPreview, setShowPreview] = useState(false);
   const [capturedEmail, setCapturedEmail] = useState<string | null>(null);
   const [dataSources, setDataSources] = useState<any[]>([]);
+  const [selectedDataSources, setSelectedDataSources] = useState<Set<string>>(new Set());
   const [paywallSkill, setPaywallSkill] = useState({ name: 'Validation Pack', id: 'validation-pack' });
   const [showSignIn, setShowSignIn] = useState(false);
   const [showPayment, setShowPayment] = useState(false);
@@ -58,7 +59,11 @@ export default function Home() {
     // Fetch data sources
     fetch('/api/data-sources')
       .then(res => res.json())
-      .then(data => setDataSources(data.data_sources || []))
+      .then(data => {
+        setDataSources(data.data_sources || []);
+        // Select all by default
+        setSelectedDataSources(new Set((data.data_sources || []).map((ds: any) => ds.id)));
+      })
       .catch(err => console.error('Failed to load data sources:', err));
   }, []);
 
@@ -137,6 +142,7 @@ export default function Home() {
           input: userInput,
           answers: qualifyingAnswers,
           email: capturedEmail,
+          dataSourceIds: Array.from(selectedDataSources),
         }),
       });
 
@@ -324,16 +330,37 @@ export default function Home() {
                   Add research, analytics, or credentials to enhance analysis
                 </p>
                 {dataSources.length > 0 && (
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {dataSources.map((ds) => (
-                      <div
-                        key={ds.id}
-                        className="inline-flex items-center gap-1.5 px-2 py-1 bg-green-100 dark:bg-green-900/30 rounded-full text-xs"
-                      >
-                        <span className="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
-                        <span className="text-green-800 dark:text-green-200">{ds.name}</span>
-                      </div>
-                    ))}
+                  <div className="mt-3">
+                    <p className="text-xs text-gray-500 mb-2">Select data sources to use:</p>
+                    <div className="flex flex-wrap gap-2">
+                      {dataSources.map((ds) => (
+                        <label
+                          key={ds.id}
+                          className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-full text-xs cursor-pointer transition-colors ${
+                            selectedDataSources.has(ds.id)
+                              ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200'
+                              : 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400'
+                          }`}
+                        >
+                          <input
+                            type="checkbox"
+                            checked={selectedDataSources.has(ds.id)}
+                            onChange={(e) => {
+                              const newSelected = new Set(selectedDataSources);
+                              if (e.target.checked) {
+                                newSelected.add(ds.id);
+                              } else {
+                                newSelected.delete(ds.id);
+                              }
+                              setSelectedDataSources(newSelected);
+                            }}
+                            className="sr-only"
+                          />
+                          <span className={`w-1.5 h-1.5 rounded-full ${selectedDataSources.has(ds.id) ? 'bg-green-500' : 'bg-gray-400'}`}></span>
+                          <span>{ds.name}</span>
+                        </label>
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>
