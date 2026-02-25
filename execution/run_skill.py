@@ -10,6 +10,7 @@ import os
 import requests
 from datetime import datetime
 from pathlib import Path
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # Try to import dotenv for local development
 try:
@@ -468,8 +469,15 @@ Provide instant validation for this startup idea."""
     }
 
 
+def execute_skill_wrapper(skill_name: str, user_input: str, answers: dict) -> tuple:
+    """Wrapper to execute a single skill and return with its name"""
+    print(f"# Running skill: {skill_name}...", file=sys.stderr)
+    result = execute_single_skill(skill_name, user_input, answers)
+    return (skill_name, result)
+
+
 def generate_full_validation_pack(user_input: str, answers: dict) -> dict:
-    """Generate full 7-skill validation pack"""
+    """Generate full 7-skill validation pack using parallel execution"""
     
     context = f"""
 IDEA: {user_input}
@@ -478,7 +486,6 @@ USER'S ANSWERS (CONTEXT):
 {json.dumps(answers, indent=2)}
 """
     
-    # All 7 validation pack skills
     all_skills = [
         'devils-advocate',
         'requirements-elicitation',
@@ -492,12 +499,21 @@ USER'S ANSWERS (CONTEXT):
     skill_results = {}
     successful_skills = 0
     
-    for i, skill_name in enumerate(all_skills):
-        print(f"# Running skill: {skill_name}...", file=sys.stderr)
-        result = execute_single_skill(skill_name, user_input, answers)
-        skill_results[skill_name] = result
-        if result.get('success'):
-            successful_skills += 1
+    print(f"# Starting {len(all_skills)} skills in parallel...", file=sys.stderr)
+    
+    with ThreadPoolExecutor(max_workers=4) as executor:
+        futures = {
+            executor.submit(execute_skill_wrapper, skill_name, user_input, answers): skill_name
+            for skill_name in all_skills
+        }
+        
+        for future in as_completed(futures):
+            skill_name, result = future.result()
+            skill_results[skill_name] = result
+            if result.get('success'):
+                successful_skills += 1
+            progress = int((len(skill_results) / len(all_skills)) * 70)
+            print(f"# Progress: {progress}%", file=sys.stderr)
     
     # Generate final scorecard
     score_prompt = f"""{context}

@@ -134,13 +134,22 @@ export async function POST(request: NextRequest) {
           // Spawn background job for full pack (don't wait)
           executeSkillAsync(fullJob.id, 'validation-pack-full', fullJobInput, answers);
           
-          // Return instant result immediately
+          // Build instant result with robust fallback
+          const instant = instantResult.instant || {};
+          const recommendation = instant.recommendation || instantResult.overview?.recommendation || 'PIVOT';
+          const score = instant.score || instantResult.overview?.score || 50;
+          const devilAdvocateSummary = instant.devilAdvocateSummary || instantResult.overview?.summary || 'Validation analysis complete. Check the full report for detailed insights.';
+          const validationSummary = instant.validationSummary || instantResult.overview?.summary || 'Your idea has been analyzed. The full validation pack provides comprehensive analysis across 7 key dimensions.';
+          
           resolve(NextResponse.json({
-            instant: instantResult.instant || {
-              recommendation: instantResult.overview?.recommendation || 'PIVOT',
-              score: instantResult.overview?.score || 50,
-              devilAdvocateSummary: instantResult.overview?.summary || '',
-              validationSummary: instantResult.overview?.summary || ''
+            instant: {
+              recommendation,
+              score,
+              devilAdvocateSummary,
+              validationSummary,
+              strengths: instant.strengths || [],
+              considerations: instant.considerations || [],
+              firstStep: instant.firstStep || 'Review the full validation pack for next steps.'
             },
             fullPackJobId: fullJob.id,
             fullPackProgress: 0,
@@ -273,14 +282,27 @@ async function executeSkillAsync(jobId: string, skillId: string, input: string, 
   });
   
   pythonProcess.stderr.on('data', (data) => {
-    stderr += data.toString();
+    const msg = data.toString();
+    stderr += msg;
+    
+    const progressMatch = msg.match(/Progress: (\d+)%/);
+    if (progressMatch) {
+      const progress = parseInt(progressMatch[1], 10);
+      updateJobStatus(jobId, 'running', undefined, `Progress: ${progress}%`);
+    }
   });
   
   pythonProcess.on('close', (code) => {
-    if (code === 0) {
+    const hasValidOutput = stdout.includes('"success": true') && stdout.includes('skillResults');
+    if (code === 0 || hasValidOutput) {
       updateJobStatus(jobId, 'completed', stdout);
     } else {
-      updateJobStatus(jobId, 'failed', undefined, stderr || `Process exited with code ${code}`);
+      const hasPartialResults = stdout.includes('"success": true') && stdout.includes('skillResults');
+      if (hasPartialResults) {
+        updateJobStatus(jobId, 'completed', stdout, 'Completed with partial results');
+      } else {
+        updateJobStatus(jobId, 'failed', undefined, stderr || `Process exited with code ${code}`);
+      }
     }
   });
   
@@ -291,7 +313,12 @@ async function executeSkillAsync(jobId: string, skillId: string, input: string, 
   setTimeout(() => {
     if (pythonProcess.exitCode === null) {
       pythonProcess.kill();
-      updateJobStatus(jobId, 'failed', undefined, 'Execution timed out after 120 seconds');
+      const hasPartialResults = stdout.includes('"success": true') && stdout.includes('skillResults');
+      if (hasPartialResults) {
+        updateJobStatus(jobId, 'completed', stdout, 'Timed out - partial results available');
+      } else {
+        updateJobStatus(jobId, 'failed', undefined, 'Execution timed out after 120 seconds');
+      }
     }
   }, 120000);
 }

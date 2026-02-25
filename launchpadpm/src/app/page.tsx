@@ -31,11 +31,13 @@ export default function Home() {
   const [showSignIn, setShowSignIn] = useState(false);
   const [showPayment, setShowPayment] = useState(false);
   const [validationResult, setValidationResult] = useState<any>(null);
+  const [fullPackProgress, setFullPackProgress] = useState(0);
   
   // Qualifying questions flow
   const [showQuestions, setShowQuestions] = useState(false);
   const [qualifyingAnswers, setQualifyingAnswers] = useState<Record<string, string>>({});
   const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [isGeneratingValidation, setIsGeneratingValidation] = useState(false);
   const [qualifyingQuestions, setQualifyingQuestions] = useState<{id: string, question: string, placeholder: string}[]>([]);
   const [questionsLoading, setQuestionsLoading] = useState(false);
 
@@ -112,6 +114,7 @@ export default function Home() {
   };
 
   const generateValidationPack = async () => {
+    setIsGeneratingValidation(true);
     setIsExecuting(true);
     setJobOutput(null);
     setJobStatus(null);
@@ -135,11 +138,13 @@ export default function Home() {
         if (data.error === 'email_required' || data.error === 'limit_reached') {
           setShowPaywall(true);
           setIsExecuting(false);
+          setIsGeneratingValidation(false);
           return;
         }
         if (data.error === 'upgrade_required') {
           setShowPaywall(true);
           setIsExecuting(false);
+          setIsGeneratingValidation(false);
           return;
         }
       }
@@ -148,6 +153,7 @@ export default function Home() {
       if (data.instant) {
         setValidationResult(data);
         setIsExecuting(false);
+        setIsGeneratingValidation(false);
         
         // Start polling for full pack if job ID provided
         if (data.fullPackJobId) {
@@ -166,10 +172,12 @@ export default function Home() {
         setJobOutput(data);
         setJobStatus('completed');
         setIsExecuting(false);
+        setIsGeneratingValidation(false);
       }
     } catch (err) {
       console.error('Error starting skill:', err);
       setIsExecuting(false);
+      setIsGeneratingValidation(false);
     }
   };
 
@@ -186,7 +194,16 @@ export default function Home() {
         const jobData = await res.json();
         setJobStatus(jobData.status);
 
+        // Extract progress from error field (format: "Progress: X%")
+        if (jobData.error) {
+          const progressMatch = jobData.error.match(/Progress: (\d+)%/);
+          if (progressMatch) {
+            setFullPackProgress(parseInt(progressMatch[1], 10));
+          }
+        }
+
         if (jobData.status === 'completed') {
+          setFullPackProgress(100);
           // Try to parse as JSON if it's the new format
           let displayOutput;
           try {
@@ -197,7 +214,17 @@ export default function Home() {
           setJobOutput(displayOutput);
           setIsExecuting(false);
         } else if (jobData.status === 'failed') {
-          setJobOutput(jobData.error || 'Skill execution failed');
+          // Check if there are partial results despite failure
+          if (jobData.output && jobData.output.includes('"success": true')) {
+            setFullPackProgress(100);
+            try {
+              setJobOutput(JSON.parse(jobData.output));
+            } catch {
+              setJobOutput(jobData.output);
+            }
+          } else {
+            setJobOutput(jobData.error || 'Skill execution failed');
+          }
           setIsExecuting(false);
         } else {
           setTimeout(poll, 2000);
@@ -336,14 +363,30 @@ export default function Home() {
             </div>
           </div>
 
+          {/* Loading State - Generating Questions */}
+          {questionsLoading && !showQuestions && (
+            <div className="mt-6 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-xl border border-blue-200 dark:border-blue-800 p-8">
+              <div className="flex flex-col items-center justify-center text-center">
+                <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Analyzing your idea...</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Generating tailored questions to validate your concept</p>
+              </div>
+            </div>
+          )}
+
           {/* Qualifying Questions Modal */}
           {showQuestions && (
             <div className="mt-6 bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 rounded-xl border border-orange-200 dark:border-orange-800 p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <span className="text-2xl">🤔</span>
-                <div>
-                  <h3 className="font-semibold text-gray-900 dark:text-white">Devil's Advocate Review</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Let's dig deeper into your idea</p>
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl">🤔</span>
+                  <div>
+                    <h3 className="font-semibold text-gray-900 dark:text-white">Devil's Advocate Review</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">Let's dig deeper into your idea</p>
+                  </div>
+                </div>
+                <div className="text-sm text-gray-500 bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded-full">
+                  {qualifyingQuestions.length} questions
                 </div>
               </div>
               
@@ -375,10 +418,15 @@ export default function Home() {
               
               <div className="flex items-center justify-between">
                 <button
-                  onClick={() => setShowQuestions(false)}
-                  className="text-sm text-gray-500 hover:text-gray-700"
+                  onClick={() => {
+                    if (confirm('Skip questions? Your validation will have less context and may be less accurate.')) {
+                      setShowQuestions(false);
+                      generateValidationPack();
+                    }
+                  }}
+                  className="text-sm text-gray-500 hover:text-gray-700 underline"
                 >
-                  Cancel
+                  Skip all questions
                 </button>
                 <button
                   onClick={handleAnswerSubmit}
@@ -386,6 +434,17 @@ export default function Home() {
                 >
                   {currentQuestion < qualifyingQuestions.length - 1 ? 'Next Question' : 'Generate Report'}
                 </button>
+              </div>
+            </div>
+          )}
+
+          {/* Loading State - Generating Validation */}
+          {isGeneratingValidation && !jobStatus && !jobOutput && (
+            <div className="mt-6 bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-xl border border-purple-200 dark:border-purple-800 p-8">
+              <div className="flex flex-col items-center justify-center text-center">
+                <div className="w-12 h-12 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Validating your idea...</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Running AI analysis and generating your validation report</p>
               </div>
             </div>
           )}
@@ -402,8 +461,22 @@ export default function Home() {
                     <p className="text-blue-100 text-sm">AI-powered validation analysis</p>
                   </div>
                   {jobStatus === 'completed' && (
-                    <div className="bg-white/20 px-3 py-1 rounded-full">
-                      <span className="text-white text-sm font-medium">✓ Complete</span>
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => {
+                          const content = typeof jobOutput === 'string' ? jobOutput : JSON.stringify(jobOutput, null, 2);
+                          const blob = new Blob([content], { type: 'text/markdown' });
+                          const url = URL.createObjectURL(blob);
+                          const a = document.createElement('a');
+                          a.href = url;
+                          a.download = `validation-pack-${Date.now()}.md`;
+                          a.click();
+                          URL.revokeObjectURL(url);
+                        }}
+                        className="bg-white/20 px-3 py-1 rounded-full text-white text-sm font-medium hover:bg-white/30 transition-colors flex items-center gap-1"
+                      >
+                        ⬇ Download
+                      </button>
                     </div>
                   )}
                 </div>
@@ -416,6 +489,7 @@ export default function Home() {
                     userInput={userInput || 'Your idea'}
                     onEmailCapture={(email) => setCapturedEmail(email)}
                     onUpgrade={() => setShowPayment(true)}
+                    progress={fullPackProgress}
                   />
                 ) : jobOutput ? (
                   <ValidationPackDisplay 

@@ -7,10 +7,12 @@ interface InstantScorecardProps {
   userInput: string;
   onEmailCapture: (email: string) => void;
   onUpgrade: () => void;
+  progress?: number;
 }
 
-export default function InstantScorecard({ result, userInput, onEmailCapture, onUpgrade }: InstantScorecardProps) {
+export default function InstantScorecard({ result, userInput, onEmailCapture, onUpgrade, progress = 0 }: InstantScorecardProps) {
   const { instant, fullPackJobId, fullPackProgress, emailCapture } = result;
+  const displayProgress = progress || fullPackProgress || 0;
   const [email, setEmail] = useState('');
   const [emailSubmitted, setEmailSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -158,12 +160,12 @@ export default function InstantScorecard({ result, userInput, onEmailCapture, on
       <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4 border border-gray-200 dark:border-gray-600">
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Preparing Full Validation Pack</span>
-          <span className="text-sm text-gray-500">{fullPackProgress || 0}%</span>
+          <span className="text-sm text-gray-500">{displayProgress}%</span>
         </div>
         <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2 mb-2">
           <div 
             className="h-2 rounded-full bg-blue-500"
-            style={{ width: `${fullPackProgress || 0}%` }}
+            style={{ width: `${displayProgress}%` }}
           />
         </div>
         <p className="text-xs text-gray-500">Full 7-skill pack will be sent to your email when complete</p>
