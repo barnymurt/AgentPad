@@ -386,6 +386,17 @@ Provide specific, tailored output relevant to this particular idea."""
 
     result = call_minimax(user_prompt, system_prompt, max_tokens=1200)
     
+    # Clean output - remove thinking tags and normalize whitespace
+    if result:
+        import re
+        # Remove thinking tags like "<think>" and "</think>"
+        result = re.sub(r'<think>.*?</think>', '', result, flags=re.DOTALL)
+        # Remove markdown code block markers from thinking
+        result = re.sub(r'```markdown\n?', '', result)
+        result = re.sub(r'```\n?', '', result)
+        # Normalize whitespace
+        result = '\n'.join(line for line in result.split('\n') if line.strip())
+    
     return {
         'skill': skill_name,
         'output': result if result else f"[{skill['name']} - LLM call failed]",
