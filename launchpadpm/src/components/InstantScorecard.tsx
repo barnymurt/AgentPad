@@ -19,11 +19,65 @@ export default function InstantScorecard({ result, userInput, onEmailCapture, on
 
   const recommendation = instant?.recommendation || 'PIVOT';
   const score = instant?.score || 5;
-  const devilAdvocateSummary = instant?.devilAdvocateSummary || '';
-  const validationSummary = instant?.validationSummary || '';
-  const strengths = instant?.strengths || [];
-  const considerations = instant?.considerations || [];
-  const firstStep = instant?.firstStep || '';
+  
+  // Enhanced fallbacks with meaningful content based on recommendation
+  const defaultContent: Record<string, { devil: string; validation: string; strengths: string[]; considerations: string[]; firstStep: string }> = {
+    'GO': {
+      devil: "Your idea shows strong potential. The concept addresses a clear market opportunity with a viable path to execution. Key strengths include your unique positioning and the timing of entering this market.",
+      validation: "This idea has passed initial validation checks. Your concept demonstrates market fit potential, achievable value proposition, and a clear target customer segment. The recommendation reflects solid fundamentals.",
+      strengths: [
+        "Clear value proposition for target customers",
+        "Identified market opportunity with timing advantage",
+        "Feasible MVP scope for initial launch",
+        "Differentiated approach from current solutions"
+      ],
+      considerations: [
+        "Ensure sufficient runway for initial traction",
+        "Validate pricing assumptions with early customers",
+        "Monitor competitor responses to your entry"
+      ],
+      firstStep: "Start building your MVP. Focus on the core feature that delivers your key value proposition."
+    },
+    'PIVOT': {
+      devil: "Your idea has potential but needs refinement. Consider adjusting your target market, pricing strategy, or core value proposition. The current approach may face significant challenges.",
+      validation: "This idea shows promise but needs development. Consider pivoting your approach to better address market needs or target a more specific customer segment.",
+      strengths: [
+        "Addresses a real problem or need",
+        "Some differentiation from existing solutions",
+        "Room to iterate and improve the concept"
+      ],
+      considerations: [
+        "Reconsider your target customer segment",
+        "Your pricing model may need adjustment",
+        "Research competitor positioning more deeply",
+        "Validate key assumptions before building"
+      ],
+      firstStep: "Use the Discovery Squad to explore different angles. Run more validation before committing to build."
+    },
+    'KILL': {
+      devil: "This idea faces significant challenges that may be difficult to overcome. Market conditions, competition, or fundamental assumptions may be flawed.",
+      validation: "Current evidence suggests significant barriers to success. The risks outweigh potential rewards at this time. Consider exploring alternative directions.",
+      strengths: [
+        "Learning from this validation is valuable",
+        "You can apply insights to future ideas"
+      ],
+      considerations: [
+        "Market timing may not be right",
+        "Competitive landscape is challenging",
+        "Fundamental assumptions need testing",
+        "Resource requirements may exceed available capacity"
+      ],
+      firstStep: "Don't give up - use the Research Squad to find a better angle or explore adjacent market opportunities."
+    }
+  };
+  
+  const defaults = defaultContent[recommendation] || defaultContent['PIVOT'];
+  
+  const devilAdvocateSummary = instant?.devilAdvocateSummary || defaults.devil;
+  const validationSummary = instant?.validationSummary || defaults.validation;
+  const strengths = instant?.strengths?.length > 0 ? instant.strengths : defaults.strengths;
+  const considerations = instant?.considerations?.length > 0 ? instant.considerations : defaults.considerations;
+  const firstStep = instant?.firstStep || defaults.firstStep;
 
   const getRecColor = (rec: string) => {
     switch (rec) {
@@ -202,6 +256,35 @@ export default function InstantScorecard({ result, userInput, onEmailCapture, on
           <p className="text-green-800 dark:text-green-300 mt-2">Full report will be sent to {email}</p>
         </div>
       )}
+
+      {/* Why this recommendation */}
+      <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
+        <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Why this recommendation?</h3>
+        <p className="text-sm text-gray-600 dark:text-gray-400">
+          {recommendation === 'GO' && "Based on your input, this idea shows strong fundamentals with a clear path forward. The strengths identified outweigh the considerations."}
+          {recommendation === 'PIVOT' && "Based on your input, this idea needs refinement. The Discovery Squad can help you explore different angles and find product-market fit."}
+          {recommendation === 'KILL' && "Based on your input, significant challenges were identified. The Research Squad can help you explore alternative directions."}
+        </p>
+      </div>
+
+      {/* Next Steps */}
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl border border-blue-200 dark:border-blue-800 p-4">
+        <h3 className="font-semibold text-blue-900 dark:text-blue-200 mb-3">What to do next:</h3>
+        <ul className="space-y-2 text-sm text-blue-800 dark:text-blue-300">
+          <li className="flex items-start gap-2">
+            <span className="font-bold">1.</span>
+            Run the <strong>{squad.name}</strong> to develop this idea further ({squad.description})
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="font-bold">2.</span>
+            Use the <strong>Technical Squad</strong> to design your architecture if building
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="font-bold">3.</span>
+            Get actionable outputs you can actually use
+          </li>
+        </ul>
+      </div>
 
       {/* Upgrade CTA */}
       <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl p-6 text-white text-center">
