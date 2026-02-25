@@ -640,11 +640,16 @@ def main():
                 'hasApiKey': bool(MINIMAX_API_KEY)
             }, indent=2))
     else:
-        print(json.dumps({
-            'success': True,
-            'output': f"# {skill_id}\n\nIdea: {user_input}",
-            'skillId': skill_id
-        }))
+        # Execute the individual skill
+        answers_dict = {}
+        if answers:
+            try:
+                answers_dict = json.loads(answers) if isinstance(answers, str) else answers
+            except:
+                pass
+        
+        result = execute_single_skill(skill_id, user_input, answers_dict)
+        print(json.dumps(result, indent=2))
 
 
 if __name__ == '__main__':
