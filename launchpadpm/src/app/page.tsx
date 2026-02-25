@@ -31,18 +31,31 @@ function formatValidationPackAsMarkdown(output: any): string {
     };
     
     for (const [skillId, result] of Object.entries(skillResults)) {
-      const title = skillTitles[skillId] || skillId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+      const title = skillTitles[skillId] || skillId.replace(/-/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase());
       md += `## ${title}\n\n`;
       
-      // Clean the output - remove think blocks
+      // Clean the output - remove think blocks using a simpler approach
       let content = result?.output || 'No output';
-      content = content.replace(/<think>[\s\S]*?</think>/g, '');
-      content = content.replace(/```markdown\n?/g, '');
-      content = content.replace(/```\n?/g, '');
+      // Remove anything between opening and closing think tags
+      while (content.includes('<think>')) {
+        const start = content.indexOf('<think>');
+        const end = content.indexOf('</think>');
+        if (end > start) {
+          content = content.substring(0, start) + content.substring(end + 7);
+        } else {
+          break;
+        }
+      }
+      // Remove markdown code blocks
+      content = content.replace(/```markdown/g, '').replace(/```/g, '');
       content = content.trim();
       
       md += content + '\n\n';
     }
+  }
+  
+  return md;
+}
   }
   
   return md;
