@@ -56,10 +56,6 @@ function formatValidationPackAsMarkdown(output: any): string {
   
   return md;
 }
-  }
-  
-  return md;
-}
 
 interface Squad {
   id: string;
