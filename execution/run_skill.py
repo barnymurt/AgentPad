@@ -361,17 +361,80 @@ def load_skill_prompt(skill_name: str) -> dict:
     return result
 
 
+# Questions to ask when no context is provided - keyed by skill type
+SKILL_QUESTIONS = {
+    'architecture-design': """Since there's no validation context provided, I need some context about your project to design a relevant architecture:
+
+1. **Target users & scale**: Who are your users and how many do you expect in year 1?
+2. **Team**: How many developers on your team and what's their expertise?
+3. **Budget**: What's your infrastructure budget range for Year 1?
+4. **Timeline**: Any launch deadlines or regulatory requirements?
+
+Or if you'd like, run a Validation Pack first to answer these questions automatically.""",
+    
+    'api-design': """To design the right API for your project, I need some context:
+
+1. **Who will consume your API**: External customers, internal teams, or both?
+2. **Integrations**: Any third-party services you need to connect to?
+3. **Authentication**: Do you need user auth, API keys, or both?
+4. **Data sensitivity**: Any PII, payments, or regulated data?
+
+Run a Validation Pack first for comprehensive context.""",
+    
+    'user-story-generation': """To generate relevant user stories, I need context about your users:
+
+1. **Who are your target users** and what's their tech comfort level?
+2. **What's the core value** your product delivers?
+3. **What are the key workflows** users need to accomplish?
+4. **Any constraints** like mobile-first, offline support, etc.?
+
+Run a Validation Pack for full user research context.""",
+    
+    'schema-design': """To design your data schema, I need to understand your data model:
+
+1. **What entities** does your application manage (users, orders, products, etc.)?
+2. **What are the relationships** between these entities?
+3. **Any compliance needs** (PII, financial data, healthcare, etc.)?
+4. **Expected data volume** and growth trajectory?
+
+Run a Validation Pack for complete context.""",
+    
+    'default': """Since there's no validation context provided, I need some basic context:
+
+1. **What problem does your product solve** and for whom?
+2. **What's your target scale** (users, transactions, data volume)?
+3. **Any technical constraints** (existing tech stack, budget, team size)?
+4. **Timeline or regulatory requirements**?
+
+For best results, run a Validation Pack first to get comprehensive context, or provide your research/notes in the context field."""
+}
+
+
 def execute_single_skill(skill_name: str, user_input: str, answers: dict) -> dict:
     """Execute a single skill and return its output"""
     skill = load_skill_prompt(skill_name)
     
-    # Build context from user's idea and their answers to Devil's Advocate questions
-    # answers can be a dict (from validation) or string (from squad context field)
+    # Check if we have context
+    has_context = False
     context_block = ""
+    
     if isinstance(answers, dict) and answers:
+        has_context = True
         context_block = f"USER'S ANSWERS TO DEVIL'S ADVOCATE QUESTIONS (THIS IS THE CONTEXT - USE THIS):\n{json.dumps(answers, indent=2)}\n"
     elif isinstance(answers, str) and answers.strip():
+        has_context = True
         context_block = f"ADDITIONAL CONTEXT FROM VALIDATION/RESEARCH:\n{answers}\n"
+    
+    # If no context, ask skill-specific questions
+    if not has_context:
+        clarifying_questions = SKILL_QUESTIONS.get(skill_name, SKILL_QUESTIONS['default'])
+        return {
+            'skill': skill_name,
+            'output': clarifying_questions,
+            'success': True,
+            'needs_context': True,
+            'suggestion': 'Run a Validation Pack first or provide context in the context field'
+        }
     
     context = f"""
 IDEAS: {user_input}

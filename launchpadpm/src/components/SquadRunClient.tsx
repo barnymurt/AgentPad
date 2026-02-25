@@ -264,9 +264,26 @@ export default function SquadRunClient({ squad, skills }: SquadPageProps) {
                   {isExpanded && (
                     <div className="p-4 bg-white dark:bg-gray-800">
                       {result.success ? (
-                        <div className="prose prose-sm dark:prose-invert max-w-none whitespace-pre-wrap text-gray-700 dark:text-gray-300">
-                          {result.output}
-                        </div>
+                        result.needs_context ? (
+                          <div>
+                            <div className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap mb-4">
+                              {result.output}
+                            </div>
+                            <div className="p-3 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-lg">
+                              <p className="text-sm text-blue-800 dark:text-blue-200">
+                                <strong>Tip:</strong> For better results, either:
+                              </p>
+                              <ul className="text-sm text-blue-700 dark:text-blue-300 mt-2 list-disc list-inside">
+                                <li>Run a Validation Pack first, then use that context here</li>
+                                <li>Paste your research notes or target user insights in the Context field above</li>
+                              </ul>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="prose prose-sm dark:prose-invert max-w-none whitespace-pre-wrap text-gray-700 dark:text-gray-300">
+                            {result.output}
+                          </div>
+                        )
                       ) : (
                         <div className="text-red-600 dark:text-red-400">
                           Failed: {result.output}
