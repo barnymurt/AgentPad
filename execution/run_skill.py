@@ -85,8 +85,35 @@ def call_minimax(prompt: str, system_prompt: str = None, max_tokens: int = 2000)
         return None
 
 
+def get_connected_data_sources_context() -> str:
+    """Get context from connected data sources"""
+    try:
+        from data_source_helpers import load_json
+        DATA_SOURCES_DIR = Path(__file__).parent.parent / "data-sources"
+        REGISTRY_FILE = DATA_SOURCES_DIR / "registry.json"
+        registry = load_json(REGISTRY_FILE)
+        
+        data_sources = registry.get("data_sources", [])
+        if not data_sources:
+            return ""
+        
+        context_parts = ["CONNECTED DATA SOURCES:"]
+        for ds in data_sources:
+            context_parts.append(f"- {ds.get('name', 'Unnamed')} ({ds.get('type', 'unknown')})")
+            if ds.get('location'):
+                context_parts.append(f"  Location: {ds.get('location')}")
+        
+        return "\n".join(context_parts)
+    except Exception as e:
+        print(f"Error loading data sources: {e}", file=sys.stderr)
+        return ""
+
+
 def generate_intelligent_questions(user_input: str) -> list:
     """Generate idea-specific Devil's Advocate questions using LLM"""
+    
+    # Check for connected data sources
+    data_context = get_connected_data_sources_context()
     
     system_prompt = """You are a startup expert and thought partner. Your job is to generate 3 thought-provoking questions that help refine this business idea.
 The questions should be POSITIVE and constructive - not designed to shoot down the idea, but to help the founder think deeper.
@@ -96,6 +123,7 @@ Format: [{\"id\": \"q1\", \"question\": \"...\", \"placeholder\": \"...\"}]"""
     
     prompt = f"""Generate 3 constructive questions for this idea:
 Idea: {user_input}
+{f"Data context: {data_context}" if data_context else ""}
 Output ONLY valid JSON array starting with [ and ending with ]."""
     
     result = call_minimax(prompt, system_prompt, max_tokens=600)
@@ -476,22 +504,27 @@ Provide specific, tailored output relevant to this particular idea."""
 def generate_instant_validation(user_input: str, answers: dict) -> dict:
     """Generate instant validation - single LLM call for fast response"""
     
+    # Check for connected data sources
+    data_context = get_connected_data_sources_context()
+    
     context = f"""
 IDEA: {user_input}
+
+{f"{data_context}" if data_context else ""}
 
 USER'S ANSWERS:
 {json.dumps(answers, indent=2)}
 """
     
     # Single comprehensive LLM call for instant response
-    system_prompt = """You are a startup validator. Provide instant validation.
+    system_prompt = """You are a startup validator. Provide instant validation using ALL available context (user input, connected data sources, and user's answers).
 Output ONLY valid JSON with:
 {"score": 1-10, "recommendation": "GO/PIVOT/KILL", "devilAdvocateSummary": "2 sentence insight", "validationSummary": "overall assessment", "strengths": ["s1", "s2"], "considerations": ["c1", "c2"], "firstStep": "one action"}
 
-Tone: Constructive, helpful, not overly critical."""
+Tone: Constructive, helpful, not overly critical. Use the data sources to provide SPECIFIC insights."""
     
     user_prompt = f"""{context}
-Provide instant validation for this startup idea."""
+Provide instant validation for this startup idea. Reference any connected data sources in your analysis."""
     
     result = call_minimax(user_prompt, system_prompt, max_tokens=600)
     
