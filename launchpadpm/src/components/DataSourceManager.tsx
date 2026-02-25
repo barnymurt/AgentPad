@@ -138,8 +138,8 @@ export default function DataSourceManager() {
                   <input
                     type="text"
                     value={newSource.name}
-                    onChange={(e) => setNewSource({ ...newSource, name: e placeholder="e.g.target.value })}
-                   ., Customer Interview Data"
+                    onChange={(e) => setNewSource({ ...newSource, name: e.target.value })}
+                    placeholder="e.g., Customer Interview Data"
                     className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                     required
                   />
