@@ -22,6 +22,7 @@ interface SquadPageProps {
 export default function SquadRunClient({ squad, skills }: SquadPageProps) {
   const [selectedSkills, setSelectedSkills] = useState<Set<string>>(new Set());
   const [input, setInput] = useState('');
+  const [context, setContext] = useState('');
   const [isRunning, setIsRunning] = useState(false);
   const [results, setResults] = useState<Record<string, any> | null>(null);
   const [expandedResults, setExpandedResults] = useState<Set<string>>(new Set());
@@ -75,6 +76,7 @@ export default function SquadRunClient({ squad, skills }: SquadPageProps) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           input: input,
+          context: context,
           skills: Array.from(selectedSkills),
         }),
       });
@@ -135,6 +137,24 @@ export default function SquadRunClient({ squad, skills }: SquadPageProps) {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder={`e.g., I want to build a ${squad.name.toLowerCase()} for my startup...`}
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              rows={3}
+              disabled={isRunning}
+            />
+          </div>
+
+          {/* Context from Validation */}
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <span className="flex items-center gap-2">
+                Context (optional)
+                <span className="text-xs text-gray-500 font-normal">Paste validation pack insights or research notes</span>
+              </span>
+            </label>
+            <textarea
+              value={context}
+              onChange={(e) => setContext(e.target.value)}
+              placeholder="Paste validation results, target user insights, risks identified, or any context from your validation pack..."
               className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
               rows={3}
               disabled={isRunning}

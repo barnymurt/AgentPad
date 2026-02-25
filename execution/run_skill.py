@@ -366,11 +366,17 @@ def execute_single_skill(skill_name: str, user_input: str, answers: dict) -> dic
     skill = load_skill_prompt(skill_name)
     
     # Build context from user's idea and their answers to Devil's Advocate questions
+    # answers can be a dict (from validation) or string (from squad context field)
+    context_block = ""
+    if isinstance(answers, dict) and answers:
+        context_block = f"USER'S ANSWERS TO DEVIL'S ADVOCATE QUESTIONS (THIS IS THE CONTEXT - USE THIS):\n{json.dumps(answers, indent=2)}\n"
+    elif isinstance(answers, str) and answers.strip():
+        context_block = f"ADDITIONAL CONTEXT FROM VALIDATION/RESEARCH:\n{answers}\n"
+    
     context = f"""
 IDEAS: {user_input}
 
-USER'S ANSWERS TO DEVIL'S ADVOCATE QUESTIONS (THIS IS THE CONTEXT - USE THIS):
-{json.dumps(answers, indent=2)}
+{context_block}
 """
     
     system_prompt = f"""You are an expert in {skill['name'].replace('-', ' ')}.

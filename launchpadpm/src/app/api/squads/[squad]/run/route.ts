@@ -31,9 +31,12 @@ export async function POST(
     const results: Record<string, any> = {};
     const errors: string[] = [];
 
+    // Pass context as string (from squad UI) or convert to dict if it's validation answers
+    const contextData = context || '';
+
     for (const skillId of skillsToRun) {
       try {
-        const result = await runSkill(skillId, input, context || {});
+        const result = await runSkill(skillId, input, contextData);
         results[skillId] = result;
       } catch (err: any) {
         errors.push(`${skillId}: ${err.message}`);
