@@ -8,6 +8,46 @@ import InstantScorecard from '@/components/InstantScorecard';
 import DataSourceManager from '@/components/DataSourceManager';
 import { signIn, signOut, useSession } from 'next-auth/react';
 
+function formatValidationPackAsMarkdown(output: any): string {
+  const { overview, skillResults, scorecard, skillsExecuted, skillsSuccessful } = output;
+  
+  let md = `# Validation Pack\n\n`;
+  md += `**Idea:** ${overview?.target || 'N/A'}\n`;
+  md += `**Recommendation:** ${scorecard?.recommendation || overview?.recommendation || 'N/A'}\n`;
+  md += `**Score:** ${scorecard?.score || overview?.score || 50}/100\n`;
+  md += `**Skills Executed:** ${skillsExecuted || 0}\n\n`;
+  
+  md += `## Summary\n\n${scorecard?.summary || overview?.summary || 'N/A'}\n\n`;
+  
+  if (skillResults) {
+    const skillTitles: Record<string, string> = {
+      'devils-advocate': "Devil's Advocate Analysis",
+      'requirements-elicitation': 'Requirements Elicitation',
+      'user-persona-creation': 'User Personas',
+      'competitor-research': 'Competitor Research',
+      'business-case-modeling': 'Business Case',
+      'feature-prioritization': 'Feature Prioritization',
+      'user-journey-mapping': 'User Journey Mapping'
+    };
+    
+    for (const [skillId, result] of Object.entries(skillResults)) {
+      const title = skillTitles[skillId] || skillId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+      md += `## ${title}\n\n`;
+      
+      // Clean the output - remove think blocks
+      let content = result?.output || 'No output';
+      content = content.replace(/<think>[\s\S]*?</think>/g, '');
+      content = content.replace(/```markdown\n?/g, '');
+      content = content.replace(/```\n?/g, '');
+      content = content.trim();
+      
+      md += content + '\n\n';
+    }
+  }
+  
+  return md;
+}
+
 interface Squad {
   id: string;
   name: string;
@@ -510,7 +550,15 @@ export default function Home() {
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => {
-                          const content = typeof jobOutput === 'string' ? jobOutput : JSON.stringify(jobOutput, null, 2);
+                          let content = '';
+                          if (typeof jobOutput === 'string') {
+                            content = jobOutput;
+                          } else if (jobOutput && jobOutput.skillResults) {
+                            // Format as human-readable markdown
+                            content = formatValidationPackAsMarkdown(jobOutput);
+                          } else {
+                            content = JSON.stringify(jobOutput, null, 2);
+                          }
                           const blob = new Blob([content], { type: 'text/markdown' });
                           const url = URL.createObjectURL(blob);
                           const a = document.createElement('a');
