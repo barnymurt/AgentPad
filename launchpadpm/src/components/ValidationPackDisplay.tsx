@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import ReactMarkdown from 'react-markdown';
 
 interface ValidationPackDisplayProps {
   output: any;
@@ -106,11 +107,9 @@ function NewValidationPack({ output, userInput }: { output: any; userInput: stri
               {devilsAdvocateResult.success && <span className="text-green-500 text-sm">✓</span>}
             </div>
           </div>
-          <div className="p-4">
-            <pre className="whitespace-pre-wrap text-sm text-gray-700 dark:text-gray-300 max-h-64 overflow-y-auto">
-              {getPreview(devilsAdvocateResult)}
-            </pre>
-          </div>
+          <div className="p-4 prose prose-sm dark:prose-invert max-w-none">
+              <ReactMarkdown>{getPreview(devilsAdvocateResult)}</ReactMarkdown>
+            </div>
         </div>
       )}
 
@@ -124,11 +123,9 @@ function NewValidationPack({ output, userInput }: { output: any; userInput: stri
               {requirementsResult.success && <span className="text-green-500 text-sm">✓</span>}
             </div>
           </div>
-          <div className="p-4">
-            <pre className="whitespace-pre-wrap text-sm text-gray-700 dark:text-gray-300 max-h-64 overflow-y-auto">
-              {getPreview(requirementsResult)}
-            </pre>
-          </div>
+          <div className="p-4 prose prose-sm dark:prose-invert max-w-none">
+              <ReactMarkdown>{getPreview(requirementsResult)}</ReactMarkdown>
+            </div>
         </div>
       )}
 
@@ -142,11 +139,9 @@ function NewValidationPack({ output, userInput }: { output: any; userInput: stri
               {competitorResult.success && <span className="text-green-500 text-sm">✓</span>}
             </div>
           </div>
-          <div className="p-4">
-            <pre className="whitespace-pre-wrap text-sm text-gray-700 dark:text-gray-300 max-h-64 overflow-y-auto">
-              {getPreview(competitorResult)}
-            </pre>
-          </div>
+          <div className="p-4 prose prose-sm dark:prose-invert max-w-none">
+              <ReactMarkdown>{getPreview(competitorResult)}</ReactMarkdown>
+            </div>
         </div>
       )}
 
@@ -160,11 +155,9 @@ function NewValidationPack({ output, userInput }: { output: any; userInput: stri
               {businessCaseResult.success && <span className="text-green-500 text-sm">✓</span>}
             </div>
           </div>
-          <div className="p-4">
-            <pre className="whitespace-pre-wrap text-sm text-gray-700 dark:text-gray-300 max-h-64 overflow-y-auto">
-              {getPreview(businessCaseResult)}
-            </pre>
-          </div>
+          <div className="p-4 prose prose-sm dark:prose-invert max-w-none">
+              <ReactMarkdown>{getPreview(businessCaseResult)}</ReactMarkdown>
+            </div>
         </div>
       )}
 
@@ -383,10 +376,10 @@ function StructuredValidationPack({ output, userInput }: { output: any; userInpu
 }
 
 function LegacyValidationPack({ output, userInput }: { output: string; userInput: string }) {
-  // Fallback for old string format - show as-is
+  // Fallback for old string format - render as markdown
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl p-6">
-      <pre className="whitespace-pre-wrap text-sm text-gray-700 dark:text-gray-300">{output}</pre>
+    <div className="bg-white dark:bg-gray-800 rounded-xl p-6 prose prose-sm dark:prose-invert max-w-none">
+      <ReactMarkdown>{output}</ReactMarkdown>
     </div>
   );
 }

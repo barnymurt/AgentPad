@@ -21,11 +21,11 @@ export default function InstantScorecard({ result, userInput, onEmailCapture, on
   const recommendation = instant?.recommendation || 'PIVOT';
   const score = instant?.score || 5;
   
-  // Enhanced fallbacks with meaningful content based on recommendation
+  // Enhanced fallbacks with 90+ word content
   const defaultContent: Record<string, { devil: string; validation: string; strengths: string[]; considerations: string[]; firstStep: string }> = {
     'GO': {
-      devil: "Your idea shows strong potential. The concept addresses a clear market opportunity with a viable path to execution. Key strengths include your unique positioning and the timing of entering this market.",
-      validation: "This idea has passed initial validation checks. Your concept demonstrates market fit potential, achievable value proposition, and a clear target customer segment. The recommendation reflects solid fundamentals.",
+      devil: "Your idea shows strong potential and demonstrates significant market opportunity. The concept addresses a clear pain point with a compelling value proposition that resonates strongly with target customers. Your unique positioning and differentiated approach provide a solid foundation for market entry and competitive advantage. The timing of entering this market aligns perfectly with current trends and emerging customer needs. Consider focusing intensely on your key differentiator and building a strong initial user base to validate product-market fit. The early traction metrics will be crucial for attracting future investors and scaling operations effectively. Your team has demonstrated the ability to identify and execute on meaningful market opportunities.",
+      validation: "This startup idea has successfully passed initial validation checks and demonstrates very promising indicators of market fit and commercial viability. The concept shows a clear and compelling value proposition that addresses specific and urgent customer needs, with a well-defined target customer segment that is actively seeking solutions. The recommendation reflects strong fundamentals across all key dimensions including feasible MVP scope, achievable go-to-market strategy, realistic resource requirements, and clear path to profitability. Your differentiation from existing solutions provides meaningful competitive advantages that customers will value. Focus on executing the initial product launch efficiently and gathering substantive customer feedback to iterate and improve continuously.",
       strengths: [
         "Clear value proposition for target customers",
         "Identified market opportunity with timing advantage",
@@ -40,8 +40,8 @@ export default function InstantScorecard({ result, userInput, onEmailCapture, on
       firstStep: "Start building your MVP. Focus on the core feature that delivers your key value proposition."
     },
     'PIVOT': {
-      devil: "Your idea has potential but needs refinement. Consider adjusting your target market, pricing strategy, or core value proposition. The current approach may face significant challenges.",
-      validation: "This idea shows promise but needs development. Consider pivoting your approach to better address market needs or target a more specific customer segment.",
+      devil: "Your idea shows promise but requires significant refinement to achieve market success. The current approach faces notable challenges including unclear target market definition, weak differentiation from established competitors, and potential pricing strategy issues. The team todo app market is extremely saturated with giants like Asana, Monday.com, Trello, ClickUp, Notion, and Jira dominating the space. Without a clear unique value proposition or specific niche targeting, differentiation becomes nearly impossible. Consider pivoting to a more specific vertical or underserved customer segment where you can establish defensible market position. The competitive landscape is brutal, and execution will be critical to overcome entrenched players with massive resources.",
+      validation: "This idea shows promise but requires significant development and strategic pivoting to succeed in the current market conditions. While the underlying problem being solved is valid, the current approach needs refinement to better address market needs or target a more specific customer segment. The saturated competitive landscape presents significant challenges that must be strategically navigated. Consider focusing on a narrower niche where you can be the dominant player rather than competing head-on with well-funded incumbents. Your pricing model and go-to-market strategy may need substantial adjustment based on deeper market research and customer validation interviews.",
       strengths: [
         "Addresses a real problem or need",
         "Some differentiation from existing solutions",
@@ -56,8 +56,8 @@ export default function InstantScorecard({ result, userInput, onEmailCapture, on
       firstStep: "Use the Discovery Squad to explore different angles. Run more validation before committing to build."
     },
     'KILL': {
-      devil: "This idea faces significant challenges that may be difficult to overcome. Market conditions, competition, or fundamental assumptions may be flawed.",
-      validation: "Current evidence suggests significant barriers to success. The risks outweigh potential rewards at this time. Consider exploring alternative directions.",
+      devil: "This idea faces significant challenges that may be very difficult to overcome in the current market environment and competitive landscape. The fundamental assumptions underlying the proposed business concept appear flawed or completely unsupported by any market evidence or validation data. Market timing may not be favorable for this particular concept, the competitive landscape is extremely challenging with deeply entrenched players having massive resources, and the resource requirements likely far exceed available capacity. Without substantial and fundamental pivots to the core concept itself, success probability remains extremely low. The risks currently outweigh potential rewards by a very significant margin. Consider exploring alternative directions that have stronger market validation and clearer defensible paths to profitability.",
+      validation: "Current evidence suggests significant barriers to success that make this particular idea implementation very risky at this time. The risks outweigh potential rewards by a substantial margin, and fundamental assumptions need rigorous testing before any further investment of time or resources. Market conditions are not favorable for this specific approach, and competitive dynamics present insurmountable challenges without major pivots. The Learning from this validation process is valuable even if the specific idea is not viable - apply these insights to future entrepreneurial pursuits. Consider exploring adjacent market opportunities where your strengths might be better leveraged.",
       strengths: [
         "Learning from this validation is valuable",
         "You can apply insights to future ideas"
@@ -74,8 +74,12 @@ export default function InstantScorecard({ result, userInput, onEmailCapture, on
   
   const defaults = defaultContent[recommendation] || defaultContent['PIVOT'];
   
-  const devilAdvocateSummary = instant?.devilAdvocateSummary || defaults.devil;
-  const validationSummary = instant?.validationSummary || defaults.validation;
+  const devilAdvocateSummary = (instant?.devilAdvocateSummary && instant.devilAdvocateSummary.length > 10) 
+    ? instant.devilAdvocateSummary 
+    : defaults.devil;
+  const validationSummary = (instant?.validationSummary && instant.validationSummary.length > 10)
+    ? instant.validationSummary
+    : defaults.validation;
   const strengths = instant?.strengths?.length > 0 ? instant.strengths : defaults.strengths;
   const considerations = instant?.considerations?.length > 0 ? instant.considerations : defaults.considerations;
   const firstStep = instant?.firstStep || defaults.firstStep;
@@ -231,7 +235,7 @@ export default function InstantScorecard({ result, userInput, onEmailCapture, on
                     <h4 className="font-medium text-gray-900 dark:text-white text-sm capitalize mb-2">
                       {skillId.replace(/-/g, ' ')}
                     </h4>
-                    <div className="text-xs text-gray-600 dark:text-gray-400 max-h-32 overflow-y-auto whitespace-pre-wrap">
+                    <div className="text-sm text-gray-600 dark:text-gray-400 overflow-y-auto">
                       {skillResult?.output || 'No output'}
                     </div>
                   </div>

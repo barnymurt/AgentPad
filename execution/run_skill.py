@@ -46,6 +46,59 @@ CORE_VALIDATION_SKILLS = [
 ]
 
 
+def call_minimax_stream(prompt: str, system_prompt: str = None, max_tokens: int = 2000):
+    """Call MiniMax API for streaming responses - yields tokens as they're generated"""
+    if not MINIMAX_API_KEY:
+        yield None
+        return
+    
+    headers = {
+        'Authorization': f'Bearer {MINIMAX_API_KEY}',
+        'Content-Type': 'application/json'
+    }
+    
+    messages = []
+    if system_prompt:
+        messages.append({'role': 'system', 'content': system_prompt})
+    messages.append({'role': 'user', 'content': prompt})
+    
+    payload = {
+        'model': 'MiniMax-M2.5',
+        'messages': messages,
+        'temperature': 0.7,
+        'max_tokens': max_tokens,
+        'stream': True
+    }
+    
+    try:
+        response = requests.post(MINIMAX_API_URL, headers=headers, json=payload, stream=True, timeout=60)
+        if response.status_code == 200:
+            for line in response.iter_lines():
+                if line:
+                    line = line.decode('utf-8')
+                    if line.startswith('data: '):
+                        data = line[6:]
+                        if data == '[DONE]':
+                            break
+                        try:
+                            import json
+                            chunk = json.loads(data)
+                            choices = chunk.get('choices', [])
+                            if choices:
+                                delta = choices[0].get('delta', {})
+                                content = delta.get('content', '')
+                                if content:
+                                    yield content
+                        except:
+                            pass
+        else:
+            print(f"MiniMax API error: {response.status_code}", file=sys.stderr)
+            yield None
+    except Exception as e:
+        print(f"MiniMax API exception: {e}", file=sys.stderr)
+        yield None
+
+
 def call_minimax(prompt: str, system_prompt: str = None, max_tokens: int = 2000) -> str:
     """Call MiniMax API for intelligent responses"""
     if not MINIMAX_API_KEY:
@@ -628,42 +681,60 @@ USER'S ANSWERS:
     # Single comprehensive LLM call for instant response
     system_prompt = """You are a startup validator. Output ONLY valid JSON - no explanations, no thinking, no markdown. 
 
-JSON format required:
-{"score": 1-10, "recommendation": "GO", "devilAdvocateSummary": "2 sentence insight about this idea", "validationSummary": "2 sentence overview of validation", "strengths": ["strength 1", "strength 2", "strength 3"], "considerations": ["consideration 1", "consideration 2", "consideration 3"], "firstStep": "specific first action"}
+JSON format required - MANDATORY WORD COUNTS:
+{"score": 1-10, "recommendation": "GO", "devilAdvocateSummary": "MUST BE AT LEAST 100 WORDS - write a detailed critical analysis of this startup idea from a skeptical perspective. Cover market saturation, competition, risks, and challenges.", "validationSummary": "MUST BE AT LEAST 100 WORDS - write a comprehensive validation overview explaining in detail why the recommendation is GO, PIVOT, or KILL. Explain the reasoning behind the decision.", "strengths": ["strength 1", "strength 2", "strength 3"], "considerations": ["consideration 1", "consideration 2", "consideration 3"], "firstStep": "specific first action"}
 
-IMPORTANT: Output ONLY the JSON. No text before or after."""
+CRITICAL REQUIREMENTS:
+1. devilAdvocateSummary MUST be at least 100 words - write extensively
+2. validationSummary MUST be at least 100 words - write extensively
+3. Output ONLY the JSON. No text before or after.
+4. Do not truncate your response - use as many words as needed."""
     
     user_prompt = f"""{context}
 
-Provide instant validation for this startup idea. Return ONLY valid JSON."""
+Provide instant validation for this startup idea. Return ONLY valid JSON. Ensure devilAdvocateSummary and validationSummary are both 100-150 words each."""
     
-    result = call_minimax(user_prompt, system_prompt, max_tokens=800)
+    result = call_minimax(user_prompt, system_prompt, max_tokens=2000)
     
     validation = {"score": 5, "recommendation": "PIVOT", "devilAdvocateSummary": "", "validationSummary": "", "strengths": [], "considerations": [], "firstStep": ""}
     
     if result:
         try:
-            # Try to extract JSON from response
+            # Strip thinking tags first
             import re
+            cleaned = re.sub(r'<think>.*?</think>', '', result, flags=re.DOTALL)
+            cleaned = re.sub(r'<think>.*', '', cleaned, flags=re.DOTALL)
+            cleaned = cleaned.strip()
             
-            # First try: find complete JSON object
-            json_match = re.search(r'\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}', result, re.DOTALL)
-            if json_match:
-                try:
-                    parsed = json.loads(json_match.group())
-                    if 'score' in parsed or 'recommendation' in parsed:
-                        validation = parsed
-                except:
-                    pass
-            
-            # Second try: look for JSON array pattern
-            if not validation.get('score'):
-                match = re.search(r'\{.*\}', result, re.DOTALL)
-                if match:
+            # Try to find and parse JSON in the cleaned response
+            if cleaned:
+                # Find JSON object - more flexible pattern
+                json_match = re.search(r'\{[\s\S]*\}', cleaned)
+                if json_match:
                     try:
-                        validation = json.loads(match.group())
-                    except:
-                        pass
+                        parsed = json.loads(json_match.group())
+                        if 'score' in parsed or 'recommendation' in parsed:
+                            validation = parsed
+                    except json.JSONDecodeError:
+                        # Try to find partial JSON with required fields
+                        try:
+                            # Look for individual fields
+                            score_match = re.search(r'"score"\s*:\s*(\d+)', cleaned)
+                            rec_match = re.search(r'"recommendation"\s*:\s*"([^"]+)"', cleaned)
+                            devil_match = re.search(r'"devilAdvocateSummary"\s*:\s*"([^"]*)"', cleaned)
+                            val_match = re.search(r'"validationSummary"\s*:\s*"([^"]*)"', cleaned)
+                            
+                            if score_match or rec_match:
+                                if score_match:
+                                    validation['score'] = int(score_match.group(1))
+                                if rec_match:
+                                    validation['recommendation'] = rec_match.group(1)
+                                if devil_match:
+                                    validation['devilAdvocateSummary'] = devil_match.group(1)
+                                if val_match:
+                                    validation['validationSummary'] = val_match.group(1)
+                        except Exception:
+                            pass
         except Exception as e:
             print(f"Parse error: {e}", file=sys.stderr)
     
@@ -707,6 +778,98 @@ Provide instant validation for this startup idea. Return ONLY valid JSON."""
         "fullPackProgress": 0,
         "emailCapture": True,
         "message": "Full 7-skill validation pack being prepared"
+    }
+
+
+def generate_instant_validation_streaming(user_input: str, answers: dict, data_source_ids: list = None) -> dict:
+    """Generate instant validation with streaming - tokens appear as they're generated"""
+    
+    # Get connected data sources context
+    data_context = get_connected_data_sources_context(data_source_ids)
+    
+    context = f"""
+IDEA: {user_input}
+
+{f"{data_context}" if data_context else ""}
+
+USER'S ANSWERS:
+{json.dumps(answers, indent=2)}
+"""
+    
+    # Build streaming prompt
+    system_prompt = """You are a startup validator. Output ONLY valid JSON - no explanations, no thinking, no markdown. 
+
+JSON format required - MANDATORY WORD COUNTS:
+{"score": 1-10, "recommendation": "GO", "devilAdvocateSummary": "MUST BE AT LEAST 100 WORDS - write a detailed critical analysis of this startup idea from a skeptical perspective. Cover market saturation, competition, risks, and challenges.", "validationSummary": "MUST BE AT LEAST 100 WORDS - write a comprehensive validation overview explaining in detail why the recommendation is GO, PIVOT, or KILL. Explain the reasoning behind the decision.", "strengths": ["strength 1", "strength 2", "strength 3"], "considerations": ["consideration 1", "consideration 2", "consideration 3"], "firstStep": "specific first action"}
+
+CRITICAL REQUIREMENTS:
+1. devilAdvocateSummary MUST be at least 100 words - write extensively
+2. validationSummary MUST be at least 100 words - write extensively
+3. Output ONLY the JSON. No text before or after.
+4. Do not truncate your response - use as many words as needed."""
+    
+    user_prompt = f"""{context}
+
+Provide instant validation for this startup idea. Return ONLY valid JSON. Ensure devilAdvocateSummary and validationSummary are both at least 100 words each."""
+    
+    # Stream the response and accumulate
+    accumulated = ""
+    for token in call_minimax_stream(user_prompt, system_prompt, max_tokens=2000):
+        if token:
+            accumulated += token
+            # Send token updates via stderr (for real-time feedback)
+            print(f"data: {json.dumps({'type': 'token', 'content': token})}", flush=True)
+    
+    # Parse the accumulated response
+    validation = {"score": 5, "recommendation": "PIVOT", "devilAdvocateSummary": "", "validationSummary": "", "strengths": [], "considerations": [], "firstStep": ""}
+    
+    if accumulated:
+        try:
+            import re
+            # Strip thinking tags
+            cleaned = re.sub(r'<think>.*?</think>', '', accumulated, flags=re.DOTALL)
+            cleaned = re.sub(r'<think>.*', '', cleaned, flags=re.DOTALL)
+            cleaned = cleaned.strip()
+            
+            if cleaned:
+                json_match = re.search(r'\{[\s\S]*\}', cleaned)
+                if json_match:
+                    try:
+                        parsed = json.loads(json_match.group())
+                        if 'score' in parsed or 'recommendation' in parsed:
+                            validation = parsed
+                    except json.JSONDecodeError:
+                        # Try to extract fields individually
+                        score_match = re.search(r'"score"\s*:\s*(\d+)', cleaned)
+                        rec_match = re.search(r'"recommendation"\s*:\s*"([^"]+)"', cleaned)
+                        devil_match = re.search(r'"devilAdvocateSummary"\s*:\s*"([^"]*)"', cleaned)
+                        val_match = re.search(r'"validationSummary"\s*:\s*"([^"]*)"', cleaned)
+                        
+                        if score_match or rec_match:
+                            if score_match:
+                                validation['score'] = int(score_match.group(1))
+                            if rec_match:
+                                validation['recommendation'] = rec_match.group(1)
+                            if devil_match:
+                                validation['devilAdvocateSummary'] = devil_match.group(1)
+                            if val_match:
+                                validation['validationSummary'] = val_match.group(1)
+        except Exception as e:
+            print(f"Parse error: {e}", file=sys.stderr)
+    
+    rec = validation.get('recommendation', 'PIVOT').upper()
+    if rec not in ['GO', 'PIVOT', 'KILL']:
+        score = int(validation.get('score', 5))
+        rec = 'GO' if score >= 8 else 'PIVOT' if score >= 5 else 'KILL'
+    
+    return {
+        "recommendation": rec,
+        "score": int(validation.get('score', 5)),
+        "devilAdvocateSummary": validation.get('devilAdvocateSummary', ''),
+        "validationSummary": validation.get('validationSummary', ''),
+        "strengths": validation.get('strengths', []),
+        "considerations": validation.get('considerations', []),
+        "firstStep": validation.get('firstStep', '')
     }
 
 
@@ -835,18 +998,22 @@ def main():
     user_input = sys.argv[2]
     answers = {}
     data_source_ids = None
+    stream = False
     
     # Parse context from command line (can contain answers and/or dataSourceIds)
-    if len(sys.argv) > 3:
-        try:
-            context = json.loads(sys.argv[3])
-            if isinstance(context, dict):
-                answers = context.get('answers', {})
-                data_source_ids = context.get('dataSourceIds')
-            else:
-                answers = context
-        except:
-            pass
+    for arg in sys.argv[3:]:
+        if arg == '--stream':
+            stream = True
+        elif arg.startswith('{'):
+            try:
+                context = json.loads(arg)
+                if isinstance(context, dict):
+                    answers = context.get('answers', {})
+                    data_source_ids = context.get('dataSourceIds')
+                else:
+                    answers = context
+            except:
+                pass
     
     # Parse mode from environment or use default
     mode = os.environ.get('VALIDATION_MODE', 'instant')  # 'instant' or 'full'
@@ -859,8 +1026,16 @@ def main():
         # Get idea-specific questions
         questions = generate_intelligent_questions(user_input, data_source_ids)
         
-        # If we have answers, generate validation
-        if answers and len(answers) > 0:
+        # If streaming requested, stream the response
+        if stream:
+            # Send questions first
+            print(f"data: {json.dumps({'type': 'questions', 'questions': questions})}", flush=True)
+            
+            # Generate and stream validation
+            validation = generate_instant_validation_streaming(user_input, answers or {}, data_source_ids)
+            print(f"data: {json.dumps({'type': 'complete', 'validation': validation})}", flush=True)
+            print("data: [DONE]", flush=True)
+        elif answers and len(answers) > 0:
             if mode == 'full':
                 # Generate full 7-skill pack
                 result = generate_full_validation_pack(user_input, answers, data_source_ids)
@@ -870,13 +1045,10 @@ def main():
             result['questions'] = questions
             print(json.dumps(result, indent=2))
         else:
-            # Return questions only
-            print(json.dumps({
-                'success': True,
-                'questions': questions,
-                'requiresAnswers': True,
-                'hasApiKey': bool(MINIMAX_API_KEY)
-            }, indent=2))
+            # No answers yet - still generate instant validation from user input alone
+            result = generate_instant_validation(user_input, {}, data_source_ids)
+            result['questions'] = questions
+            print(json.dumps(result, indent=2))
     elif skill_id == 'validation-pack-full':
         # Explicit full mode
         questions = generate_intelligent_questions(user_input, data_source_ids)
