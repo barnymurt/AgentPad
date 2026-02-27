@@ -43,7 +43,7 @@
     },
     "data": {
       "name": "Data",
-      "description": "Analyzing metrics, building visualizations, cohort analysis",
+      "description": "Analyzing metrics, building visualizations, KPI tracking",
       "example_data_sources": "Analytics exports, database schemas, SQL queries, data dictionaries",
       "skills": [
         "data-visualization",
@@ -51,7 +51,9 @@
         "funnel-analysis",
         "data-modeling",
         "ab-test-design",
-        "saas-metrics-analysis"
+        "saas-metrics-analysis",
+        "metrics-dashboard-creation",
+        "kpi-tracking"
       ]
     },
     "security": {
@@ -112,22 +114,35 @@
         "mobile-android",
         "ml-llm-integration",
         "automation-framework",
-        "tdd",
-        "test-strategy",
         "migration-planning",
         "performance-tuning",
         "edge-computing"
       ]
     },
+    "qa": {
+      "name": "QA",
+      "description": "Testing, quality assurance, test automation",
+      "example_data_sources": "Test plans, test results, bug reports, automation scripts",
+      "skills": [
+        "test-strategy",
+        "tdd",
+        "automation-framework",
+        "usability-test-planning"
+      ]
+    },
     "product": {
       "name": "Product",
-      "description": "Roadmapping, prioritization, stakeholder management",
+      "description": "Product vision, roadmapping, prioritization, OKRs",
       "example_data_sources": "Feature requests, user feedback, priority matrices, stakeholder contacts",
       "skills": [
+        "product-vision",
         "roadmap-planning",
         "feature-prioritization",
         "requirements-elicitation",
-        "stakeholder-analysis"
+        "stakeholder-analysis",
+        "product-okrs",
+        "messaging-framework",
+        "pricing-strategy"
       ]
     },
     "research": {
@@ -164,6 +179,21 @@
         "ci-cd-pipeline",
         "monitoring-observability"
       ]
+    },
+    "iteration": {
+      "name": "Iteration",
+      "description": "Planning next iterations, product health checks, scaling preparation",
+      "example_data_sources": "Iteration logs, health check reports, scaling assessments, release notes",
+      "skills": [
+        "iteration-planning",
+        "product-health-check",
+        "scale-readiness",
+        "release-management",
+        "feedback-synthesis",
+        "cohort-analysis",
+        "funnel-analysis",
+        "saas-metrics-analysis"
+      ]
     }
   },
   "templates": {
@@ -175,12 +205,22 @@
     "build_mvp": {
       "name": "Build MVP",
       "description": "Building and designing an MVP",
-      "squads": ["technical", "design"]
+      "squads": ["technical", "design", "qa"]
     },
     "launch": {
       "name": "Launch",
       "description": "Planning and executing a launch",
       "squads": ["gtm-launch", "growth"]
+    },
+    "iterate": {
+      "name": "Iterate",
+      "description": "Planning next iteration and measuring results",
+      "squads": ["iteration", "data"]
+    },
+    "scale": {
+      "name": "Scale",
+      "description": "Preparing product for scaling",
+      "squads": ["iteration", "technical", "infrastructure", "security"]
     },
     "analytics": {
       "name": "Analytics",
@@ -190,7 +230,7 @@
     "full_stack": {
       "name": "Full Stack",
       "description": "Complete product development lifecycle",
-      "squads": ["discovery", "design", "data", "security", "gtm-launch", "technical", "product", "research", "growth", "infrastructure"]
+      "squads": ["discovery", "design", "data", "security", "gtm-launch", "technical", "qa", "product", "research", "growth", "infrastructure", "iteration"]
     }
   },
   "custom_squads": []
