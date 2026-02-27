@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import NotionExportButton from '@/components/notion/NotionExportButton';
 
 interface Skill {
   name: string;
@@ -29,6 +30,37 @@ export default function SquadRunClient({ squad, skills }: SquadPageProps) {
   const [results, setResults] = useState<Record<string, any> | null>(null);
   const [expandedResults, setExpandedResults] = useState<Set<string>>(new Set());
   const [error, setError] = useState<string | null>(null);
+
+  const parseSections = (content: string): { heading: string; content: string }[] => {
+    const sections: { heading: string; content: string }[] = [];
+    const lines = content.split('\n');
+    let currentHeading = '';
+    let currentContent: string[] = [];
+
+    for (const line of lines) {
+      if (line.startsWith('## ')) {
+        if (currentHeading) {
+          sections.push({
+            heading: currentHeading,
+            content: currentContent.join('\n').trim()
+          });
+        }
+        currentHeading = line.replace('## ', '').trim();
+        currentContent = [];
+      } else if (currentHeading) {
+        currentContent.push(line);
+      }
+    }
+
+    if (currentHeading) {
+      sections.push({
+        heading: currentHeading,
+        content: currentContent.join('\n').trim()
+      });
+    }
+
+    return sections;
+  };
 
   useEffect(() => {
     fetch('/api/data-sources')
@@ -288,9 +320,21 @@ export default function SquadRunClient({ squad, skills }: SquadPageProps) {
         {/* Results */}
         {results && (
           <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-              Results ({Object.keys(results).length} skills)
-            </h2>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+                Results ({Object.keys(results).length} skills)
+              </h2>
+              <NotionExportButton
+                squadId={squad.id}
+                squadName={squad.name}
+                pages={Object.entries(results)
+                  .filter(([_, result]: [string, any]) => result.success)
+                  .map(([skillName, result]: [string, any]) => ({
+                    title: skillName.replace(/-/g, ' '),
+                    sections: parseSections(result.output || '')
+                  }))}
+              />
+            </div>
             
             {Object.entries(results).map(([skillName, result]: [string, any]) => {
               const isExpanded = expandedResults.has(skillName);
@@ -319,7 +363,7 @@ export default function SquadRunClient({ squad, skills }: SquadPageProps) {
                       {result.success ? (
                         result.needs_context ? (
                           <div>
-                            <div className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap mb-4">
+                            <div className="text-gray-700 dark:text-gray-300 mb-4 leading-relaxed">
                               {result.output}
                             </div>
                             <div className="p-3 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-lg">
@@ -333,7 +377,7 @@ export default function SquadRunClient({ squad, skills }: SquadPageProps) {
                             </div>
                           </div>
                         ) : (
-                          <div className="prose prose-sm dark:prose-invert max-w-none whitespace-pre-wrap text-gray-700 dark:text-gray-300">
+                          <div className="prose prose-sm dark:prose-invert max-w-none text-gray-700 dark:text-gray-300 leading-relaxed">
                             {result.output}
                           </div>
                         )
