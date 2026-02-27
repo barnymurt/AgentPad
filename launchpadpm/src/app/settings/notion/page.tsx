@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 interface NotionConnection {
   connected: boolean;
@@ -9,6 +10,7 @@ interface NotionConnection {
 }
 
 export default function NotionSettings() {
+  const router = useRouter();
   const [connection, setConnection] = useState<NotionConnection>({
     connected: false,
     configured: false
@@ -33,14 +35,14 @@ export default function NotionSettings() {
     }
   };
 
-  const handleConnect = async () => {
+  const handleConnect = () => {
     window.location.href = '/api/notion/connect?action=connect';
   };
 
   const handleDisconnect = async () => {
     try {
       await fetch('/api/notion/connect?action=disconnect', { method: 'GET' });
-      setConnection({ connected: false, configured: true });
+      setConnection({ connected: false, configured: connection.configured });
     } catch (error) {
       console.error('Failed to disconnect:', error);
     }
@@ -49,6 +51,7 @@ export default function NotionSettings() {
   const handleSaveSettings = () => {
     localStorage.setItem('notion-autosync', String(autoSync));
     localStorage.setItem('notion-default-project', defaultProject);
+    alert('Settings saved!');
   };
 
   if (loading) {
@@ -68,7 +71,7 @@ export default function NotionSettings() {
           <h3 className="font-semibold text-yellow-800">Notion API Not Configured</h3>
           <p className="text-yellow-700 mt-2">
             To enable Notion sync, add NOTION_CLIENT_ID and NOTION_CLIENT_SECRET 
-            to your environment variables. You can still use manual export.
+            to your environment variables. You can still use manual export (Download ZIP).
           </p>
         </div>
       ) : (
@@ -101,12 +104,18 @@ export default function NotionSettings() {
                 Disconnect Notion
               </button>
             ) : (
-              <button
-                onClick={handleConnect}
-                className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800"
-              >
-                Connect Notion Account
-              </button>
+              <div className="space-y-3">
+                <button
+                  onClick={handleConnect}
+                  className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800"
+                >
+                  Connect Notion Account
+                </button>
+                <p className="text-sm text-gray-500">
+                  Click to authorize AgentPad to access your Notion workspace.
+                  This allows automatic exporting of squad results to your Notion pages.
+                </p>
+              </div>
             )}
           </div>
 
@@ -155,11 +164,15 @@ export default function NotionSettings() {
           <div className="bg-gray-50 border rounded-lg p-6 mt-6">
             <h3 className="font-semibold mb-2">How It Works</h3>
             <ul className="text-sm text-gray-600 space-y-2">
-              <li>1. Connect your Notion account to enable auto-sync</li>
-              <li>2. Run any squad to generate results</li>
-              <li>3. Click "Export to Notion" to add results to your workspace</li>
-              <li>4. Your workspace builds incrementally as you run more squads</li>
+              <li><strong>1. Connect:</strong> Click "Connect Notion Account" to authorize</li>
+              <li><strong>2. Run Squad:</strong> Execute any squad in AgentPad</li>
+              <li><strong>3. Export:</strong> Click "Export to Notion" after running</li>
+              <li><strong>4. Done:</strong> Pages appear in your Notion workspace</li>
             </ul>
+            <div className="mt-4 p-3 bg-blue-50 rounded text-sm text-blue-700">
+              <strong>Security:</strong> Your Notion access token is encrypted and stored securely in cookies. 
+              AgentPad can only access pages you create through this integration.
+            </div>
           </div>
         </>
       )}

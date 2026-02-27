@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 import { notionExportService, SquadExportData } from '@/lib/notion/export-service';
+import { notionClient } from '@/lib/notion/notion-client';
 
 export async function POST(request: NextRequest) {
   try {
@@ -21,11 +22,41 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    if (format === 'notion') {
+      try {
+        const createdPages = await notionClient.createPagesInSection(
+          projectName,
+          squadName,
+          pages.map((p: any) => ({
+            title: p.title,
+            content: p.sections?.map((s: any) => `## ${s.heading}\n\n${s.content}`).join('\n\n') || p.content || ''
+          }))
+        );
+
+        return NextResponse.json({
+          success: true,
+          notionUrl: createdPages[0]?.url || null,
+          pagesCreated: createdPages.length,
+          message: `Created ${createdPages.length} pages in Notion`
+        });
+      } catch (notionError) {
+        console.error('Notion API error:', notionError);
+        return NextResponse.json(
+          { error: `Notion sync failed: ${notionError instanceof Error ? notionError.message : 'Unknown error'}` },
+          { status: 500 }
+        );
+      }
+    }
+
     const exportData: SquadExportData = {
       squadId,
       squadName,
       projectName,
-      pages: pages || []
+      pages: pages.map((p: any) => ({
+        title: p.title,
+        content: p.sections?.map((s: any) => `## ${s.heading}\n\n${s.content}`).join('\n\n') || p.content || '',
+        sections: p.sections || []
+      }))
     };
 
     const exportDir = await notionExportService.generateExport(exportData);
@@ -38,7 +69,7 @@ export async function POST(request: NextRequest) {
       return new NextResponse(zipBuffer, {
         headers: {
           'Content-Type': 'application/zip',
-          'Content-Disposition': `attachment; filename="${projectName}_${squadName}.zip"`
+          'Content-Disposition': `attachment; filename="${projectName.replace(/[^a-zA-Z0-9]/g, '_')}_${squadName.replace(/[^a-zA-Z0-9]/g, '_')}.zip"`
         }
       });
     }
