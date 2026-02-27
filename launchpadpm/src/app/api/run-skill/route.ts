@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
-import { createJob, getJob, getUserById, getUserByEmail, incrementValidationPackCount, canGenerateValidationPack, getRemainingPacks, getResetTime } from '@/lib/db';
+import { createJob, getJob, getUserById, getUserByEmail, canRunValidation, canRunSkill, incrementValidationCount, incrementSkillCount, getRemainingValidations, getRemainingSkills, getResetTime, type User } from '@/lib/db';
 import { spawn } from 'child_process';
 import path from 'path';
 import fs from 'fs';
@@ -205,23 +205,40 @@ export async function POST(request: NextRequest) {
         { status: 403 }
       );
     }
-    
-    if (user.tier !== 'paid' && !isValidationPack) {
-      return NextResponse.json(
-        { error: 'upgrade_required', message: 'Upgrade to Pro to run this skill' },
-        { status: 403 }
-      );
-    }
-    
-    if (isValidationPack && user.tier !== 'paid') {
-      const canGenerate = canGenerateValidationPack(user);
-      if (!canGenerate) {
+
+    // Check tier and usage limits
+    if (isValidationPack) {
+      const canValidate = canRunValidation(user);
+      if (!canValidate) {
+        const remaining = getRemainingValidations(user);
         return NextResponse.json(
           { 
             error: 'limit_reached', 
-            message: 'You have reached your Validation Pack limit',
-            remaining: 0,
-            resetTime: getResetTime(user),
+            message: 'You have reached your monthly validation limit',
+            remaining: typeof remaining === 'number' ? remaining : 0,
+            resetTime: user.validationsResetAt,
+          },
+          { status: 403 }
+        );
+      }
+    } else {
+      // Non-validation-pack skills require premium
+      if (user.tier !== 'premium' && user.tier !== 'admin') {
+        return NextResponse.json(
+          { error: 'upgrade_required', message: 'Upgrade to Premium to run this skill' },
+          { status: 403 }
+        );
+      }
+      
+      const canSkill = canRunSkill(user);
+      if (!canSkill) {
+        const remaining = getRemainingSkills(user);
+        return NextResponse.json(
+          { 
+            error: 'limit_reached', 
+            message: 'You have reached your monthly skill limit',
+            remaining: typeof remaining === 'number' ? remaining : 0,
+            resetTime: user.skillsResetAt,
           },
           { status: 403 }
         );
@@ -233,8 +250,11 @@ export async function POST(request: NextRequest) {
     
     executeSkillAsync(job.id, skillId, skillInput, answers, dataSourceIds);
     
+    // Track usage for free tier users
     if (isValidationPack) {
-      incrementValidationPackCount(user.id);
+      incrementValidationCount(user.id);
+    } else {
+      incrementSkillCount(user.id);
     }
     
     return NextResponse.json({

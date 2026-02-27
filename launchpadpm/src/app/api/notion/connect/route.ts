@@ -1,8 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
-const NOTION_CLIENT_ID = process.env.NOTION_CLIENT_ID;
-const NOTION_CLIENT_SECRET = process.env.NOTION_CLIENT_SECRET;
+function getClientId(req: NextRequest): string {
+  return process.env.NOTION_CLIENT_ID || req.cookies.get('notion-client-id')?.value || '';
+}
+
+function getClientSecret(req: NextRequest): string {
+  return process.env.NOTION_CLIENT_SECRET || req.cookies.get('notion-client-secret')?.value || '';
+}
+
 const NOTION_REDIRECT_URI = process.env.NOTION_REDIRECT_URI || 'http://localhost:3000/api/notion/callback';
 const ENCRYPTION_KEY = process.env.NOTION_ENCRYPTION_KEY || 'default-dev-key-change-in-production';
 
@@ -30,8 +36,15 @@ function decrypt(text: string): string {
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const action = searchParams.get('action');
+  
+  const NOTION_CLIENT_ID = getClientId(request);
+  const NOTION_CLIENT_SECRET = getClientSecret(request);
 
   if (action === 'connect') {
+    if (!NOTION_CLIENT_ID || !NOTION_CLIENT_SECRET) {
+      return NextResponse.redirect('/settings/notion?error=credentials_required');
+    }
+    
     const state = Math.random().toString(36).substring(7);
     const authUrl = `https://api.notion.com/oauth2/authorize?` +
       `client_id=${NOTION_CLIENT_ID}&` +
@@ -67,11 +80,12 @@ export async function GET(request: NextRequest) {
   if (action === 'status') {
     const cookieStore = await cookies();
     const accessToken = cookieStore.get('notion_access_token');
+    const configured = !!(NOTION_CLIENT_ID && NOTION_CLIENT_SECRET);
     
     if (accessToken) {
       return NextResponse.json({
         connected: true,
-        configured: !!(NOTION_CLIENT_ID && NOTION_CLIENT_SECRET),
+        configured,
         workspaceName: cookieStore.get('notion_workspace_name')?.value || 'Workspace',
         message: 'Connected'
       });
@@ -79,7 +93,7 @@ export async function GET(request: NextRequest) {
     
     return NextResponse.json({
       connected: false,
-      configured: !!(NOTION_CLIENT_ID && NOTION_CLIENT_SECRET),
+      configured,
       message: NOTION_CLIENT_ID ? 'Ready to connect' : 'Not configured'
     });
   }
@@ -92,12 +106,22 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const NOTION_CLIENT_ID = getClientId(request);
+    const NOTION_CLIENT_SECRET = getClientSecret(request);
+    
     const body = await request.json();
     const { code, state } = body;
 
     if (!code) {
       return NextResponse.json(
         { error: 'Authorization code required' },
+        { status: 400 }
+      );
+    }
+
+    if (!NOTION_CLIENT_ID || !NOTION_CLIENT_SECRET) {
+      return NextResponse.json(
+        { error: 'Notion credentials not configured' },
         { status: 400 }
       );
     }

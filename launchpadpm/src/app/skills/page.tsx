@@ -76,7 +76,7 @@ export default function SkillsPage() {
   const mutedColor = darkMode ? 'text-gray-400' : 'text-gray-600';
   const inputBg = darkMode ? 'bg-[#0f0f1a]' : 'bg-gray-100';
   const inputBorder = darkMode ? 'border-[#2a2a3e]' : 'border-gray-300';
-  const cardBg = darkMode ? 'bg-[#1a1a2e]' : 'bg-white';
+  const cardBg = darkMode ? 'bg-[#1a1a2e]' : 'bg-[#F9FAFB]';
   const cardBorder = darkMode ? 'border-[#2a2a3e]' : 'border-gray-200';
 
   return (

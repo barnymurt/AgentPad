@@ -35,7 +35,7 @@ export default function MetricsPage() {
 
   const textColor = darkMode ? 'text-white' : 'text-gray-900';
   const mutedColor = darkMode ? 'text-gray-400' : 'text-gray-600';
-  const cardBg = darkMode ? 'bg-[#1a1a2e]' : 'bg-white';
+  const cardBg = darkMode ? 'bg-[#1a1a2e]' : 'bg-[#F9FAFB]';
   const cardBorder = darkMode ? 'border-[#2a2a3e]' : 'border-gray-200';
 
   const completedJobs = jobs.filter(j => j.status === 'completed').length;

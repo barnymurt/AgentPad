@@ -2,11 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import { AppLayout, useAppLayout } from '@/components/layout/AppLayout';
 import QuickActions from '@/components/dashboard/QuickActions';
 import ActiveProject from '@/components/dashboard/ActiveProject';
 import ActivityFeed from '@/components/dashboard/ActivityFeed';
 import ResultsPanel from '@/components/dashboard/ResultsPanel';
+import UpgradeModal from '@/components/UpgradeModal';
 
 interface Squad {
   id: string;
@@ -41,14 +43,21 @@ const defaultLifecyclePhases = [
 ];
 
 export default function DashboardPage() {
-  const { darkMode, squads: contextSquads } = useAppLayout();
+  const { data: session, status } = useSession();
   const router = useRouter();
+  const { darkMode, squads: contextSquads } = useAppLayout();
   const [userInput, setUserInput] = useState('');
   const [project, setProject] = useState<Project | null>(null);
   const [showNewProject, setShowNewProject] = useState(false);
   const [newProjectName, setNewProjectName] = useState('');
   const [isValidating, setIsValidating] = useState(false);
   const [showValidateModal, setShowValidateModal] = useState(false);
+
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/auth/signin');
+    }
+  }, [status, router]);
 
   useEffect(() => {
     const savedProject = localStorage.getItem('active-project');
@@ -114,11 +123,11 @@ export default function DashboardPage() {
 
   const textColor = darkMode ? 'text-white' : 'text-gray-900';
   const mutedColor = darkMode ? 'text-gray-400' : 'text-gray-600';
-  const cardBg = darkMode ? 'bg-[#1a1a2e]' : 'bg-white';
+  const cardBg = darkMode ? 'bg-[#1a1a2e]' : 'bg-[#F9FAFB]';
   const cardBorder = darkMode ? 'border-[#2a2a3e]' : 'border-gray-200';
-  const inputBg = darkMode ? 'bg-[#0f0f1a]' : 'bg-gray-100';
+  const inputBg = darkMode ? 'bg-[#0f0f1a]' : 'bg-white';
   const inputBorder = darkMode ? 'border-[#2a2a3e]' : 'border-gray-300';
-  const modalBg = darkMode ? 'bg-[#1a1a2e]' : 'bg-white';
+  const modalBg = darkMode ? 'bg-[#1a1a2e]' : 'bg-[#F9FAFB]';
 
   return (
     <AppLayout title="Dashboard" key={darkMode ? 'dark' : 'light'}>
@@ -236,6 +245,7 @@ export default function DashboardPage() {
           </div>
         </div>
       )}
+      <UpgradeModal />
     </AppLayout>
   );
 }
