@@ -9,11 +9,16 @@ interface LifecyclePhase {
   status: 'completed' | 'active' | 'pending';
 }
 
+interface Project {
+  id: string;
+  name: string;
+  description: string;
+  progress: number;
+  lifecyclePhases: LifecyclePhase[];
+}
+
 interface ActiveProjectProps {
-  projectName?: string;
-  description?: string;
-  progress?: number;
-  lifecyclePhases?: LifecyclePhase[];
+  project?: Project | null;
   darkMode?: boolean;
 }
 
@@ -31,13 +36,15 @@ const defaultLifecyclePhases: LifecyclePhase[] = [
 ];
 
 export default function ActiveProject({
-  projectName = 'My Startup',
-  description = 'AI-powered product development platform',
-  progress = 35,
-  lifecyclePhases = defaultLifecyclePhases,
+  project,
   darkMode = true,
 }: ActiveProjectProps) {
   const [isExpanded, setIsExpanded] = useState(true);
+
+  const projectName = project?.name || 'No Active Project';
+  const description = project?.description || 'Validate an idea to get started';
+  const progress = project?.progress || 0;
+  const lifecyclePhases = project?.lifecyclePhases || defaultLifecyclePhases;
 
   const cardBg = darkMode ? 'bg-[#1a1a2e]' : 'bg-white';
   const cardBorder = darkMode ? 'border-[#2a2a3e]' : 'border-gray-200';
