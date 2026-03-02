@@ -146,12 +146,14 @@ export default function DashboardPage() {
               value={userInput}
               onChange={(e) => setUserInput(e.target.value)}
               placeholder="Describe your startup idea..."
+              data-testid="validation-input"
               className={`flex-1 px-4 py-2.5 rounded-lg border ${inputBorder} ${inputBg} ${textColor} placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
               onKeyDown={(e) => e.key === 'Enter' && handleValidate()}
             />
             <button
               onClick={handleValidate}
               disabled={!userInput.trim() || isValidating}
+              data-testid="validate-button"
               className="px-6 py-2.5 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               {isValidating ? 'Validating...' : 'Validate'}
@@ -163,9 +165,10 @@ export default function DashboardPage() {
           
           {/* New Project Option */}
           {!project && (
-            <div className="mt-4 pt-4 border-t border-[#2a2a3e]">
+            <div className={`mt-4 pt-4 border-t ${cardBorder}`}>
               <button
                 onClick={() => setShowNewProject(!showNewProject)}
+                data-testid="start-project-button"
                 className={`text-sm ${mutedColor} hover:text-blue-500 transition-colors`}
               >
                 Or start a new project instead →
@@ -178,12 +181,14 @@ export default function DashboardPage() {
                     value={newProjectName}
                     onChange={(e) => setNewProjectName(e.target.value)}
                     placeholder="Project name..."
+                    data-testid="project-name-input"
                     className={`flex-1 px-4 py-2 rounded-lg border ${inputBorder} ${inputBg} ${textColor} placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500`}
                     onKeyDown={(e) => e.key === 'Enter' && handleCreateProject()}
                   />
                   <button
                     onClick={handleCreateProject}
                     disabled={!newProjectName.trim()}
+                    data-testid="create-project-button"
                     className="px-4 py-2 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 disabled:opacity-50 transition-colors"
                   >
                     Create Project

@@ -178,9 +178,10 @@ export default function DataSourcesPage() {
         {/* Data Sources List */}
         <div className={`${bgColor} ${borderColor} border rounded-xl p-6`}>
           <div className="flex items-center justify-between mb-4">
-            <h3 className={`font-semibold ${textColor} text-lg`}>Connected Sources</h3>
+            <h3 className={`font-semibold ${textColor} text-lg`} data-testid="connected-sources-title">Connected Sources</h3>
             <button
               onClick={() => setShowAddForm(true)}
+              data-testid="add-source-button"
               className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium text-sm"
             >
               + Add Source
@@ -198,7 +199,7 @@ export default function DataSourcesPage() {
           )}
 
           {dataSources.length === 0 ? (
-            <div className="text-center py-12">
+            <div className="text-center py-12" data-testid="empty-data-sources">
               <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg className="w-8 h-8 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M4 7V4h16v3M9 20h6M12 4v16" strokeLinecap="round"/>
@@ -207,15 +208,16 @@ export default function DataSourcesPage() {
               <p className={`${mutedColor} mb-4`}>No data sources connected yet</p>
               <button
                 onClick={() => setShowAddForm(true)}
+                data-testid="add-first-source-button"
                 className="text-blue-600 hover:underline"
               >
                 Add your first data source
               </button>
             </div>
           ) : (
-            <div className="space-y-3">
+              <div className="space-y-3" data-testid="data-sources-list">
               {dataSources.map((ds) => (
-                <div key={ds.id} className={`flex items-center justify-between p-4 ${cardBg} rounded-lg`}>
+                <div key={ds.id} className={`flex items-center justify-between p-4 ${cardBg} rounded-lg`} data-testid={`data-source-${ds.id}`}>
                   <div className="flex items-center gap-4">
                     <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg flex items-center justify-center">
                       {getTypeIcon(ds.type)}
@@ -229,6 +231,7 @@ export default function DataSourcesPage() {
                   </div>
                   <button
                     onClick={() => removeDataSource(ds.id)}
+                    data-testid={`remove-source-${ds.id}`}
                     className="px-3 py-1.5 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg text-sm"
                   >
                     Remove
@@ -248,6 +251,7 @@ export default function DataSourcesPage() {
                   <h2 className={`font-semibold ${textColor} text-xl`}>Add Data Source</h2>
                   <button
                     onClick={() => setShowAddForm(false)}
+                    data-testid="source-modal-close"
                     className={`${mutedColor} hover:${textColor}`}
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -265,6 +269,7 @@ export default function DataSourcesPage() {
                     value={newSource.name}
                     onChange={(e) => setNewSource({ ...newSource, name: e.target.value })}
                     placeholder="e.g., Customer Interview Data"
+                    data-testid="source-name-input"
                     className={`w-full px-4 py-3 ${cardBg} border ${borderColor} rounded-lg ${textColor} focus:outline-none focus:ring-2 focus:ring-blue-500`}
                     required
                   />
@@ -275,6 +280,7 @@ export default function DataSourcesPage() {
                   <select
                     value={newSource.type}
                     onChange={(e) => setNewSource({ ...newSource, type: e.target.value, authType: 'none' })}
+                    data-testid="source-type-select"
                     className={`w-full px-4 py-3 ${cardBg} border ${borderColor} rounded-lg ${textColor} focus:outline-none focus:ring-2 focus:ring-blue-500`}
                   >
                     <option value="spreadsheet">Spreadsheet (Google Sheets, Excel)</option>
@@ -291,6 +297,7 @@ export default function DataSourcesPage() {
                   <select
                     value={newSource.authType}
                     onChange={(e) => setNewSource({ ...newSource, authType: e.target.value })}
+                    data-testid="source-auth-type-select"
                     className={`w-full px-4 py-3 ${cardBg} border ${borderColor} rounded-lg ${textColor} focus:outline-none focus:ring-2 focus:ring-blue-500`}
                   >
                     <option value="none">None (public)</option>
@@ -309,11 +316,13 @@ export default function DataSourcesPage() {
                         value={newSource.apiKey}
                         onChange={(e) => setNewSource({ ...newSource, apiKey: e.target.value })}
                         placeholder="Enter your API key"
+                        data-testid="source-api-key-input"
                         className={`w-full px-4 py-3 pr-12 ${cardBg} border ${borderColor} rounded-lg ${textColor} focus:outline-none focus:ring-2 focus:ring-blue-500`}
                       />
                       <button
                         type="button"
                         onClick={() => setShowSecret(!showSecret)}
+                        data-testid="source-toggle-secret"
                         className={`absolute right-3 top-1/2 -translate-y-1/2 ${mutedColor} hover:${textColor}`}
                       >
                         {showSecret ? (
@@ -340,6 +349,7 @@ export default function DataSourcesPage() {
                         value={newSource.username}
                         onChange={(e) => setNewSource({ ...newSource, username: e.target.value })}
                         placeholder="Username"
+                        data-testid="source-username-input"
                         className={`w-full px-4 py-3 ${cardBg} border ${borderColor} rounded-lg ${textColor} focus:outline-none focus:ring-2 focus:ring-blue-500`}
                       />
                     </div>
@@ -350,6 +360,7 @@ export default function DataSourcesPage() {
                         value={newSource.password}
                         onChange={(e) => setNewSource({ ...newSource, password: e.target.value })}
                         placeholder="Password"
+                        data-testid="source-password-input"
                         className={`w-full px-4 py-3 ${cardBg} border ${borderColor} rounded-lg ${textColor} focus:outline-none focus:ring-2 focus:ring-blue-500`}
                       />
                     </div>
@@ -364,6 +375,7 @@ export default function DataSourcesPage() {
                       value={newSource.apiKey}
                       onChange={(e) => setNewSource({ ...newSource, apiKey: e.target.value })}
                       placeholder="Enter OAuth token"
+                      data-testid="source-oauth-input"
                       className={`w-full px-4 py-3 ${cardBg} border ${borderColor} rounded-lg ${textColor} focus:outline-none focus:ring-2 focus:ring-blue-500`}
                     />
                   </div>
@@ -381,6 +393,7 @@ export default function DataSourcesPage() {
                     type="text"
                     value={newSource.location}
                     onChange={(e) => setNewSource({ ...newSource, location: e.target.value })}
+                    data-testid="source-location-input"
                     placeholder={
                       newSource.type === 'spreadsheet' ? 'https://docs.google.com/spreadsheets/d/...' :
                       newSource.type === 'database' ? 'postgresql://user:pass@host:5432/db' :
@@ -397,6 +410,7 @@ export default function DataSourcesPage() {
                   <button
                     type="button"
                     onClick={() => setShowAddForm(false)}
+                    data-testid="source-cancel-button"
                     className={`flex-1 px-4 py-3 border ${borderColor} ${textColor} rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800`}
                   >
                     Cancel
@@ -404,6 +418,7 @@ export default function DataSourcesPage() {
                   <button
                     type="submit"
                     disabled={saving}
+                    data-testid="source-connect-button"
                     className="flex-1 px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium disabled:opacity-50"
                   >
                     {saving ? 'Connecting...' : 'Connect'}

@@ -64,7 +64,7 @@ interface QuickActionsProps {
 }
 
 export default function QuickActions({ actions = defaultActions, darkMode = true }: QuickActionsProps) {
-  const cardBg = darkMode ? 'bg-[#1a1a2e]' : 'bg-white';
+  const cardBg = darkMode ? 'bg-[#1a1a2e]' : 'bg-[#F9FAFB]';
   const cardBorder = darkMode ? 'border-[#2a2a3e]' : 'border-gray-200';
   const titleColor = darkMode ? 'text-white' : 'text-gray-900';
 
@@ -77,11 +77,12 @@ export default function QuickActions({ actions = defaultActions, darkMode = true
         Quick Actions
       </h2>
       
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-3" data-testid="quick-actions">
         {actions.map((action) => (
           <Link
             key={action.id}
             href={action.href}
+            data-testid={`quick-action-${action.id}`}
             className={`flex items-center gap-3 p-3 rounded-lg bg-gradient-to-br ${action.color} hover:opacity-90 transition-opacity group`}
           >
             <div className="text-white/90 group-hover:text-white transition-colors">

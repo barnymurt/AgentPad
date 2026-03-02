@@ -88,16 +88,16 @@ export default function SignInPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 px-4">
       <div className="max-w-md w-full">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-            {isLogin ? 'Welcome Back' : 'Create Account'}
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            {isLogin 
-              ? 'Sign in to continue to LaunchPadPM' 
-              : 'Start validating your product ideas'}
-          </p>
-        </div>
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2" data-testid="signin-title">
+              {isLogin ? 'Welcome Back' : 'Create Account'}
+            </h1>
+            <p className="text-gray-600 dark:text-gray-400" data-testid="signin-subtitle">
+              {isLogin 
+                ? 'Sign in to continue to LaunchPadPM' 
+                : 'Start validating your product ideas'}
+            </p>
+          </div>
 
         <div className="bg-[#F9FAFB] dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-8">
           {(error || authError) && (
@@ -163,6 +163,7 @@ export default function SignInPage() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Your name"
+                  data-testid="signin-name-input"
                   className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
@@ -178,6 +179,7 @@ export default function SignInPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 required
+                data-testid="signin-email-input"
                 className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -194,11 +196,13 @@ export default function SignInPage() {
                   placeholder="••••••••"
                   required
                   minLength={6}
+                  data-testid="signin-password-input"
                   className="w-full px-4 py-3 pr-12 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
+                  data-testid="signin-toggle-password"
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
                 >
                   {showPassword ? (
@@ -218,6 +222,7 @@ export default function SignInPage() {
             <button
               type="submit"
               disabled={loading}
+              data-testid="signin-submit-button"
               className="w-full px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? 'Please wait...' : isLogin ? 'Sign In' : 'Create Account'}
@@ -230,6 +235,7 @@ export default function SignInPage() {
                 setIsLogin(!isLogin);
                 setAuthError('');
               }}
+              data-testid="signin-toggle-mode"
               className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
             >
               {isLogin 
