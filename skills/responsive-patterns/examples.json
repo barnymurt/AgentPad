@@ -1,0 +1,39 @@
+{
+  "useWhen": [
+    "Building responsive layouts for mobile, tablet, and desktop",
+    "Implementing mobile-first design approach",
+    "Creating responsive navigation and content patterns",
+    "Handling images and typography across devices",
+    "Testing responsive designs across breakpoints"
+  ],
+  "workflow": [
+    {
+      "step": "1. Define Breakpoints",
+      "description": "Set breakpoints for mobile, tablet, desktop, and custom ranges"
+    },
+    {
+      "step": "2. Choose Layouts",
+      "description": "Select appropriate layout strategy: Grid, Flexbox, or Container queries"
+    },
+    {
+      "step": "3. Handle Content",
+      "description": "Adapt images, typography, and navigation for each device"
+    },
+    {
+      "step": "4. Test",
+      "description": "Test on real devices, emulators, and cross-browser"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Create responsive layout for a dashboard with sidebar navigation, main content area, and header.",
+      "context": "Web dashboard application",
+      "output": "**BREAKPOINTS**\n\n| Breakpoint | Width | Devices |\n|------------|-------|----------|\n| xs | < 640px | Mobile |\n| sm | 640px - 1024px | Tablet |\n| md | 1024px - 1440px | Desktop |\n| lg | > 1440px | Large Desktop |\n\n**LAYOUT PATTERN: Mobile-First Sidebar**\n\n```css\n/* Base (Mobile) */\n.layout {\n  display: flex;\n  flex-direction: column;\n}\n\n.header {\n  position: sticky;\n  top: 0;\n  z-index: 10;\n}\n\n.sidebar {\n  position: fixed;\n  left: -100%;\n  width: 80%;\n  height: 100vh;\n  transition: left 0.3s ease;\n}\n\n.sidebar.open {\n  left: 0;\n}\n\n.main {\n  padding: 1rem;\n}\n\n/* Tablet */\n@media (min-width: 640px) {\n  .sidebar {\n    position: sticky;\n    left: 0;\n    width: 200px;\n    flex-shrink: 0;\n  }\n  \n  .layout {\n    flex-direction: row;\n  }\n}\n\n/* Desktop */\n@media (min-width: 1024px) {\n  .sidebar {\n    width: 250px;\n  }\n}\n```\n\n**NAVIGATION PATTERN**\n\n| Device | Pattern |\n|--------|---------|\n| Mobile | Hamburger menu, slide-in drawer |\n| Tablet | Collapsible sidebar |\n| Desktop | Always visible sidebar |\n\n**TESTING PLAN**\n- Chrome DevTools (all breakpoints)\n- Real device: iPhone 14, iPad, MacBook\n- Cross-browser: Chrome, Safari, Firefox"
+    },
+    {
+      "input": "Build a responsive product grid that shows 1 column on mobile, 2 on tablet, 3 on tablet landscape, and 4 on desktop.",
+      "context": "E-commerce product listing",
+      "output": "**BREAKPOINTS**\n\n```css\n/* Mobile First - 1 column */\n.product-grid {\n  display: grid;\n  grid-template-columns: 1fr;\n  gap: 1rem;\n}\n\n/* Small tablet - 2 columns */\n@media (min-width: 480px) {\n  .product-grid {\n    grid-template-columns: repeat(2, 1fr);\n  }\n}\n\n/* Tablet landscape - 3 columns */\n@media (min-width: 768px) {\n  .product-grid {\n    grid-template-columns: repeat(3, 1fr);\n  }\n}\n\n/* Desktop - 4 columns */\n@media (min-width: 1024px) {\n  .product-grid {\n    grid-template-columns: repeat(4, 1fr);\n    gap: 1.5rem;\n  }\n}\n```\n\n**RESPONSIVE IMAGES**\n\n```html\n<picture>\n  <source media=\"(min-width: 1024px)\" srcset=\"product-400.jpg\">\n  <source media=\"(min-width: 480px)\" srcset=\"product-300.jpg\">\n  <img src=\"product-200.jpg\" alt=\"Product\" loading=\"lazy\">\n</picture>\n```\n\n**TOUCH OPTIMIZATION**\n\n```css\n.product-card {\n  min-height: 44px; /* Touch target minimum */\n  padding: 1rem;\n}\n\n@media (hover: hover) {\n  .product-card:hover {\n    transform: translateY(-2px);\n  }\n}\n```\n\n**TESTING**\n- Check tap targets are 44px+\n- Verify images load progressively\n- Test on actual devices when possible"
+    }
+  ]
+}

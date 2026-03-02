@@ -1,0 +1,51 @@
+{
+  "useWhen": [
+    "Coordinating delivery of work across multiple skills",
+    "Breaking down a goal into executable tasks with dependencies",
+    "Sequencing work to respect dependencies",
+    "Managing scope boundaries for a delivery",
+    "Resolving blockers during delivery execution"
+  ],
+  "workflow": [
+    {
+      "step": "1. Goal Clarification",
+      "description": "Extract stated goal or outcome, identify success criteria, determine constraints. Ask clarifying questions if goal is vague"
+    },
+    {
+      "step": "2. Work Breakdown",
+      "description": "Decompose goal into discrete, executable tasks. Each task should be self-contained, specific, and atomic. Group into workstreams"
+    },
+    {
+      "step": "3. Dependency Analysis",
+      "description": "Map dependencies as directed graph. Identify hard dependencies, soft dependencies, shared resources, and critical path"
+    },
+    {
+      "step": "4. Complexity Assessment",
+      "description": "Assess complexity using T-shirt sizing: S (single skill), M (2-3 skill calls), L (multiple skill calls with complex handoffs)"
+    },
+    {
+      "step": "5. Scope Boundary",
+      "description": "Define explicit in-scope and out-of-scope items. Identify scope creep risks"
+    },
+    {
+      "step": "6. Sequencing",
+      "description": "Order tasks to minimize blockers. Group parallelizable tasks into stages. Flag circular dependencies"
+    },
+    {
+      "step": "7. Output Generation",
+      "description": "Present structured delivery plan with tasks, dependencies, stages, scope boundaries, and complexity ratings"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Break down building a new SaaS feature into executable tasks",
+      "output": "Delivery plan with task registry, dependency map, stage sequencing, and scope boundaries",
+      "context": "Need to coordinate multiple skills for feature delivery"
+    },
+    {
+      "input": "We have blocked tasks - help re-sequence the delivery plan",
+      "output": "Updated delivery plan with resolved dependencies, re-ordered stages, and blocker status report",
+      "context": "Delivery blocked by dependencies or unclear next steps"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "useWhen": [
+    "You need to design your data structure",
+    "You're building a new product or feature",
+    "You want to ensure data integrity"
+  ],
+  "workflow": [
+    { "step": "Identify Entities", "description": "List the main objects your system manages" },
+    { "step": "Define Relationships", "description": "Map how entities connect to each other" },
+    { "step": "Document Attributes", "description": "List properties for each entity" },
+    { "step": "Apply Constraints", "description": "Define rules for data integrity" },
+    { "step": "Review", "description": "Validate with team and stakeholders" }
+  ],
+  "examples": [
+    {
+      "input": "A basic e-commerce platform with products, orders, and customers",
+      "output": "## Data Schema: E-commerce Platform\n\n### Entities\n\n**User**\n- id (UUID, PK)\n- email (string, unique)\n- password_hash (string)\n- name (string)\n- created_at (timestamp)\n- updated_at (timestamp)\n\n**Product**\n- id (UUID, PK)\n- name (string)\n- description (text)\n- price (decimal)\n- category_id (FK)\n- inventory_count (integer)\n- is_active (boolean)\n- created_at (timestamp)\n\n**Order**\n- id (UUID, PK)\n- user_id (FK)\n- status (enum: pending, processing, shipped, delivered, cancelled)\n- total_amount (decimal)\n- shipping_address (json)\n- created_at (timestamp)\n- updated_at (timestamp)\n\n**OrderItem**\n- id (UUID, PK)\n- order_id (FK)\n- product_id (FK)\n- quantity (integer)\n- unit_price (decimal)\n\n**Category**\n- id (UUID, PK)\n- name (string)\n- parent_id (FK, nullable)\n\n---\n\n### Relationships\n\n```\nUser 1 --- * Order\nOrder 1 --- * OrderItem\nProduct 1 --- * OrderItem\nCategory 1 --- * Product\n```\n\n---\n\n### Constraints\n\n- Product.price > 0\n- OrderItem.quantity > 0\n- Order.total_amount = SUM(OrderItem.unit_price * quantity)\n- Product.inventory_count >= OrderItem.quantity (before checkout)\n- User.email must be unique\n- Order.status can only transition: pending → processing → shipped → delivered\n\n---\n\n### Indexes\n\n- User.email (unique)\n- Order.user_id\n- Order.created_at\n- Product.category_id\n- OrderItem.order_id\n- OrderItem.product_id",
+      "context": "E-commerce, Database Design"
+    }
+  ]
+}

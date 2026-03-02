@@ -1,0 +1,21 @@
+{
+  "useWhen": [
+    "You need to design your application structure",
+    "You're starting a new project",
+    "You want to ensure scalability"
+  ],
+  "workflow": [
+    { "step": "Analyze Requirements", "description": "Understand functional and non-functional requirements" },
+    { "step": "Choose Pattern", "description": "Select architecture pattern (monolith, microservices, etc.)" },
+    { "step": "Define Components", "description": "Identify services, modules, and their responsibilities" },
+    { "step": "Design Interactions", "description": "Map how components communicate" },
+    { "step": "Document", "description": "Create architecture diagram and decisions" }
+  ],
+  "examples": [
+    {
+      "input": "A SaaS project management tool with web and mobile apps",
+      "output": "## Architecture Design: Project Management SaaS\n\n### Requirements\n- 10,000 concurrent users\n- Real-time updates (collaborative editing)\n- Mobile apps (iOS/Android)\n- Integrations with Slack, GitHub\n- 99.9% uptime SLA\n\n---\n\n### Architecture Pattern: Modular Monolith\n\nInitial: Monolith for speed\nFuture: Split into microservices as needed\n\n---\n\n### System Components\n\n```\n┌─────────────────────────────────────────────────┐\n│                  Load Balancer                   │\n│                    (AWS ALB)                      │\n└──────────────────┬────────────────────────────────┘\n                 │\n┌────────────────▼────────────────────────────────┐\n│              Next.js Frontend                    │\n│         (Web + Mobile Web)                      │\n└──────────────────┬────────────────────────────────┘\n                 │\n┌────────────────▼────────────────────────────────┐\n│              API Gateway                         │\n│            (Next.js API Routes)                  │\n└──────────────────┬────────────────────────────────┘\n                 │\n┌────────────────▼────────────────────────────────┐\n│            Application Server                     │\n│              (Node.js Express)                  │\n│  ┌──────────┬──────────┬──────────┐          │\n│  │  Task    │  User    │  Project │          │\n│  │ Service  │ Service  │ Service  │          │\n│  └──────────┴──────────┴──────────┘          │\n└──────────────────┬────────────────────────────────┘\n                 │\n┌────────────────▼────────────────────────────────┐\n│              Database Layer                       │\n│            (PostgreSQL + Redis)                 │\n└────────────────────────────────────────────────┘\n```\n\n---\n\n### Technology Stack\n\n| Layer | Technology | Why |\n|-------|------------|-----|\n| Frontend | Next.js | SSR, SEO, React |\n| API | Node.js/Express | JSON, real-time |\n| Database | PostgreSQL | ACID, relations |\n| Cache | Redis | Sessions, real-time |\n| Queue | RabbitMQ | Async jobs |\n| Storage | S3 | File uploads |\n\n---\n\n### Key Decisions\n\n1. **PostgreSQL** - Complex queries, relations between tasks/projects\n2. **Redis** - Session store, real-time presence\n3. **WebSockets** - Real-time task updates\n4. **S3** - File attachments, avatars\n\n---\n\n### Scalability Plan\n\n- 0-10K users: Single server\n- 10K-100K: Read replicas, CDN\n- 100K+: Consider service split",
+      "context": "SaaS, Full-Stack, Cloud-Native"
+    }
+  ]
+}

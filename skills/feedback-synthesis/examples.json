@@ -1,0 +1,21 @@
+{
+  "useWhen": [
+    "You have interview transcripts and need to find patterns",
+    "You want to synthesize feedback into actionable insights",
+    "You need to present findings to stakeholders"
+  ],
+  "workflow": [
+    { "step": "Gather Data", "description": "Collect all feedback sources - interviews, surveys, support tickets" },
+    { "step": "Code Responses", "description": "Tag recurring themes and sentiments" },
+    { "step": "Find Patterns", "description": "Group similar responses and identify trends" },
+    { "step": "Prioritize Insights", "description": "Rank by frequency and impact" },
+    { "step": "Present", "description": "Create clear summary with quotes and recommendations" }
+  ],
+  "examples": [
+    {
+      "input": "I interviewed 8 users about my project management app and have transcripts. Need to find the key themes and present to my team",
+      "output": "## Feedback Synthesis: Project Management App\n\n### Executive Summary\n\n**Key Finding:** Users love the task list but find reporting confusing.\n\n**Quote:** \"I use the task list every day, but when I need to show my boss a report, I'm lost.\" - Sarah, Marketing Manager\n\n---\n\n### Theme 1: Task Management (8/8 users)\n**Sentiment:** Positive\n\n**Supporting Quotes:**\n- \"The task list is exactly what I need\"\n- \"Simple and fast\"\n- \"I don't need anything else for daily work\"\n\n**Insight:** Core task feature is solid. Don't change it.\n\n---\n\n### Theme 2: Reporting (6/8 users)\n**Sentiment:** Frustrated\n\n**Supporting Quotes:**\n- \"Reporting is a nightmare\"\n- \"I can't figure out how to get simple reports\"\n- \"Had to export to Excel to make charts\"\n\n**Insight:** Reporting is a major pain point and priority for improvement.\n\n---\n\n### Theme 3: Mobile App (4/8 users)\n**Sentiment:** Mixed\n\n- \"Mobile is good for viewing\"\n- \"Can't create tasks on mobile\"\n- \"Would love push notifications\"\n\n**Insight:** Mobile is secondary but needs basic creation features.\n\n---\n\n### Recommendations\n\n1. **High Priority:** Redesign reporting module\n2. **Medium Priority:** Add task creation on mobile\n3. **Low Priority:** Push notifications\n\n---\n\n### Methodology\n- 8 user interviews (45 min each)\n- Transcripts coded in Dovetail\n- Themes identified via affinity mapping",
+      "context": "B2B SaaS, User Research"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "useWhen": [
+    "Designing a referral program for growth",
+    "Creating viral loops and referral incentives",
+    "Implementing referral tracking",
+    "Planning referral program launch",
+    "Optimizing referral conversion"
+  ],
+  "workflow": [
+    {
+      "step": "1. Define Program",
+      "description": "Set goals, identify target users, define value proposition"
+    },
+    {
+      "step": "2. Design Incentives",
+      "description": "Create incentives for referrer and referred, set limits"
+    },
+    {
+      "step": "3. Technical Setup",
+      "description": "Plan implementation, tracking, and fulfillment"
+    },
+    {
+      "step": "4. Launch Plan",
+      "description": "Plan rollout, communication, and optimization"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Design a referral program for a B2B SaaS product.",
+      "context": "B2B SaaS, user referral program",
+      "output": "**PROGRAM DESIGN**\n\n| Element | Design |\n|---------|--------|\n| Goal | 20% of new users from referrals |\n| Target | Active users who love product |\n| Value prop | \"Share with your team, get 3 months free\" |\n\n**INCENTIVES**\n\n| User | Reward | Limit |\n|------|--------|------|\n| Referrer | 3 months free | 5 referrals max |\n| Referred | 3 months free | 1 per person |\n\n**TECHNICAL SETUP**\n\n```javascript\n// Generate referral code\nfunction generateReferralCode(userId) {\n  const code = Buffer.from(userId).toString('base64').substring(0, 8);\n  return `REF${code.toUpperCase()}`;\n}\n\n// Track referral\nasync function trackReferral(referrerId, referredId, code) {\n  await db.referrals.create({\n    referrer_id: referrerId,\n    referred_id: referredId,\n    code: code,\n    status: 'completed',\n    reward_applied: false\n  });\n}\n\n// Apply reward\nasync function applyReward(referralId) {\n  const referral = await db.referrals.get(referralId);\n  await subscription.extend(referral.referrer_id, 90); // 3 months\n}\n```\n\n**FULFILLMENT**\n- Automatic: Credit applied to account\n- Notification: Email to both users\n- Tracking: Dashboard showing referral status\n\n**LAUNCH**\n1. Beta: 50 power users\n2. Full: All active users\n3. Promote: In-app banner, email campaign"
+    },
+    {
+      "input": "Create referral program for a consumer app with in-app credit.",
+      "context": "Consumer app, credit-based rewards",
+      "output": "**PROGRAM DESIGN**\n\n| Element | Design |\n|---------|--------|\n| Goal | 30% of new users from referrals |\n| Target | Active users, social sharers |\n| Value prop | \"Invite friends, get $10 each\" |\n\n**INCENTIVES**\n\n| User | Reward | Limit |\n|------|--------|------|\n| Referrer | $10 credit | Unlimited |\n| Referred | $10 credit | Once per user |\n\n**INCENTIVE STRUCTURE**\n\n| Referral Count | Additional Reward |\n|----------------|-------------------|\n| 1-5 | $10 each |\n| 6-10 | $15 each |\n| 11+ | $20 each |\n\n**TECHNICAL**\n\n```javascript\n// Share referral link\nconst referralLink = `https://app.com/invite?code=${user.referralCode}`;\n\n// Track with attribution\nconst trackClick = (code) => {\n  analytics.track('referral_click', { code });\n  cookie.set('referred_by', code, 30);\n};\n\n// Convert signup\nconst onSignup = async (userData) => {\n  const referredBy = cookie.get('referred_by');\n  if (referredBy) {\n    await createReferral(referredBy, userData.id);\n  }\n};\n```\n\n**TRACKING METRICS**\n\n| Metric | Target |\n|--------|--------|\n| Referral conversion | 15% |\n| Cost per referral | < $5 |\n| Viral coefficient | > 1.2 |\n\n**OPTIMIZATION**\n- A/B test incentive amounts\n- Test messaging\n- Identify best performing channels"
+    }
+  ]
+}

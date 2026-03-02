@@ -1,0 +1,51 @@
+{
+  "useWhen": [
+    "Determining which privacy regulations apply to your product",
+    "Assessing GDPR, CCPA, HIPAA compliance",
+    "Creating a privacy policy for your product",
+    "Mapping data processing activities for compliance",
+    "Building a privacy compliance roadmap"
+  ],
+  "workflow": [
+    {
+      "step": "1. Gather Regulatory Context",
+      "description": "Determine target market, user locations, data types, customer segments, industry vertical"
+    },
+    {
+      "step": "2. Run Regulation Triage",
+      "description": "Apply geography-based, data-type-based, industry-based triage to identify applicable regulations"
+    },
+    {
+      "step": "3. Per-Regulation Assessment",
+      "description": "Assess compliance gaps for each applicable regulation"
+    },
+    {
+      "step": "4. Map Data Processing",
+      "description": "Document processing activities, legal basis, data subjects, retention"
+    },
+    {
+      "step": "5. Assess Risks",
+      "description": "Evaluate penalties, enforcement likelihood, breach notification requirements"
+    },
+    {
+      "step": "6. Create Roadmap",
+      "description": "Prioritize remediation by risk and effort"
+    },
+    {
+      "step": "7. Generate Privacy Policy",
+      "description": "Create tailored privacy policy based on actual data practices"
+    }
+  ],
+  "examples": [
+    {
+      "input": "We have a B2B SaaS product based in the US. We serve US and EU customers, collect email/name from business users, and use Stripe for payments. Do we need GDPR compliance?",
+      "context": "B2B SaaS, US company with EU users",
+      "output": "**REGULATORY CONTEXT**\n\n| Factor | Value |\n|--------|-------|\n| Company location | US |\n| User locations | US, EU |\n| Data collected | Email, name, company (B2B) |\n| Industry | SaaS |\n| Customer type | Businesses (not consumers) |\n\n**REGULATION TRIAGE**\n\n| Regulation | Applies | Rationale |\n|------------|---------|-----------|\n| GDPR | YES | EU users present - Article 3 applies |\n| CCPA | NO | B2B data, not consumer |\n| HIPAA | NO | No health data |\n| PCI-DSS | PARTIAL | Stripe handles cards, need compliance |\n\n**GDPR ASSESSMENT**\n\n| Requirement | Status | Gap |\n|-------------|--------|-----|\n| Lawful basis | Legitimate interest | Document basis |\n| Privacy policy | Missing | Create policy |\n| Data subject rights | Partial | Need export/deletion |\n| DPO | Required | Appoint DPO |\n| Data processing agreement | Missing | Create DPA |\n\n**DATA PROCESSING**\n\n| Activity | Data | Legal Basis | Retention |\n|----------|------|-------------|----------|\n| Account creation | Email, name | Contract | Account lifetime |\n| Payment processing | Payment data | Legal obligation | Financial records |\n| Analytics | Usage data | Legitimate interest | 2 years |\n\n**RISK ASSESSMENT**\n\n| Risk | Likelihood | Impact | Mitigation |\n|------|-----------|--------|------------|\n| GDPR fine | Medium | High | Implement compliance |\n| User complaint | Medium | Medium | Build rights fulfillment |\n\n**REMEDIATION ROADMAP**\n\n| Priority | Action | Effort | Timeline |\n|----------|--------|--------|----------|\n| 1 | Publish privacy policy | Low | 1 week |\n| 2 | Implement data export | Medium | 2 weeks |\n| 3 | Implement deletion | Medium | 2 weeks |\n| 4 | Sign DPA with vendors | Low | 1 week |\n| 5 | Document lawful basis | Low | 1 week |"
+    },
+    {
+      "input": "We have a consumer mobile app based in California with 100K users. We collect personal data including location, device info, and behavioral data for advertising.",
+      "context": "Consumer app, California company",
+      "output": "**REGULATORY CONTEXT**\n\n| Factor | Value |\n|--------|-------|\n| Company location | California, US |\n| User locations | US primarily |\n| Data collected | Location, device, behavioral, advertising IDs |\n| Industry | Consumer mobile |\n| Customer type | Consumers |\n\n**REGULATION TRIAGE**\n\n| Regulation | Applies | Rationale |\n|------------|---------|-----------|\n| CCPA/CPRA | YES | California company, consumer data |\n| GDPR | NO | No EU users |\n| COPPA | POSSIBLE | Check if under 13 users |\n\n**CCPA ASSESSMENT**\n\n| Requirement | Status | Gap |\n|-------------|--------|-----|\n| Privacy policy | Outdated | Update for CPRA |\n| Right to delete | Partial | Need full pipeline |\n| Right to opt-out | Missing | Need opt-out mechanism |\n| "Do Not Sell" | Missing | Implement signal |\n| Sensitive data | Partial | Limit collection |\n\n**RISK ASSESSMENT**\n\n| Risk | Likelihood | Impact |\n|------|-----------|--------|\n| CCPA fine | High | $7,500/intentional |\n| Private lawsuit | Medium | Statutory damages |\n\n**REMEDIATION ROADMAP**\n\n| Priority | Action | Effort | Timeline |\n|----------|--------|--------|----------|\n| 1 | Add opt-out button | Low | 1 week |\n| 2 | Update privacy policy | Low | 1 week |\n| 3 | Build deletion pipeline | Medium | 2 weeks |\n| 4 | Implement GPC (global privacy control) | Medium | 2 weeks |\n| 5 | Audit data collection | Medium | 2 weeks |\n\n**PRIVACY POLICY DRAFT**\n\n*Sections needed:*\n- Categories of data collected\n- Sources of data\n- Purposes for processing\n- Categories of third parties\n- Rights under CCPA\n- How to exercise rights\n- "Do Not Sell" notice"
+    }
+  ]
+}

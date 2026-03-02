@@ -1,0 +1,39 @@
+{
+  "useWhen": [
+    "Defining testing strategy for a new project",
+    "Planning test coverage for a feature",
+    "Setting up test automation framework",
+    "Balancing unit, integration, and E2E tests",
+    "Establishing quality assurance processes"
+  ],
+  "workflow": [
+    {
+      "step": "1. Assess Risk",
+      "description": "Evaluate project complexity, user impact, and regulatory requirements"
+    },
+    {
+      "step": "2. Define Pyramid",
+      "description": "Structure tests: unit tests (base), integration tests (middle), E2E tests (top)"
+    },
+    {
+      "step": "3. Set Coverage",
+      "description": "Define target percentages, identify critical paths, apply risk-based approach"
+    },
+    {
+      "step": "4. Document",
+      "description": "Create test plan with responsibilities and tool selection"
+    }
+  ],
+  "examples": [
+    {
+      "input": "We need a test strategy for a B2B SaaS product with 5 engineers. It's a critical business application handling sensitive customer data.",
+      "context": "B2B SaaS, 5-person team, critical business app",
+      "output": "**RISK ASSESSMENT**\n- Complexity: High (multi-tenant, API integrations)\n- User Impact: High (business-critical, paying customers)\n- Regulatory: Medium (customer data handling)\n\n**TEST PYRAMID**\n\n```\n        E2E Tests (10%)\n       /                  \\\n   Integration Tests (30%)   Critical user flows\n  /          \\\nUnit Tests (60%)  Core business logic\n```\n\n**COVERAGE TARGETS**\n\n| Level | Target | Focus |\n|-------|--------|-------|\n| Unit | 80% | Business logic, calculations |\n| Integration | 60% | API endpoints, database |\n| E2E | 100% critical paths | Login, checkout, reporting |\n\n**TEST PLAN**\n\n*Unit Tests*\n- Framework: Jest\n- Coverage: 80% statement coverage\n- Run: Every PR\n\n*Integration Tests*\n- Framework: Supertest + Jest\n- Focus: API endpoints, auth flows\n- Run: Every PR, nightly\n\n*E2E Tests*\n- Framework: Playwright\n- Critical flows: Login, Create Project, Generate Report\n- Run: Every PR, daily staging\n\n**RESPONSIBILITIES**\n- Developers: Unit + Integration\n- QA: E2E + Integration\n- All: Code review for test quality"
+    },
+    {
+      "input": "Create test strategy for a consumer mobile app with 2 iOS developers. It's a new app with basic features.",
+      "context": "Consumer mobile app, small team, MVP stage",
+      "output": "**RISK ASSESSMENT**\n- Complexity: Medium (standard mobile app)\n- User Impact: Medium (consumer, not business-critical)\n- Regulatory: Low\n\n**TEST PYRAMID**\n\n```\n        E2E Tests (15%)\n       /                  \\\n   Integration Tests (25%)   Key features\n  /          \\\nUnit Tests (60%)  Core logic\n```\n\n**COVERAGE TARGETS**\n\n| Level | Target | Focus |\n|-------|--------|-------|\n| Unit | 70% | Business logic |\n| Integration | 40% | Data layer |\n| E2E | Key flows only | Signup, core action |\n\n**TEST PLAN**\n\n*Unit Tests*\n- Framework: XCTest\n- Focus: View models, utilities\n- Run: Every PR\n\n*UI Tests*\n- Framework: XCTest (UI Testing)\n- Focus: Key user flows\n- Run: Before release\n\n**RESPONSIBILITIES**\n- Both developers: All test levels\n- Focus: Keep it simple, avoid over-engineering"
+    }
+  ]
+}

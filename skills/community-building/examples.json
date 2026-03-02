@@ -1,0 +1,39 @@
+{
+  "useWhen": [
+    "Building a community around your product",
+    "Planning community engagement strategy",
+    "Selecting community platform (Slack, Discord, Circle)",
+    "Creating community growth and ambassador programs",
+    "Planning community events and activities"
+  ],
+  "workflow": [
+    {
+      "step": "1. Define Community Goals",
+      "description": "Determine what the community is for, who should join, and what's the value proposition"
+    },
+    {
+      "step": "2. Select Platform",
+      "description": "Choose platform that matches audience: Slack, Discord, Circle, or forum"
+    },
+    {
+      "step": "3. Engagement Strategy",
+      "description": "Plan content, events, and member activities"
+    },
+    {
+      "step": "4. Growth Plan",
+      "description": "Design invitation strategy, ambassador program, and viral loops"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Build a community for our developer tool. Target users are developers who use our API.",
+      "context": "Developer tool, API users",
+      "output": "**COMMUNITY GOALS**\n\n| Goal | Metric | Timeline |\n|------|--------|----------|\n| Support self-service | 50% support in community | 6 months |\n| Product feedback | 20 active beta testers | 6 months |\n| Content creation | 5 blog posts from members | 6 months |\n\n**TARGET MEMBERS**\n- Primary: Developers using our API\n- Secondary: Technical decision makers\n- Goal: 500 active members\n\n**PLATFORM: Discord**\n\n| Channel | Purpose |\n|---------|---------|\n| #general | Discussion |\n| #api-help | Technical support |\n| #showcase | Share projects |\n| #feedback | Product feedback |\n| #jobs | Job postings |\n\n**ENGAGEMENT STRATEGY**\n\n| Activity | Frequency | Owner |\n|----------|-----------|-------|\n| Weekly office hours | Weekly | DevRel |\n| Monthly community call | Monthly | Community Manager |\n| Guest blog posts | Monthly | Members |\n| Code review sessions | Bi-weekly | Community |\n\n**GROWTH PLAN**\n\n*Phase 1: Seed (Months 1-2)*\n- Invite top 50 API users\n- Personal outreach\n\n*Phase 2: Grow (Months 3-4)*\n- Developer conference promotion\n- GitHub README integration\n\n*Phase 3: Scale (Months 5-6)*\n- Ambassador program\n- Community awards\n\n**AMBASSADOR PROGRAM**\n- 5 ambassadors selected\n- Benefits: Early access, swag, speaking opportunities\n- Requirements: Active participation, content creation"
+    },
+    {
+      "input": "Create a community for our B2B SaaS customers. They are project managers and team leads.",
+      "context": "B2B SaaS, professional users",
+      "output": "**COMMUNITY GOALS**\n\n| Goal | Metric | Timeline |\n|------|--------|----------|\n| Reduce support tickets | 30% reduction | 6 months |\n| Increase retention | 10% improvement | 6 months |\n| Product advocacy | 10 case studies | 6 months |\n\n**PLATFORM: Circle**\n\n| Section | Purpose |\n|---------|---------|\n| Welcome | Getting started |\n| Best Practices | How-to guides |\n| Templates | Share templates |\n| Success Stories | Case studies |\n| Office Hours | Live Q&A |\n\n**ENGAGEMENT**\n\n| Activity | Frequency |\n|----------|----------|\n| New member welcome | Automated |\n| Monthly webinar | Monthly |\n| Template contest | Quarterly |\n| Success story spotlight | Weekly |\n\n**MODERATION**\n- 2 community managers\n- Clear code of conduct\n- Weekly moderation reviews\n\n**GROWTH**\n- Invite from customer success calls\n- In-product prompts\n- Customer advisory board"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "useWhen": [
+    "Building a new iOS application from scratch",
+    "Adding a new feature to an existing iOS app",
+    "Setting up iOS architecture with best practices",
+    "Need to implement SwiftUI views",
+    "Preparing an iOS app for App Store release"
+  ],
+  "workflow": [
+    {
+      "step": "1. Architecture Setup",
+      "description": "Set up MVVM with Coordinator pattern for navigation and proper dependency injection"
+    },
+    {
+      "step": "2. UI Implementation",
+      "description": "Implement UI using SwiftUI or UIKit with proper Views and Navigation"
+    },
+    {
+      "step": "3. Features",
+      "description": "Build core functionality, implement networking layer, and add local storage"
+    },
+    {
+      "step": "4. Ship",
+      "description": "Write tests, prepare for App Store release, and configure release build"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Build an iOS notes app with SwiftUI",
+      "output": "Complete iOS project with SwiftUI views, MVVM architecture, and local persistence",
+      "context": "New iOS project using SwiftUI for modern declarative UI"
+    },
+    {
+      "input": "Convert UIKit app to SwiftUI",
+      "output": "Refactored codebase with SwiftUI views wrapped in UIHostingController where needed",
+      "context": "Legacy iOS app needs modernization to SwiftUI"
+    }
+  ]
+}

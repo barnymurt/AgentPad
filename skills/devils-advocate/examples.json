@@ -1,0 +1,20 @@
+{
+  "useWhen": [
+    "You want to challenge your assumptions about your idea",
+    "You're feeling overly optimistic and need reality check",
+    "Investors will ask these questions - be prepared"
+  ],
+  "workflow": [
+    { "step": "List Assumptions", "description": "Write down everything you believe about your idea" },
+    { "step": "Challenge Each", "description": "Question every assumption with \"what if\" scenarios" },
+    { "step": "Identify Risks", "description": "Surface the biggest risks and vulnerabilities" },
+    { "step": "Mitigate", "description": "Develop strategies to address each risk" }
+  ],
+  "examples": [
+    {
+      "input": "An app that connects local dog walkers with pet owners who need walks",
+      "output": "## Devil's Advocate Analysis\n\n### Top Risks & Challenges\n\n1. **Trust & Safety**\n   - \"What if the walker hurts the dog?\"\n   - Mitigate: Background checks, insurance, ratings\n\n2. **Supply Problem**\n   - \"Where will you find reliable walkers?\"\n   - Mitigate: Partner with dog daycares, offer flexible pay\n\n3. **Demand Discovery**\n   - \"How will pet owners find you?\"\n   - Mitigate: Vet clinics, pet stores, local Facebook groups\n\n4. **Pricing Paradox**\n   - \"Too expensive = no users. Too cheap = no walkers.\"\n   - Mitigate: Test price sensitivity, 20% platform fee\n\n5. **Weather Dependency**\n   - \"Rainy days = no walks = no revenue\"\n   - Mitigate: Indoor pet care, cat sitting, multi-pet discounts\n\n### Challenging Questions to Prepare For\n- What if Rover/Thumbtack adds this feature?\n- How do you handle a dog getting injured?\n- What's your CAC? Can you afford it?\n- Why wouldn't a walker just use Venmo?\n\n### Reality Check\n**This is a two-sided marketplace.** Hardest business model. \nYou'll need to subsidize one side initially.\n\n**Recommendation:** Proceed but validate supply side first.",
+      "context": "Marketplace, On-Demand, Pet Care"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "useWhen": [
+    "Planning analyst relations for B2B",
+    "Building analyst coverage strategy",
+    "Setting up G2/Capterra presence",
+    "Managing review solicitation",
+    "Briefing industry analysts"
+  ],
+  "workflow": [
+    {
+      "step": "1. Identify Analysts",
+      "description": "Identify target analysts, review sites, and industry coverage areas"
+    },
+    {
+      "step": "2. Strategy",
+      "description": "Develop outreach approach, briefing schedule, and content plan"
+    },
+    {
+      "step": "3. Review Management",
+      "description": "Manage G2/Capterra presence, review solicitation, and response strategy"
+    },
+    {
+      "step": "4. Measurement",
+      "description": "Track coverage and assess ROI of analyst relations efforts"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Build analyst relations strategy for B2B SaaS",
+      "output": "Analyst relations plan with target analysts, briefing schedule, and review management strategy",
+      "context": "B2B company seeking industry analyst coverage"
+    },
+    {
+      "input": "Improve our G2 rating and reviews",
+      "output": "Review management strategy with solicitation process, response templates, and improvement tactics",
+      "context": "SaaS company wanting better review site presence"
+    }
+  ]
+}

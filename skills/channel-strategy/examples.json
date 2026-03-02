@@ -1,0 +1,21 @@
+{
+  "useWhen": [
+    "You're ready to take your product to market",
+    "You need a go-to-market strategy",
+    "You want to identify the best channels"
+  ],
+  "workflow": [
+    { "step": "Define Target", "description": "Identify your ideal customer profile" },
+    { "step": "Position", "description": "Craft your unique value proposition" },
+    { "step": "Choose Channels", "description": "Select where to reach customers" },
+    { "step": "Create Plan", "description": "Map out tactical activities" },
+    { "step": "Set Metrics", "description": "Define success measures" }
+  ],
+  "examples": [
+    {
+      "input": "A B2B SaaS project management tool for small marketing teams",
+      "output": "## Go-to-Market Strategy\n\n### Target Customer\n\n**Ideal Customer Profile (ICP)**\n- **Company Size:** 10-50 employees\n- **Industry:** Marketing agencies, in-house marketing teams\n- **Role:** Marketing Manager, Director of Marketing\n- **Pain Points:** Spreadsheets, disconnected tools, no visibility\n- **Budget:** $50-200/month per user\n\n---\n\n### Value Proposition\n\n**Primary:** \"The only project management tool built specifically for marketing teams\"\n\n**Tagline:** \"Ship marketing campaigns on time, every time\"\n\n**Key Messages:**\n- Built for how marketing works (campaigns, content calendars)\n- Integrates with the tools marketing already uses\n- No training required - marketing teams love the UX\n\n---\n\n### Channel Strategy\n\n| Channel | Priority | Tactic |\n|--------|----------|--------|\n| Content SEO | High | Blog posts about marketing workflows |\n| LinkedIn Ads | High | Target marketing managers |\n| Partner | Medium | Agency partnerships |\n| Email | Medium | Outbound to marketing leads |\n| Events | Low | Marketing conferences |\n\n---\n\n### Launch Tactics (First 90 Days)\n\n**Month 1: Awareness**\n- Launch website with SEO focus\n- Publish 8 blog posts\n- LinkedIn ads running\n- Launch waitlist\n\n**Month 2: Acquisition**\n- Email outreach to 500 prospects\n- Partner pilot with 2 agencies\n- Product Hunt launch\n- Webinar series\n\n**Month 3: Conversion**\n- Offer 30-day free trial\n- Launch referral program\n- Customer case studies\n- Scale ads based on CAC\n\n---\n\n### Success Metrics\n\n| Metric | Month 1 Target | Month 3 Target |\n|--------|-----------------|----------------|\n| Signups | 100 | 500 |\n| Active Users | 20 | 150 |\n| MRR | $0 | $5,000 |\n| CAC | - | <$200 |\n| Churn | - | <5% |",
+      "context": "B2B SaaS, Marketing Tech"
+    }
+  ]
+}

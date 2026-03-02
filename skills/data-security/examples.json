@@ -1,0 +1,39 @@
+{
+  "useWhen": [
+    "Implementing database encryption at rest and in transit",
+    "Setting up access controls and user permissions",
+    "Configuring row-level security for multi-tenant apps",
+    "Setting up audit logging for compliance",
+    "Securing sensitive data in applications"
+  ],
+  "workflow": [
+    {
+      "step": "1. Assess Requirements",
+      "description": "Determine data sensitivity, compliance needs, and access requirements"
+    },
+    {
+      "step": "2. Implement Encryption",
+      "description": "Set up encryption at rest, in transit, and column-level encryption"
+    },
+    {
+      "step": "3. Set Up Access Controls",
+      "description": "Configure user permissions, row-level security, and API access"
+    },
+    {
+      "step": "4. Add Auditing",
+      "description": "Set up audit logs, access tracking, and compliance reports"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Secure a PostgreSQL database with encryption, access controls, and audit logging for a multi-tenant SaaS application.",
+      "context": "Multi-tenant SaaS, PostgreSQL",
+      "output": "**SECURITY CONFIGURATION**\n\n*Encryption at Rest*\n```sql\n-- Enable at database level\nALTER DATABASE mydb SET encryption TO 'ON';\n\n-- Or use AWS RDS encryption\n-- Selected at creation time, cannot be modified\n```\n\n*Encryption in Transit*\n```sql\n-- Require SSL connections\nALTER SYSTEM SET ssl = on;\nALTER SYSTEM SET ssl_cert_file = 'server.crt';\nALTER SYSTEM SET ssl_key_file = 'server.key';\n```\n\n**ACCESS CONTROLS**\n\n```sql\n-- Create app role (application service)\nCREATE ROLE app_service WITH LOGIN PASSWORD 'strong_password';\n\n-- Grant schema access\nGRANT USAGE ON SCHEMA public TO app_service;\nGRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES TO app_service;\n\n-- Row-level security\nALTER TABLE orders ENABLE ROW LEVEL SECURITY;\n\nCREATE POLICY tenant_isolation_policy ON orders\n  FOR ALL\n  USING (tenant_id = current_setting('app.tenant_id')::uuid);\n```\n\n**AUDIT LOGGING**\n\n```sql\n-- Create audit table\nCREATE TABLE audit_log (\n  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),\n  table_name text NOT NULL,\n  operation text NOT NULL,\n  user_id uuid,\n  tenant_id uuid,\n  old_data jsonb,\n  new_data jsonb,\n  created_at timestamptz DEFAULT now()\n);\n\n-- Trigger function\nCREATE OR REPLACE FUNCTION audit_trigger()\nRETURNS TRIGGER AS $$\nBEGIN\n  INSERT INTO audit_log (table_name, operation, user_id, tenant_id, old_data, new_data)\n  VALUES (TG_TABLE_NAME, TG_OP, current_setting('app.user_id')::uuid, \n          current_setting('app.tenant_id')::uuid, \n          to_jsonb(OLD), to_jsonb(NEW));\n  RETURN NEW;\nEND;\n$$ LANGUAGE plpgsql;\n\n-- Apply to sensitive tables\nCREATE TRIGGER orders_audit\n  AFTER INSERT OR UPDATE OR DELETE ON orders\n  FOR EACH ROW EXECUTE FUNCTION audit_trigger();\n```"
+    },
+    {
+      "input": "Secure sensitive fields (SSN, credit card) in our database with column-level encryption.",
+      "context": "PII data, compliance requirements",
+      "output": "**COLUMN-LEVEL ENCRYPTION**\n\n```sql\n-- Install pgcrypto extension\nCREATE EXTENSION pgcrypto;\n\n-- Create table with encrypted columns\nCREATE TABLE customers (\n  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),\n  email text NOT NULL,\n  ssn_encrypted bytea,\n  credit_card_encrypted bytea,\n  created_at timestamptz DEFAULT now()\n);\n\n-- Encryption key (store securely!)\n-- In production, use KMS or vault\nCREATE TABLE encryption_keys (\n  id text PRIMARY KEY,\n  key bytea NOT NULL\n);\n\n-- Encrypt function\nCREATE OR REPLACE FUNCTION encrypt_sensitive(data text, key_id text)\nRETURNS bytea AS $$\nDECLARE\n  key_data bytea;\nBEGIN\n  SELECT key INTO key_data FROM encryption_keys WHERE id = key_id;\n  RETURN pgp_sym_encrypt(data, key_data);\nEND;\n$$ LANGUAGE plpgsql SECURITY DEFINER;\n\n-- Decrypt function  \nCREATE OR REPLACE FUNCTION decrypt_sensitive(encrypted_data bytea, key_id text)\nRETURNS text AS $$\nDECLARE\n  key_data bytea;\nBEGIN\n  SELECT key INTO key_data FROM encryption_keys WHERE id = key_id;\n  RETURN pgp_sym_decrypt(encrypted_data, key_data);\nEND;\n$$ LANGUAGE plpgsql SECURITY DEFINER;\n\n-- Usage\nINSERT INTO customers (email, ssn_encrypted, credit_card_encrypted)\nVALUES (\n  'customer@example.com',\n  encrypt_sensitive('123-45-6789', 'ssn_key'),\n  encrypt_sensitive('4111111111111111', 'cc_key')\n);\n```\n\n**ACCESS CONTROL**\n\n```sql\n-- Only HR can see SSN\nGRANT SELECT ON customers TO hr_role;\nGRANT EXECUTE ON FUNCTION decrypt_sensitive(bytea, text) TO hr_role;\n\n-- Finance can see credit card\nGRANT SELECT ON customers TO finance_role;\nGRANT EXECUTE ON FUNCTION decrypt_sensitive(bytea, text) TO finance_role;\n\n-- Application cannot see raw data\n-- Application uses blind indexes for searching\nCREATE INDEX ON customers USING bloom(ssn_encrypted);\n```"
+    }
+  ]
+}

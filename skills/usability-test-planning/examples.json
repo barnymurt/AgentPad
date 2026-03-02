@@ -1,0 +1,21 @@
+{
+  "useWhen": [
+    "You want to test your product with real users",
+    "You're ready to observe how people actually use your product",
+    "You need to find usability issues before launch"
+  ],
+  "workflow": [
+    { "step": "Define Tasks", "description": "List specific tasks for users to complete" },
+    { "step": "Recruit", "description": "Find 5-8 users who match your target" },
+    { "step": "Facilitate", "description": "Watch users complete tasks, take notes" },
+    { "step": "Analyze", "description": "Document issues and categorize by severity" },
+    { "step": "Report", "description": "Share findings and recommendations" }
+  ],
+  "examples": [
+    {
+      "input": "I want to test my new checkout flow on an e-commerce website. I want to see if users can complete a purchase without issues",
+      "output": "## Usability Test Plan: Checkout Flow\n\n### Test Objectives\n1. Can users complete a purchase without help?\n2. Where do users get confused or stuck?\n3. How long does checkout take?\n\n---\n\n### Participant Criteria\n- **Target:** People who shop online at least monthly\n- **Recruit:** 5 participants via UserInterviews\n- **Incentive:** $50 gift card\n- **Format:** Remote via Zoom (30 min)\n\n---\n\n### Tasks to Complete\n\n**Task 1: Add Item to Cart (2 min)**\n- Find a men's t-shirt in size M\n- Add to cart\n\n**Task 2: Begin Checkout (3 min)**\n- Go to cart\n- Click checkout\n\n**Task 3: Enter Shipping (5 min)**\n- Enter shipping address (use provided address)\n\n**Task 4: Payment (3 min)**\n- Enter credit card (use test card)\n- Complete order\n\n**Task 5: Confirmation (1 min)**\n- Verify confirmation page shows\n\n---\n\n### Questions to Ask After Each Task\n1. \"What was that experience like?\"\n2. \"Were you confident in what to do next?\"\n3. \"What would make this easier?\"\n\n---\n\n### Post-Test Questions\n1. Overall, how easy was checkout? (1-7)\n2. What was the most frustrating part?\n3. Would you shop here again?\n\n---\n\n### Success Metrics\n- **Completion Rate:** Target 5/5\n- **Time on Task:** Target < 15 min\n- **Error Rate:** Target < 2 errors/participant",
+      "context": "E-commerce, UX Research"
+    }
+  ]
+}

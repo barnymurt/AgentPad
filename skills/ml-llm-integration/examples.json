@@ -1,0 +1,39 @@
+{
+  "useWhen": [
+    "Adding AI/ML features to a product",
+    "Need to integrate OpenAI, Claude, or other LLMs",
+    "Building AI-powered functionality like chat, summarization, or analysis",
+    "Optimizing LLM costs and performance",
+    "Setting up ML model fine-tuning or RAG pipelines"
+  ],
+  "workflow": [
+    {
+      "step": "1. Design",
+      "description": "Define use case, select appropriate model (GPT, Claude, open-source), determine data requirements and preprocessing needs"
+    },
+    {
+      "step": "2. Implement",
+      "description": "Integrate API, design prompts, handle response parsing and error cases"
+    },
+    {
+      "step": "3. Optimize",
+      "description": "Implement caching for repeated queries, batch requests where possible, manage token costs"
+    },
+    {
+      "step": "4. Monitor",
+      "description": "Track usage patterns, monitor costs, measure response quality and latency"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Add AI-powered customer support chat to our SaaS app",
+      "output": "LLM integration with prompt engineering, context management, fallback handling, and cost optimization",
+      "context": "Adding conversational AI to existing SaaS product"
+    },
+    {
+      "input": "Build RAG pipeline for querying our documentation",
+      "output": "Document chunking, embedding generation, vector database setup, and query-time retrieval augmented generation",
+      "context": "Building knowledge base search with AI"
+    }
+  ]
+}

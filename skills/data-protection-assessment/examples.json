@@ -1,0 +1,51 @@
+{
+  "useWhen": [
+    "User asks about data protection, PII, or how data is secured",
+    "Need to understand what data the system collects and where it goes",
+    "Assessing data protection compliance (GDPR, CCPA, etc.)",
+    "Building a data inventory or data flow mapping",
+    "Evaluating access controls and retention policies"
+  ],
+  "workflow": [
+    {
+      "step": "1. Gather Data Context",
+      "description": "Pull data context from Architecture Design. Identify all data stores including third-party services (payment, auth, analytics, AI APIs)"
+    },
+    {
+      "step": "2. Build Complete Data Inventory",
+      "description": "Catalog every data type with sensitivity level, location, collection method, and legal basis. Include all stores: database, file storage, cache, third-party services, logs, backups"
+    },
+    {
+      "step": "3. Map Data Flows with Classification",
+      "description": "Trace data through the system with sensitivity classification at every hop. Mark trust boundaries where data crosses between systems"
+    },
+    {
+      "step": "4. Identify PII Exposure Points",
+      "description": "Map PII through its complete lifecycle: collection, processing, storage, sharing. Assign exposure ratings (Low/Medium/High)"
+    },
+    {
+      "step": "5. Assess Access Controls",
+      "description": "Build access control matrix showing who/what has access to each data type. Identify gaps and violations"
+    },
+    {
+      "step": "6. Evaluate Retention and Deletion",
+      "description": "Document retention periods per data type. Assess right-to-erasure support across all data stores"
+    },
+    {
+      "step": "7. Produce Protection Recommendations",
+      "description": "Synthesize findings into prioritized, specific recommendations with effort estimates and current state"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Assess data protection for a SaaS invoicing app using Stripe, PostHog, and OpenAI",
+      "output": "Complete data inventory with 12+ data stores identified, PII exposure analysis for customer data, access control matrix, and prioritized protection recommendations",
+      "context": "SaaS product with multiple third-party integrations needing GDPR compliance assessment"
+    },
+    {
+      "input": "What data does our product collect and how is it protected?",
+      "output": "Data inventory table, data flow diagrams with classification, PII lifecycle map, and protection posture rating (Strong/Adequate/Weak)",
+      "context": "Initial data protection assessment for a new product"
+    }
+  ]
+}

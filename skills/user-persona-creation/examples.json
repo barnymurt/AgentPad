@@ -1,0 +1,20 @@
+{
+  "useWhen": [
+    "You need to understand who your target users are",
+    "You're building for everyone and need to focus",
+    "You want to create marketing messages that resonate"
+  ],
+  "workflow": [
+    { "step": "Define Demographics", "description": "Identify age, income, location, and background of ideal user" },
+    { "step": "Identify Behaviors", "description": "Map how your users spend time, where they shop, what they use" },
+    { "step": "Map Pain Points", "description": "Document the problems and frustrations your users face" },
+    { "step": "Create Persona", "description": "Build a detailed persona with goals, motivations, and messaging" }
+  ],
+  "examples": [
+    {
+      "input": "A meal planning app for busy parents who want to eat healthier but don't have time to cook elaborate meals",
+      "output": "## User Persona: Busy Parent Pat\n\n### Demographics\n- **Age:** 32-45\n- **Income:** $60-120K\n- **Location:** Suburban\n- **Education:** College+\n- **Family:** Married with 2+ kids\n\n### Behaviors\n- Shops at Costco & Trader Joe's\n- Uses meal delivery (HelloFresh previously)\n- Scrolls phone during kids' activities\n- Watches Netflix after bedtime\n- Checks Instagram for recipes\n\n### Goals\n- Get healthy dinner on table in <30 min\n- Please picky eaters\n- Reduce food waste\n- Save money on groceries\n\n### Pain Points\n- Kids say \"no\" to everything\n- Hard to find recipes everyone will eat\n- Groceries spoil before used\n- Too tired to think about dinner\n\n### Messaging\n\"Dinner solved. Even on your busiest days.\"",
+      "context": "B2C, Mobile App, Health & Wellness"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "useWhen": [
+    "You want to see how users move through your product",
+    "You're optimizing conversion",
+    "You need to find where users drop off"
+  ],
+  "workflow": [
+    { "step": "Define Funnel", "description": "Map the key steps in your user journey" },
+    { "step": "Set Up Tracking", "description": "Configure analytics events at each step" },
+    { "step": "Collect Data", "description": "Gather data over sufficient timeframe" },
+    { "step": "Analyze", "description": "Calculate drop-off rates and identify issues" },
+    { "step": "Optimize", "description": "Address the biggest drop-off points" }
+  ],
+  "examples": [
+    {
+      "input": "Analyze the checkout funnel for an e-commerce website",
+      "output": "## Funnel Analysis: E-commerce Checkout\n\n### Funnel Definition\n\n| Step | Event | Description |\n|------|-------|-------------|\n| 1 | view_product | Product page viewed |\n| 2 | add_to_cart | Item added to cart |\n| 3 | begin_checkout | Checkout started |\n| 4 | enter_info | Shipping info entered |\n| 5 | add_payment | Payment method added |\n| 6 | purchase | Order completed |\n\n---\n\n### Data (Last 30 Days)\n\n| Step | Users | Conversion % | Drop-off |\n|-------|--------|-------------|----------|\n| 1. Product View | 50,000 | 100% | - |\n| 2. Add to Cart | 12,000 | 24% | 76% |\n| 3. Begin Checkout | 6,000 | 12% | 50% |\n| 4. Enter Info | 4,200 | 8.4% | 30% |\n| 5. Add Payment | 3,600 | 7.2% | 14% |\n| 6. Purchase | 3,300 | 6.6% | 8% |\n\n---\n\n### Key Findings\n\n**Biggest Drop-off: Step 1 → 2 (76%)**\n- Only 24% of product viewers add to cart\n- Possible causes: pricing, product photos, unclear value\n\n**Second Drop-off: Step 2 → 3 (50%)**\n- Half abandon after adding to cart\n- Possible causes: unexpected costs, complex checkout\n\n---\n\n### Recommendations\n\n| Issue | Fix | Impact |\n|-------|-----|-------|\n| High cart abandonment | Show shipping upfront | +5% conversions |\n| Complex checkout | Reduce fields from 8 to 4 | +3% conversions |\n| No trust signals | Add security badges | +2% conversions |\n\n---\n\n### Projected Impact\nIf all fixes implemented: 6.6% → 16.6% conversion\nRevenue increase: ~$500K/year",
+      "context": "E-commerce, Conversion Optimization"
+    }
+  ]
+}

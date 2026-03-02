@@ -1,0 +1,39 @@
+{
+  "useWhen": [
+    "User growth is accelerating and you need to prepare",
+    "Planning for a launch or marketing push",
+    "Experiencing performance issues at scale",
+    "Preparing for funding rounds",
+    "Not sure if ready to handle more users"
+  ],
+  "workflow": [
+    {
+      "step": "1. Define Current and Target Scale",
+      "description": "Document current metrics (users, data, requests) and target growth goal with timeline"
+    },
+    {
+      "step": "2. Assess Readiness Areas",
+      "description": "Evaluate technical readiness, infrastructure readiness, process readiness, and team readiness"
+    },
+    {
+      "step": "3. Identify Gaps",
+      "description": "Document what's not ready for target scale with impact assessment"
+    },
+    {
+      "step": "4. Create Roadmap",
+      "description": "Create prioritized plan to address gaps organized in phases"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Are we ready to scale from 1,000 to 10,000 users?",
+      "output": "Scale readiness assessment with current vs target, gap analysis, and phased roadmap",
+      "context": "Planning for 10x growth in next 6 months"
+    },
+    {
+      "input": "Our app is slowing down with more users - can we scale?",
+      "output": "Technical readiness assessment identifying bottlenecks and recommended fixes",
+      "context": "Experiencing performance degradation"
+    }
+  ]
+}

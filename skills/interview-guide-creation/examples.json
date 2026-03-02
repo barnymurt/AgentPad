@@ -1,0 +1,21 @@
+{
+  "useWhen": [
+    "You need to conduct customer interviews for discovery",
+    "You're preparing for user research sessions",
+    "You want to validate assumptions through conversations"
+  ],
+  "workflow": [
+    { "step": "Define Objectives", "description": "Clarify research purpose, what to learn, and who to interview" },
+    { "step": "Write Screener", "description": "Create questions to qualify the right participants" },
+    { "step": "Create Questions", "description": "Write open-ended questions in logical sequence" },
+    { "step": "Add Probes", "description": "Prepare follow-up questions to dig deeper" },
+    { "step": "Pilot Test", "description": "Practice with 1-2 people and refine" }
+  ],
+  "examples": [
+    {
+      "input": "I'm interviewing customers about a wine and chocolate delivery service and want to understand if they already use a gift delivery service, how often they use one, what they normally buy on such services, what is their average spend, what things would make their experience better, what they love about the services they have used before, do they recommend such services to friends, would they refer people if there was an incentive to do so",
+      "output": "## Interview Guide: Wine & Chocolate Delivery\n\n### Research Objectives\n- **Purpose:** Discovery\n- **What to learn:** Gift-giving habits, service preferences, price sensitivity\n- **Participants:** Adults who buy gifts online\n\n---\n\n### Screener Questions\n1. Have you ever purchased a gift delivery service? (Yes → Continue)\n2. How often do you use such services? (At least once/year → Continue)\n3. What's your email for follow-up?\n\n---\n\n### Main Questions\n\n**Warm-up (5 min)**\n1. Tell me about the last time you sent a gift to someone.\n2. What occasion was it for?\n\n**Core (20 min)**\n3. Walk me through how you typically find a gift delivery service.\n4. What types of gifts have you sent through these services?\n5. How much do you typically spend on a gift delivery order?\n6. What's been your best experience with a gift delivery service?\n7. What frustrates you about these services?\n\n**Deep-dive (10 min)**\n8. If you could design your perfect gift delivery experience, what would it include?\n9. Would you recommend these services to a friend? Why or why not?\n10. What would make you refer someone?\n\n**Wrap-up (5 min)**\n11. Any final thoughts?\n\n---\n\n### Follow-up Probes\n- \"Tell me more about that\"\n- \"Can you give me an example?\"\n- \"What did that feel like?\"\n- \"How did you handle that?\"\n\n---\n\n### Interviewer Tips\n- Start with rapport building\n- Don't rush through silences\n- Let them tell stories\n- Take notes on non-verbal cues\n\n---\n\n### Pilot Test\nTest with 1 friend first. Time yourself. Adjust flow.",
+      "context": "Customer Discovery, B2C, Gift Industry"
+    }
+  ]
+}

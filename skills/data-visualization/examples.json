@@ -1,0 +1,47 @@
+{
+  "useWhen": [
+    "Creating charts and dashboards to visualize data",
+    "Transforming raw data into actionable visual insights",
+    "Communicating trends and patterns to stakeholders",
+    "Building dashboards for decision-making",
+    "Choosing the right chart type for your data"
+  ],
+  "workflow": [
+    {
+      "step": "1. Understand Data and Question",
+      "description": "Identify data type, variables, relationships, and the question to answer"
+    },
+    {
+      "step": "2. Choose Chart Type",
+      "description": "Select appropriate visualization based on comparison, trend, composition, or distribution needs"
+    },
+    {
+      "step": "3. Design for Clarity",
+      "description": "Add clear titles, labels, legend, optimize data-ink ratio"
+    },
+    {
+      "step": "4. Ensure Accessibility",
+      "description": "Use colorblind-safe palettes, add labels beyond color, ensure contrast"
+    },
+    {
+      "step": "5. Add Context",
+      "description": "Add annotations, reference lines, and key insights"
+    },
+    {
+      "step": "6. Decide Static vs Interactive",
+      "description": "Choose based on use case - presentations vs dashboards"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Create a visualization showing monthly revenue trends for the past 12 months. We want to see if revenue is growing.",
+      "context": "12 months of revenue data, monthly trend analysis",
+      "output": "**CHART TYPE: Line Chart**\n- Best for: Continuous data over time\n- Shows: Revenue trajectory and growth\n\n**VISUALIZATION**\n\n```\n$120K │                                          ●\n      │                                    ●\n$100K │                          ●     ╱\n      │                    ●     ╱   ╱\n $80K │              ●     ╱   ╱   ╱\n      │        ●     ╱   ╱   ╱   ╱\n $60K │   ●     ╱   ╱   ╱   ╱\n      │●   ╱   ╱   ╱   ╱\n $40K │╱\n      └────────────────────────────────────────────\n       Jan  Feb  Mar  Apr  May  Jun  Jul  Aug\n```\n\n**DESIGN ELEMENTS**\n- Title: \"Monthly Revenue (2024)\"\n- Y-axis: $ with thousands separator\n- X-axis: Month names\n- Data labels: Show value at peak\n- Reference line: Target of $80K/month\n\n**KEY INSIGHT**\nRevenue grew from $45K in January to $115K in August - 156% growth. Steady month-over-month increase with June showing acceleration.\n\n**ACCESSIBILITY**\n- Color: Blue line on white background\n- Annotation: \"156% YoY growth\" callout"
+    },
+    {
+      "input": "Show the breakdown of users by subscription plan: Free (5000), Basic (2000), Pro (800), Enterprise (200).",
+      "context": "User distribution by plan tier",
+      "output": "**CHART TYPE: Horizontal Bar Chart**\n- Best for: Comparing few categories\n- Alternative: Donut chart (if showing %)\n\n**VISUALIZATION**\n\n```\nFree      │████████████████████████████████████████████ 5,000 (65%)\nBasic     │███████████████                       2,000 (26%)\nPro       │█████████                             800 (10%)\nEnterprise│███                                   200 (3%)\n```\n\n**DESIGN ELEMENTS**\n- Title: \"Users by Plan\"\n- Labels: Show count AND percentage\n- Order: Largest to smallest\n- Colors: Sequential blue palette\n\n**KEY INSIGHT**\nFree users dominate (65%), but Pro + Enterprise comprise 13% of users - likely where most revenue comes from.\n\n**ALTERNATIVE: PIE CHART (if required)**\n- Only 4 categories, so pie is acceptable\n- Start at 12 o'clock, go clockwise\n- Show percentages on slices"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "useWhen": [
+    "You need to design how systems talk to each other",
+    "You're building an API for external users",
+    "You want clear contracts between services"
+  ],
+  "workflow": [
+    { "step": "Define Resources", "description": "Identify the main objects/entities" },
+    { "step": "Map Endpoints", "description": "List HTTP methods and paths" },
+    { "step": "Design Payloads", "description": "Define request/response schemas" },
+    { "step": "Add Auth", "description": "Specify authentication and authorization" },
+    { "step": "Document", "description": "Write clear documentation for consumers" }
+  ],
+  "examples": [
+    {
+      "input": "A REST API for managing tasks in a project management app",
+      "output": "## API Design: Task Management\n\n### Base URL\n`https://api.example.com/v1`\n\n### Authentication\nBearer token (JWT) in Authorization header\n\n---\n\n### Endpoints\n\n**Tasks**\n\n| Method | Endpoint | Description |\n|--------|----------|-------------|\n| GET | /tasks | List all tasks |\n| POST | /tasks | Create new task |\n| GET | /tasks/:id | Get single task |\n| PATCH | /tasks/:id | Update task |\n| DELETE | /tasks/:id | Delete task |\n\n---\n\n### Request/Response Examples\n\n**GET /tasks**\n```json\n{\n  \"tasks\": [\n    {\n      \"id\": \"task_123\",\n      \"title\": \"Design homepage\",\n      \"status\": \"in_progress\",\n      \"assignee_id\": \"user_456\",\n      \"due_date\": \"2024-01-15\",\n      \"created_at\": \"2024-01-01T10:00:00Z\"\n    }\n  ],\n  \"pagination\": {\n    \"page\": 1,\n    \"per_page\": 20,\n    \"total\": 100\n  }\n}\n```\n\n**POST /tasks**\n```json\nRequest:\n{\n  \"title\": \"Design homepage\",\n  \"description\": \"Create mockups for new homepage\",\n  \"status\": \"todo\",\n  \"assignee_id\": \"user_456\",\n  \"due_date\": \"2024-01-15\"\n}\n\nResponse (201):\n{\n  \"task\": { ... }\n}\n```\n\n---\n\n### Error Responses\n\n| Code | Meaning |\n|------|---------|\n| 400 | Bad Request - invalid payload |\n| 401 | Unauthorized - missing token |\n| 403 | Forbidden - no permission |\n| 404 | Not Found - resource doesn't exist |\n| 429 | Too Many Requests - rate limited |\n| 500 | Internal Error |\n\n---\n\n### Rate Limiting\n- 100 requests per minute per API key\n- Headers: X-RateLimit-Limit, X-RateLimit-Remaining",
+      "context": "REST API, B2B SaaS"
+    }
+  ]
+}

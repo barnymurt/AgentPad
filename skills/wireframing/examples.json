@@ -1,0 +1,21 @@
+{
+  "useWhen": [
+    "You need to visualize a screen or feature",
+    "You're in the early design phase",
+    "You want to quickly test layouts"
+  ],
+  "workflow": [
+    { "step": "Define Purpose", "description": "What is this screen trying to achieve?" },
+    { "step": "Identify Elements", "description": "List what content/components are needed" },
+    { "step": "Sketch Layout", "description": "Quickly draw the layout structure" },
+    { "step": "Refine", "description": "Add detail, spacing, and interactions" },
+    { "step": "Validate", "description": "Share and get feedback" }
+  ],
+  "examples": [
+    {
+      "input": "A mobile login screen with email, password, social login, and forgot password",
+      "output": "## Wireframe: Mobile Login Screen\n\n### Layout Structure\n\n```\n┌─────────────────────────┐\n│      [App Logo]        │\n│                         │\n│     Welcome Back       │\n│   Sign in to continue  │\n│                         │\n│  ┌─────────────────┐  │\n│  │  Email          │  │\n│  └─────────────────┘  │\n│                         │\n│  ┌─────────────────┐  │\n│  │  Password  👁  │  │\n│  └─────────────────┘  │\n│                         │\n│   [Forgot Password?]   │\n│                         │\n│  ┌─────────────────┐  │\n│  │   Sign In       │  │\n│  └─────────────────┘  │\n│                         │\n│  ──────── OR ────────  │\n│                         │\n│  [Google]  [Apple]    │\n│                         │\n│  Don't have an account │\n│  [Sign Up]            │\n└─────────────────────────┘\n```\n\n---\n\n### Component Details\n\n| Element | Type | Behavior |\n|---------|------|----------|\n| Logo | Image | Centered, 48x48 |\n| Title | Text | H1, bold, 24px |\n| Subtitle | Text | Body, 16px, gray |\n| Email Input | Text field | Keyboard: email, validation |\n| Password Input | Text field | Toggle visibility, forgot link |\n| Sign In Button | Primary CTA | Full width, 48px height |\n| Social Buttons | Secondary | 40px height, icons |\n| Sign Up Link | Text link | Blue, tappable |\n\n---\n\n### Spacing (8pt Grid)\n\n- Logo to title: 32px\n- Title to subtitle: 8px\n- Subtitle to email: 24px\n- Input to input: 16px\n- Input to button: 24px\n- Button to divider: 24px\n- Divider to social: 16px\n\n---\n\n### Edge Cases\n\n- Empty fields: Show \"Required\" error\n- Invalid email: Show format error\n- Wrong password: Show inline error\n- Loading: Disable button, show spinner\n- Keyboard: Scroll content above keyboard",
+      "context": "Mobile App, UX Design"
+    }
+  ]
+}

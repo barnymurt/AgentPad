@@ -1,0 +1,39 @@
+{
+  "useWhen": [
+    "Planning partnership strategy for growth",
+    "Identifying potential partners for the business",
+    "Building a partnership program from scratch",
+    "Evaluating partnership opportunities",
+    "Structuring partnership terms and value exchange"
+  ],
+  "workflow": [
+    {
+      "step": "1. Define Partnership Goals",
+      "description": "Define what partnerships should achieve, identify what kind of partners are needed, clarify business model for partnerships"
+    },
+    {
+      "step": "2. Identify Partners",
+      "description": "Create potential partners list, assess fit with business goals, priority rank by potential impact"
+    },
+    {
+      "step": "3. Outreach Strategy",
+      "description": "Develop approach strategy, craft value proposition for partners, define partnership terms"
+    },
+    {
+      "step": "4. Partnership Management",
+      "description": "Create onboarding process, define success metrics, establish communication cadence"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Build a partnership program for a B2B SaaS product",
+      "output": "Partner strategy document with identified partners, outreach plan, value proposition, and management framework",
+      "context": "B2B SaaS company seeking to expand through strategic partnerships"
+    },
+    {
+      "input": "Should we partner with [specific company]?",
+      "output": "Fit assessment with strategic alignment, value exchange analysis, and recommendation",
+      "context": "Evaluating a specific partnership opportunity"
+    }
+  ]
+}

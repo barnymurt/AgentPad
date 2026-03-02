@@ -1,0 +1,39 @@
+{
+  "useWhen": [
+    "Designing frontend component structure from scratch",
+    "Creating reusable component hierarchies",
+    "Building component composition patterns",
+    "Defining component props and APIs",
+    "Documenting component patterns for teams"
+  ],
+  "workflow": [
+    {
+      "step": "1. Identify Components",
+      "description": "Break UI into pieces, identify reusability, define boundaries"
+    },
+    {
+      "step": "2. Define Hierarchy",
+      "description": "Map parent/child relationships, composition patterns, data flow"
+    },
+    {
+      "step": "3. Design Props",
+      "description": "Define API surface, types, and default values"
+    },
+    {
+      "step": "4. Document Patterns",
+      "description": "Create usage examples, do's and don'ts"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Design component architecture for a dashboard with cards, charts, data tables, and filters.",
+      "context": "Dashboard with multiple data components",
+      "output": "**COMPONENT HIERARCHY**\n\n```\nDashboard\n├── DashboardHeader\n│   ├── PageTitle\n│   └── DateRangePicker\n├── FilterBar\n│   ├── SearchInput\n│   ├── SelectFilter (status)\n│   ├── SelectFilter (category)\n│   └── ResetButton\n├── StatsGrid\n│   ├── StatCard (revenue)\n│   ├── StatCard (users)\n│   ├── StatCard (orders)\n│   └── StatCard (conversion)\n├── ChartSection\n│   ├── LineChart (trends)\n│   └── PieChart (distribution)\n└── DataTable\n    ├── TableHeader\n    ├── TableRow (repeat)\n    └── Pagination\n```\n\n**PROP DEFINITIONS**\n\n*StatCard*\n```typescript\ninterface StatCardProps {\n  title: string;\n  value: string | number;\n  change?: number; // percentage change\n  trend?: 'up' | 'down' | 'neutral';\n  icon?: ReactNode;\n  loading?: boolean;\n}\n```\n\n*DataTable*\n```typescript\ninterface Column<T> {\n  key: keyof T;\n  header: string;\n  render?: (value: T[keyof T], row: T) => ReactNode;\n  sortable?: boolean;\n  width?: string;\n}\n\ninterface DataTableProps<T> {\n  data: T[];\n  columns: Column<T>[];\n  loading?: boolean;\n  onSort?: (key: keyof T) => void;\n  onPageChange?: (page: number) => void;\n}\n```\n\n**COMPOSITION PATTERN**\n\n```tsx\n// Using compound components for flexibility\n<Dashboard>\n  <Dashboard.Header>\n    <Dashboard.Title>Analytics</Dashboard.Title>\n    <DateRangePicker />\n  </Dashboard.Header>\n  <Dashboard.Stats>\n    <StatCard title=\"Revenue\" value=\"$50K\" change={12} trend=\"up\" />\n  </Dashboard.Stats>\n  <Dashboard.Chart>\n    <RevenueChart />\n  </Dashboard.Chart>\n</Dashboard>\n```"
+    },
+    {
+      "input": "Build a modal component system with different sizes, with/without header, footer actions.",
+      "context": "Reusable modal component library",
+      "output": "**MODAL HIERARCHY**\n\n```\nModal (base)\n├── Modal.Overlay\n├── Modal.Content\n│   ├── Modal.Header\n│   │   ├── Modal.Title\n│   │   └── Modal.Close\n│   ├── Modal.Body\n│   └── Modal.Footer\n│       ├── Modal.Cancel\n│       └── Modal.Confirm\n└── Modal.useInternalState (hook)\n```\n\n**COMPONENT IMPLEMENTATION**\n\n```tsx\n// Base Modal\ninterface ModalProps {\n  isOpen: boolean;\n  onClose: () => void;\n  size?: 'sm' | 'md' | 'lg' | 'full';\n  children: ReactNode;\n}\n\n// Compound components for flexibility\nexport const Modal = {\n  Header: ({ children, onClose }: ModalHeaderProps) => (\n    <div className=\"modal-header\">\n      <h2>{children}</h2>\n      <button onClick={onClose}>×</button>\n    </div>\n  ),\n  Body: ({ children }: { children: ReactNode }) => (\n    <div className=\"modal-body\">{children}</div>\n  ),\n  Footer: ({ children }: { children: ReactNode }) => (\n    <div className=\"modal-footer\">{children}</div>\n  ),\n};\n\n// Usage patterns\n\n// Simple modal\n<Modal isOpen={isOpen} onClose={close}>\n  <Modal.Body>Are you sure?</Modal.Body>\n  <Modal.Footer>\n    <Button variant=\"secondary\" onClick={close}>Cancel</Button>\n    <Button onClick={confirm}>Confirm</Button>\n  </Modal.Footer>\n</Modal>\n\n// Full featured modal\n<Modal isOpen={isOpen} onClose={close} size=\"lg\">\n  <Modal.Header onClose={close}>Edit Profile</Modal.Header>\n  <Modal.Body>\n    <ProfileForm />\n  </Modal.Body>\n  <Modal.Footer>\n    <Modal.Cancel>Discard</Modal.Cancel>\n    <Modal.Confirm>Save Changes</Modal.Confirm>\n  </Modal.Footer>\n</Modal>\n```\n\n**DOCUMENTATION**\n\n```markdown\n## Modal Usage\n\n### Do's\n- Use for important confirmations\n- Provide clear actions in footer\n- Include close button in header\n\n### Don'ts\n- Don't nest modals\n- Don't use for non-critical info\n- Don't forget onClose handler\n```"
+    }
+  ]
+}

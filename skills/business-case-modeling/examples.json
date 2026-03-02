@@ -1,0 +1,20 @@
+{
+  "useWhen": [
+    "You want to understand the economics of your business",
+    "You need to prove unit economics to investors",
+    "You're trying to find the right pricing strategy"
+  ],
+  "workflow": [
+    { "step": "Define Revenue Model", "description": "Clarify pricing, pricing tiers, and revenue streams" },
+    { "step": "Calculate Costs", "description": "Account for COGS, CAC, and operational expenses" },
+    { "step": "Find Breakeven", "description": "Calculate when you'll become profitable" },
+    { "step": "Project Growth", "description": "Model revenue over time with assumptions" }
+  ],
+  "examples": [
+    {
+      "input": "A B2B SaaS platform for small real estate agencies with $99/month pricing, $500 customer acquisition cost, and 5% monthly churn",
+      "output": "## Business Case Model\n\n### Revenue Model\n- **Pricing per:** $99/month user\n- **Average Customer:** 2 seats = $198/month\n- **Annual Contract:** $2,376/year\n\n### Unit Economics\n| Metric | Value |\n|--------|-------|\n| ARPU | $198/month |\n| CAC | $500 |\n| LTV (12 mo) | $2,376 |\n| LTV:CAC Ratio | 4.75:1 |\n| Payback Period | 2.5 months |\n| Gross Margin | 75% |\n\n### Projections (Year 1)\n| Month | Customers | MRR |\n|-------|-----------|------|\n| 1 | 10 | $1,980 |\n| 3 | 35 | $6,930 |\n| 6 | 100 | $19,800 |\n| 12 | 350 | $69,300 |\n\n### Breakeven Analysis\n- **Fixed Costs:** $8,000/month (hosting, salaries)\n- **Breakeven:** 41 customers\n- **Timeline:** Month 2-3\n\n### Key Assumptions\n- 5% monthly churn (industry avg: 3-5%)\n- 20% monthly growth (conservative)\n\n**Recommendation:** Healthy unit economics. Focus on reducing CAC through referrals.",
+      "context": "B2B SaaS, Real Estate Tech"
+    }
+  ]
+}

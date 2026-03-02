@@ -1,0 +1,20 @@
+{
+  "useWhen": [
+    "You need to understand your users' experience step by step",
+    "You're designing a new product and want to find friction points",
+    "You want to identify opportunities for delight"
+  ],
+  "workflow": [
+    { "step": "Map User Actions", "description": "Document every step a user takes from discovery to completion" },
+    { "step": "Identify Touchpoints", "description": "List all interactions and moments of contact" },
+    { "step": "Find Pain Points", "description": "Surface frustrations, confusion, and drop-off risks" },
+    { "step": "Add Delight", "description": "Identify opportunities to surprise and exceed expectations" }
+  ],
+  "examples": [
+    {
+      "input": "A mobile app for ordering groceries from local stores and getting them delivered within 2 hours",
+      "output": "## User Journey Map: Grocery Delivery App\n\n### Journey Stages\n\n#### 1. Discovery\n- **Actions:** See ad, friend recommendation, search app store\n- **Touchpoints:** Instagram, Friend, App Store\n- **Emotions:** Curious, Skeptical\n- **Pain Points:** \"Is this available in my area?\"\n- **Opportunity:** Show delivery radius on first screen\n\n#### 2. First Use\n- **Actions:** Download, sign up, browse, add item, checkout\n- **Touchpoints:** App onboarding, Search, Cart, Payment\n- **Emotions:** Excited, Slightly Overwhelmed\n- **Pain Points:** Too many items, don't know local store brands\n- **Opportunity:** Quick reorder from last order\n\n#### 3. Ordering\n- **Actions:** Select store, add items, select time slot, pay\n- **Touchpoints:** Store selection, Search, Time slots, Payment\n- **Emotions:** Focused, Slightly Anxious\n- **Pain Points:** Minimum order requirements\n- **Opportunity:** Free delivery threshold progress bar\n\n#### 4. Delivery\n- **Actions:** Wait, track driver, receive notification\n- **Touchpoints:** Map, Notifications, Door\n- **Emotions:** Anticipation, Impatient\n- **Pain Points:** \"Where's my driver?\"\n- **Opportunity:** Real-time photo of driver with car\n\n#### 5. Post-Delivery\n- **Actions:** Unpack, rate experience, reorder\n- **Touchpoints:** App rating, Quick order button\n- **Emotions:** Satisfied or Disappointed\n- **Pain Points:** Wrong items, quality issues\n- **Opportunity:** Easy one-tap reorder\n\n### Key Moments of Truth\n1. First order experience\n2. On-time delivery\n3. Item availability accuracy",
+      "context": "Mobile App, E-Commerce, Local Delivery"
+    }
+  ]
+}

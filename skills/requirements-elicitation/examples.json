@@ -1,0 +1,20 @@
+{
+  "useWhen": [
+    "You need to figure out what to build",
+    "You're getting unclear requirements from stakeholders",
+    "You're starting a new product and need to define scope"
+  ],
+  "workflow": [
+    { "step": "Identify Stakeholders", "description": "Map everyone involved - users, buyers, influencers" },
+    { "step": "Gather Requirements", "description": "Collect needs, wants, and constraints from all parties" },
+    { "step": "Prioritize", "description": "Distinguish must-haves from nice-to-haves" },
+    { "step": "Define Scope", "description": "Clearly state what's in and out of scope" }
+  ],
+  "examples": [
+    {
+      "input": "An internal tool for a healthcare company to manage patient appointments and send SMS reminders",
+      "output": "## Requirements Elicitation\n\n### Stakeholders\n- **Primary:** Patients (receive care)\n- **Secondary:** Front desk staff (manage appointments)\n- **Tertiary:** Doctors (view schedules)\n\n### Functional Requirements\n\n| ID | Requirement | Priority | Source |\n|----|-------------|----------|--------|\n| F1 | View available appointment slots | Must Have | Patients |\n| F2 | Book appointment for specific time | Must Have | Patients |\n| F3 | Receive SMS reminder 24h before | Must Have | Front Desk |\n| F4 | Cancel/reschedule appointment | Must Have | Patients |\n| F5 | View doctor availability | Should Have | Doctors |\n| F6 | Add waitlist for full slots | Could Have | Front Desk |\n\n### Non-Functional Requirements\n\n| ID | Requirement | Priority |\n|----|-------------|----------|\n| NF1 | System must be HIPAA compliant | Must Have |\n| NF2 | SMS delivery < 99% success | Must Have |\n| NF3 | Page load < 2 seconds | Should Have |\n| NF4 | Support 500 concurrent users | Should Have |\n\n### Out of Scope\n- Payment processing\n- Insurance verification\n- Telemedicine\n\n### Questions to Answer\n1. What EMR system is currently used?\n2. How many locations?\n3. Current no-show rate?\n4. Integration with SMS provider?\n\n**Next Step:** Create wireframes with stakeholders.",
+      "context": "B2B, Healthcare, Internal Tool"
+    }
+  ]
+}

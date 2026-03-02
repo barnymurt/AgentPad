@@ -1,0 +1,43 @@
+{
+  "useWhen": [
+    "Setting up product analytics for the first time",
+    "Creating a new metrics dashboard",
+    "Improving an existing dashboard with better visualizations",
+    "Deciding what metrics to display on operational dashboards",
+    "Choosing the right analytics tools for your stage"
+  ],
+  "workflow": [
+    {
+      "step": "1. Identify Objectives",
+      "description": "Define what business questions the dashboard needs to answer"
+    },
+    {
+      "step": "2. Identify Data Sources",
+      "description": "Determine what data is available and how to connect to it"
+    },
+    {
+      "step": "3. Define Metrics",
+      "description": "Select metrics that answer your business questions"
+    },
+    {
+      "step": "4. Design Dashboard",
+      "description": "Create layout and choose appropriate visualizations for each metric"
+    },
+    {
+      "step": "5. Set Up Alerts",
+      "description": "Configure notifications for threshold breaches or anomalies"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Create an operational dashboard for a B2B SaaS product to track acquisition, activation, and retention metrics.",
+      "context": "B2B SaaS with 500 paying customers, using Mixpanel and Stripe",
+      "output": "**DASHBOARD OVERVIEW**\n- Purpose: Track product health and user journey\n- Audience: Product team, executives\n- Refresh: Real-time\n\n**DATA SOURCES**\n- Mixpanel: User events, funnels, retention\n- Stripe: Revenue, subscriptions\n- PostgreSQL: User data, usage\n\n**METRICS**\n\n| Metric | Calculation | Viz Type | Benchmark |\n|--------|-------------|----------|----------|\n| Daily Signups | Count of new accounts | Line chart | Growing trend |\n| Activation Rate | Users completing key action / total | % gauge | 30%+ |\n| Time to Activation | Avg days from signup to activation | Histogram | <3 days |\n| Weekly Active Users | Users with 1+ action/week | Line chart | Stable/growing |\n| MRR | Monthly recurring revenue | Line chart | Growing |\n| Churn Rate | Lost customers / total | % gauge | <5% |\n\n**DASHBOARD SECTIONS**\n- Top: KPIs overview (4 key metrics)\n- Middle: Acquisition funnel\n- Bottom: Retention curves\n- Side: Revenue metrics\n\n**ALERTS**\n- Signups drop >50%: Slack to #product\n- Churn >5%: Email to exec team\n- MRR decline: Page on-call"
+    },
+    {
+      "input": "Build a dashboard for a mobile app to track engagement and monetization metrics.",
+      "context": "Consumer mobile app with freemium model, using Firebase and Adjust",
+      "output": "**DASHBOARD OVERVIEW**\n- Purpose: Monitor daily engagement and revenue\n- Audience: Product, Marketing\n- Refresh: Daily\n\n**DATA SOURCES**\n- Firebase Analytics: Events, sessions, user properties\n- Adjust: Install attribution, ad revenue\n- App Store: In-app purchases\n\n**METRICS**\n\n| Metric | Calculation | Viz Type | Benchmark |\n|--------|-------------|----------|----------|\n| DAU | Unique users opening app | Area chart | Growing |\n| Session Length | Avg time per session | Bar chart | >10 min |\n| DAU/MAU | Stickiness | % gauge | >25% |\n| D1 Retention | Return on day 1 | % | >40% |\n| D7 Retention | Return on day 7 | % | >20% |\n| ARPPU | Revenue / paying users | Trend | Growing |\n\n**IMPLEMENTATION**\n- Tool: Google Data Studio (free)\n- Connect Firebase + Adjust data sources\n- Build calculated fields for KPIs\n- Schedule daily email reports"
+    }
+  ]
+}

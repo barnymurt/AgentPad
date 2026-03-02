@@ -1,0 +1,47 @@
+{
+  "useWhen": [
+    "Mapping and analyzing business workflows",
+    "Identifying process bottlenecks and inefficiencies",
+    "Documenting business processes for system design",
+    "Finding automation opportunities in workflows",
+    "Improving business process efficiency"
+  ],
+  "workflow": [
+    {
+      "step": "1. Define Scope and Gather Context",
+      "description": "Identify 3-5 core processes, gather stakeholder input, define start/end conditions"
+    },
+    {
+      "step": "2. Document As-Is Processes",
+      "description": "Map current steps, actors, inputs, outputs, decisions, and handoffs"
+    },
+    {
+      "step": "3. Analyze for Problems",
+      "description": "Identify bottlenecks, redundancies, handoffs, exceptions, and manual steps"
+    },
+    {
+      "step": "4. Design To-Be Processes",
+      "description": "Create improved future-state processes using eliminate/simplify/automate/reorder"
+    },
+    {
+      "step": "5. Assess Automation Opportunities",
+      "description": "Evaluate what's suitable for automation based on repetition, rules, and error rate"
+    },
+    {
+      "step": "6. Prioritize Improvements",
+      "description": "Apply quick wins framework: high impact + low effort first"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Map the customer onboarding process for a B2B SaaS. Currently takes 2 weeks and involves 5 different people.",
+      "context": "B2B SaaS onboarding, inefficient manual process",
+      "output": "**AS-IS PROCESS (Current)**\n\n```\n[Customer signs up]\n       ↓\n[Sales sends welcome email] ── 1 day wait\n       ↓\n[CS creates account in system] ── Manual data entry\n       ↓\n[Account team configures settings] ── 2-3 days\n       ↓\n[CS schedules onboarding call] ── Email back-and-forth\n       ↓\n[Onboarding call with customer] ── 1 hour\n       ↓\n[CS creates training materials] ── Custom each time\n       ↓\n[Account handed to support] ── No clear handoff\n```\n\n**ANALYSIS**\n\n| Issue | Location | Impact |\n|-------|----------|--------|\n| 5 day wait before onboarding starts | Start | Delays value realization |\n| Manual data entry | Account creation | 30 min, errors possible |\n| Email back-and-forth | Scheduling | 2-3 days, frustrated customers |\n| Custom training each time | Materials | 2 hours per customer |\n| No clear handoff | End | Inconsistent experience |\n\n**TO-BE PROCESS (Improved)**\n\n```\n[Customer signs up]\n       ↓\n[System auto-creates account + sends welcome] ── Instant\n       ↓\n[Self-service onboarding portal] ── Customer-led\n       ↓\n[Auto-schedule onboarding call] ── Calendar integration\n       ↓\n[Onboarding call] ── Standard agenda\n       ↓\n[Auto-generate training from template]\n       ↓\n[Auto-handoff to support + context]\n```\n\n**AUTOMATION OPPORTUNITIES**\n\n| Process Step | Automate? | Rationale |\n|--------------|-----------|----------|\n| Account creation | YES | Rule-based, frequent, error-prone |\n| Welcome email | YES | Same content, instant |\n| Scheduling | YES | Calendar API integration |\n| Training materials | YES | Template-based |\n| Handoff | YES | Clear rules |\n\n**QUICK WINS**\n\n| Improvement | Effort | Impact |\n|-------------|--------|--------|\n| Auto welcome email | 1 day | -5 days to start |\n| Calendar scheduling link | 2 days | -2 days wait |\n| Training template | 3 days | -2 hours per customer |\n\n**PRIORITY**\n1. Calendar scheduling (2 days, high impact)\n2. Auto welcome email (1 day, high impact)\n3. Training templates (3 days, medium impact)"
+    },
+    {
+      "input": "Our bug report process involves multiple teams and has quality issues. Map it and find improvements.",
+      "context": "Bug reporting workflow, quality issues",
+      "output": "**AS-IS PROCESS**\n\n```\n[Customer reports bug via email]\n       ↓\n[Support logs in Jira] ── Duplicate reports, unclear priority\n       ↓\n[Support assigns to dev] ── Who owns which?\n       ↓\n[Dev investigates] ── Often not reproducible\n       ↓\n[Dev fixes or rejects] ── No clear criteria\n       ↓\n[QA verifies fix] ── Long wait for QA\n       ↓\n[Support closes ticket] ── Customer not notified\n```\n\n**ANALYSIS**\n\n| Issue | Frequency | Impact |\n|-------|-----------|--------|\n| Duplicate reports | 30% of tickets | Wasted time |\n| Unclear priority | Most tickets | Urgent bugs wait |\n| Not reproducible | 40% of bugs | Wasted dev time |\n| No rejection criteria | Variable | Bugs linger |\n| Customer not notified | All | Poor experience |\n\n**TO-BE PROCESS**\n\n```\n[Customer reports via portal with template]\n       ↓\n[System auto-tags duplicates] ── Link to existing\n       ↓\n[Auto-prioritize based on rules] ── Impact + frequency\n       ↓\n[Dev picks from queue] ── Self-service\n       ↓\n[Dev adds reproduction steps or rejects] ── Clear criteria\n       ↓\n[QA tests if needed] ── Not all need QA\n       ↓\n[Auto-notify customer on close]\n```\n\n**AUTOMATION ASSESSMENT**\n\n| Opportunity | Good for Auto? | Notes |\n|-------------|----------------|-------|\n| Duplicate detection | YES | Keyword matching |\n| Auto-prioritization | YES | Rule-based |\n| Self-service queue | YES | Dev team autonomy |\n| Customer notification | YES | Template-based |\n\n**QUICK WINS**\n\n| Improvement | Effort | Impact |\n|-------------|--------|--------|\n| Bug report template | 1 day | Better info, 40% fewer \"can't reproduce\" |\n| Customer notification | 1 day | Better experience |\n| Priority rules | 2 days | Faster turnaround |\n\n**PRIORITY**\n1. Bug template (quick, high impact)\n2. Auto-notification (quick, high impact)\n3. Priority rules (medium, high impact)"
+    }
+  ]
+}

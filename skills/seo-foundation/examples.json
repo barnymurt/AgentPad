@@ -1,0 +1,43 @@
+{
+  "useWhen": [
+    "Establishing SEO foundation for new product launch",
+    "Improving search visibility for website",
+    "Conducting keyword research for SEO",
+    "Setting up technical SEO baseline",
+    "Creating content SEO strategy"
+  ],
+  "workflow": [
+    {
+      "step": "1. Understand Search Context",
+      "description": "Research what people search for, search volume, and competition"
+    },
+    {
+      "step": "2. Keyword Strategy",
+      "description": "Target keywords by stage, prioritize by opportunity, map to pages"
+    },
+    {
+      "step": "3. Technical SEO Baseline",
+      "description": "Ensure site structure, crawlability, page speed, mobile-friendliness, schema"
+    },
+    {
+      "step": "4. On-Page SEO",
+      "description": "Optimize title tags, meta descriptions, headers, content, internal linking"
+    },
+    {
+      "step": "5. Content SEO Plan",
+      "description": "Plan what content to create, topics to cover, publishing cadence"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Set up SEO foundation for a B2B SaaS product that helps teams manage project workflows. Launch is in 3 months.",
+      "context": "B2B SaaS for project management",
+      "output": "**SEARCH CONTEXT**\n\n| Keyword | Monthly Searches | Competition | Priority |\n|---------|----------------|-------------|----------|\n| project management software | 74,000 | High | Long-term |\n| team project management | 22,000 | Medium | Primary |\n| workflow management tool | 14,800 | Medium | Primary |\n| agile project management | 33,100 | High | Long-term |\n| simple project tracker | 2,400 | Low | Quick win |\n\n**KEYWORD STRATEGY**\n\n| Stage | Keywords | Target Pages |\n|-------|----------|--------------|\n| Quick wins | \"project tracker for small teams\" | Landing page |\n| Primary | \"team project management\" | Features page |\n| Primary | \"workflow management\" | Use cases |\n| Long-term | \"project management software\" | Blog, guides |\n\n**TECHNICAL SEO**\n\n| Check | Status | Action |\n|-------|--------|--------|\n| Site structure | OK | 3-click depth |\n| Sitemap | Missing | Submit to Google Search Console |\n| Page speed | Slow | Optimize images, lazy load |\n| Mobile | OK | Responsive design |\n| Schema | Missing | Add Organization + Product schema |\n\n**ON-PAGE SEO**\n\n| Page | Title Tag | Meta Description |\n|------|------------|-----------------|\n| Home | Team Project Management Software | Streamline your team's workflow... |\n| Features | Project Management Features | See all features... |\n| Pricing | Simple, Transparent Pricing | Start free... |\n\n**CONTENT PLAN**\n\n| Month | Content | Target Keyword |\n|-------|---------|---------------|\n| 1 | Guide: How to Choose Project Software | project management software |\n| 2 | Blog: 5 Signs You Need Workflow Management | workflow management |\n| 3 | Blog: Remote Team Best Practices | team project management |"
+    },
+    {
+      "input": "Build SEO foundation for an e-commerce store selling handmade jewelry. Launch in 2 months.",
+      "context": "E-commerce, handmade jewelry",
+      "output": "**SEARCH CONTEXT**\n\n| Keyword | Monthly Searches | Competition | Priority |\n|---------|----------------|-------------|----------|\n| handmade jewelry | 165,000 | Very High | Long-term |\n| artisan jewelry | 22,200 | Medium | Primary |\n| handcrafted earrings | 9,900 | Low | Quick win |\n| custom jewelry near me | 8,100 | Low | Quick win |\n| silver jewelry online | 14,800 | Medium | Secondary |\n\n**KEYWORD STRATEGY**\n\n| Stage | Keywords | Target Pages |\n|-------|----------|--------------|\n| Quick wins | \"handcrafted earrings\" | Product category |\n| Quick wins | \"custom jewelry\" | Custom orders page |\n| Primary | \"artisan jewelry\" | About + Category |\n| Long-term | \"handmade jewelry\" | Blog, guides |\n\n**TECHNICAL SEO**\n\n| Check | Status | Action |\n|-------|--------|--------|\n| Site structure | OK | Flat structure |\n| Product pages | Missing SEO | Add unique titles/descriptions |\n| Image optimization | Missing | Add alt text to all images |\n| Structured data | Missing | Add Product schema |\n\n**ON-PAGE SEO**\n\n| Page | Title Tag | Meta Description |\n|------|------------|-----------------|\n| Home | Handmade Artisan Jewelry | Unique handcrafted pieces... |\n| Shop | Handcrafted Earrings | Browse our collection... |\n| Product | [Product Name] | Description... |\n\n**CONTENT PLAN**\n\n| Month | Content | Target Keyword |\n|-------|---------|---------------|\n| 1 | Guide: How to Care for Silver Jewelry | silver jewelry care |\n| 2 | Blog: Jewelry Trends 2024 | jewelry trends |\n| 3 | About: Our Story | artisan jewelry |"
+    }
+  ]
+}

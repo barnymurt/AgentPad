@@ -1,0 +1,55 @@
+{
+  "useWhen": [
+    "Understanding what features or capabilities are missing from current product",
+    "Analyzing the difference between current state and desired vision",
+    "Identifying what needs to be built or improved",
+    "Prioritizing gaps based on impact and effort",
+    "Planning what to focus on first to reach target state"
+  ],
+  "workflow": [
+    {
+      "step": "1. Validate Prerequisites",
+      "description": "Confirm current state, desired state, and scope are defined"
+    },
+    {
+      "step": "2. Document Current State",
+      "description": "Capture what's happening today - systems, processes, capabilities, limitations"
+    },
+    {
+      "step": "3. Document Desired State",
+      "description": "Define target from requirements, vision, and constraints"
+    },
+    {
+      "step": "4. Map Gaps",
+      "description": "Identify differences: Missing, Inadequate, Excess, or Misaligned"
+    },
+    {
+      "step": "5. Assess Gap Significance",
+      "description": "Score each gap by Impact × Effort to prioritize"
+    },
+    {
+      "step": "6. Root Cause Analysis",
+      "description": "Distinguish symptoms from underlying causes"
+    },
+    {
+      "step": "7. Recommend Approaches",
+      "description": "For each gap: Build, Buy, Borrow, Block, or Benchmark"
+    },
+    {
+      "step": "8. Create Action Plan",
+      "description": "Prioritize into Quick Wins, Strategic Investments, Fill-Ins, and Deprioritize"
+    }
+  ],
+  "examples": [
+    {
+      "input": "We have a basic SaaS product with user authentication and simple dashboard. Our vision is an enterprise product with SSO, team collaboration, advanced analytics, and API access. Analyze our gaps and recommend priorities.",
+      "context": "B2B SaaS, basic MVP, enterprise vision",
+      "output": "**EXECUTIVE SUMMARY**\n6 critical gaps identified between current MVP and enterprise vision. Top priority: SSO/SAML for enterprise readiness, followed by team collaboration and API access.\n\n**CURRENT STATE**\n- Single-user accounts only\n- Basic dashboard with 3 widgets\n- No team features\n- No integrations\n- Manual user management\n\n**DESIRED STATE**\n- Enterprise SSO (SAML, OIDC)\n- Team workspaces with roles\n- Advanced analytics with custom reports\n- REST API with webhooks\n- Automated user provisioning\n\n**GAP MAP**\n\n| Gap | Current | Desired | Category |\n|-----|---------|---------|----------|\n| Auth | Single-user | Enterprise SSO | Missing |\n| Teams | None | Team workspaces | Missing |\n| Analytics | Basic widgets | Advanced reports | Inadequate |\n| API | None | REST + webhooks | Missing |\n| Roles | No roles | Granular permissions | Missing |\n| Provisioning | Manual | Automated SCIM | Missing |\n\n**GAP ASSESSMENT**\n\n| Gap | Impact | Effort | Score | Priority |\n|------|--------|--------|-------|----------|\n| SSO/SAML | 5 | 3 | 15 | Quick Win |\n| Team workspaces | 5 | 4 | 20 | Strategic |\n| REST API | 4 | 5 | 20 | Strategic |\n| Analytics | 4 | 4 | 16 | Strategic |\n| Role permissions | 4 | 3 | 12 | Quick Win |\n| SCIM | 3 | 4 | 12 | Fill-in |\n\n**ACTION PLAN**\n\n*Quick Wins (Do First)*\n1. SSO/SAML integration (critical for enterprise sales)\n2. Role-based permissions (foundational for teams)\n\n*Strategic Investments (Plan For)*\n3. Team workspaces (Q2)\n4. REST API (Q2-Q3)\n5. Advanced analytics (Q3)\n\n*Fill-Ins (Later)*\n6. SCIM provisioning"
+    },
+    {
+      "input": "Current process: manual spreadsheet tracking for bug reports. Desired: automated bug tracking with triage workflow, severity levels, and reporting. What are the gaps?",
+      "context": "Startup dev team, 5 developers, no formal QA",
+      "output": "**EXECUTIVE SUMMARY**\n5 gaps identified between manual spreadsheet tracking and automated bug workflow. Quick wins: bug tracking tool and severity framework.\n\n**CURRENT STATE**\n- Bugs logged in shared spreadsheet\n- No severity classification\n- No assignment workflow\n- No status tracking\n- Weekly manual summary\n\n**DESIRED STATE**\n- Automated bug tracking tool\n- Severity levels (Critical/High/Medium/Low)\n- Assignment and status workflow\n- SLA tracking\n- Automated reporting\n\n**GAP MAP**\n\n| Gap | Current | Desired | Category |\n|-----|---------|---------|----------|\n| Tool | Spreadsheet | Bug tracker | Missing |\n| Severity | None | 4 levels | Missing |\n| Assignment | Manual | Workflow-based | Missing |\n| Status | None | Defined states | Missing |\n| Reporting | Weekly manual | Automated | Inadequate |\n\n**ACTION PLAN**\n\n*Quick Wins*\n1. Implement bug tracking tool (Jira, Linear, or GitHub Issues)\n2. Define severity levels with SLA\n3. Create basic workflow states\n\n*Later*\n4. Automated dashboards\n5. Integration with CI/CD"
+    }
+  ]
+}

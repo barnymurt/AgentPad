@@ -1,0 +1,21 @@
+{
+  "useWhen": [
+    "You want to review your UI for usability issues",
+    "You don't have budget for user testing",
+    "You need a quick expert review before launch"
+  ],
+  "workflow": [
+    { "step": "Define Scope", "description": "Identify the screens or flows to review" },
+    { "step": "Apply Heuristics", "description": "Evaluate against usability principles" },
+    { "step": "Document Issues", "description": "List problems found with severity levels" },
+    { "step": "Recommend", "description": "Suggest fixes for each issue" },
+    { "step": "Prioritize", "description": "Rank fixes by impact and effort" }
+  ],
+  "examples": [
+    {
+      "input": "Review the login and password reset screens of my SaaS dashboard for usability issues",
+      "output": "## Heuristic Evaluation: Login & Password Reset\n\n### Methodology\nReviewed against Nielsen's 10 Usability Heuristics\n\n---\n\n### Critical Issues (Fix Before Launch)\n\n**1. No Error Prevention - Login Form**\n- **Heuristic:** Error prevention\n- **Issue:** No validation feedback while typing\n- **Impact:** Users submit invalid emails, see error after\n- **Fix:** Validate email format in real-time\n\n**2. Password Requirements Hidden**\n- **Heuristic:** Visibility of system status\n- **Issue:** Password requirements shown only after submit\n- **Impact:** User frustration, multiple attempts\n- **Fix:** Show requirements below field, update as they type\n\n---\n\n### Major Issues (Fix Soon)\n\n**3. No 'Show Password' Toggle**\n- **Heuristic:** Control and freedom\n- **Issue:** Password hidden by default\n- **Impact:** Users can't verify input\n- **Fix:** Add eye icon toggle\n\n**4. Password Reset - No Progress Indicator**\n- **Heuristic:** Visibility of system status\n- **Issue:** User doesn't know if email was sent\n- **Impact:** Users request multiple times\n- **Fix:** Show \"check your email\" confirmation\n\n---\n\n### Minor Issues (Nice to Have)\n\n**5. No 'Remember Me' Option**\n**6. Login link missing from reset page**\n**7. Too small font on mobile**\n\n---\n\n### Priority Matrix\n\n| Issue | Impact | Effort | Priority |\n|-------|--------|--------|----------|\n| #1 Real-time validation | High | Low | 1 |\n| #2 Password requirements | High | Low | 2 |\n| #3 Show password toggle | Medium | Low | 3 |\n| #4 Progress indicator | Medium | Low | 4 |",
+      "context": "SaaS, UX Review"
+    }
+  ]
+}

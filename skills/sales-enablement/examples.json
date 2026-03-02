@@ -1,0 +1,35 @@
+{
+  "useWhen": [
+    "Creating sales collateral for the team",
+    "Building battlecards and competitive materials",
+    "Preparing pitch decks and demo scripts",
+    "Setting up sales team for success with proper materials",
+    "Onboarding new sales team members"
+  ],
+  "workflow": [
+    {
+      "step": "1. Identify Materials Needed",
+      "description": "Assess what sales needs, understand sales process, gather common prospect questions"
+    },
+    {
+      "step": "2. Create Collateral",
+      "description": "Create pitch deck, battlecards, demo script, and FAQ tailored to product"
+    },
+    {
+      "step": "3. Competitive Intel",
+      "description": "Research competitive comparisons, develop objection responses, identify win themes"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Create sales enablement materials for a B2B SaaS product",
+      "output": "Complete sales kit with pitch deck, battlecards for top 3 competitors, demo script, and FAQ",
+      "context": "New product launch needing sales team prepared"
+    },
+    {
+      "input": "Update our competitive battlecards",
+      "output": "Updated battlecards with current competitor analysis, objection responses, and win themes",
+      "context": "Quarterly refresh of competitive intelligence"
+    }
+  ]
+}

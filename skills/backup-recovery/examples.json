@@ -1,0 +1,39 @@
+{
+  "useWhen": [
+    "Planning database backup and recovery strategies",
+    "Setting up automated backup processes",
+    "Creating disaster recovery plans",
+    "Defining RTO and RPO objectives",
+    "Testing backup restoration procedures"
+  ],
+  "workflow": [
+    {
+      "step": "1. Define Strategy",
+      "description": "Determine backup types (full/incremental), frequency, and retention policies"
+    },
+    {
+      "step": "2. Implement Backups",
+      "description": "Set up automated backups, offsite storage, and encryption"
+    },
+    {
+      "step": "3. Plan Recovery",
+      "description": "Create recovery procedures, define RTO/RPO, write runbooks"
+    },
+    {
+      "step": "4. Test",
+      "description": "Perform restore tests, recovery drills, document results"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Set up backup and recovery for a PostgreSQL database. We need to meet RPO of 1 hour and RTO of 4 hours.",
+      "context": "PostgreSQL database, business critical",
+      "output": "**BACKUP STRATEGY**\n\n| Type | Frequency | Retention | Storage |\n|------|-----------|-----------|---------|\n| Full backup | Daily at 2am | 30 days | Local |\n| Incremental | Every hour | 7 days | Local |\n| Full backup | Weekly | 12 weeks | S3 (offsite) |\n\n**RPO/RTO**\n\n| Metric | Target | Strategy |\n|--------|--------|----------|\n| RPO | 1 hour | Hourly WAL archiving |\n| RTO | 4 hours | Automated failover to standby |\n\n**IMPLEMENTATION**\n\n```bash\n# PostgreSQL configuration\n# postgresql.conf\nwal_level = replica\nmax_wal_senders = 3\nwal_keep_size = 1GB\narchive_mode = on\narchive_command = 'aws s3 cp %p s3://backups/wal/%f'\n```\n\n**AUTOMATED BACKUP SCRIPT**\n\n```bash\n#!/bin/bash\n# daily-backup.sh\n\nDATE=$(date +%Y%m%d)\nS3_BUCKET=\"s3://company-backups/postgres\"\n\n# Full backup\npg_dump -Fc -f /backups/full_$DATE.dump companydb\n\n# Upload to S3\naws s3 cp /backups/full_$DATE.dump $S3_BUCKET/full/\n\n# Verify backup\npg_restore --verify-only /backups/full_$DATE.dump\n\n# Cleanup local backups older than 7 days\nfind /backups -name \"*.dump\" -mtime +7 -delete\n```\n\n**RECOVERY PROCEDURE**\n\n```bash\n# Restore from full backup\npg_restore -Fc -d companydb /backups/full_20240315.dump\n\n# Or point-in-time recovery\n# 1. Stop PostgreSQL\n# 2. Restore base backup\n# 3. Configure recovery.conf\n# 4. Start PostgreSQL\n```\n\n**TEST SCHEDULE**\n- Weekly: Restore test on staging\n- Monthly: Full recovery drill\n- Quarterly: Documented disaster recovery test"
+    },
+    {
+      "input": "Create backup strategy for a multi-tenant SaaS with MySQL database, file storage, and application code.",
+      "context": "Multi-tenant SaaS, full stack",
+      "output": "**BACKUP STRATEGY**\n\n| Component | Type | Frequency | Retention | Location |\n|-----------|------|-----------|-----------|----------|\n| MySQL | Full + Binlog | Daily + Continuous | 30 days | S3 |\n| Files (S3) | Versioning | Continuous | 90 days | S3 Cross-region |\n| Application | Snapshot | Weekly | 12 weeks | S3 |\n| Config | Git | On change | Forever | GitHub |\n\n**IMPLEMENTATION**\n\n```yaml\n# docker-compose.backup.yml\nservices:\n  backup:\n    image: mysql/backup\n    environment:\n      - S3_BUCKET=company-backups\n      - MYSQL_HOST=db\n    volumes:\n      - ./backup-scripts:/scripts\n    command: /scripts/backup.sh\n    deploy:\n      replicas: 1\n\n# Kubernetes CronJob\napiVersion: batch/v1\nkind: CronJob\nmetadata:\n  name: mysql-backup\nspec:\n  schedule: \"0 2 * * *\"  # Daily at 2am\n  jobTemplate:\n    spec:\n      template:\n        spec:\n          containers:\n          - name: backup\n            image: mysql/client\n            command:\n            - /bin/sh\n            - -c\n            - mysql-backup\n          restartPolicy: OnFailure\n```\n\n**RECOVERY RUNBOOK**\n\n```markdown\n# Database Recovery Runbook\n\n## Scenario 1: Accidental Data Deletion\n1. Identify last known good state\n2. Restore from S3 backup to staging\n3. Export deleted data\n4. Import to production\n5. Verify data integrity\n\n## Scenario 2: Database Corruption\n1. Stop application\n2. Take snapshot of current state\n3. Restore latest full backup\n4. Apply WAL segments to point-in-time\n5. Verify integrity\n6. Restart application\n\n## Scenario 3: Complete Region Failure\n1. Trigger failover to backup region\n2. Update DNS to point to new region\n3. Verify application health\n4. Resume operations\n```\n\n**MONITORING**\n- Alert: Backup job failure\n- Alert: Backup age > 25 hours\n- Alert: Recovery time > RTO"
+    }
+  ]
+}

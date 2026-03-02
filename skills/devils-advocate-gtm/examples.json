@@ -1,0 +1,39 @@
+{
+  "useWhen": [
+    "Need to stress-test GTM strategy",
+    "Reviewing launch plans for weaknesses",
+    "Asking what's wrong with launch strategy",
+    "Pre-launch GTM assessment",
+    "Validating go-to-market assumptions"
+  ],
+  "workflow": [
+    {
+      "step": "1. Identify Assumptions",
+      "description": "List all GTM assumptions and categorize by type (customer, product, market, competitive)"
+    },
+    {
+      "step": "2. Challenge Each",
+      "description": "Question each assumption: what could go wrong? What's being ignored? What's the counter-evidence?"
+    },
+    {
+      "step": "3. Find Blind Spots",
+      "description": "Identify what's missing, what's underestimated, what's overestimated in the GTM strategy"
+    },
+    {
+      "step": "4. Recommend",
+      "description": "Provide priority fixes, risk acceptance recommendations, and trade-off considerations"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Review our GTM strategy before product launch",
+      "output": "GTM review with identified assumptions, rigorous challenges, blind spots, and actionable recommendations",
+      "context": "Pre-launch stress test of go-to-market approach"
+    },
+    {
+      "input": "What's wrong with our launch plan?",
+      "output": "Critical analysis of launch plan with identified weaknesses, risks, and prioritized fixes",
+      "context": "Launch plan assessment for potential issues"
+    }
+  ]
+}

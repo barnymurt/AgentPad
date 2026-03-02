@@ -1,0 +1,43 @@
+{
+  "useWhen": [
+    "Managing complex delivery involving multiple skills",
+    "Need to oversee big picture and ensure alignment",
+    "Skills need to work together (mini squad)",
+    "Deciding which skills to engage for a goal",
+    "Coordinating one-on-one collaboration between skills"
+  ],
+  "workflow": [
+    {
+      "step": "1. Goal Analysis + Domain Context",
+      "description": "Understand user's ultimate objective, break down success criteria, determine if new delivery or continuation, gather domain context for skill selection"
+    },
+    {
+      "step": "2. Skill Strategy",
+      "description": "Determine best approach: Single Skill (simple), Coordinated Skills (multiple sequential), Mini Squad (tight collaboration), or Nested Orchestration (very complex)"
+    },
+    {
+      "step": "3. Assemble Delivery Team",
+      "description": "Select and engage skills based on strategy. Always include Delivery Manager and Skill Reviewer. Select domain skills as needed"
+    },
+    {
+      "step": "4. Execute and Monitor",
+      "description": "Track progress, monitor for blockers, ensure alignment with vision, adapt plan as needed, communicate status to user"
+    },
+    {
+      "step": "5. Synthesize and Deliver",
+      "description": "Aggregate outputs from all skills, ensure coherence, present unified result, document learnings"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Build a complete validation pack for our SaaS idea",
+      "output": "Coordinated delivery plan with research, persona, business case, and prioritization skills working together",
+      "context": "Complex goal requiring multiple skills in mini squad mode"
+    },
+    {
+      "input": "Help us build and launch a new product",
+      "output": "Orchestrated delivery with multiple workstreams: validation, technical spec, and development planning",
+      "context": "Very large goal with nested orchestration for parallel workstreams"
+    }
+  ]
+}

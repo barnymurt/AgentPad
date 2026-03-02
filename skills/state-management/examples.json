@@ -1,0 +1,39 @@
+{
+  "useWhen": [
+    "Designing state architecture for complex applications",
+    "Choosing between local state, Redux, or server state solutions",
+    "Managing data flow and caching strategies",
+    "Implementing state machines for complex flows",
+    "Optimizing re-renders and performance"
+  ],
+  "workflow": [
+    {
+      "step": "1. Identify State",
+      "description": "Distinguish local vs server state, ephemeral vs persistent, and complexity level"
+    },
+    {
+      "step": "2. Choose Approach",
+      "description": "Select: Context for simple, Redux/Zustand for complex, React Query for server state, State machines for flows"
+    },
+    {
+      "step": "3. Implement",
+      "description": "Set up store, define data flow, configure caching"
+    },
+    {
+      "step": "4. Optimize",
+      "description": "Reduce unnecessary re-renders, improve caching, add persistence"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Design state management for a SaaS dashboard with user auth, project list, and real-time updates.",
+      "context": "B2B SaaS with complex state needs",
+      "output": "**STATE ARCHITECTURE**\n\n| State Type | Solution | Why |\n|------------|----------|-----|\n| Auth | Context + LocalStorage | User session, persistence needed |\n| Projects | React Query | Server state, caching, sync |\n| UI (sidebar, modals) | Zustand | Local, frequent updates |\n| Filters | URL state | Shareable, bookmarkable |\n\n**IMPLEMENTATION**\n\n*Auth (Context)*\n```jsx\nconst AuthProvider = ({ children }) => {\n  const [user, setUser] = useState(() => \n    JSON.parse(localStorage.getItem('user'))\n  );\n  \n  const login = async (credentials) => {\n    const user = await api.login(credentials);\n    setUser(user);\n    localStorage.setItem('user', JSON.stringify(user));\n  };\n  \n  return <AuthContext.Provider value={{ user, login }}>\n    {children}\n  </AuthContext.Provider>;\n};\n```\n\n*Projects (React Query)*\n```jsx\nconst { data: projects, isLoading } = useQuery({\n  queryKey: ['projects'],\n  queryFn: api.getProjects,\n  staleTime: 5 * 60 * 1000,\n  refetchOnWindowFocus: false\n});\n```\n\n*UI State (Zustand)*\n```jsx\nconst useUIStore = create((set) => ({\n  sidebarOpen: true,\n  activeModal: null,\n  toggleSidebar: () => set(s => ({ sidebarOpen: !s.sidebarOpen })),\n  openModal: (modal) => set({ activeModal: modal }),\n  closeModal: () => set({ activeModal: null }),\n}));\n```\n\n**OPTIMIZATION**\n- React Query: 5-min stale time, background refetch\n- Zustand: Selectors to prevent re-renders\n- Auth: Persisted in localStorage"
+    },
+    {
+      "input": "We have a checkout flow with multiple steps: cart review, shipping, payment, confirmation. How should we manage state?",
+      "context": "Multi-step checkout flow",
+      "output": "**STATE ARCHITECTURE**\n\n| State Type | Solution | Why |\n|------------|----------|-----|\n| Checkout flow | Zustand + State Machine | Complex flow, validation |\n| Cart | Server state (React Query) | Synced with backend |\n| Form data | Local state + validation | Transient, validation |\n\n**STATE MACHINE**\n\n```javascript\nconst checkoutMachine = {\n  initial: 'cart',\n  states: {\n    cart: {\n      on: { NEXT: 'shipping' }\n    },\n    shipping: {\n      on: { \n        BACK: 'cart',\n        NEXT: 'payment' \n      }\n    },\n    payment: {\n      on: { \n        BACK: 'shipping',\n        NEXT: 'confirmation'\n      }\n    },\n    confirmation: {\n      type: 'final'\n    }\n  }\n};\n```\n\n**IMPLEMENTATION**\n\n```jsx\nconst useCheckoutStore = create((set, get) => ({\n  step: 'cart',\n  shippingData: {},\n  paymentData: {},\n  \n  setStep: (step) => set({ step }),\n  updateShipping: (data) => set({ shippingData: data }),\n  updatePayment: (data) => set({ paymentData: data }),\n  \n  canProceed: () => {\n    const { step, shippingData, paymentData } = get();\n    switch(step) {\n      case 'cart': return true;\n      case 'shipping': return validateShipping(shippingData);\n      case 'payment': return validatePayment(paymentData);\n      default: return false;\n    }\n  }\n}));\n```\n\n**BENEFITS**\n- Prevent invalid transitions\n- Clear validation at each step\n- Easy to add steps or validation"
+    }
+  ]
+}

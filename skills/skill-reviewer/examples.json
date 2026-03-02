@@ -1,0 +1,51 @@
+{
+  "useWhen": [
+    "Validating or auditing existing skills",
+    "Reviewing a skill's quality and completeness",
+    "Identifying gaps in skill outputs",
+    "Comparing skills for consistency",
+    "Quality checking a newly built skill"
+  ],
+  "workflow": [
+    {
+      "step": "1. Select Skill to Review",
+      "description": "Identify which skill to review, gather skill files (SKILL.md + references), understand purpose and scope"
+    },
+    {
+      "step": "2. Structure Review",
+      "description": "Verify skill has proper structure: required files present, links resolve, no placeholder text, proper formatting"
+    },
+    {
+      "step": "3. Quality Assessment",
+      "description": "Evaluate clarity (specific descriptions, clear triggers), completeness (edge cases, quality criteria), and methodology quality"
+    },
+    {
+      "step": "4. Output Schema Validation",
+      "description": "For skills with schemas: check sections defined, required vs optional fields, validation rules, confidence tagging"
+    },
+    {
+      "step": "5. Gap Analysis",
+      "description": "Identify gaps by severity: Critical (missing files, incomplete schema), Major (vague descriptions, weak methodology), Minor (formatting issues)"
+    },
+    {
+      "step": "6. Recommendations",
+      "description": "Generate specific actionable recommendations: Fix Now (critical), Improve Later (major), Consider (nice-to-haves)"
+    },
+    {
+      "step": "7. Review Report",
+      "description": "Output structured review report with skill name, overall assessment, detailed findings, and prioritized recommendations"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Review the competitor-research skill for quality",
+      "output": "Skill review report with structure check, quality scores, gap register, and prioritized recommendations",
+      "context": "Auditing existing skill before using in production"
+    },
+    {
+      "input": "Check if our new skill is properly built",
+      "output": "Quality assessment with identified gaps, missing elements, and fix recommendations",
+      "context": "Validating newly created skill"
+    }
+  ]
+}

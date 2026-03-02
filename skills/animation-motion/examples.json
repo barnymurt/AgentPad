@@ -1,0 +1,39 @@
+{
+  "useWhen": [
+    "Creating animations for user interfaces",
+    "Adding micro-interactions and button feedback",
+    "Designing page transitions and component animations",
+    "Implementing loading states and feedback animations",
+    "Applying motion principles for better UX"
+  ],
+  "workflow": [
+    {
+      "step": "1. Define Principles",
+      "description": "Set timing, easing, and duration guidelines"
+    },
+    {
+      "step": "2. Create Transitions",
+      "description": "Implement page transitions, component transitions, state changes"
+    },
+    {
+      "step": "3. Add Micro-interactions",
+      "description": "Add button feedback, hover states, loading animations"
+    },
+    {
+      "step": "4. Test",
+      "description": "Test performance, accessibility, and gather user feedback"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Add animations to a button component with hover and click states.",
+      "context": "UI component animation",
+      "output": "**ANIMATION SPECIFICATIONS**\n\n| State | Property | Duration | Easing |\n|-------|----------|----------|--------|\n| Hover | scale, shadow | 150ms | ease-out |\n| Active | scale | 100ms | ease-in |\n| Focus | ring | 200ms | ease |\n\n**IMPLEMENTATION**\n\n```css\n.button {\n  transition: transform 150ms ease-out,\n              box-shadow 150ms ease-out;\n}\n\n.button:hover {\n  transform: scale(1.05);\n  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);\n}\n\n.button:active {\n  transform: scale(0.98);\n}\n\n.button:focus-visible {\n  outline: 2px solid blue;\n  outline-offset: 2px;\n}\n```\n\n**RESPECT FOR PREFERENCES**\n\n```css\n@media (prefers-reduced-motion: reduce) {\n  .button {\n    transition: none;\n  }\n}\n```\n\n**MICRO-INTERACTION**\n\n```javascript\n// Click ripple effect\nbutton.addEventListener('click', (e) => {\n  const ripple = document.createElement('span');\n  ripple.classList.add('ripple');\n  const rect = button.getBoundingClientRect();\n  ripple.style.left = `${e.clientX - rect.left}px`;\n  ripple.style.top = `${e.clientY - rect.top}px`;\n  button.appendChild(ripple);\n  setTimeout(() => ripple.remove(), 600);\n});\n```"
+    },
+    {
+      "input": "Create page transitions for a single-page application.",
+      "context": "SPA page transitions",
+      "output": "**TRANSITION DESIGN**\n\n| From | To | Animation |\n|------|----|----------|\n| List | Detail | Slide + Fade |\n| Detail | List | Reverse slide |\n| Any | Modal | Scale + Fade |\n| Modal | Any | Reverse scale |\n\n**IMPLEMENTATION**\n\n```css\n/* Page container */\n.page {\n  position: absolute;\n  width: 100%;\n  opacity: 1;\n  transform: translateX(0);\n  transition: opacity 300ms ease,\n              transform 300ms ease;\n}\n\n.page-exit {\n  opacity: 0;\n  transform: translateX(-20px);\n}\n\n.page-enter {\n  opacity: 0;\n  transform: translateX(20px);\n}\n\n/* Modal transition */\n.modal-overlay {\n  opacity: 0;\n  transition: opacity 200ms ease;\n}\n\n.modal-overlay.open {\n  opacity: 1;\n}\n\n.modal-content {\n  transform: scale(0.95);\n  opacity: 0;\n  transition: transform 200ms ease,\n              opacity 200ms ease;\n}\n\n.modal-content.open {\n  transform: scale(1);\n  opacity: 1;\n}\n```\n\n**REACT IMPLEMENTATION**\n\n```jsx\nconst PageTransition = ({ children, isExiting }) => {\n  return (\n    <motion.div\n      initial={{ opacity: 0, x: 20 }}\n      animate={{ opacity: 1, x: 0 }}\n      exit={{ opacity: 0, x: -20 }}\n      transition={{ duration: 0.3, ease: \"easeOut\" }}\n    >\n      {children}\n    </motion.div>\n  );\n};\n```"
+    }
+  ]
+}

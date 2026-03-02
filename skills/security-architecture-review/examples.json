@@ -1,0 +1,47 @@
+{
+  "useWhen": [
+    "Evaluating security of a proposed system architecture",
+    "Reviewing authentication flows for weaknesses",
+    "Assessing API security across endpoints",
+    "Auditing system's security posture",
+    "Identifying vulnerabilities in architecture design"
+  ],
+  "workflow": [
+    {
+      "step": "1. Load Architecture and Threat Model",
+      "description": "Load architecture inputs and threat model. Define review scope listing containers and data flows to review"
+    },
+    {
+      "step": "2. Review Authentication Flows",
+      "description": "Trace end-to-end auth lifecycle for each user type. Check registration, login, session management, privilege escalation, and logout"
+    },
+    {
+      "step": "3. Review API Security",
+      "description": "Categorize endpoints (public, authenticated, privileged). Evaluate input validation, output filtering, rate limiting, error handling"
+    },
+    {
+      "step": "4. Review Data Handling",
+      "description": "Trace sensitive data at rest, in transit, and in use. Check encryption, logging, retention, and deletion"
+    },
+    {
+      "step": "5. Assess Third-Party Dependencies",
+      "description": "Evaluate security posture, data exposure, blast radius, and supply chain risks for each external service"
+    },
+    {
+      "step": "6. Produce Remediation Plan",
+      "description": "Synthesize findings per component with severity ratings. Prioritize by threat model severity x effort"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Review security of our new SaaS architecture with Next.js, Supabase, and Clerk",
+      "output": "Security architecture review with per-component assessment, auth flow analysis, API security review, and prioritized remediation plan",
+      "context": "New product architecture before development starts"
+    },
+    {
+      "input": "Audit our current system's security posture",
+      "output": "Security assessment with findings mapped to OWASP/CWE, threat model linkage, and tech-stack-specific recommendations",
+      "context": "Existing SaaS product needing security review"
+    }
+  ]
+}

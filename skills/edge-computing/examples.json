@@ -1,0 +1,39 @@
+{
+  "useWhen": [
+    "Implementing edge computing for global distribution",
+    "Setting up CDN and edge functions",
+    "Building low-latency applications",
+    "Optimizing caching strategies",
+    "Designing edge architecture"
+  ],
+  "workflow": [
+    {
+      "step": "1. Design",
+      "description": "Plan edge locations, cache strategy, and data flow"
+    },
+    {
+      "step": "2. Implement",
+      "description": "Create edge functions, configure CDN, set up caching"
+    },
+    {
+      "step": "3. Optimize",
+      "description": "Improve cache hit rates, optimize edge logic, measure performance"
+    },
+    {
+      "step": "4. Monitor",
+      "description": "Track cache rates, latency, and error rates"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Implement edge computing for a global e-commerce site to serve static content and reduce latency.",
+      "context": "Global e-commerce, CDN, edge functions",
+      "output": "**EDGE ARCHITECTURE**\n\n```\n┌─────────┐     ┌─────────┐     ┌─────────┐\n│  User   │────▶│  Edge   │────▶│ Origin  │\n│ (Tokyo) │     │ (Tokyo) │     │ (AWS)   │\n└─────────┘     └─────────┘     └─────────┘\n┌─────────┐     ┌─────────┐\n│  User   │────▶│  Edge   │\n│ (NY)    │     │ (NY)    │\n└─────────┘     └─────────┘\n```\n\n**CACHE STRATEGY**\n\n| Content Type | Cache TTL | Cache Control |\n|--------------|-----------|---------------|\n| Static assets | 1 year | immutable |\n| Product pages | 5 min | stale-while-revalidate |\n| API responses | 1 min | no-cache |\n| User data | none | private |\n\n**EDGE FUNCTION**\n\n```javascript\n// personalization edge function\naddEventListener('fetch', event => {\n  event.respondWith(handleRequest(event.request));\n});\n\nasync function handleRequest(request) {\n  const url = new URL(request.url);\n  \n  // A/B testing at edge\n  const bucket = Math.random() < 0.5 ? 'A' : 'B';\n  const response = await fetch(request);\n  \n  // Set cookie for consistency\n  const modifiedResponse = new Response(response.body, response);\n  modifiedResponse.headers.set('Set-Cookie', `bucket=${bucket}; Path=/; Max-Age=2592000`);\n  \n  return modifiedResponse;\n}\n```\n\n**CDN CONFIGURATION**\n\n```javascript\n// Cloudflare Page Rules\n{\n  \"cache_everything\": true,\n  \"edge_cache_ttl\": 2592000,\n  \"browser_cache_ttl\": 86400\n}\n```\n\n**MONITORING**\n- Cache hit rate: Target >90%\n- Time to first byte: <50ms at edge\n- Origin requests: Monitor closely"
+    },
+    {
+      "input": "Build edge computing for a real-time collaboration app with live updates.",
+      "context": "Real-time app, low latency required",
+      "output": "**EDGE ARCHITECTURE**\n\n```\n┌──────────┐   ┌──────────┐   ┌──────────┐\n│  Client  │──▶│  Edge    │──▶│  WebSocket│\n│ (Browser)│   │  Gateway │   │  Server  │\n└──────────┘   └──────────┘   └──────────┘\n      │\n      ▼\n┌──────────┐\n│  Edge    │\n│  State   │\n└──────────┘\n```\n\n**EDGE STATE**\n\n```javascript\n// Durable Objects for real-time state\nclass UserSession {\n  constructor(state, env) {\n    this.state = state;\n  }\n\n  async onConnect(conn) {\n    // Sync user state from origin\n    const userData = await this.state.get('user');\n    conn.send(JSON.stringify(userData));\n  }\n\n  async onMessage(message) {\n    // Broadcast to other connections\n    this.broadcast(message);\n  }\n}\n```\n\n**OPTIMIZATION**\n\n| Technique | Benefit |\n|-----------|--------|\n| Connection pooling at edge | Reduce origin load |\n| Message prefetching | Lower latency |\n| Presence at edge | Instant status updates |\n| Conflict resolution | Handle offline edits |\n\n**CACHE STRATEGY**\n\n| Data | Strategy |\n|------|----------|\n| User profile | Edge cache, 5 min TTL |\n| Presence status | Real-time, no cache |\n| Document content | KV store at edge |\n| Auth tokens | Short TTL, 1 min |"
+    }
+  ]
+}

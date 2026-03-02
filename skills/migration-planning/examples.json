@@ -1,0 +1,39 @@
+{
+  "useWhen": [
+    "Planning database schema migrations",
+    "Versioning database changes",
+    "Creating rollback strategies",
+    "Implementing zero-downtime migrations",
+    "Managing database schema changes safely"
+  ],
+  "workflow": [
+    {
+      "step": "1. Assess Changes",
+      "description": "Analyze what needs to change, impact analysis, and dependencies"
+    },
+    {
+      "step": "2. Plan Migration",
+      "description": "Determine migration order, dependencies, and rollback steps"
+    },
+    {
+      "step": "3. Version Control",
+      "description": "Create migration files, sequencing, and documentation"
+    },
+    {
+      "step": "4. Test Plan",
+      "description": "Test migration, test rollback, implement zero-downtime approach"
+    }
+  ],
+  "examples": [
+    {
+      "input": "We need to add a new 'status' column to our users table and migrate existing data. The table has 1M rows.",
+      "context": "PostgreSQL, large table migration",
+      "output": "**MIGRATION PLAN**\n\n*Changes:*\n- Add status column (VARCHAR)\n- Set default for existing rows\n- Add index for queries\n\n**MIGRATION SCRIPT**\n\n```sql\n-- V1: Add status column (non-blocking)\nALTER TABLE users ADD COLUMN status VARCHAR(20) DEFAULT 'active' NOT NULL;\n\n-- V2: Add index (concurrent - zero downtime)\nCREATE INDEX CONCURRENTLY idx_users_status ON users(status);\n```\n\n**ROLLBACK**\n\n```sql\n-- Rollback script\nDROP INDEX IF EXISTS idx_users_status;\nALTER TABLE users DROP COLUMN IF EXISTS status;\n```\n\n**ZERO-DOWNTIME STRATEGY**\n\n| Step | Action | Downtime |\n|------|--------|----------|\n| 1 | Add nullable column | None |\n| 2 | Backfill data | None |\n| 3 | Add NOT NULL constraint | Brief lock |\n| 4 | Add index concurrently | None |\n\n**IMPLEMENTATION**\n\n```sql\n-- Step 1: Add nullable column\nALTER TABLE users ADD COLUMN status VARCHAR;\n\n-- Step 2: Backfill in batches\nUPDATE users \nSET status = 'active' \nWHERE status IS NULL\nLIMIT 10000;\n\n-- Step 3: Add default and constraint\nALTER TABLE users ALTER COLUMN status SET DEFAULT 'active';\nALTER TABLE users ALTER COLUMN status SET NOT NULL;\n\n-- Step 4: Add index concurrently\nCREATE INDEX CONCURRENTLY idx_users_status ON users(status);\n```\n\n**TEST PLAN**\n- [ ] Test migration on staging\n- [ ] Verify rollback on staging\n- [ ] Monitor query performance\n- [ ] Test application with new column"
+    },
+    {
+      "input": "We need to split the users table into users and profiles for better organization. Need to migrate data safely.",
+      "context": "PostgreSQL, table split migration",
+      "output": "**MIGRATION PLAN**\n\n*Changes:*\n- Create profiles table\n- Migrate columns to profiles\n- Add foreign key relationship\n- Update application code\n\n**MIGRATION**\n\n```sql\n-- V1: Create profiles table\nCREATE TABLE profiles (\n  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),\n  user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,\n  bio TEXT,\n  avatar_url VARCHAR(500),\n  created_at TIMESTAMPTZ DEFAULT NOW(),\n  updated_at TIMESTAMPTZ DEFAULT NOW()\n);\n\n-- V2: Create foreign key\nALTER TABLE profiles ADD CONSTRAINT fk_profiles_user \n  UNIQUE (user_id);\n\n-- V3: Migrate data (batched)\nINSERT INTO profiles (user_id, bio, avatar_url)\nSELECT id, bio, avatar_url FROM users \nWHERE bio IS NOT NULL OR avatar_url IS NOT NULL\nLIMIT 10000;\n\n-- V4: Verify migration\nSELECT COUNT(*) FROM profiles;\nSELECT COUNT(*) FROM users WHERE id NOT IN (SELECT user_id FROM profiles);\n```\n\n**ROLLBACK**\n\n```sql\n-- Rollback\nALTER TABLE profiles DROP CONSTRAINT fk_profiles_user;\nDROP TABLE profiles;\n```\n\n**CODE DEPLOYMENT**\n\n1. Deploy code that reads from both tables\n2. Run migration\n3. Deploy code that writes to new tables\n4. Remove old columns (separate migration)\n\n**TEST PLAN**\n\n```sql\n-- Verify data integrity\nSELECT u.id, COUNT(p.id) \nFROM users u \nLEFT JOIN profiles p ON u.id = p.user_id \nGROUP BY u.id \nHAVING COUNT(p.id) > 1;\n\n-- Verify foreign key\nSELECT * FROM profiles p \nWHERE NOT EXISTS (SELECT 1 FROM users u WHERE u.id = p.user_id);\n```"
+    }
+  ]
+}

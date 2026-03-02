@@ -1,0 +1,20 @@
+{
+  "useWhen": [
+    "You need to figure out what features to build first",
+    "You're getting conflicting feedback from users",
+    "You want to prioritize your roadmap objectively"
+  ],
+  "workflow": [
+    { "step": "List Features", "description": "Input all features and ideas you want to consider" },
+    { "step": "Score Each", "description": "Rate features on impact vs effort matrix" },
+    { "step": "Group by Theme", "description": "Organize features into logical groups or phases" },
+    { "step": "Prioritize", "description": "Generate ranked roadmap with rationale" }
+  ],
+  "examples": [
+    {
+      "input": "An AI-powered project management tool for remote teams with features like smart scheduling, automated status updates, and sentiment analysis for team mood",
+      "output": "## Feature Prioritization Results\n\n### Must Have (Score 8-10)\n1. **Smart Scheduling** - Core value proposition, high impact\n2. **Task Management** - Table stakes, without it nothing works\n3. **Team Visibility** - Remote teams need this to stay aligned\n\n### Should Have (Score 6-7)\n4. **Automated Status Updates** - Nice to have, saves time\n5. **Basic Integrations** - Slack, Google Calendar minimum\n\n### Could Have (Score 4-5)\n6. **Sentiment Analysis** - Interesting but risky to build\n7. **Advanced Analytics** - Wait for PMF first\n\n### Won't Have (Score <4)\n8. Custom Branding - Not MVP\n9. Mobile Apps - Web first\n10. API Access - Later phase\n\n**Recommendation:** Build MVP with 1-3, then 4-5 in first quarter.",
+      "context": "SaaS, B2B, AI-powered"
+    }
+  ]
+}

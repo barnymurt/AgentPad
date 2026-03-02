@@ -1,0 +1,59 @@
+{
+  "useWhen": [
+    "Validating technical architecture is secure and compliant",
+    "Producing READY/NEEDS WORK/REDESIGN recommendation",
+    "Getting threat model and compliance roadmap",
+    "Assessing if architecture is ready to build",
+    "Running full technical security assessment"
+  ],
+  "workflow": [
+    {
+      "step": "1. Context Setup",
+      "description": "Accept input from Validation Pack or standalone product description, confirm target market geography, document existing security infrastructure"
+    },
+    {
+      "step": "2. Architecture Design",
+      "description": "Produce system architecture with containers, data flows, auth design, tech stack choices"
+    },
+    {
+      "step": "3. Security Requirements Baseline",
+      "description": "Define minimum security bar, map requirements to components, identify P0 vs P1 requirements"
+    },
+    {
+      "step": "4. Threat Modeling",
+      "description": "Apply STRIDE analysis to architecture components, identify threats by category, document risk ratings"
+    },
+    {
+      "step": "5. Security Architecture Review",
+      "description": "Evaluate architecture against threats, trace auth flows, assess data handling security"
+    },
+    {
+      "step": "6. Data Protection Assessment",
+      "description": "Full data lifecycle inventory, map PII exposure, define retention policies"
+    },
+    {
+      "step": "7. Privacy Regulation Assessment",
+      "description": "Triage applicable regulations, assess compliance status, draft privacy policy sections"
+    },
+    {
+      "step": "8. Security & Compliance Roadmap",
+      "description": "Phase timeline for quick wins vs long-term, estimate certification costs, consolidate findings"
+    },
+    {
+      "step": "9. Synthesis",
+      "description": "Compile pack with architecture summary, security posture, data protection, compliance, risk register, and verdict"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Is our architecture ready to build? Validate technical readiness",
+      "output": "Technical readiness pack with verdict (READY/NEEDS WORK/REDESIGN), threat model, compliance roadmap, and risk register",
+      "context": "Pre-build validation of security and compliance posture"
+    },
+    {
+      "input": "Run full security assessment on our architecture",
+      "output": "Complete technical readiness assessment with security findings, data protection status, and regulatory compliance roadmap",
+      "context": "Comprehensive security review before product launch"
+    }
+  ]
+}

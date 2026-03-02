@@ -1,0 +1,39 @@
+{
+  "useWhen": [
+    "Deciding what to build in the next product iteration",
+    "Prioritizing backlog items for upcoming sprints",
+    "Planning a release or feature set",
+    "Reviewing what worked and what didn't from the previous iteration",
+    "Starting a new development cycle with fresh priorities"
+  ],
+  "workflow": [
+    {
+      "step": "1. Gather Inputs",
+      "description": "Collect data from metrics, user feedback, team learnings, and strategic context"
+    },
+    {
+      "step": "2. Analyze Current State",
+      "description": "Review what was delivered in last iteration and how it's performing against benchmarks"
+    },
+    {
+      "step": "3. Generate Priorities",
+      "description": "Apply prioritization framework to determine what should be focused on next"
+    },
+    {
+      "step": "4. Define Success Criteria",
+      "description": "Establish what must be true for the iteration to be considered successful"
+    }
+  ],
+  "examples": [
+    {
+      "input": "We need to plan Q3 iteration for our B2B SaaS product. Last quarter we launched a new onboarding flow. Metrics show activation improved from 25% to 35%, but users are dropping off at the 'first project' step. User interviews indicate they want team collaboration features.",
+      "context": "B2B SaaS with 500 customers, active development",
+      "output": "**INPUT ANALYSIS**\n\n*User Feedback Themes:*\n- Theme 1: Users want to collaborate with team members on projects\n- Theme 2: Users need better visibility into team activity\n- Theme 3: Support tickets mention 'invite team' frequently\n\n*Metric Performance:*\n- Activation rate: 35% (up from 25%) - Improving\n- Drop-off at 'first project': 40% - Declining, needs attention\n- Time to value: 5 days average - Flat\n\n**CURRENT STATE**\n- Delivered: New onboarding flow with guided setup\n- Performance: Activation improved but friction at project creation\n\n**NEXT ITERATION RECOMMENDATIONS**\n\n*Priority 1: Team Collaboration Features*\n- Metric driving: User feedback + support ticket theme\n- Add team invite functionality\n- Allow sharing projects with team members\n- Show team activity feed\n\n*Priority 2: First Project Friction*\n- Metric driving: 40% drop-off at project creation\n- Simplify project creation flow\n- Add templates for common use cases\n\n**SUCCESS CRITERIA**\n- Activation rate improves to 45%\n- Team invite feature used by 50% of customers\n- Project creation drop-off reduced to 25%"
+    },
+    {
+      "input": "Help us plan the next iteration for our mobile app. We're pre-launch with no metrics yet, but we've done 20 user interviews and have a waiting list of 5000 people. Interview themes show people want task categorization and reminders.",
+      "context": "Pre-launch consumer mobile app, 5000 waitlist",
+      "output": "**INPUT ANALYSIS**\n\n*User Feedback Themes (from 20 interviews):*\n- Theme 1: Need to organize tasks into categories (15/20 mentioned)\n- Theme 2: Want reminders for important tasks (12/20 mentioned)\n- Theme 3: Need offline access (8/20 mentioned)\n- Theme 4: Want sharing with family (6/20 mentioned)\n\n*Strategic Context:*\n- Pre-launch, no metrics yet\n- Focus on core value proposition: task management\n\n**CURRENT STATE**\n- Delivered: MVP with basic task creation\n- Status: Preparing for beta launch\n\n**NEXT ITERATION RECOMMENDATIONS**\n\n*Priority 1: Task Categorization*\n- Feedback driver: 75% of interviews mentioned this\n- Implement folders/categories for tasks\n- Quick category selection when creating tasks\n\n*Priority 2: Reminders & Notifications*\n- Feedback driver: 60% of interviews mentioned this\n- Set reminders on individual tasks\n- Daily/weekly summary notifications\n\n**SUCCESS CRITERIA**\n- 80%+ of beta users create at least 1 category\n- 60%+ of users set at least 1 reminder\n- Positive feedback on organization features"
+    }
+  ]
+}

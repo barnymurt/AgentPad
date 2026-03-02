@@ -1,0 +1,39 @@
+{
+  "useWhen": [
+    "Building test automation framework from scratch",
+    "Setting up E2E tests with Playwright or Cypress",
+    "Implementing page object model for tests",
+    "Integrating automation with CI/CD pipelines",
+    "Creating maintainable test structures"
+  ],
+  "workflow": [
+    {
+      "step": "1. Choose Tools",
+      "description": "Select E2E framework (Playwright/Cypress), integration tools, and reporting"
+    },
+    {
+      "step": "2. Structure Tests",
+      "description": "Implement page object model, fixtures, and helper functions"
+    },
+    {
+      "step": "3. Implement",
+      "description": "Write tests, set up fixtures, add assertions"
+    },
+    {
+      "step": "4. Integrate CI",
+      "description": "Set up pipeline, configure reporting, add notifications"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Build an automation framework for a React web application using Playwright.",
+      "context": "React app, Playwright",
+      "output": "**FRAMEWORK STRUCTURE**\n\n```\ntests/\n├── pages/\n│   ├── LoginPage.ts\n│   ├── DashboardPage.ts\n│   └── Page.ts (base)\n├── fixtures/\n│   └── users.json\n├── helpers/\n│   └── api.ts\n├── e2e/\n│   ├── login.spec.ts\n│   └── dashboard.spec.ts\n└── playwright.config.ts\n```\n\n**CONFIGURATION**\n\n```typescript\n// playwright.config.ts\nimport { defineConfig } from '@playwright/test';\n\nexport default defineConfig({\n  testDir: './e2e',\n  timeout: 30000,\n  retries: 2,\n  use: {\n    baseURL: 'http://localhost:3000',\n    trace: 'on-first-retry',\n    screenshot: 'only-on-failure',\n  },\n  projects: [\n    { name: 'chromium', use: { browserName: 'chromium' } },\n    { name: 'firefox', use: { browserName: 'firefox' } },\n    { name: 'webkit', use: { browserName: 'webkit' } },\n  ],\n});\n```\n\n**PAGE OBJECT MODEL**\n\n```typescript\n// pages/LoginPage.ts\nimport { Page, Locator } from '@playwright/test';\n\nexport class LoginPage {\n  readonly page: Page;\n  readonly emailInput: Locator;\n  readonly passwordInput: Locator;\n  readonly submitButton: Locator;\n  readonly errorMessage: Locator;\n\n  constructor(page: Page) {\n    this.page = page;\n    this.emailInput = page.locator('input[name=\"email\"]');\n    this.passwordInput = page.locator('input[name=\"password\"]');\n    this.submitButton = page.locator('button[type=\"submit\"]');\n    this.errorMessage = page.locator('.error-message');\n  }\n\n  async login(email: string, password: string) {\n    await this.emailInput.fill(email);\n    await this.passwordInput.fill(password);\n    await this.submitButton.click();\n  }\n}\n```\n\n**TEST EXAMPLE**\n\n```typescript\n// e2e/login.spec.ts\nimport { test, expect } from '@playwright/test';\nimport { LoginPage } from '../pages/LoginPage';\n\ntest('successful login', async ({ page }) => {\n  const loginPage = new LoginPage(page);\n  await loginPage.login('user@example.com', 'password123');\n  \n  await expect(page).toHaveURL('/dashboard');\n  await expect(page.locator('.welcome')).toBeVisible();\n});\n```\n\n**CI INTEGRATION**\n\n```yaml\n# .github/workflows/e2e.yml\nname: E2E Tests\non: [push, pull_request]\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-node@v4\n        with:\n          node-version: '20'\n      - run: npm ci\n      - run: npx playwright install --with-deps\n      - run: npm run test:e2e\n      - uses: actions/upload-artifact@v4\n        if: always()\n        with:\n          name: playwright-report\n          path: playwright-report/\n```"
+    },
+    {
+      "input": "Set up automation framework for API testing with integration tests.",
+      "context": "API testing, Jest + Supertest",
+      "output": "**FRAMEWORK STRUCTURE**\n\n```\ntests/\n├── api/\n│   ├── users.spec.ts\n│   └── products.spec.ts\n├── helpers/\n│   ├── setup.ts\n│   └── teardown.ts\n├── fixtures/\n│   └── mockData.ts\n└── jest.config.js\n```\n\n**CONFIGURATION**\n\n```javascript\n// jest.config.js\nmodule.exports = {\n  testEnvironment: 'node',\n  testMatch: ['**/tests/api/**/*.spec.ts'],\n  setupFilesAfterEnv: ['<rootDir>/tests/helpers/setup.ts'],\n  coverageDirectory: 'coverage',\n  collectCoverageFrom: ['src/**/*.ts', '!src/**/*.d.ts'],\n};\n```\n\n**API TEST EXAMPLE**\n\n```typescript\n// tests/api/users.spec.ts\nimport request from 'supertest';\nimport { app } from '../../src/app';\n\ndescribe('Users API', () => {\n  describe('GET /api/users', () => {\n    it('should return list of users', async () => {\n      const response = await request(app)\n        .get('/api/users')\n        .expect(200);\n      \n      expect(response.body).toHaveProperty('users');\n      expect(Array.isArray(response.body.users)).toBe(true);\n    });\n  });\n\n  describe('POST /api/users', () => {\n    it('should create a new user', async () => {\n      const newUser = {\n        name: 'Test User',\n        email: 'test@example.com'\n      };\n      \n      const response = await request(app)\n        .post('/api/users')\n        .send(newUser)\n        .expect(201);\n      \n      expect(response.body).toMatchObject(newUser);\n    });\n  });\n});\n```\n\n**CI INTEGRATION**\n\n```yaml\n# .github/workflows/api-tests.yml\nname: API Tests\non: [push, pull_request]\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-node@v4\n        with:\n          node-version: '20'\n      - run: npm ci\n      - run: npm run test:api\n      - run: npm run test:api -- --coverage\n```"
+    }
+  ]
+}

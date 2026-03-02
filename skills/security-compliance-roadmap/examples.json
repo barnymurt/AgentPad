@@ -1,0 +1,47 @@
+{
+  "useWhen": [
+    "Asking what certifications are needed",
+    "Wanting a compliance roadmap",
+    "Planning when to get SOC 2",
+    "Security planning for growth",
+    "Creating a compliance timeline"
+  ],
+  "workflow": [
+    {
+      "step": "1. Gather Context from Prior Security Analysis",
+      "description": "Load architecture, security baseline, threat model, security review, data protection, and privacy regulation outputs"
+    },
+    {
+      "step": "2. Identify Applicable Certification Universe",
+      "description": "Evaluate SOC 2, ISO 27001, HIPAA, PCI-DSS, GDPR, and other frameworks for relevance"
+    },
+    {
+      "step": "3. Map Certifications to Business Milestones",
+      "description": "Determine when each certification becomes necessary based on business stage (pre-launch, post-launch, growth, scale)"
+    },
+    {
+      "step": "4. Estimate Effort and Cost",
+      "description": "Provide preparation time, audit costs, tooling costs, and ongoing maintenance estimates per certification"
+    },
+    {
+      "step": "5. Identify Quick Wins",
+      "description": "Find security controls that satisfy multiple frameworks simultaneously to maximize compliance coverage"
+    },
+    {
+      "step": "6. Produce Phased Roadmap",
+      "description": "Create milestone-based roadmap with decision triggers, leading indicators, and handoff notes"
+    }
+  ],
+  "examples": [
+    {
+      "input": "What security certifications should we get and when?",
+      "output": "Phased compliance roadmap with SOC 2, ISO 27001, HIPAA mapped to business milestones, costs, and decision triggers",
+      "context": "B2B SaaS planning long-term compliance strategy"
+    },
+    {
+      "input": "When should we start preparing for SOC 2?",
+      "output": "SOC 2 readiness timeline with prerequisites, estimated timeline, costs, and business triggers for starting",
+      "context": "Growth-stage company anticipating enterprise customer demands"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "useWhen": [
+    "You need to collect quantitative data at scale",
+    "You want to validate assumptions with many respondents",
+    "You're ready to analyze patterns across many users"
+  ],
+  "workflow": [
+    { "step": "Define Goals", "description": "Clarify what questions you need answered" },
+    { "step": "Write Questions", "description": "Create clear, unbiased questions" },
+    { "step": "Build Survey", "description": "Structure and design the survey" },
+    { "step": "Test", "description": "Pilot with 5 people and refine" },
+    { "step": "Deploy", "description": "Distribute and collect responses" }
+  ],
+  "examples": [
+    {
+      "input": "A meal planning app for busy parents, I want to understand how much they would pay, what features matter most, and if they'd recommend to friends",
+      "output": "## Survey: Meal Planning App Pricing & Features\n\n### Survey Structure\n\n**Screener (3 questions)**\n1. Do you prepare meals at home? (Yes → Continue)\n2. How many people in your household? (1+ → Continue)\n3. What's your age range?\n\n**Section 1: Pricing (5 questions)**\n\nQ1. What is the most you'd pay for a meal planning app?\n- Free\n- $4.99/month\n- $9.99/month\n- $14.99/month\n- $19.99/month\n\nQ2. Would you prefer...\n- Pay monthly\n- Pay annual (save 20%)\n- One-time purchase\n\n**Section 2: Features (6 questions)**\nRank these features 1-5:\n- Grocery list generation\n- Recipe recommendations\n- Nutritional tracking\n- Family preferences\n- Budget tracking\n\n**Section 3: Advocacy (2 questions)**\n\nQ1. How likely are you to recommend this app? (0-10 NPS)\nQ2. What would make it a 10?\n\n### Response Targets\n- n=200 minimum\n- Segment by: parents vs non-parents, age, income\n\n### Distribution Channels\n- Email list\n- Facebook groups\n- Reddit r/MealPrepSunday",
+      "context": "B2C, Mobile App, Pricing Research"
+    }
+  ]
+}

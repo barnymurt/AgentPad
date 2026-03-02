@@ -1,0 +1,21 @@
+{
+  "useWhen": [
+    "You're ready to launch your product",
+    "You need a comprehensive launch plan",
+    "You want to coordinate across teams"
+  ],
+  "workflow": [
+    { "step": "Define Timeline", "description": "Set launch date and work backwards" },
+    { "step": "Identify Tracks", "description": "Separate workstreams (tech, marketing, ops)" },
+    { "step": "List Tasks", "description": "Break down each track into actionable items" },
+    { "step": "Assign Owners", "description": "Name responsible people for each task" },
+    { "step": "Set Milestones", "description": "Create checkpoints to track progress" }
+  ],
+  "examples": [
+    {
+      "input": "Launching a new B2B SaaS product to the public",
+      "output": "## Launch Plan: Project Management SaaS\n\n### Launch Date\n**February 15, 2024**\n\n---\n\n### Track 1: Technical (Lead: CTO)\n\n| Task | Owner | Due |\n|------|-------|-----|\n| Final QA pass | QA Team | Feb 10 |\n| Performance testing | DevOps | Feb 8 |\n| Security audit | Security | Feb 7 |\n| CDN setup | DevOps | Feb 5 |\n| Database backup verification | DevOps | Feb 5 |\n| Feature flag cleanup | Lead Dev | Feb 12 |\n| Deploy to production | DevOps | Feb 14 |\n| Smoke tests | QA Team | Feb 14 |\n\n---\n\n### Track 2: Marketing (Lead: CMO)\n\n| Task | Owner | Due |\n|------|-------|-----|\n| Press release | Comms | Feb 8 |\n| Blog post | Content | Feb 10 |\n| Social media campaign | Social | Feb 12 |\n| Email sequence launch | Growth | Feb 15 |\n| Partner announcement | BD | Feb 12 |\n| Website update | Design | Feb 8 |\n\n---\n\n### Track 3: Sales/CS (Lead: VP Sales)\n\n| Task | Owner | Due |\n|------|-------|-----|\n| Sales training | Enablement | Feb 7 |\n| Demo scripts updated | Enablement | Feb 5 |\n| Pricing page ready | Product | Feb 8 |\n| Customer support docs | CS | Feb 10 |\n| Support team training | CS | Feb 12 |\n\n---\n\n### Track 4: Operations (Lead: COO)\n\n| Task | Owner | Due |\n|------|-------|-----|\n| Legal sign-off | Legal | Feb 10 |\n| Terms of service updated | Legal | Feb 8 |\n| Billing verification | Finance | Feb 12 |\n| Customer communication | Ops | Feb 14 |\n\n---\n\n### Milestones\n\n| Date | Milestone |\n|------|-----------|\n| Feb 5 | Code complete |\n| Feb 10 | QA complete |\n| Feb 12 | Marketing ready |\n| Feb 14 | Go/No-Go decision |\n| Feb 15 | LAUNCH DAY |\n\n---\n\n### Rollback Plan\nIf critical issues found:\n1. Roll back to previous version\n2. Postpone launch 1 week\n3. Notify all stakeholders immediately",
+      "context": "B2B SaaS, Product Launch"
+    }
+  ]
+}

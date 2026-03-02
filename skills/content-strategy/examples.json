@@ -1,0 +1,47 @@
+{
+  "useWhen": [
+    "Creating a content strategy for product marketing",
+    "Planning what content to create for audience acquisition",
+    "Building a content calendar for consistent publishing",
+    "Developing content themes aligned with product value",
+    "Planning distribution channels for content"
+  ],
+  "workflow": [
+    {
+      "step": "1. Define Content Goals",
+      "description": "Determine what content should achieve: awareness, leads, engagement, retention"
+    },
+    {
+      "step": "2. Know Your Audience",
+      "description": "Identify target audience, their interests, and where they consume content"
+    },
+    {
+      "step": "3. Develop Content Themes",
+      "description": "Create 3-5 core themes aligned with product value proposition"
+    },
+    {
+      "step": "4. Choose Content Formats",
+      "description": "Select formats: blog posts, guides, case studies, videos based on audience"
+    },
+    {
+      "step": "5. Plan Distribution",
+      "description": "Define where content will live and how people find it: social, SEO, email"
+    },
+    {
+      "step": "6. Build Content Calendar",
+      "description": "Create timeline with publishing cadence and owner assignments"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Create a content strategy for a B2B SaaS product that helps teams manage projects. Target audience is project managers and team leads at mid-size companies.",
+      "context": "B2B SaaS for project management",
+      "output": "**CONTENT GOALS**\n\n| Goal | Metric | Timeline |\n|------|--------|----------|\n| Awareness | 10K monthly visitors | 6 months |\n| Leads | 200 MQLs/month | 6 months |\n| Engagement | 15% returning visitors | 6 months |\n\n**AUDIENCE**\n- Primary: Project managers at 50-500 person companies\n- Pain points: Team visibility, deadline management, resource planning\n- Content consumption: LinkedIn, industry blogs, podcasts\n\n**CONTENT THEMES**\n\n1. **Project Management Best Practices** - Educational, attracts PMs\n2. **Team Productivity Tips** - Broad appeal, shares well\n3. **Case Studies** - Social proof, drives conversions\n4. **Product Updates** - Feature announcements, keeps users engaged\n5. **Industry Trends** - Thought leadership, builds authority\n\n**FORMAT STRATEGY**\n\n| Format | Frequency | Purpose |\n|--------|-----------|---------|\n| Blog posts | 2/week | SEO, awareness |\n| Guides | 1/month | Lead magnets |\n| Case studies | 1/quarter | Conversion |\n| Newsletter | 1/week | Retention |\n\n**DISTRIBUTION**\n- SEO: Target keywords around project management\n- LinkedIn: Share articles, engage in groups\n- Email: Newsletter to leads and users\n- Guest posts: Industry publications\n\n**CONTENT CALENDAR (Sample Month)**\n\n| Week | Blog Post | Format | Distribution |\n|------|-----------|--------|--------------|\n| 1 | 5 Remote Team Challenges | Listicle | LinkedIn, SEO |\n| 2 | How to Run Effective Standups | Guide | Email, LinkedIn |\n| 3 | Customer Success Story: Acme Corp | Case Study | Sales enablement |\n| 4 | Product Update: New Dashboards | Announcement | Email, Blog |"
+    },
+    {
+      "input": "Build content strategy for a consumer fitness app targeting young professionals who want to stay fit.",
+      "context": "Consumer fitness app, young professionals",
+      "output": "**CONTENT GOALS**\n\n| Goal | Metric | Timeline |\n|------|--------|----------|\n| App installs | 50K downloads/month | 3 months |\n| Engagement | 40% DAU/MAU | 3 months |\n| Retention | 30% D30 | 3 months |\n\n**AUDIENCE**\n- Primary: Young professionals (25-35), busy schedules\n- Pain points: No time for gym, need quick workouts\n- Content consumption: Instagram, TikTok, YouTube\n\n**CONTENT THEMES**\n\n1. **Quick Workouts** - 10-20 min workouts for busy schedules\n2. **Nutrition Tips** - Easy meals, meal prep\n3. **Fitness Science** - Why workouts work (educational)\n4. **Success Stories** - User transformations\n5. **App Features** - How to use the app effectively\n\n**FORMAT STRATEGY**\n\n| Format | Frequency | Platform |\n|--------|-----------|----------|\n| Short videos | 3/week | TikTok, Reels |\n| Workout posts | 2/week | Instagram |\n| YouTube | 1/week | YouTube |\n| Blog | 1/week | SEO |\n\n**DISTRIBUTION**\n- TikTok/Reels: Quick workout clips\n- Instagram: Feed posts, Stories\n- YouTube: Full workout videos\n- Influencers: Partner with fitness creators\n\n**CONTENT CALENDAR (Sample Week)**\n\n| Day | Content | Platform |\n|-----|---------|----------|\n| Mon | 15-min morning workout | TikTok |\n| Tue | Nutrition tip carousel | Instagram |\n| Wed | User success story | YouTube |\n| Thu | Quick hiit video | TikTok |\n| Fri | Weekly meal prep guide | Blog |\n| Sat | Rest day motivation | Instagram Story |\n| Sun | Weekly preview | Newsletter |"
+    }
+  ]
+}

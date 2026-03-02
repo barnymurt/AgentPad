@@ -1,0 +1,47 @@
+{
+  "useWhen": [
+    "Coordinating ongoing work across multiple skills",
+    "Removing blockers that stop progress",
+    "Skills need to collaborate on a shared goal",
+    "Workflow impediments need resolution",
+    "Optimizing how skills work together"
+  ],
+  "workflow": [
+    {
+      "step": "1. Assess Current State",
+      "description": "Review active delivery plan, identify task states (completed, in progress, blocked, waiting)"
+    },
+    {
+      "step": "2. Identify Blockers",
+      "description": "Categorize blockers: dependency, input, quality, direction, collaboration. Rate severity (Critical/Major/Minor)"
+    },
+    {
+      "step": "3. Remove Blockers",
+      "description": "Apply resolution strategies per blocker type: re-sequence, request input, request revision, clarify, facilitate"
+    },
+    {
+      "step": "4. Optimize Workflow",
+      "description": "Proactively improve how skills work together: output formats, dependencies, parallelization"
+    },
+    {
+      "step": "5. Facilitate Collaboration",
+      "description": "Establish clear input/output contracts between skills, define handoff protocols"
+    },
+    {
+      "step": "6. Report Status",
+      "description": "Present status summary with completed tasks, blockers removed, remaining blockers, recommendations"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Several tasks are blocked - help remove blockers",
+      "output": "Blocker register with identified issues and resolutions, updated task status",
+      "context": "Active delivery with multiple stuck tasks"
+    },
+    {
+      "input": "Two skills are producing conflicting outputs - help them collaborate",
+      "output": "Facilitated collaboration with clarified contracts, resolved conflicts, handoff protocol established",
+      "context": "Skills working at cross-purposes"
+    }
+  ]
+}

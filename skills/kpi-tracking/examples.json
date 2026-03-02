@@ -1,0 +1,43 @@
+{
+  "useWhen": [
+    "Defining KPIs for a new product or feature",
+    "Setting measurable targets for product goals",
+    "Establishing a metrics framework for the business",
+    "Reporting KPI progress to stakeholders",
+    "Reviewing and updating existing KPIs"
+  ],
+  "workflow": [
+    {
+      "step": "1. Identify Business Objectives",
+      "description": "Start with clear business goals and work backwards to define metrics that measure progress"
+    },
+    {
+      "step": "2. Select KPIs",
+      "description": "Choose metrics that are actionable, measurable, relevant, and time-bound"
+    },
+    {
+      "step": "3. Set Targets",
+      "description": "Define current values and target goals with clear timeframes"
+    },
+    {
+      "step": "4. Establish Tracking",
+      "description": "Define data sources, measurement methods, and ownership for each KPI"
+    },
+    {
+      "step": "5. Create Reporting",
+      "description": "Set up regular reporting cadence with stakeholders and communication format"
+    }
+  ],
+  "examples": [
+    {
+      "input": "We need to set up KPI tracking for a new B2B SaaS product. We're focused on acquiring enterprise customers and reducing churn.",
+      "context": "B2B SaaS product, early stage, targeting enterprise market",
+      "output": "**KPI OVERVIEW**\nBusiness Objective: Scale enterprise customer acquisition while reducing churn\nTimeframe: Q3 2024\n\n**KPI DEFINITIONS**\n\n| KPI | Definition | Target | Current | Data Source |\n|-----|------------|--------|---------|-------------|\n| Enterprise MRR | Monthly recurring revenue from enterprise customers | $100K | $25K | Stripe |\n| CAC | Cost to acquire an enterprise customer | $5,000 | $8,000 | Marketing spend / deals |\n| Churn Rate | % of enterprise customers lost monthly | 2% | 5% | Billing system |\n| Enterprise Win Rate | % of enterprise deals won | 30% | 15% | CRM |\n\n**TRACKING PLAN**\n- Frequency: Weekly\n- Method: Automated dashboard pulls from Stripe + CRM\n- Owner: Head of Product\n\n**COMMUNICATION**\n- Format: Weekly KPI email + monthly executive summary\n- Stakeholders: Executive team, Sales, Marketing"
+    },
+    {
+      "input": "Help us define KPIs for a consumer mobile app focused on growing engagement and monetization.",
+      "context": "Consumer mobile app with freemium model, 1M downloads",
+      "output": "**KPI OVERVIEW**\nBusiness Objective: Increase user engagement and drive monetization\nTimeframe: Q4 2024\n\n**KPI DEFINITIONS**\n\n| KPI | Definition | Target | Current | Data Source |\n|-----|------------|--------|---------|-------------|\n| DAU | Daily active users | 100K | 40K | Analytics |\n| DAU/MAU | Stickiness ratio | 35% | 22% | Analytics |\n| ARPPU | Average revenue per paying user | $25 | $18 | In-app purchases |\n| Conversion Rate | Free to paid conversion | 8% | 3% | Analytics |\n| Session Length | Average session duration | 12 min | 8 min | Analytics |\n\n**TRACKING PLAN**\n- Frequency: Daily for key metrics, weekly for detailed analysis\n- Method: Mixpanel + revenue data\n- Owner: Product Manager\n\n**COMMUNICATION**\n- Format: Weekly dashboard review + monthly business review"
+    }
+  ]
+}

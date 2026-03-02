@@ -1,0 +1,47 @@
+{
+  "useWhen": [
+    "Identifying security threats in system architecture",
+    "Performing STRIDE threat analysis on SaaS products",
+    "Assessing security risks and attack vectors",
+    "Building attack trees for top threats",
+    "Creating prioritized security mitigation plans"
+  ],
+  "workflow": [
+    {
+      "step": "1. Gather Architecture Context",
+      "description": "Identify components, data flows, trust boundaries, and threat actors"
+    },
+    {
+      "step": "2. Identify Threat Targets",
+      "description": "Map attack surface: component boundaries, data flows, trust boundaries"
+    },
+    {
+      "step": "3. Apply STRIDE per Component",
+      "description": "Analyze each target for Spoofing, Tampering, Repudiation, Information Disclosure, DoS, Elevation of Privilege"
+    },
+    {
+      "step": "4. Build Attack Trees",
+      "description": "Create attack trees for top 3 threats with sub-goals and attack paths"
+    },
+    {
+      "step": "5. Rate Risks",
+      "description": "Score likelihood (1-5) x impact (1-5) to determine risk level"
+    },
+    {
+      "step": "6. Recommend Mitigations",
+      "description": "Prioritize fixes by risk reduction per effort"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Perform threat modeling on a web application with: React frontend, Node.js API, PostgreSQL database, authentication via Auth0, and payment processing via Stripe.",
+      "context": "Full-stack web application with sensitive data",
+      "output": "**THREAT TARGET INVENTORY**\n\n| Component | Boundary Type | Risk |\n|-----------|--------------|------|\n| Browser → API | Trust boundary | User data at rest |\n| API → Database | Internal | Sensitive data access |\n| Auth0 Integration | External | Authentication |\n| Stripe Integration | External | Payment data |\n\n**STRIDE ANALYSIS**\n\n| Component | Threat | Category | Risk | Status |\n|----------|--------|----------|------|--------|\n| Auth API | Credential stuffing | Spoofing | 12 (High) | No rate limiting |\n| User Data API | SQL injection | Tampering | 15 (High) | Parameterized queries |\n| Payment API | Verbose errors | Info Disclosure | 8 (Medium) | Error handling needed |\n| All APIs | DDoS attack | DoS | 16 (High) | No rate limiting |\n\n**ATTACK TREE (Top Threat: Data Exfiltration)**\n\n```\nGoal: Exfiltrate user payment data\n├── Compromise API server\n│   ├── Exploit SQL injection → IMPLEMENTED\n│   └── Steal database credentials → ENV EXPOSED\n├── Compromise admin account\n│   ├── Phishing → User education only\n│   └── Brute force → No 2FA enforced\n└── Intercept API traffic\n    ├── MITM on HTTP → Redirect to HTTPS\n    └── SSL stripping → HSTS enabled\n```\n\n**RISK REGISTER**\n\n| Threat | Likelihood | Impact | Risk | Severity |\n|--------|-----------|--------|------|----------|\n| Credential stuffing | 4 | 4 | 16 | High |\n| DDoS attack | 4 | 4 | 16 | High |\n| SQL injection | 3 | 5 | 15 | High |\n| Payment data breach | 2 | 5 | 10 | Medium |\n\n**MITIGATIONS**\n\n| Priority | Mitigation | Effort | Risk Reduction |\n|----------|------------|--------|-----------------|\n| 1 | Add rate limiting (100/min) | Low | 16→8 |\n| 2 | Implement 2FA | Medium | 12→6 |\n| 3 | Add WAF rules | Medium | 15→10 |\n\n**SUMMARY**\n- Total: 4 High, 2 Medium, 1 Low\n- Top Risk: Credential stuffing\n- Quick Win: Rate limiting (1 day)"
+    },
+    {
+      "input": "Threat model a mobile app that stores user health data, syncs to a cloud backend, and integrates with Apple HealthKit.",
+      "context": "Health app with sensitive PII/HIPAA data",
+      "output": "**THREAT TARGET INVENTORY**\n\n| Component | Boundary Type | Data Sensitivity |\n|-----------|--------------|-----------------|\n| Mobile App → Backend | External | PHI (High) |\n| Local Storage | Device | PHI (High) |\n| HealthKit Integration | External | Health data |\n| Push Notifications | External | PII |\n\n**STRIDE ANALYSIS**\n\n| Component | Threat | Category | Risk | Notes |\n|-----------|--------|----------|------|-------|\n| Health Data API | PHI exposure | Info Disclosure | 20 (Critical) | No encryption at rest |\n| Device Storage | Data theft | Tampering | 16 (High) | Unencrypted SQLite |\n| HealthKit | Unverified data | Tampering | 12 (High) | No validation |\n| Auth | Token theft | Spoofing | 15 (High) | No biometric |\n\n**RISK REGISTER**\n\n| Threat | Likelihood | Impact | Risk | Severity |\n|--------|-----------|--------|------|----------|\n| PHI data breach | 3 | 5 | 15 | High |\n| Device theft exposure | 3 | 5 | 15 | High |\n| Unauthorized health sync | 3 | 4 | 12 | High |\n\n**MITIGATIONS**\n\n| Priority | Mitigation | Effort | Impact |\n|----------|------------|--------|--------|\n| 1 | Enable device encryption | Low | Critical |\n| 2 | Add biometric auth | Medium | High |\n| 3 | Encrypt API traffic | Medium | High |\n| 4 | Validate HealthKit data | Low | Medium |\n\n**SUMMARY**\n- Critical: 1 (PHI encryption needed immediately)\n- Quick Win: Enable device encryption"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "useWhen": [
+    "Building serverless applications with AWS Lambda or Cloud Functions",
+    "Designing event-driven architectures",
+    "Creating functions with proper triggers and handlers",
+    "Optimizing cold starts and performance",
+    "Setting up serverless monitoring and deployment"
+  ],
+  "workflow": [
+    {
+      "step": "1. Design",
+      "description": "Design function, triggers, and data flow for serverless architecture"
+    },
+    {
+      "step": "2. Implement",
+      "description": "Create functions, handlers, and manage dependencies"
+    },
+    {
+      "step": "3. Configure",
+      "description": "Set memory, timeout, environment variables, and permissions"
+    },
+    {
+      "step": "4. Deploy",
+      "description": "Deploy infrastructure, set up monitoring, address cold starts"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Create a serverless function that processes image uploads - resizes and stores in S3. Use AWS Lambda with S3 trigger.",
+      "context": "Image processing pipeline, AWS Lambda, S3",
+      "output": "**FUNCTION DESIGN**\n\n| Component | Design |\n|-----------|--------|\n| Trigger | S3 upload (images/) |\n| Input | Image file from S3 |\n| Processing | Resize to thumbnail + medium |\n| Output | Store in S3 (processed/) |\n\n**IMPLEMENTATION**\n\n```javascript\nconst AWS = require('aws-sdk');\nconst sharp = require('sharp');\n\nconst s3 = new AWS.S3();\n\nexports.handler = async (event) => {\n  const bucket = event.Records[0].s3.bucket.name;\n  const key = decodeURIComponent(event.Records[0].s3.object.key.replace(/\\+/g, ' '));\n  \n  // Get original image\n  const image = await s3.getObject({ Bucket: bucket, Key: key }).promise();\n  \n  // Resize to thumbnail (150x150)\n  const thumbnail = await sharp(image.Body)\n    .resize(150, 150)\n    .toBuffer();\n  \n  // Resize to medium (800x800)\n  const medium = await sharp(image.Body)\n    .resize(800, 800)\n    .toBuffer();\n  \n  // Upload processed images\n  await Promise.all([\n    s3.putObject({\n      Bucket: bucket,\n      Key: `processed/thumbnails/${key}`,\n      Body: thumbnail,\n      ContentType: 'image/jpeg'\n    }).promise(),\n    s3.putObject({\n      Bucket: bucket,\n      Key: `processed/medium/${key}`,\n      Body: medium,\n      ContentType: 'image/jpeg'\n    }).promise()\n  ]);\n  \n  return { statusCode: 200 };\n};\n```\n\n**CONFIGURATION**\n\n| Setting | Value | Reason |\n|---------|-------|--------|\n| Memory | 1024 MB | Image processing needs memory |\n| Timeout | 30 seconds | Processing can take time |\n| Runtime | Node.js 18 | Current LTS |\n| Layers | Sharp layer | Pre-compiled binary |"
+    },
+    {
+      "input": "Build a serverless REST API with Express.js on AWS Lambda using Serverless Framework.",
+      "context": "REST API, Express, Serverless Framework",
+      "output": "**FUNCTION DESIGN**\n\n| Component | Design |\n|-----------|--------|\n| Trigger | API Gateway HTTP |\n| Framework | Express.js |\n| Deployment | Serverless Framework |\n\n**IMPLEMENTATION**\n\n```javascript\n// handler.js\nconst serverless = require('serverless-http');\nconst express = require('express');\nconst app = express();\n\napp.use(express.json());\n\n// Get all items\napp.get('/items', async (req, res) => {\n  const items = await db.scan('items').promise();\n  res.json(items);\n});\n\n// Get item by ID\napp.get('/items/:id', async (req, res) => {\n  const item = await db.get({\n    TableName: 'items',\n    Key: { id: req.params.id }\n  }).promise();\n  res.json(item);\n});\n\n// Create item\napp.post('/items', async (req, res) => {\n  const item = { ...req.body, createdAt: new Date().toISOString() };\n  await db.put({ TableName: 'items', Item: item }).promise();\n  res.status(201).json(item);\n});\n\nmodule.exports.handler = serverless(app);\n```\n\n**SERVERLESS.YML**\n\n```yaml\nservice: my-api\n\nprovider:\n  name: aws\n  runtime: nodejs18.x\n  environment:\n    TABLE_NAME: ${self:service}-${self:provider.stage}\n\nfunctions:\n  api:\n    handler: handler.handler\n    events:\n      - httpApi:\n          path: /{proxy+}\n          method: ANY\n\nresources:\n  Resources:\n    ItemsTable:\n      Type: AWS::DynamoDB::Table\n      Properties:\n        TableName: ${self:service}-${self:provider.stage}\n        AttributeDefinitions:\n          - AttributeName: id\n            AttributeType: S\n        KeySchema:\n          - AttributeName: id\n            KeyType: HASH\n        BillingMode: PAY_PER_REQUEST\n```"
+    }
+  ]
+}

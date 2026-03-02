@@ -1,0 +1,43 @@
+{
+  "useWhen": [
+    "Setting quarterly product goals and priorities",
+    "Aligning team around measurable outcomes",
+    "Planning next quarter's product direction",
+    "Tracking progress against defined objectives",
+    "Reviewing OKR performance at end of quarter"
+  ],
+  "workflow": [
+    {
+      "step": "1. Define Objectives",
+      "description": "Articulate what you want to achieve - qualitative, inspiring, and ambitious goals"
+    },
+    {
+      "step": "2. Set Key Results",
+      "description": "Define measurable outcomes that indicate objective success - quantitative and time-bound"
+    },
+    {
+      "step": "3. Assign Ownership",
+      "description": "Assign owners to each objective and key result for accountability"
+    },
+    {
+      "step": "4. Track Progress",
+      "description": "Regular check-ins on KR progress with percentage completion updates"
+    },
+    {
+      "step": "5. Review & Learn",
+      "description": "Quarter-end review of what worked, what didn't, and lessons for next quarter"
+    }
+  ],
+  "examples": [
+    {
+      "input": "We need to set Q3 OKRs for our B2B SaaS product. The main focus areas are improving user activation and increasing paid conversion.",
+      "context": "B2B SaaS product with 10,000 free trial users, 500 paying customers",
+      "output": "**QUARTERLY OKRS**\n\n**Objective 1: Improve User Activation**\n- KR1: Increase activation rate from 30% to 50% by end of Q3\n- KR2: Reduce time-to-activation from 7 days to 3 days\n- KR3: Get 80% of new users to complete onboarding flow in first session\n\n**Objective 2: Increase Paid Conversion**\n- KR1: Increase conversion rate from 5% to 8%\n- KR2: Grow MRR from $50K to $75K\n- KR3: Reduce sales cycle from 30 days to 21 days\n\n**CROSS-TEAM DEPENDENCIES**\n- Engineering: Faster onboarding flow implementation\n- Marketing: Better trial-to-paid email sequences\n- Sales: More demos for qualified leads"
+    },
+    {
+      "input": "Help us set OKRs for a consumer mobile app focused on increasing daily active users and improving retention.",
+      "context": "Consumer mobile app with 500K downloads, 50K MAU",
+      "output": "**QUARTERLY OKRS**\n\n**Objective 1: Grow Daily Active Users**\n- KR1: Increase DAU from 10K to 25K\n- KR2: Improve DAU/MAU ratio from 20% to 40%\n- KR3: Reduce app uninstall rate at 7 days from 40% to 25%\n\n**Objective 2: Improve Retention**\n- KR1: Increase Day-30 retention from 15% to 25%\n- KR2: Increase Day-90 retention from 8% to 15%\n- KR3: Get 60% of users to complete key action within first 3 sessions"
+    }
+  ]
+}

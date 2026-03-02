@@ -1,0 +1,47 @@
+{
+  "useWhen": [
+    "Defining minimum security posture for product launch",
+    "Asking what security measures are needed before launching",
+    "Determining what security requirements to implement",
+    "Securing application for production deployment",
+    "Setting security baseline for MVP"
+  ],
+  "workflow": [
+    {
+      "step": "1. Assess Security Context",
+      "description": "Gather architecture inputs, classify data sensitivity, determine threat profile, assess team capability"
+    },
+    {
+      "step": "2. Map OWASP ASVS Level 1 Requirements",
+      "description": "Apply authentication, session management, access control, input validation, cryptography requirements to architecture"
+    },
+    {
+      "step": "3. Prioritize by Launch Criticality",
+      "description": "Classify requirements as P0 (must have at launch), P1 (within 3 months), P2 (within 6 months)"
+    },
+    {
+      "step": "4. Generate Implementation Checklist",
+      "description": "Create prioritized checklist with requirement statements, implementation guidance, verification methods, effort estimates"
+    },
+    {
+      "step": "5. Identify Architecture-Specific Risks",
+      "description": "Flag risks from third-party dependencies, default configurations, deployment pipeline, data flows"
+    },
+    {
+      "step": "6. Produce Security Baseline Summary",
+      "description": "Calculate security posture score, list top 5 actions, document deferred items, create handoff notes"
+    }
+  ],
+  "examples": [
+    {
+      "input": "What security requirements do we need before launching our B2B SaaS app?",
+      "output": "Security requirements baseline with prioritized P0/P1/P2 checklist, tech-stack-specific implementation guidance",
+      "context": "Pre-launch SaaS product needing security requirements"
+    },
+    {
+      "input": "Secure our MVP before production deployment",
+      "output": "Launch-critical security checklist with auth, encryption, input validation requirements for MVP",
+      "context": "Solo founder preparing first production deployment"
+    }
+  ]
+}

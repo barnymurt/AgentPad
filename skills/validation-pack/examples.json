@@ -1,0 +1,20 @@
+{
+  "useWhen": [
+    "You want to validate a new startup idea end-to-end",
+    "You're starting from zero and need comprehensive validation",
+    "You need to understand your idea from multiple angles at once"
+  ],
+  "workflow": [
+    { "step": "Answer Questions", "description": "Provide answers to 4-6 key questions about your idea" },
+    { "step": "Run Analysis", "description": "Our AI runs 7 validation skills on your answers" },
+    { "step": "Review Results", "description": "Get comprehensive analysis across all 7 dimensions" },
+    { "step": "Get Recommendation", "description": "Receive GO/PIVOT/KILL recommendation with rationale" }
+  ],
+  "examples": [
+    {
+      "input": "A subscription box service that delivers monthly curated snacks from local bakeries",
+      "output": "## Validation Overview\n\n**Target:** Snack lovers who want unique local treats\n**Industry:** Food & Beverage / E-Commerce\n**Product:** Subscription Box Service\n**Score:** 72/100 - GO\n\n### Key Insights\n- **Problem:** People want variety but don't have time to discover new bakeries\n- **Existing Solutions:** HelloFresh, SnackCrate (not local-focused)\n- **Uniqueness:** Local/artisanal positioning\n- **Market:** $30B snack box market growing 15% YoY\n- **Revenue Potential:** $2.4M ARR at 10K subscribers\n\n### Devil's Advocate Risks\n- Sourcing from local bakeries = complex logistics\n- Quality consistency challenges\n- Shelf life concerns\n\n### Next Steps\n1. Interview 5 local bakeries about partnership terms\n2. Test pricing with survey\n3. Run pilot in one city",
+      "context": "Food & Beverage, B2C, Subscription"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "useWhen": [
+    "You want to ensure your product is accessible to all users",
+    "You're preparing for legal compliance (ADA, WCAG)",
+    "You want to expand your potential user base"
+  ],
+  "workflow": [
+    { "step": "Audit Current State", "description": "Review current accessibility implementation" },
+    { "step": "Identify Issues", "description": "Document problems by WCAG success criteria" },
+    { "step": "Prioritize Fixes", "description": "Rank issues by impact and effort" },
+    { "step": "Create Roadmap", "description": "Build timeline for addressing all issues" }
+  ],
+  "examples": [
+    {
+      "input": "A SaaS dashboard for project management with features like task lists, team chat, file uploads, and calendar views",
+      "output": "## Accessibility Review: Project Management Dashboard\n\n### Compliance Status\n- **WCAG 2.1 Level AA:** Partial\n- **ADA Compliance:** Needs work\n- **Screen Reader:** Needs testing\n\n---\n\n### Critical Issues (Fix Now)\n\n| Issue | Location | WCAG | Fix |\n|-------|----------|-----|-----|\n| Missing alt text | Task cards | 1.1.1 | Add descriptive alt |\n| No keyboard nav | Calendar view | 2.1.1 | Add tab index |\n| Low contrast | Chat messages | 1.4.3 | Increase to 4.5:1 |\n| No skip links | All pages | 2.4.1 | Add skip to main |\n\n---\n\n### Major Issues (Fix Soon)\n\n| Issue | Location | WCAG | Fix |\n|-------|----------|-----|-----|\n| Missing form labels | Task creation | 1.3.1 | Add aria-label |\n| Focus not visible | Buttons | 2.4.7 | Add outline |\n| No error announcements | Upload | 4.1.3 | Add aria-live |\n\n---\n\n### Minor Issues (Nice to Have)\n\n- Add high contrast mode toggle\n- Support reduced motion preferences\n- Add text size controls\n\n---\n\n### Quick Wins (< 1 day)\n1. Add `alt` to all images\n2. Add `aria-label` to icon buttons\n3. Increase button contrast\n4. Add focus states\n\n### Estimated Effort\n- Quick Wins: 1 day\n- Critical: 1 week\n- Full WCAG AA: 2-3 weeks\n\n### Tools to Use\n- axe DevTools\n- WAVE\n- NVDA (screen reader)",
+      "context": "SaaS, Web App, Dashboard"
+    }
+  ]
+}

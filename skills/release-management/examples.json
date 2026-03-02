@@ -1,0 +1,43 @@
+{
+  "useWhen": [
+    "Preparing to release new features to production",
+    "Planning version updates and releases",
+    "Creating changelog and release notes",
+    "Coordinating deployment across environments",
+    "Planning rollback procedures for releases"
+  ],
+  "workflow": [
+    {
+      "step": "1. Gather Release Information",
+      "description": "Collect all features being released, version number, testing status, and target environment"
+    },
+    {
+      "step": "2. Create Changelog",
+      "description": "Document all changes in standard categories: Added, Changed, Fixed, Removed"
+    },
+    {
+      "step": "3. Plan Deployment",
+      "description": "Create deployment checklist including pre-deployment, deployment steps, and post-deployment verification"
+    },
+    {
+      "step": "4. Define Rollback Plan",
+      "description": "Document conditions for rollback, specific rollback steps, and escalation contacts"
+    },
+    {
+      "step": "5. Communicate to Stakeholders",
+      "description": "Prepare AI-to-human communication with release summary, risk level, and required approvals"
+    }
+  ],
+  "examples": [
+    {
+      "input": "We need to release version 2.1.0 of our B2B SaaS product. It includes a new dashboard feature, improved search, and several bug fixes. The release is scheduled for Friday.",
+      "context": "B2B SaaS product with 500 customers, bi-weekly release cadence",
+      "output": "**RELEASE OVERVIEW**\n- Version: 2.1.0\n- Release type: Minor\n- Release date: Friday, March 15\n- Summary: New analytics dashboard, improved search performance, bug fixes\n\n**FEATURES IN RELEASE**\n\n| Feature | Description | Owner | Testing |\n|---------|-------------|-------|--------|\n| Analytics Dashboard | New visualization for user data | @sarah | QA complete |\n| Search Improvements | Faster search, better relevance | @mike | QA complete |\n| Bug Fixes | 5 reported bugs fixed | @team | Regression pass |\n\n**CHANGELOG**\n- **Added**: New analytics dashboard with customizable widgets\n- **Changed**: Search algorithm now 3x faster\n- **Fixed**: Login timeout issue on mobile\n- **Fixed**: PDF export formatting\n\n**KNOWN ISSUES**\n- Dashboard timezone display issue (workaround: use local time setting)\n\n**DEPLOYMENT CHECKLIST**\n- Pre: Backup database, notify stakeholders\n- Deployment: Deploy to staging, run smoke tests, deploy to prod\n- Post: Verify key flows, monitor error rates\n\n**ROLLBACK PLAN**\n- Trigger: Error rate >1% or critical bugs reported\n- Steps: Revert to v2.0.0, verify old version works\n- Contact: On-call engineer\n\n**AI-TO-HUMAN COMMUNICATION**\n- Decision: Requires approval\n- Risk: Medium\n- Action needed: Product manager sign-off"
+    },
+    {
+      "input": "Prepare a patch release (1.2.3) for critical security fix. This needs to go out immediately.",
+      "context": "Enterprise SaaS product with SOC2 compliance requirements",
+      "output": "**RELEASE OVERVIEW**\n- Version: 1.2.3\n- Release type: Patch (Critical Security)\n- Release date: Immediate\n- Summary: Critical security patch for authentication vulnerability\n\n**CHANGELOG**\n- **Fixed**: Authentication token validation vulnerability (CVE-2024-XXXX)\n\n**DEPLOYMENT CHECKLIST**\n- Pre: Security review complete, ops notified\n- Deployment: Hotfix deployment to all environments\n- Post: Verify authentication flow, monitor for anomalies\n\n**ROLLBACK PLAN**\n- Trigger: Any authentication failures\n- Steps: Immediate rollback, incident response page\n- Contact: Security team lead\n\n**AI-TO-HUMAN COMMUNICATION**\n- Decision: Auto-release (critical security)\n- Risk: Low (already tested by security team)\n- Action needed: None - informing post-release"
+    }
+  ]
+}

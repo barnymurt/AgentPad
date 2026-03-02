@@ -1,0 +1,39 @@
+{
+  "useWhen": [
+    "Refining tickets or user stories",
+    "Running 3-amigos sessions (PM + Dev + QA)",
+    "Writing acceptance criteria",
+    "Preparing tickets for sprint planning",
+    "Improving ticket quality before development"
+  ],
+  "workflow": [
+    {
+      "step": "1. Prepare",
+      "description": "Gather product context, user stories, and technical constraints for the ticket"
+    },
+    {
+      "step": "2. Discuss (3 Amigos)",
+      "description": "PM perspective: business value; Dev perspective: technical approach; QA perspective: testability"
+    },
+    {
+      "step": "3. Refine",
+      "description": "Define acceptance criteria, add technical notes, outline test scenarios"
+    },
+    {
+      "step": "4. Document",
+      "description": "Update ticket with refined details, document dependencies, add estimates"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Refine our user story for the new dashboard feature",
+      "output": "Refined user story with acceptance criteria, technical notes, test scenarios, and dependencies",
+      "context": "Preparing feature ticket for sprint"
+    },
+    {
+      "input": "Run a 3-amigos session for our API integration ticket",
+      "output": "Refined ticket with PM/Dev/QA perspectives captured, clear acceptance criteria, and test plan",
+      "context": "Cross-functional ticket refinement"
+    }
+  ]
+}

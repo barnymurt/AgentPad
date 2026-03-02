@@ -1,0 +1,39 @@
+{
+  "useWhen": [
+    "Optimizing frontend performance and load times",
+    "Improving Core Web Vitals scores",
+    "Reducing bundle size and optimizing assets",
+    "Setting up frontend performance monitoring",
+    "Diagnosing and fixing performance issues"
+  ],
+  "workflow": [
+    {
+      "step": "1. Measure",
+      "description": "Run Lighthouse, measure Core Web Vitals, gather real user metrics"
+    },
+    {
+      "step": "2. Optimize",
+      "description": "Reduce bundle size, optimize images, implement code splitting"
+    },
+    {
+      "step": "3. Improve Loading",
+      "description": "Add SSR/SSG, prefetching, and caching strategies"
+    },
+    {
+      "step": "4. Monitor",
+      "description": "Set up RUM, alerts, and track performance trends"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Our React app has poor performance. Lighthouse shows LCP at 4.2s, FID at 250ms. We need to improve to meet Core Web Vitals thresholds.",
+      "context": "React SPA, poor performance",
+      "output": "**PERFORMANCE AUDIT**\n\n| Metric | Current | Target | Status |\n|--------|---------|--------|--------|\n| LCP | 4.2s | <2.5s | Red |\n| FID | 250ms | <100ms | Red |\n| CLS | 0.1 | <0.1 | Green |\n\n**OPTIMIZATION PLAN**\n\n*Bundle Size (Priority 1)*\n- Current bundle: 1.2MB (uncompressed)\n- Actions:\n  - Code splitting: ~40% reduction\n  - Tree shaking: ~20% reduction\n  - Lazy load non-critical: ~15% reduction\n- Target: <500KB\n\n*Images (Priority 2)*\n- Large hero image (2MB): Use WebP, lazy load below fold\n- Missing image dimensions: Add width/height\n- Action: Implement next/image or equivalent\n\n*Loading (Priority 3)*\n- Add preconnect to third-party origins\n- Implement route-based code splitting\n- Add streaming SSR for header content\n\n**EXPECTED IMPROVEMENT**\n\n| Metric | Before | After |\n|--------|--------|-------|\n| LCP | 4.2s | 2.1s |\n| FID | 250ms | 45ms |\n| Bundle | 1.2MB | 480KB |"
+    },
+    {
+      "input": "Our e-commerce site loads slowly on mobile. Product pages take 6 seconds to become interactive.",
+      "context": "E-commerce mobile performance",
+      "output": "**PERFORMANCE AUDIT**\n\n| Metric | Mobile Score | Desktop Score |\n|--------|-------------|---------------|\n| Performance | 35 | 72 |\n| LCP | 5.8s | 2.8s |\n| TTI | 6.2s | 3.1s |\n\n**OPTIMIZATION PLAN**\n\n*Critical Rendering Path*\n1. Inline critical CSS\n2. Defer non-critical JS\n3. Prioritize above-fold content\n\n*Image Optimization*\n```html\n<img \n  srcset=\"product-400.jpg 400w, product-800.jpg 800w\"\n  sizes=\"(max-width: 600px) 100vw, 50vw\"\n  loading=\"lazy\"\n  decoding=\"async\"\n>\n```\n\n*Third-Party Scripts*\n- Analytics: Load after onLoad\n- Chat widget: Delay 5 seconds\n- Reviews: Lazy load on scroll\n\n*Service Worker*\n- Cache static assets\n- Cache API responses\n- Offline fallback for product pages\n\n**MONITORING**\n- Chrome UX Report (CrUX)\n- Real user monitoring (RUM)\n- Alert: LCP > 3s"
+    }
+  ]
+}

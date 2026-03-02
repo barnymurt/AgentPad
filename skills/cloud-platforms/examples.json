@@ -1,0 +1,39 @@
+{
+  "useWhen": [
+    "Setting up AWS, Azure, or GCP infrastructure",
+    "Designing cloud architecture for applications",
+    "Configuring compute, storage, and networking",
+    "Implementing cloud security best practices",
+    "Optimizing cloud costs and performance"
+  ],
+  "workflow": [
+    {
+      "step": "1. Design Architecture",
+      "description": "Select cloud provider, determine services needed, define security requirements"
+    },
+    {
+      "step": "2. Configure Services",
+      "description": "Set up compute, storage, and networking components"
+    },
+    {
+      "step": "3. Secure",
+      "description": "Configure IAM, security groups, and encryption"
+    },
+    {
+      "step": "4. Optimize",
+      "description": "Optimize for cost, performance, and reliability"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Set up AWS infrastructure for a web application with load balancer, auto-scaling, and RDS database.",
+      "context": "AWS web application with high availability",
+      "output": "**ARCHITECTURE DESIGN**\n\n```\n                    ┌─────────────┐\n                    │   Route 53  │\n                    └──────┬──────┘\n                           │\n                    ┌──────▼──────┐\n                    │ Application  │\n                    │ Load Balancer│\n                    └──────┬──────┘\n                           │\n              ┌────────────┼────────────┐\n              │            │            │\n        ┌─────▼─────┐ ┌────▼────┐ ┌────▼─────┐\n        │   EC2     │ │  EC2    │ │   EC2    │\n        │ (Web App) │ │(Web App) │ │(Web App) │\n        └───────────┘ └─────────┘ └──────────┘\n              │            │            │\n              └────────────┼────────────┘\n                           │\n                    ┌──────▼──────┐\n                    │     RDS     │\n                    │  (MySQL)    │\n                    └─────────────┘\n```\n\n**SERVICES**\n\n| Service | Purpose | Configuration |\n|---------|---------|----------------|\n| Route 53 | DNS | Hosted zone |\n| ALB | Load Balancer | HTTP/HTTPS, SSL |\n| EC2 | Compute | Auto Scaling Group, t3.medium |\n| RDS | Database | MySQL, Multi-AZ |\n| S3 | Static assets | CloudFront origin |\n\n**SECURITY**\n\n- IAM: App role with least privilege\n- Security Groups: ALB→EC2 (80/443), EC2→RDS (3306)\n- RDS: Encryption at rest, SSL connections\n- ALB: WAF enabled, TLS 1.2+\n\n**COST OPTIMIZATION**\n- Reserved Instances for baseline\n- Spot for stateless workers\n- S3 Intelligent Tiering"
+    },
+    {
+      "input": "Set up GCP infrastructure for a containerized application using Kubernetes.",
+      "context": "GCP GKE cluster with microservices",
+      "output": "**ARCHITECTURE DESIGN**\n\n```\n┌─────────────────────────────────────────────┐\n│                 Cloud CDN                   │\n└──────────────────┬──────────────────────────┘\n                   │\n┌──────────────────▼──────────────────────────┐\n│            Global External Load Balancer     │\n└──────────────────┬──────────────────────────┘\n                   │\n┌──────────────────▼──────────────────────────┐\n│                  GKE Cluster                 │\n│  ┌────────────┐  ┌────────────┐             │\n│  │  Service A │  │  Service B │  ...        │\n│  └────────────┘  └────────────┘             │\n└──────────────────┬──────────────────────────┘\n                   │\n┌──────────────────▼──────────────────────────┐\n│              Cloud SQL                      │\n│           (PostgreSQL)                      │\n└─────────────────────────────────────────────┘\n```\n\n**SERVICES**\n\n| Service | Purpose | Configuration |\n|---------|---------|----------------|\n| GKE | Kubernetes | Regional, 3 zones |\n| Cloud SQL | Database | PostgreSQL, HA |\n| Cloud CDN | Static content | Cache enabled |\n| Cloud Storage | Object storage | Multi-region |\n\n**GKE CONFIGURATION**\n\n```yaml\n# GKE cluster config\ncluster:\n  name: production-cluster\n  location: us-central1\n  node-pools:\n    - name: default-pool\n      machine-type: e2-medium\n      node-count: 3\n    - name: memory-pool\n      machine-type: e2-highmem-4\n      node-count: 2\n```\n\n**SECURITY**\n- Workload Identity for GKE→Cloud SQL\n- Private GKE cluster (no public endpoint)\n- Binary authorization for containers"
+    }
+  ]
+}

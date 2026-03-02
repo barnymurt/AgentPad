@@ -1,0 +1,39 @@
+{
+  "useWhen": [
+    "Setting pricing for product launch",
+    "Configuring pricing tiers for new SaaS product",
+    "Designing launch discounts and special offers",
+    "Preparing pricing documentation for launch",
+    "Finalizing pricing strategy before go-live"
+  ],
+  "workflow": [
+    {
+      "step": "1. Finalize Strategy",
+      "description": "Confirm pricing model, define tier structure, determine discount strategy"
+    },
+    {
+      "step": "2. Configure Pricing",
+      "description": "Set actual prices, create tier definitions, configure usage limits and features per tier"
+    },
+    {
+      "step": "3. Launch Offers",
+      "description": "Design launch discount, define terms and conditions, set offer duration"
+    },
+    {
+      "step": "4. Documentation",
+      "description": "Create pricing page content, write FAQ, prepare sales training materials"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Set pricing for our SaaS product launch next month",
+      "output": "Complete pricing strategy with tier configuration, launch offers, and documentation ready for go-live",
+      "context": "Pre-launch SaaS product finalizing pricing"
+    },
+    {
+      "input": "What launch discount should we offer?",
+      "output": "Recommended launch discount structure with terms, duration, and expected impact analysis",
+      "context": "Determining launch pricing strategy"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "useWhen": [
+    "You need to articulate where your product is going",
+    "You're pitching to investors or stakeholders",
+    "You want to align your team on direction"
+  ],
+  "workflow": [
+    { "step": "Define Vision", "description": "Write a compelling statement of the future state" },
+    { "step": "Identify Mission", "description": "Clarify why this matters and what you're solving" },
+    { "step": "Set Principles", "description": "Define guiding principles for decisions" },
+    { "step": "Map Roadmap", "description": "Outline key milestones to achieve vision" }
+  ],
+  "examples": [
+    {
+      "input": "A subscription box that delivers monthly curated snacks from local bakeries",
+      "output": "## Product Vision: LocalBites\n\n---\n\n### Vision Statement\n\"To become the most convenient way for food lovers to discover and enjoy unique local bakeries, one doorstep at a time.\"\n\n---\n\n### Mission\nWe connect busy snack lovers with local artisanal bakeries, creating a win-win-win: bakery owners gain new customers, subscribers discover amazing local treats, and we make exploring local food easy and delightful.\n\n---\n\n### Guiding Principles\n\n1. **Local First**\nEvery box features bakeries within 50 miles of the subscriber\n\n2. **Surprise & Delight**\nEach box should feel like opening a gift, not a grocery delivery\n\n3. **Quality Over Quantity**\nBetter 5 amazing items than 15 mediocre ones\n\n4. **Community Driven**\nSubscribers vote on next month's bakeries\n\n---\n\n### 3-Year Vision\n\n| Year | Milestone |\n|------|-----------|\n| Year 1 | 1,000 subscribers, 50 local partners |\n| Year 2 | 10,000 subscribers, 200 partners, 3 cities |\n| Year 3 | 50,000 subscribers, national expansion |\n\n---\n\n### North Star Metric\n**Monthly Active Subscribers**\nTarget: 50,000 by end of Year 3\n\n---\n\n### Competitive Differentiation\n- Only service focused exclusively on LOCAL bakeries\n- Community voting builds emotional connection\n- Partnership model creates network effects",
+      "context": "B2C, Subscription, Food Tech"
+    }
+  ]
+}

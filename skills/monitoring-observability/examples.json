@@ -1,0 +1,39 @@
+{
+  "useWhen": [
+    "Setting up production monitoring and alerting",
+    "Designing observability strategy for applications",
+    "Creating logging, metrics, and tracing infrastructure",
+    "Configuring alerts and on-call procedures",
+    "Building monitoring dashboards for operations"
+  ],
+  "workflow": [
+    {
+      "step": "1. Design",
+      "description": "Define metrics to track, log strategy, and alerting rules"
+    },
+    {
+      "step": "2. Implement",
+      "description": "Set up logging, metrics collection, and distributed tracing"
+    },
+    {
+      "step": "3. Configure Alerts",
+      "description": "Define thresholds, on-call rotation, and escalation paths"
+    },
+    {
+      "step": "4. Dashboard",
+      "description": "Create dashboards for key metrics, visualizations, and SLOs"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Set up monitoring for a Node.js API with PostgreSQL. We need to track errors, performance, and business metrics.",
+      "context": "Node.js API, PostgreSQL database",
+      "output": "**METRICS TO TRACK**\n\n| Category | Metrics |\n|----------|--------|\n| Request | Latency (p50, p95, p99), throughput, error rate |\n| Database | Query time, connection pool, row counts |\n| Business | Signups, API calls, revenue |\n| System | CPU, memory, disk |\n\n**IMPLEMENTATION**\n\n```javascript\n// Prometheus metrics\nconst httpRequestsTotal = new Counter({\n  name: 'http_requests_total',\n  help: 'Total HTTP requests',\n  labelNames: ['method', 'path', 'status']\n});\n\nconst httpRequestDuration = new Histogram({\n  name: 'http_request_duration_seconds',\n  help: 'HTTP request duration',\n  labelNames: ['method', 'path'],\n  buckets: [0.1, 0.5, 1, 2, 5]\n});\n\n// Usage in Express\napp.use((req, res, next) => {\n  const start = Date.now();\n  res.on('finish', () => {\n    httpRequestsTotal.inc({ method: req.method, path: req.path, status: res.statusCode });\n    httpRequestDuration.observe({ method: req.method, path: req.path }, (Date.now() - start) / 1000);\n  });\n  next();\n});\n```\n\n**ALERT RULES**\n\n| Alert | Condition | Severity | Action |\n|-------|-----------|----------|--------|\n| High Error Rate | error_rate > 5% for 5min | Critical | Page on-call |\n| High Latency | p95 > 2s for 5min | Warning | Create ticket |\n| Database Down | pg_up == 0 | Critical | Page on-call |\n| High CPU | cpu > 80% for 10min | Warning | Alert channel |\n\n**DASHBOARD PANELS**\n- Request rate by endpoint\n- Error rate over time\n- Latency percentiles\n- Database connection pool\n- Active users"
+    },
+    {
+      "input": "Set up observability for a microservices architecture with 5 services, Kubernetes, and message queues.",
+      "context": "Microservices on Kubernetes",
+      "output": "**OBSERVABILITY STACK**\n\n| Component | Tool | Purpose |\n|-----------|------|----------|\n| Metrics | Prometheus + Grafana | Time series |\n| Logs | Loki + Grafana | Log aggregation |\n| Traces | Jaeger | Distributed tracing |\n| Alerting | Alertmanager | Notifications |\n\n**DISTRIBUTED TRACING**\n\n```javascript\n// Add to each service\nconst tracing = new JaegerTracer({\n  serviceName: 'order-service',\n  sampler: { type: 'const', param: 1 }\n});\n\n// Propagate trace context\napp.use((req, res, next) => {\n  const span = tracing.startSpan(req.path);\n  span.setTag('http.method', req.method);\n  res.on('finish', () => {\n    span.setTag('http.status_code', res.statusCode);\n    span.finish();\n  });\n  next();\n});\n```\n\n**SERVICE MESH**\n- Istio for mTLS between services\n- Automatic trace injection\n- Traffic metrics per service\n\n**ALERT CONFIGURATION**\n\n| Alert | Condition | Owner |\n|-------|-----------|-------|\n| SLO Breach | Error budget < 10% | Team lead |\n| Latency P99 | > 1s for 10min | Backend team |\n| Queue Depth | > 1000 messages | Platform team |\n\n**SLOs**\n- Availability: 99.9% (43min downtime/month)\n- Latency: p99 < 500ms\n- Errors: < 0.1%"
+    }
+  ]
+}

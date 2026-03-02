@@ -1,0 +1,43 @@
+{
+  "useWhen": [
+    "Writing persistent test scripts that live in your codebase",
+    "Setting up automated tests for CI/CD pipelines",
+    "Creating end-to-end tests with Playwright",
+    "Testing complex user flows that require custom assertions",
+    "Running automated regression tests"
+  ],
+  "workflow": [
+    {
+      "step": "1. Determine Approach",
+      "description": "Is it static HTML or dynamic webapp? Is server already running?"
+    },
+    {
+      "step": "2. Set Up Server (if needed)",
+      "description": "Use with_server.py helper to manage server lifecycle"
+    },
+    {
+      "step": "3. Reconnaissance",
+      "description": "Navigate to page, wait for networkidle, inspect DOM to discover selectors"
+    },
+    {
+      "step": "4. Write Test Script",
+      "description": "Create Playwright script with discovered selectors and assertions"
+    },
+    {
+      "step": "5. Run Tests",
+      "description": "Execute tests locally or in CI/CD pipeline"
+    }
+  ],
+  "examples": [
+    {
+      "input": "We need to write a Playwright test script to verify user login works on our webapp running on localhost:3000.",
+      "context": "Webapp with login form, running locally",
+      "output": "```python\nfrom playwright.sync_api import sync_playwright\n\ndef test_login():\n    with sync_playwright() as p:\n        browser = p.chromium.launch(headless=True)\n        page = browser.new_page()\n        \n        # Navigate and wait for app to load\n        page.goto('http://localhost:3000')\n        page.wait_for_load_state('networkidle')\n        \n        # Fill login form\n        page.fill('input[name=\"email\"]', 'test@example.com')\n        page.fill('input[name=\"password\"]', 'password123')\n        page.click('button[type=\"submit\"]')\n        \n        # Wait for redirect to dashboard\n        page.wait_for_url('**/dashboard')\n        \n        # Verify successful login\n        assert 'Dashboard' in page.title()\n        \n        browser.close()\n```\n\n**Run command:**\n```bash\npython with_server.py --server \"npm run dev\" --port 3000 -- python test_login.py\n```\n\n**Key patterns:**\n- Always wait for `networkidle` on dynamic apps\n- Use descriptive selectors (`input[name=\"email\"]`)\n- Wait for URL changes after actions"
+    },
+    {
+      "input": "Create a test script that tests the checkout flow - adding items to cart, navigating to checkout, and verifying order summary.",
+      "context": "E-commerce webapp, multiple step process",
+      "output": "```python\nfrom playwright.sync_api import sync_playwright\n\ndef test_checkout_flow():\n    with sync_playwright() as p:\n        browser = p.chromium.launch(headless=True)\n        page = browser.new_page()\n        \n        # Step 1: Add item to cart\n        page.goto('http://localhost:3000/products')\n        page.wait_for_load_state('networkidle')\n        page.click('text=Add to Cart')\n        \n        # Verify cart badge updates\n        cart_badge = page.locator('.cart-badge').text_content()\n        assert cart_badge == '1'\n        \n        # Step 2: Navigate to checkout\n        page.click('text=View Cart')\n        page.click('text=Proceed to Checkout')\n        page.wait_for_url('**/checkout')\n        \n        # Step 3: Fill shipping info\n        page.fill('input[name=\"address\"]', '123 Main St')\n        page.fill('input[name=\"city\"]', 'San Francisco')\n        page.fill('input[name=\"zip\"]', '94102')\n        \n        # Step 4: Verify order summary\n        order_total = page.locator('.order-total').text_content()\n        assert '$99.00' in order_total\n        \n        browser.close()\n```\n\n**Best practices in this test:**\n- Each step waits for expected state\n- Assertions verify key outcomes\n- Single test covers end-to-end flow"
+    }
+  ]
+}

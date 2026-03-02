@@ -1,0 +1,34 @@
+{
+  "useWhen": [
+    "Practicing test-driven development (TDD)",
+    "Writing tests before implementing code",
+    "Building a feature with quality-first approach",
+    "Learning TDD cycles and methodology",
+    "Ensuring high test coverage from the start"
+  ],
+  "workflow": [
+    {
+      "step": "1. Write Failing Test (Red)",
+      "description": "Write test first, define expected behavior before implementation exists"
+    },
+    {
+      "step": "2. Make Pass (Green)",
+      "description": "Write minimal code to get the test passing"
+    },
+    {
+      "step": "3. Refactor (Blue)",
+      "description": "Improve code quality while keeping tests passing"
+    },
+    {
+      "step": "4. Repeat",
+      "description": "Continue the cycle for each behavior, building test coverage"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Implement a shopping cart using TDD. The cart should be able to add items, remove items, calculate total, and apply discount codes.",
+      "context": "Shopping cart feature, TDD approach",
+      "output": "**CYCLE 1: Add Item**\n\n*Red - Write failing test:*\n```python\ndef test_add_item():\n    cart = ShoppingCart()\n    cart.add_item('apple', 1, 0.50)\n    assert cart.items == [{'name': 'apple', 'qty': 1, 'price': 0.50}]\n```\n\n*Green - Minimal code:*\n```python\nclass ShoppingCart:\n    def __init__(self):\n        self.items = []\n    \n    def add_item(self, name, qty, price):\n        self.items.append({'name': name, 'qty': qty, 'price': price})\n```\n\n*Blue - Refactor:*\n```python\nclass ShoppingCart:\n    def __init__(self):\n        self.items = []\n    \n    def add_item(self, name: str, qty: int, price: float):\n        for item in self.items:\n            if item['name'] == name:\n                item['qty'] += qty\n                return\n        self.items.append({'name': name, 'qty': qty, 'price': price})\n```\n\n**CYCLE 2: Calculate Total**\n\n*Red:*\n```python\ndef test_calculate_total():\n    cart = ShoppingCart()\n    cart.add_item('apple', 2, 0.50)\n    cart.add_item('banana', 1, 0.30)\n    assert cart.total() == 1.30\n```\n\n*Green:*\n```python\ndef total(self):\n    return sum(item['qty'] * item['price'] for item in self.items)\n```\n\n**CYCLE 3: Apply Discount**\n\n*Red:*\n```python\ndef test_apply_discount():\n    cart = ShoppingCart()\n    cart.add_item('apple', 1, 1.00)\n    cart.apply_discount('SAVE10')\n    assert cart.total() == 0.90\n```\n\n*Green + Refactor:*\n```python\nVALID_CODES = {'SAVE10': 0.10, 'SAVE20': 0.20}\n\ndef apply_discount(self, code: str):\n    if code in VALID_CODES:\n        self.discount = VALID_CODES[code]\n\ndef total(self):\n    subtotal = sum(item['qty'] * item['price'] for item in self.items)\n    return subtotal * (1 - getattr(self, 'discount', 0))"
+    }
+  ]
+}

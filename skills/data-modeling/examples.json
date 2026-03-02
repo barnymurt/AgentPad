@@ -1,0 +1,39 @@
+{
+  "useWhen": [
+    "Designing data structure for new features",
+    "Creating entity relationship diagrams (ERD)",
+    "Planning how different data objects relate",
+    "Defining database entities and attributes",
+    "Validating data model supports required queries"
+  ],
+  "workflow": [
+    {
+      "step": "1. Identify Entities",
+      "description": "Identify core objects and nouns in your system - what data needs to be stored"
+    },
+    {
+      "step": "2. Define Relationships",
+      "description": "Map how entities relate: one-to-one, one-to-many, many-to-many, foreign keys"
+    },
+    {
+      "step": "3. Document Attributes",
+      "description": "Define data fields, types, constraints, defaults, required vs optional"
+    },
+    {
+      "step": "4. Validate with Queries",
+      "description": "Verify the model can support required queries and identify performance concerns"
+    }
+  ],
+  "examples": [
+    {
+      "input": "We need to build an e-learning platform with courses, lessons, and student progress tracking. Design the data model.",
+      "context": "E-learning platform with courses, lessons, students, progress",
+      "output": "**ENTITIES**\n\n1. **User** - Students and instructors\n2. **Course** - Container for lessons\n3. **Lesson** - Individual learning units\n4. **Enrollment** - User-course relationship\n5. **Progress** - Lesson completion tracking\n6. **Quiz** - Assessment questions\n7. **QuizAttempt** - Student quiz results\n\n**RELATIONSHIPS**\n\n| Entity A | Relationship | Entity B | Type |\n|----------|-------------|----------|------|\n| Course | has many | Lesson | 1:N |\n| Course | has many | Enrollment | 1:N |\n| User | has many | Enrollment | 1:N |\n| User | has many | Progress | 1:N |\n| Lesson | has many | Progress | 1:N |\n| Quiz | belongs to | Lesson | 1:1 |\n| Quiz | has many | QuizAttempt | 1:N |\n| User | has many | QuizAttempt | 1:N |\n\n**ATTRIBUTES**\n\n*User*\n- id (UUID, PK)\n- email (string, unique)\n- name (string)\n- role (enum: student, instructor)\n- created_at (timestamp)\n\n*Course*\n- id (UUID, PK)\n- title (string)\n- description (text)\n- instructor_id (UUID, FK → User)\n- published (boolean)\n- created_at (timestamp)\n\n*Lesson*\n- id (UUID, PK)\n- course_id (UUID, FK → Course)\n- title (string)\n- content (text)\n- order (integer)\n- duration_minutes (integer)\n\n*Progress*\n- id (UUID, PK)\n- user_id (UUID, FK → User)\n- lesson_id (UUID, FK → Lesson)\n- completed (boolean)\n- completed_at (timestamp)\n\n**QUERY VALIDATION**\n- Get all lessons for a course ✓\n- Get user's progress in a course ✓\n- Get courses by instructor ✓\n- Calculate completion percentage ✓"
+    },
+    {
+      "input": "Design data model for a multi-tenant SaaS with organizations, users, projects, and tasks.",
+      "context": "Multi-tenant SaaS with organizations as top-level entity",
+      "output": "**ENTITIES**\n\n1. **Organization** - Tenant container\n2. **User** - Team members\n3. **Membership** - User-Org relationship with roles\n4. **Project** - Work containers\n5. **Task** - Individual work items\n6. **Comment** - Task discussions\n\n**RELATIONSHIPS**\n\n| Entity A | Relationship | Entity B | Type |\n|----------|-------------|----------|------|\n| Organization | has many | Membership | 1:N |\n| Organization | has many | Project | 1:N |\n| User | has many | Membership | 1:N |\n| Project | has many | Task | 1:N |\n| Task | has many | Comment | 1:N |\n| User | has many | Comment | 1:N |\n\n**ATTRIBUTES**\n\n*Organization*\n- id (UUID, PK)\n- name (string)\n- plan (enum: free, pro, enterprise)\n- created_at (timestamp)\n\n*Membership*\n- id (UUID, PK)\n- user_id (UUID, FK)\n- organization_id (UUID, FK)\n- role (enum: owner, admin, member)\n\n*Task*\n- id (UUID, PK)\n- project_id (UUID, FK)\n- title (string)\n- description (text)\n- status (enum: todo, in_progress, done)\n- assignee_id (UUID, FK → User)\n- due_date (date)\n\n**QUERY VALIDATION**\n- Get all projects for org ✓\n- Get tasks assigned to user across orgs ✓\n- Get org member list ✓\n- Filter tasks by status ✓"
+    }
+  ]
+}

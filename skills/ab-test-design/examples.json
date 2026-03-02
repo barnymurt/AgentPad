@@ -1,0 +1,21 @@
+{
+  "useWhen": [
+    "You want to test two versions of something",
+    "You need to validate a change before rolling out",
+    "You have traffic to split"
+  ],
+  "workflow": [
+    { "step": "Define Hypothesis", "description": "State what you expect to happen and why" },
+    { "step": "Design Variants", "description": "Create control and treatment versions" },
+    { "step": "Setup", "description": "Configure splitting and tracking" },
+    { "step": "Run", "description": "Let test run until statistical significance" },
+    { "step": "Analyze", "description": "Review results and determine winner" }
+  ],
+  "examples": [
+    {
+      "input": "I want to test if moving the CTA button from the bottom of my landing page to above the fold will increase conversions",
+      "output": "## A/B Test: CTA Button Placement\n\n### Hypothesis\nMoving the \"Sign Up\" CTA button above the fold will increase conversion rate by 20% because users won't have to scroll to take action.\n\n---\n\n### Test Design\n\n**Control (A)**\n- CTA button at bottom of page, after all content\n- Current placement\n\n**Treatment (B)**\n- CTA button at top of page, in hero section\n- Above the fold\n\n---\n\n### Traffic Split\n- 50% Control / 50% Treatment\n- Random assignment by session ID\n\n---\n\n### Success Metrics\n\n**Primary:**\n- Sign-up button clicks\n\n**Secondary:**\n- Time on page\n- Bounce rate\n- Scroll depth\n\n---\n\n### Sample Size & Duration\n- **Baseline conversion:** 3%\n- **Minimum detectable effect:** 20% relative (3.6%)\n- **Statistical power:** 80%\n- **Significance level:** 95%\n- **Required sample:** 14,000 visitors\n- **Estimated duration:** 7 days\n\n---\n\n### Implementation\n- Use Google Optimize or VWO\n- Track with Google Analytics\n- Ensure no flash of unstyled content\n\n---\n\n### Decision Criteria\n- If B > A by >20%: Ship B\n- If B < A: Ship A (keep control)\n- If inconclusive: Extend test or redesign",
+      "context": "Conversion Optimization, Landing Page"
+    }
+  ]
+}

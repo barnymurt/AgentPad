@@ -1,0 +1,47 @@
+{
+  "useWhen": [
+    "Analyzing SaaS business metrics to diagnose health",
+    "Interpreting MRR, ARR, churn, and other SaaS metrics",
+    "Benchmarking against industry standards by stage",
+    "Identifying root causes of metric underperformance",
+    "Creating action plans tied to specific metric improvements"
+  ],
+  "workflow": [
+    {
+      "step": "1. Gather and Classify Metrics",
+      "description": "Collect metrics, classify by type (leading/lagging) and funnel stage (AARRR)"
+    },
+    {
+      "step": "2. Score Business Health",
+      "description": "Apply health scorecard with stage-appropriate benchmarks, grade metrics Green/Yellow/Red"
+    },
+    {
+      "step": "3. Map Metric Relationships",
+      "description": "Trace causal chains from lagging indicators to leading root causes"
+    },
+    {
+      "step": "4. Perform Cohort and Trend Analysis",
+      "description": "Analyze metrics over time, compare cohorts, identify direction of change"
+    },
+    {
+      "step": "5. Benchmark Against Stage and Segment",
+      "description": "Compare against industry benchmarks for company stage and segment"
+    },
+    {
+      "step": "6. Diagnose and Recommend",
+      "description": "Synthesize into diagnosis and prioritized action plan with specific metric targets"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Analyze our SaaS metrics: MRR $50K, 500 customers, 8% monthly churn, CAC $500, LTV $6,000. We're at $50K MRR, growing 10% month-over-month.",
+      "context": "Early-stage B2B SaaS, $50K MRR",
+      "output": "**METRICS INVENTORY**\n\n| Metric | Value | Type | Stage |\n|--------|-------|------|-------|\n| MRR | $50K | Lagging | Revenue |\n| Customers | 500 | Lagging | Acquisition |\n| Churn | 8% | Lagging | Retention |\n| CAC | $500 | Leading | Acquisition |\n| LTV | $6,000 | Lagging | Revenue |\n\n**HEALTH SCORECARD** (Early-stage SMB)\n\n| Metric | Value | Benchmark | Status |\n|--------|-------|-----------|--------|\n| MRR Growth | 10%/mo | 15-20%/mo | Yellow |\n| Churn | 8%/mo | 5-7%/mo | Red |\n| LTV:CAC | 12:1 | 3:1 | Green |\n| ARPU | $100 | $50-200 | Green |\n\n**DIAGNOSIS**\nPrimary issue: High monthly churn (8%) is unsustainable. Root cause analysis shows:\n- High churn → Low activation → Poor onboarding\n- 8% monthly churn = ~60% annual churn = unhealthy\n\n**ROOT CAUSE CHAIN**\n```\n8% monthly churn (symptom)\n  ↓\nLow activation rate: 25% (root)\n  ↓\nUsers don't complete onboarding in first 7 days\n  ↓\nNo in-app guidance or onboarding flow\n```\n\n**BENCHMARK COMPARISON**\n- Churn: 8% vs 5-7% benchmark = 1-3% above (Red)\n- LTV:CAC: 12:1 vs 3:1 = Very high (possible under-investment)\n\n**ACTION PLAN**\n\n| Priority | Action | Metric Target | Impact |\n|----------|--------|---------------|--------|\n| 1 | Add onboarding flow | Activation 25%→50% | Churn 8%→5% |\n| 2 | Implement in-app tips | Feature adoption +30% | Churn 5%→4% |\n| 3 | Set up re-engagement email | Day-3 retention +20% | Churn 4%→3.5% |\n\n**MONITORING**\n- Review: Weekly\n- Target: Churn <5% in 3 months"
+    },
+    {
+      "input": "Our metrics: ARR $500K, 200 enterprise customers, 2% monthly churn, CAC $5,000, ACV $60,000. Growing 5% month-over-month.",
+      "context": "Growth-stage Enterprise SaaS, $500K ARR",
+      "output": "**METRICS INVENTORY**\n\n| Metric | Value | Type | Stage |\n|--------|-------|------|-------|\n| ARR | $500K | Lagging | Revenue |\n| Customers | 200 | Lagging | Acquisition |\n| Churn | 2% | Lagging | Retention |\n| CAC | $5,000 | Leading | Acquisition |\n| ACV | $60,000 | Lagging | Revenue |\n\n**HEALTH SCORECARD** (Growth-stage Enterprise)\n\n| Metric | Value | Benchmark | Status |\n|--------|-------|-----------|--------|\n| ARR Growth | 5%/mo | 10-15%/mo | Red |\n| Churn | 2%/mo | 1-2%/mo | Yellow |\n| LTV:CAC | 12:1 | 3:1 | Green |\n| Net Revenue Retention | 110% | 110-120% | Yellow |\n\n**DIAGNOSIS**\nPrimary issue: Slow ARR growth (5%/mo vs 10-15% benchmark). Root cause analysis:\n- Slow growth → Low new customer acquisition\n- Low acquisition → High CAC or weak sales pipeline\n\n**ROOT CAUSE CHAIN**\n```\n5% ARR growth (symptom)\n  ↓\nLow new customer rate: 3/mo (root)\n  ↓\nSales cycle lengthening: 90→120 days\n  ↓\nLimited pipeline, high CAC concerns\n```\n\n**ACTION PLAN**\n\n| Priority | Action | Metric Target | Impact |\n|----------|--------|---------------|--------|\n| 1 | Expand sales pipeline | New customers 3→6/mo | Growth +5%→8% |\n| 2 | Add self-serve tier | SMB segment, lower CAC | Acquisition +30% |\n| 3 | Improve NRR | NRR 110%→120% | Growth +8%→12% |\n\n**MONITORING**\n- Review: Monthly\n- Target: ARR growth >10% in 6 months"
+    }
+  ]
+}

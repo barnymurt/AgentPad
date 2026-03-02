@@ -1,0 +1,39 @@
+{
+  "useWhen": [
+    "Setting up continuous integration pipelines",
+    "Automating builds and deployments",
+    "Configuring deployment strategies",
+    "Adding automated testing to CI/CD",
+    "Implementing continuous delivery workflows"
+  ],
+  "workflow": [
+    {
+      "step": "1. Design Pipeline",
+      "description": "Define build process, test automation, and deploy strategy"
+    },
+    {
+      "step": "2. Configure",
+      "description": "Create workflow file with stages and triggers"
+    },
+    {
+      "step": "3. Add Testing",
+      "description": "Run tests, quality gates, and security scans"
+    },
+    {
+      "step": "4. Deploy",
+      "description": "Set up deployment strategy, environments, and rollback"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Create a CI/CD pipeline for a Node.js application using GitHub Actions with staging and production deployments.",
+      "context": "Node.js app, GitHub Actions, staging + production",
+      "output": "**PIPELINE DESIGN**\n\n```yaml\nname: CI/CD Pipeline\n\non:\n  push:\n    branches: [main]\n  pull_request:\n    branches: [main]\n\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-node@v4\n        with:\n          node-version: '20'\n          cache: 'npm'\n      - run: npm ci\n      - run: npm run lint\n      - run: npm test -- --coverage\n      - run: npm run build\n\n  deploy-staging:\n    needs: test\n    if: github.ref == 'refs/heads/main'\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - run: npm ci\n      - run: npm run build\n      - uses: aws-actions/configure-aws-credentials@v4\n        with:\n          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}\n          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}\n          aws-region: us-east-1\n      - run: npm run deploy:staging\n\n  deploy-production:\n    needs: deploy-staging\n    if: github.event_name == 'push'\n    runs-on: ubuntu-latest\n    environment: production\n    steps:\n      - uses: actions/checkout@v4\n      - run: npm ci\n      - run: npm run build\n      - run: npm run deploy:production\n```\n\n**STAGES**\n\n| Stage | Trigger | Action |\n|-------|---------|--------|\n| Test | Every PR | Run tests, lint, build |\n| Deploy Staging | Push to main | Deploy to staging |\n| Deploy Production | After staging | Deploy to prod |\n\n**ENVIRONMENTS**\n- Staging: Auto-deploy on main branch\n- Production: Manual approval or delay"
+    },
+    {
+      "input": "Set up CI/CD for a mobile app with iOS and Android builds, test automation, and TestFlight/Play Store deployment.",
+      "context": "Mobile app, Fastlane, TestFlight, Play Store",
+      "output": "**PIPELINE DESIGN**\n\n```yaml\nname: Mobile CI/CD\n\non:\n  push:\n    branches: [main, develop]\n\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - run: npm ci\n      - run: npm test\n\n  ios:\n    needs: test\n    runs-on: macos-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-node@v4\n      - run: npm ci\n      - run: npm run build:ios\n      - uses: fastlane/fastlane-action@v2\n        with:\n          lane: testflight\n        env:\n          FASTLANE_APPLE_ID: ${{ secrets.FASTLANE_APPLE_ID }}\n          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}\n\n  android:\n    needs: test\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-java@v4\n        with:\n          java-version: '17'\n      - run: npm ci\n      - run: npm run build:android\n      - uses: fastlane/fastlane-action@v2\n        with:\n          lane: deploy\n        env:\n          FASTLANE_JSON_KEY: ${{ secrets.FASTLANE_JSON_KEY }}\n          PACKAGE_NAME: com.example.app\n```\n\n**DEPLOYMENT STRATEGY**\n- Develop branch → TestFlight Alpha / Internal Testing\n- Main branch → TestFlight Beta / Production"
+    }
+  ]
+}

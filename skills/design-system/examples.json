@@ -1,0 +1,21 @@
+{
+  "useWhen": [
+    "You need to create a cohesive visual system",
+    "You're building or refreshing a brand",
+    "You want consistency across products"
+  ],
+  "workflow": [
+    { "step": "Define Foundations", "description": "Set colors, typography, spacing" },
+    { "step": "Build Components", "description": "Create reusable UI components" },
+    { "step": "Document", "description": "Write usage guidelines" },
+    { "step": "Implement", "description": "Apply system in code/designs" },
+    { "step": "Maintain", "description": "Keep system up to date" }
+  ],
+  "examples": [
+    {
+      "input": "A design system for a B2B SaaS product with buttons, forms, and navigation",
+      "output": "## Design System: Acme SaaS\n\n### Foundations\n\n**Color Palette**\n| Name | Hex | Usage |\n|------|-----|-------|\n| Primary | #0066FF | CTAs, links |\n| Secondary | #1A1A2E | Text, headers |\n| Success | #10B981 | Positive states |\n| Warning | #F59E0B | Alerts |\n| Error | #EF4444 | Errors |\n| Gray 100 | #F3F4F6 | Background |\n| Gray 900 | #111827 | Primary text |\n\n**Typography**\n- Headings: Inter Bold\n- Body: Inter Regular\n- Code: JetBrains Mono\n\n| Style | Size | Weight | Line Height |\n|-------|------|--------|-------------|\n| H1 | 32px | 700 | 1.2 |\n| H2 | 24px | 600 | 1.3 |\n| Body | 16px | 400 | 1.5 |\n| Small | 14px | 400 | 1.5 |\n\n---\n\n### Components\n\n**Button**\n- Primary: Blue bg, white text, 8px radius\n- Secondary: Transparent, blue text, 1px blue border\n- States: hover (darken 10%), disabled (50% opacity)\n\n**Input**\n- Height: 40px\n- Border: 1px gray-300\n- Focus: 2px blue ring\n- Error: Red border, error message below\n\n**Card**\n- Background: white\n- Border: 1px gray-200\n- Radius: 12px\n- Shadow: 0 1px 3px rgba(0,0,0,0.1)\n\n---\n\n### Spacing Scale\n- xs: 4px\n- sm: 8px\n- md: 16px\n- lg: 24px\n- xl: 32px\n- 2xl: 48px\n\n---\n\n### Usage Guidelines\n1. Use primary color for main CTAs only\n2. Maintain 16px minimum touch targets\n3. Leave 24px between sections\n4. Use error color for validation only",
+      "context": "B2B SaaS, Design Systems"
+    }
+  ]
+}

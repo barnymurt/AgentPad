@@ -1,0 +1,39 @@
+{
+  "useWhen": [
+    "Building a new Android application from scratch",
+    "Adding a new feature to an existing Android app",
+    "Setting up Android architecture with best practices",
+    "Need to implement Jetpack Compose UI",
+    "Preparing an Android app for Play Store release"
+  ],
+  "workflow": [
+    {
+      "step": "1. Architecture Setup",
+      "description": "Set up MVVM or Clean Architecture with Hilt for dependency injection and Coroutines for async operations"
+    },
+    {
+      "step": "2. UI Implementation",
+      "description": "Implement UI using Jetpack Compose with Material Design and Navigation components"
+    },
+    {
+      "step": "3. Features",
+      "description": "Build core functionality, implement networking layer, and add local storage with Room database"
+    },
+    {
+      "step": "4. Ship",
+      "description": "Write tests, prepare for Play Store release, and configure release build"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Build an Android task management app with MVVM architecture",
+      "output": "Complete Android project with Hilt DI, Room database, Jetpack Compose UI, and MVVM pattern",
+      "context": "New Android project requiring Clean Architecture with proper separation of concerns"
+    },
+    {
+      "input": "Add offline sync capability to existing Android app",
+      "output": "Repository pattern with Room caching and WorkManager for background sync",
+      "context": "Existing Android app needs offline-first functionality"
+    }
+  ]
+}

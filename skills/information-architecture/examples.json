@@ -1,0 +1,51 @@
+{
+  "useWhen": [
+    "Organizing content and navigation for a new website or app",
+    "Creating a site map for product structure",
+    "Designing navigation hierarchies for user experience",
+    "Improving how users find content in existing products",
+    "Planning information structure for multi-section products"
+  ],
+  "workflow": [
+    {
+      "step": "1. Assess Complexity and Scope",
+      "description": "Determine IA depth based on product size, content types, and user tasks"
+    },
+    {
+      "step": "2. Analyze Content and Users",
+      "description": "Create content inventory and analyze user tasks and goals"
+    },
+    {
+      "step": "3. Card Sorting (or Simulate)",
+      "description": "Group content based on user mental models or common patterns"
+    },
+    {
+      "step": "4. Create Site Map",
+      "description": "Design hierarchy with max 3 clicks to any page"
+    },
+    {
+      "step": "5. Define Navigation System",
+      "description": "Design global, local, utility, and contextual navigation"
+    },
+    {
+      "step": "6. Design Search Strategy",
+      "description": "Determine when users should browse vs. search"
+    },
+    {
+      "step": "7. Validate IA",
+      "description": "Test with tree testing, card sorting, or expert review"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Design the information architecture for a B2B SaaS product with features for project management, time tracking, reporting, and team collaboration. It's used by teams of 5-50 people.",
+      "context": "Medium complexity B2B SaaS, 4 main features",
+      "output": "**COMPLEXITY ASSESSMENT**\n- Medium complexity: 20-50 pages, multiple features\n- IA Depth: 3-4 levels\n\n**SITE MAP**\n\n```\nHome\n├── Dashboard (overview)\n├── Projects\n│   ├── All Projects\n│   ├── Create Project\n│   └── Project Detail\n│       ├── Tasks\n│       ├── Team\n│       ├── Time Entries\n│       └── Settings\n├── Time\n│   ├── My Timesheet\n│   ├── Team Timesheets\n│   └── Reports\n├── Reports\n│   ├── Project Reports\n│   ├── Team Reports\n│   └── Export\n├── Team\n│   ├── Members\n│   ├── Invites\n│   └── Roles & Permissions\n└── Settings\n    ├── Organization\n    ├── Billing\n    └── Integrations\n```\n\n**NAVIGATION SYSTEM**\n\n| Type | Implementation |\n|------|---------------|\n| Global | Left sidebar: Projects, Time, Reports, Team, Settings |\n| Local | Tab navigation within sections (Tasks, Team, Settings) |\n| Utility | Top bar: Search, Notifications, Profile |\n| Contextual | Breadcrumbs, Related links |\n\n**SEARCH STRATEGY**\n- Primary: Global search in header\n- Filters: By project, date range, team member\n- Autocomplete: Projects, tasks, team members\n\n**LABELS**\n- Use user language: \"Time\" not \"Temporal\"\n- Consistent: \"Team\" everywhere, not \"People\" somewhere\n- Action-oriented: \"Create Project\" not \"New Project\""
+    },
+    {
+      "input": "Create IA for an e-commerce website with categories, products, cart, checkout, user account, and blog content.",
+      "context": "E-commerce website, 100+ products",
+      "output": "**COMPLEXITY ASSESSMENT**\n- Medium-Complex: 100+ pages, content + transactional\n- IA Depth: 3-4 levels\n\n**SITE MAP**\n\n```\nHome\n├── Shop\n│   ├── All Products\n│   ├── Categories\n│   │   ├── Electronics\n│   │   ├── Clothing\n│   │   └── Home & Garden\n│   ├── New Arrivals\n│   ├── Sale\n│   └── Product Detail\n│       ├── Reviews\n│       ├── Related Products\n│       └── Specifications\n├── Cart (slide-out)\n├── Checkout\n│   ├── Shipping\n│   ├── Payment\n│   └── Confirmation\n├── Account\n│   ├── Dashboard\n│   ├── Orders\n│   │   └── Order Detail\n│   ├── Addresses\n│   ├── Wishlist\n│   └── Settings\n├── Blog\n│   ├── Articles\n│   ├── Categories\n│   └── Article Detail\n└── Support\n    ├── FAQ\n    ├── Contact\n    └── Shipping Info\n```\n\n**NAVIGATION SYSTEM**\n\n| Type | Implementation |\n|------|---------------|\n| Global | Header: Shop, Blog, Support | \n| Local | Category sidebar on Shop pages |\n| Utility | Search, Cart icon with count, Account |\n| Contextual | \"You may also like\", Breadcrumbs |\n\n**SEARCH STRATEGY**\n- Prominent search in header\n- Autocomplete with product suggestions\n- Filter by category, price, brand\n- \"No results\" page with suggestions\n\n**VALIDATION NOTES**\n- Needs user testing for category names\n- Consider mega-menu for category navigation\n- Test checkout flow depth (currently 3 levels)"
+    }
+  ]
+}

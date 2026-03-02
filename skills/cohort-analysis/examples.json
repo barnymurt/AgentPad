@@ -1,0 +1,47 @@
+{
+  "useWhen": [
+    "Analyzing how user behavior changes over time",
+    "Understanding retention patterns by acquisition date",
+    "Comparing user cohorts by plan or acquisition source",
+    "Identifying if newer users behave differently from older ones",
+    "Tracking user lifecycle and engagement trends"
+  ],
+  "workflow": [
+    {
+      "step": "1. Validate and Prepare Data",
+      "description": "Confirm user data with timestamps exists - user ID, signup date, activity timestamps"
+    },
+    {
+      "step": "2. Define Cohort Grouping",
+      "description": "Choose cohort window (daily/weekly/monthly) and type (acquisition/plan/source/behavioral)"
+    },
+    {
+      "step": "3. Calculate Retention Curves",
+      "description": "Compute retention rates over time, distinguish retention from engagement metrics"
+    },
+    {
+      "step": "4. Identify Engagement Patterns",
+      "description": "Recognize patterns: Classic Decay, L-Shaped, Smile Curve, Plateau, Boomerang"
+    },
+    {
+      "step": "5. Handle Small Cohort Sizes",
+      "description": "Flag low-confidence findings, aggregate to larger windows if needed"
+    },
+    {
+      "step": "6. Generate Insights",
+      "description": "Analyze acquisition quality, seasonality, channel quality, and plan health"
+    }
+  ],
+  "examples": [
+    {
+      "input": "We have 6 months of user data. Analyze retention by signup month. We want to see if newer users are retaining better or worse than earlier users, and which acquisition channels produce the best-retaining users.",
+      "context": "B2B SaaS with 2000 users, Mixpanel data available",
+      "output": "**EXECUTIVE SUMMARY**\nOctober cohort shows 28% Month-4 retention vs. July cohort at 18% — newer users retaining 10% better. Paid acquisition channels show 2x retention vs. organic.\n\n**COHORT DEFINITION**\n- Window: Monthly (sufficient volume: ~300 users/month)\n- Type: Acquisition cohorts + Source-based comparison\n- Rationale: B2B usage patterns are monthly, good volume for monthly breakdown\n\n**RETENTION CURVES**\n\n| Cohort | Month 0 | Month 1 | Month 2 | Month 3 | Month 4 |\n|--------|---------|---------|---------|---------|--------|\n| July | 100% | 52% | 35% | 24% | 18% |\n| Aug | 100% | 55% | 38% | 28% | 22% |\n| Sep | 100% | 58% | 42% | 32% | 26% |\n| Oct | 100% | 62% | 45% | 35% | 28% |\n\n**PATTERN ANALYSIS**\n- Pattern: Classic Decay (steep initial drop, flattens after month 2)\n- Observation: Biggest drop in first month — onboarding issue\n- Implication: Users not seeing value quickly enough\n\n**SOURCE COMPARISON**\n\n| Source | Month 3 Retention | Sample Size |\n|--------|-----------------|-------------|\n| Paid (Google) | 35% | 400 |\n| Paid (LinkedIn) | 32% | 200 |\n| Organic | 18% | 800 |\n| Referral | 42% | 150 |\n\n**RECOMMENDATIONS**\n1. *High Priority:* Improve first-month onboarding (biggest drop point)\n2. *High Priority:* Invest in referral program (best retention)\n3. *Medium:* Review paid channel quality (high volume but lower retention)"
+    },
+    {
+      "input": "Analyze our consumer mobile app retention. Users sign up daily. We want to see if D1/D7/D30 retention is improving over time and understand early user behavior patterns.",
+      "context": "Consumer mobile app with 50K users, daily signups",
+      "output": "**EXECUTIVE SUMMARY**\nL-shaped retention curve indicating product-market fit issues. D1 retention at 25%, D7 at 8%, D30 at 3%. Recent cohorts show slight improvement after onboarding update.\n\n**COHORT DEFINITION**\n- Window: Daily (high volume: ~1600 users/day)\n- Type: Acquisition cohorts with rolling 7-day aggregates\n- Rationale: Consumer app with daily usage patterns\n\n**RETENTION CURVES**\n\n| Day | Jan Cohort | Feb Cohort | Mar Cohort |\n|-----|------------|------------|------------|\n| D1 | 22% | 24% | 25% |\n| D3 | 12% | 13% | 14% |\n| D7 | 6% | 7% | 8% |\n| D14 | 4% | 5% | 5% |\n| D30 | 2% | 3% | 3% |\n\n**PATTERN ANALYSIS**\n- Pattern: L-Shaped (very low after day 1, remains flat)\n- Severity: Critical — indicates product-market fit problem\n- Implication: Most users don't find value on first use\n\n**ENGAGEMENT VS RETENTION**\n- Retained users: 25% of D1\n- Engaged retained: 8% (use 3+ times/week)\n- Zombie retained: 17% (logged in but barely use)\n\n**RECOMMENDIONS**\n1. *Critical:* Focus on first-time user experience\n2. *Critical:* Identify the 'aha moment' and get users there faster\n3. *High:* Implement re-engagement campaigns for day 2-3 churn\n4. *Note:* Low retention is 'acceptable' for growth-stage consumer apps if acquisition cost is low"
+    }
+  ]
+}

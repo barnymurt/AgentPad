@@ -1,0 +1,21 @@
+{
+  "useWhen": [
+    "You want to understand your competitive landscape",
+    "You're looking for market gaps to exploit",
+    "You're positioning against established players"
+  ],
+  "workflow": [
+    { "step": "Identify Competitors", "description": "List direct and indirect competitors in your space" },
+    { "step": "Analyze Strengths", "description": "Document what each competitor does well" },
+    { "step": "Find Weaknesses", "description": "Identify gaps, gaps, and unmet needs in the market" },
+    { "step": "Identify Gaps", "description": "Spot opportunities where you can differentiate" },
+    { "step": "Recommend Strategy", "description": "Get positioning and differentiation recommendations" }
+  ],
+  "examples": [
+    {
+      "input": "A meditation app for corporate employees to reduce workplace stress",
+      "output": "## Competitor Analysis: Corporate Meditation\n\n### Direct Competitors\n| Company | Strengths | Weaknesses |\n|---------|-----------|------------|\n| Calm | Brand, content library | Not workplace-focused |\n| Headspace | UX, partnerships | Enterprise limited |\n| Insight Timer | Free, community | No B2B |\n\n### Indirect Competitors\n- Employee Assistance Programs (EAPs)\n- Wellness platforms (WellSteps)\n- Yoga studios\n\n### Market Gaps\n1. **Integration with HR systems** - No direct SSO\n2. **Manager dashboard** - No team visibility\n3. **ROI metrics** - Can't prove value to executives\n4. **Compliance** - No security certifications\n\n### Recommendation\nPosition as the **enterprise-first meditation platform** with:\n- SSO/Okta integration\n- Admin dashboard showing team usage\n- ROI calculator showing productivity gains\n- SOC2 certification\n\n**Differentiation:** \"Calm for teams, built for HR.\"",
+      "context": "B2B, HealthTech, Corporate Wellness"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "useWhen": [
+    "Setting up infrastructure with code using Terraform",
+    "Creating reproducible cloud deployments",
+    "Automating infrastructure provisioning",
+    "Managing infrastructure state and modules",
+    "Implementing IaC best practices"
+  ],
+  "workflow": [
+    {
+      "step": "1. Design Infrastructure",
+      "description": "Define requirements, select cloud provider, design architecture"
+    },
+    {
+      "step": "2. Write Code",
+      "description": "Create Terraform/CloudFormation, organize modules, manage state"
+    },
+    {
+      "step": "3. Configure",
+      "description": "Set up networking, security, and resource configurations"
+    },
+    {
+      "step": "4. Test",
+      "description": "Review plan, apply changes, verify resources"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Set up AWS infrastructure for a web application with EC2, RDS, and load balancer using Terraform.",
+      "context": "AWS web app infrastructure",
+      "output": "**TERRAFORM STRUCTURE**\n\n```\nproject/\n├── main.tf\n├── variables.tf\n├── outputs.tf\n├── modules/\n│   ├── vpc/\n│   ├── ec2/\n│   └── rds/\n└── environments/\n    ├── dev/\n    └── prod/\n```\n\n**VPC MODULE**\n\n```hcl\n# modules/vpc/main.tf\nresource \"aws_vpc\" \"main\" {\n  cidr_block           = var.vpc_cidr\n  enable_dns_hostnames = true\n  enable_dns_support  = true\n}\n\nresource \"aws_subnet\" \"public\" {\n  vpc_id                  = aws_vpc.main.id\n  cidr_block              = var.public_subnet_cidr\n  map_public_ip_on_launch = true\n}\n\nresource \"aws_subnet\" \"private\" {\n  vpc_id                  = aws_vpc.main.id\n  cidr_block              = var.private_subnet_cidr\n}\n```\n\n**MAIN CONFIGURATION**\n\n```hcl\n# main.tf\nmodule \"vpc\" {\n  source = \"./modules/vpc\"\n  \n  vpc_cidr           = \"10.0.0.0/16\"\n  public_subnet_cidr = \"10.0.1.0/24\"\n  private_subnet_cidr = \"10.0.2.0/24\"\n}\n\nmodule \"ec2\" {\n  source = \"./modules/ec2\"\n  \n  instance_type = \"t3.medium\"\n  subnet_id    = module.vpc.public_subnet_id\n}\n\nmodule \"rds\" {\n  source = \"./modules/rds\"\n  \n  db_name     = \"webapp\"\n  instance_class = \"db.t3.micro\"\n  subnet_ids  = [module.vpc.private_subnet_id]\n}\n```\n\n**WORKFLOW**\n\n```bash\n# Development\ncd environments/dev\nterraform init\nterraform plan    # Review changes\nterraform apply   # Apply to dev\n\n# Production\ncd environments/prod\nterraform plan -var-file=prod.tfvars\nterraform apply -var-file=prod.tfvars\n```"
+    },
+    {
+      "input": "Create Kubernetes infrastructure on GCP with GKE, Cloud SQL, and networking using Terraform.",
+      "context": "GCP GKE infrastructure",
+      "output": "**TERRAFORM STRUCTURE**\n\n```hcl\n# GKE cluster\nresource \"google_container_cluster\" \"primary\" {\n  name     = \"${var.project}-cluster\"\n  location = var.region\n  \n  remove_default_node_pool = true\n  initial_node_count       = 1\n  \n  node_pool {\n    name       = \"default-pool\"\n    node_count = 3\n    \n    machine_type = \"e2-medium\"\n    \n    autoscaling {\n      min_node_count = 1\n      max_node_count = 5\n    }\n  }\n}\n\n# Node pool for workloads\nresource \"google_container_node_pool\" \"workloads\" {\n  name       = \"workload-pool\"\n  cluster    = google_container_cluster.primary.name\n  location   = var.region\n  \n  node_count = 2\n  \n  node_config {\n    machine_type = \"e2-highmem-4\"\n    \n    labels = {\n      workload = \"memory-intensive\"\n    }\n  }\n}\n\n# Cloud SQL\nresource \"google_sql_database_instance\" \"postgres\" {\n  name             = \"postgres-instance\"\n  database_version = \"POSTGRES_14\"\n  region           = var.region\n  \n  settings {\n    tier = \"db-f1-micro\"\n    \n    ip_configuration {\n      private_network = google_compute_network.vpc.self_link\n    }\n  }\n}\n\n# VPC\nresource \"google_compute_network\" \"vpc\" {\n  name                    = \"${var.project}-vpc\"\n  auto_create_subnetworks = false\n}\n\nresource \"google_compute_subnetwork\" \"subnet\" {\n  name          = \"${var.project}-subnet\"\n  region        = var.region\n  network       = google_compute_network.vpc.id\n  ip_cidr_range = \"10.0.0.0/24\"\n}\n```\n\n**STATE MANAGEMENT**\n\n```hcl\n# backend.tf\nterraform {\n  backend \"gcs\" {\n    bucket = \"tf-state-project\"\n    prefix = \"gke-production\"\n  }\n}\n```\n\n**SECURITY**\n\n```hcl\n# Enable private nodes\nprivate_cluster_config {\n  enable_private_nodes    = true\n  enable_private_endpoint = true\n}\n\n# Workload identity\n workload_metadata_config {\n   mode = \"GKE_METADATA\"\n }\n```"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "useWhen": [
+    "Regular product health assessment (monthly/quarterly)",
+    "After major releases to assess impact",
+    "When metrics seem off or declining",
+    "Preparing for investor updates",
+    "Making strategic product decisions"
+  ],
+  "workflow": [
+    {
+      "step": "1. Gather Data",
+      "description": "Collect data across all health dimensions: user engagement, product-market fit, technical health, business health, competitive position"
+    },
+    {
+      "step": "2. Assess Each Dimension",
+      "description": "Rate each dimension: Green (healthy), Yellow (watch), Red (critical)"
+    },
+    {
+      "step": "3. Identify Risks",
+      "description": "Document risks with likelihood, impact, and potential mitigation"
+    },
+    {
+      "step": "4. Recommend Actions",
+      "description": "For each issue identified, recommend specific actions to address"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Conduct a monthly product health check",
+      "output": "Health check report with status ratings, risks identified, and recommended actions for each dimension",
+      "context": "Regular monthly assessment of product performance"
+    },
+    {
+      "input": "Our retention dropped 20% - help assess product health",
+      "output": "Focused health assessment identifying root causes and recommended fixes for retention decline",
+      "context": "Addressing concerning metric trends"
+    }
+  ]
+}

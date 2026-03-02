@@ -1,0 +1,21 @@
+{
+  "useWhen": [
+    "You need to set prices for your product",
+    "You're launching or repositioning",
+    "You want to maximize revenue"
+  ],
+  "workflow": [
+    { "step": "Analyze Value", "description": "Understand what customers are willing to pay" },
+    { "step": "Research Competitors", "description": "See what the market charges" },
+    { "step": "Define Tiers", "description": "Create pricing structure and packages" },
+    { "step": "Set Prices", "description": "Determine exact amounts" },
+    { "step": "Test", "description": "Validate with A/B tests or surveys" }
+  ],
+  "examples": [
+    {
+      "input": "A B2B SaaS project management tool with free, basic, and pro plans",
+      "output": "## Pricing Strategy: Project Management SaaS\n\n### Value-Based Pricing\n\n**Customer Value:**\n- Save 5 hours/week on project management\n- Average hourly rate: $50\n- Weekly value: $250/month\n- Should capture 10-20% = $25-50/month\n\n---\n\n### Competitor Research\n\n| Competitor | Price | Features |\n|-----------|-------|----------|\n| Asana | $24.99/user | Full-featured |\n| Monday | $19/user | Visual, good UX |\n| Trello | $17.50/user | Kanban focus |\n| Notion | $10/user | All-in-one |\n\n**Insight:** Market ranges $10-25/user. We need differentiation.\n\n---\n\n### Pricing Tiers\n\n| Feature | Free | Basic | Pro |\n|---------|------|-------|------|\n| Price | $0 | $15/user | $35/user |\n| Users | 3 | Unlimited | Unlimited |\n| Projects | 3 | Unlimited | Unlimited |\n| Storage | 500MB | 10GB | Unlimited |\n| Features | Basic | + Gantt + Timeline | + AI + Priority |\n| Support | Community | Email | Priority |\n\n---\n\n### Psychology Tactics\n\n- **Anchor:** Show enterprise at $99 to make Pro look cheap\n- **Tier Names:** Free, Basic, Pro (not Starter, Standard, Plus)\n- **Annual Discount:** 20% off (standard in market)\n- **Free Trial:** 14 days (enough to see value)\n\n\n---\n\n### Projected Revenue\n\n| Year | Users | ARPU | MRR |\n|------|-------|------|-----|\n| 1 | 1,000 | $25 | $25,000 |\n| 2 | 5,000 | $28 | $140,000 |\n| 3 | 15,000 | $30 | $450,000 |\n\n---\n\n### Test Plan\n\n1. Survey: \"Is $35/month fair?\" with alternatives\n2. A/B test: $35 vs $39 to find optimal\n3. Survey: Feature preferences for tier differentiation",
+      "context": "B2B SaaS, Pricing"
+    }
+  ]
+}

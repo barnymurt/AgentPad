@@ -1,0 +1,39 @@
+{
+  "useWhen": [
+    "Planning paid acquisition campaigns",
+    "Selecting advertising channels for your product",
+    "Setting up Google Ads, Meta, or LinkedIn campaigns",
+    "Allocating paid marketing budget",
+    "Creating ad creative requirements"
+  ],
+  "workflow": [
+    {
+      "step": "1. Select Channels",
+      "description": "Evaluate channels based on audience, match channels to target users"
+    },
+    {
+      "step": "2. Define Campaigns",
+      "description": "Set campaign objectives, audience targeting, budget allocation"
+    },
+    {
+      "step": "3. Creative Requirements",
+      "description": "Define ad formats, copy guidelines, creative brief"
+    },
+    {
+      "step": "4. Setup Plan",
+      "description": "Plan platform setup, tracking, and attribution"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Plan paid acquisition for a B2B SaaS product targeting enterprise companies.",
+      "context": "B2B SaaS, enterprise focus, $20K/month budget",
+      "output": "**CHANNEL SELECTION**\n\n| Channel | Fit | Priority |\n|---------|-----|----------|\n| LinkedIn | High - enterprise targeting | Primary |\n| Google Ads | Medium - intent keywords | Secondary |\n| Meta | Low - consumer focus | Skip |\n\n**CAMPAIGN STRUCTURE**\n\n| Campaign | Objective | Audience | Budget |\n|---------|-----------|----------|--------|\n| LinkedIn - Decision Makers | Leads | CTOs, VPs Engineering | $10K |\n| LinkedIn - Companies | Leads | Enterprise companies | $5K |\n| Google - Brand | Brand | Branded keywords | $2K |\n| Google - Intent | Leads | Problem keywords | $3K |\n\n**CREATIVE REQUIREMENTS**\n\n*LinkedIn Ads:*\n- Sponsored Content: 1200x627 images\n- Carousel: 5 cards, 1080x1080\n- Text ads: 25 char headline, 75 char description\n- Copy: Focus on ROI, efficiency\n\n*Google Ads:*\n- Search: 30 char headlines, 90 char descriptions\n- Display: Multiple sizes\n- Remarketing: Custom audiences\n\n**TRACKING SETUP**\n- UTM parameters on all URLs\n- Conversion tracking: Form submits, demo requests\n- Attribution: First-touch + last-touch\n\n**BUDGET ALLOCATION**\n\n| Channel | Monthly Budget | Target CPA |\n|---------|-----------------|------------|\n| LinkedIn | $15,000 | < $500 |\n| Google | $5,000 | < $300 |"
+    },
+    {
+      "input": "Plan paid acquisition for a consumer mobile app. Budget is $10K/month.",
+      "context": "Consumer app, $10K/month budget",
+      "output": "**CHANNEL SELECTION**\n\n| Channel | Fit | Priority |\n|---------|-----|----------|\n| Meta (FB/IG) | High - broad audience | Primary |\n| Google UAC | High - app installs | Primary |\n| TikTok | Medium - younger audience | Test |\n| Apple Search | High - high intent | Secondary |\n\n**CAMPAIGN STRUCTURE**\n\n| Campaign | Objective | Budget |\n|---------|-----------|--------|\n| Meta - Prospecting | App installs | $4K |\n| Meta - Retargeting | Re-engagement | $1K |\n| Google UAC | App installs | $3K |\n| Apple Search | App installs | $2K |\n\n**CREATIVE REQUIREMENTS**\n\n*Meta:*\n- Video: 15s, vertical (9:16)\n- Images: 1080x1080, 1200x628\n- Playables: Interactive ads\n- Hook in first 2 seconds\n\n*Google UAC:*\n- App screenshots: Multiple orientations\n- Video: 30s, highlight features\n- Store listing: Optimize ASO\n\n**CREATIVE IDEAS**\n- Show the problem the app solves\n- Feature highlights + benefits\n- User testimonials\n- Humor/relatable scenarios\n\n**TRACKING**\n- SKAdNetwork (iOS)\n- MMP: Adjust or AppsFlyer\n- In-app event tracking"
+    }
+  ]
+}

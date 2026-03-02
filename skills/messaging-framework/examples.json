@@ -1,0 +1,43 @@
+{
+  "useWhen": [
+    "Creating messaging framework for your product",
+    "Developing value proposition and positioning",
+    "Creating key messages for different audiences",
+    "Defining product messaging hierarchy",
+    "Writing elevator pitch and descriptions"
+  ],
+  "workflow": [
+    {
+      "step": "1. Understand Product and Market",
+      "description": "Define product, target audience, and competitive context"
+    },
+    {
+      "step": "2. Develop Value Proposition",
+      "description": "Identify jobs-to-be-done, quantify value, craft value proposition"
+    },
+    {
+      "step": "3. Create Positioning Statement",
+      "description": "Write formal positioning statement template"
+    },
+    {
+      "step": "4. Develop Key Messages",
+      "description": "Create messages for elevator pitch, short/long descriptions, audience-specific"
+    },
+    {
+      "step": "5. Build Message Hierarchy",
+      "description": "Organize primary, secondary messages, proof points, objection responses"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Create messaging for a project management tool that helps remote teams collaborate.",
+      "context": "Project management SaaS for remote teams",
+      "output": "**VALUE PROPOSITION**\n\nFor remote teams who struggle with context switching and scattered conversations, TaskFlow is a collaboration tool that consolidates all team communication in one place. Unlike traditional project managers that separate tasks from discussions, TaskFlow integrates chat, files, and tasks so teams stay aligned without switching apps.\n\n**POSITIONING STATEMENT**\n\nFor remote teams who need to stay aligned, TaskFlow is a collaboration platform that combines tasks, chat, and files. Unlike Asana or Monday that require separate apps for communication, TaskFlow keeps everything in one place, reducing context switching and improving team alignment.\n\n**KEY MESSAGES**\n\n*Elevator Pitch (30 sec):*\nTaskFlow helps remote teams stay aligned by combining tasks, chat, and files in one app — so you stop switching between Slack, Asana, and Google Docs.\n\n*Short Description (2 min):*\nTaskFlow is a collaboration platform designed for remote teams. We combine tasks, chat, and file sharing in one place, so teams can discuss work while working on it. The result? Less context switching, faster decisions, and better alignment.\n\n*Long Description:*\nTaskFlow brings your team's work and conversations together. Instead of discussing tasks in Slack, creating tasks in Asana, and sharing files in Google Drive, everything happens in TaskFlow. Discuss a task right where it's assigned. Share files in the context of the project. Make decisions where the work lives.\n\n**MESSAGES BY AUDIENCE**\n\n*For Team Leads:*\n\"TaskFlow gives me visibility into what my team is working on without constant status meetings. I can see progress, spot blockers, and help unstick my team — all from one dashboard.\"\n\n*For Developers:*\n\"TaskFlow keeps my code reviews, tasks, and discussions in one place. I don't lose context switching between GitHub and Slack anymore.\"\n\n*For Executives:*\n\"TaskFlow improves team productivity by 25% by eliminating context switching. Our remote team makes decisions faster because everything lives where the work lives.\"\n\n**PROOF POINTS**\n- 25% reduction in meetings\n- 3+ hours saved per person per week\n- 4.8/5 rating on G2\n- Used by 500+ remote teams"
+    },
+    {
+      "input": "Create messaging for an AI writing assistant that helps marketers create content faster.",
+      "context": "AI writing tool for marketers",
+      "output": "**VALUE PROPOSITION**\n\nFor marketing teams who spend too much time on first drafts, WriteAI is an AI assistant that generates marketing content in minutes, not hours. Unlike generic AI tools that produce generic output, WriteAI is trained on high-performing marketing copy, so you get on-brand content ready to refine.\n\n\n**POSITIONING STATEMENT**\n\nFor marketers who need to produce high-quality content at scale, WriteAI is an AI writing assistant trained on proven marketing frameworks. Unlike ChatGPT or Jasper that require extensive prompting, WriteAI understands marketing contexts and produces on-brand copy you can use immediately.\n\n**KEY MESSAGES**\n\n*Elevator Pitch:*\nWriteAI helps marketers create content 10x faster by generating on-brand copy in minutes — from email sequences to social posts.\n\n*For Social Media Managers:*\n\"WriteAI creates months of social content in hours. Our AI understands your brand voice and generates posts that sound like you — ready to post or refine.\"\n\n*For Content Marketers:*\n\"WriteAI cuts our content production time by 80%. Blog posts that took all day now take an hour — and the quality is just as good.\"\n\n**PROOF POINTS**\n- 10x faster content creation\n- 80% time savings\n- 50+ content templates\n- 10,000+ marketers use WriteAI"
+    }
+  ]
+}

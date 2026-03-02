@@ -1,0 +1,21 @@
+{
+  "useWhen": [
+    "You need to create user stories from requirements",
+    "You're starting development and need to break down work",
+    "You want to ensure everyone understands what to build"
+  ],
+  "workflow": [
+    { "step": "Gather Input", "description": "Collect requirements and acceptance criteria" },
+    { "step": "Identify Actors", "description": "Who is taking action in this story?" },
+    { "step": "Define Action", "description": "What does the user want to accomplish?" },
+    { "step": "Add Criteria", "description": "Write measurable acceptance criteria" },
+    { "step": "Refine", "description": "Break down if too large, add details" }
+  ],
+  "examples": [
+    {
+      "input": "A feature where users can reset their password via email",
+      "output": "## User Story: Password Reset\n\n### Story\nAs a **registered user**, I want to **reset my password via email**, so that **I can regain access to my account if I forget my password**.\n\n---\n\n### Acceptance Criteria\n\n**Happy Path**\n- [ ] User clicks \"Forgot Password\" link\n- [ ] User enters email address\n- [ ] System validates email exists\n- [ ] System sends reset link to email\n- [ ] User clicks reset link\n- [ ] User enters new password\n- [ ] System validates password meets requirements\n- [ ] System updates password\n- [ ] User can log in with new password\n\n**Edge Cases**\n- [ ] Email not found - show \"no account\" message\n- [ ] Expired link - show \"link expired\" message\n- [ ] Invalid password - show requirements\n- [ ] Email fails to send - show error\n\n**Technical Notes**\n- Reset link expires in 1 hour\n- Password requires: 8+ chars, 1 uppercase, 1 number\n- Rate limit: 3 requests per hour",
+      "context": "B2B SaaS, Authentication"
+    }
+  ]
+}

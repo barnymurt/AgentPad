@@ -1,0 +1,20 @@
+{
+  "useWhen": [
+    "You want to know who has power or interest in your project",
+    "You need to manage stakeholders effectively",
+    "You're starting a new initiative"
+  ],
+  "workflow": [
+    { "step": "Identify Stakeholders", "description": "List everyone affected by or influencing the project" },
+    { "step": "Analyze", "description": "Map their power, interest, and attitude" },
+    { "step": "Categorize", "description": "Place them on the power/interest grid" },
+    { "step": "Plan Engagement", "description": "Determine how to manage each group" }
+  ],
+  "examples": [
+    {
+      "input": "Launching a new feature that changes pricing - stakeholders include finance, sales, customer success, and customers",
+      "output": "## Stakeholder Analysis: Pricing Change\n\n### Stakeholder Map\n\n| Stakeholder | Power | Interest | Attitude | Strategy |\n|------------|-------|----------|----------|----------|\n| CFO | High | High | Supportive | Keep informed |\n| VP Sales | High | High | Concerned | Manage closely |\n| CS Lead | Medium | High | Worried | Keep satisfied |\n| Customers | Low | High | Unknown | Monitor |\n| Board | High | Medium | Unknown | Keep informed |\n\n---\n\n### Power/Interest Grid\n\n**High Power, High Interest (Manage Closely)**\n- CFO, VP Sales\n\n**High Power, Low Interest (Keep Satisfied)**\n- Board\n\n**Low Power, High Interest (Keep Informed)**\n- Customers, CS Lead\n\n---\n\n### Engagement Plan\n\n**CFO:**\n- Weekly updates on financial impact\n- Present ROI projections\n\n**VP Sales:**\n- Early briefing on changes\n- FAQ for customer questions\n- Input on rollout timing\n\n**CS Lead:**\n- Training on new pricing\n- Escalation process\n- Talking points for customer calls\n\n---\n\n### Communication Plan\n\n| Message | Audience | Channel | Frequency |\n|---------|----------|---------|----------|\n| Pricing update | All customers | Email | Once |\n| Training | CS team | Zoom | 2x before launch |\n| Strategy alignment | Execs | Meeting | Weekly |\n\n---\n\n### Risks & Mitigations\n\n| Risk | Mitigation |\n|------|------------|\n| Sales resistance | Bonus for hitting targets during transition |\n| Customer churn | 30-day grace period |\n| Board concern | Pro forma financial impact |",
+      "context": "B2B SaaS, Change Management"
+    }
+  ]
+}

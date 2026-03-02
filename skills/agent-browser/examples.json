@@ -1,0 +1,39 @@
+{
+  "useWhen": [
+    "Need to interact with websites programmatically",
+    "Filling forms, clicking buttons, automating browser tasks",
+    "Taking screenshots or extracting data from web pages",
+    "Testing web applications",
+    "Login to sites or browser automation tasks"
+  ],
+  "workflow": [
+    {
+      "step": "1. Navigate",
+      "description": "Open target URL using agent-browser open <url>"
+    },
+    {
+      "step": "2. Snapshot",
+      "description": "Get interactive element refs using agent-browser snapshot -i"
+    },
+    {
+      "step": "3. Interact",
+      "description": "Use element refs (@e1, @e2) to click, fill, select"
+    },
+    {
+      "step": "4. Re-snapshot",
+      "description": "After navigation or DOM changes, get fresh refs for continued interaction"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Login to github.com and check repository settings",
+      "output": "Automated browser session with credential authentication, navigation, and page interaction",
+      "context": "Need to access and interact with authenticated web application"
+    },
+    {
+      "input": "Scrape product data from an e-commerce site",
+      "output": "Extracted product information with screenshots and structured data output",
+      "context": "Data extraction from dynamic web pages"
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "useWhen": [
+    "Setting up analytics for product launch",
+    "Defining launch success metrics",
+    "Planning what to track during launch",
+    "Creating launch dashboards and reporting",
+    "Measuring launch performance"
+  ],
+  "workflow": [
+    {
+      "step": "1. Define Launch Goals",
+      "description": "Determine what success looks like: revenue targets, user acquisition, engagement goals"
+    },
+    {
+      "step": "2. Identify Key Metrics",
+      "description": "Define primary (North Star), secondary (supporting), and guardrail metrics"
+    },
+    {
+      "step": "3. Plan Tracking",
+      "description": "Select tools, define events to track, set attribution model"
+    },
+    {
+      "step": "4. Design Dashboard",
+      "description": "Plan what to show, who sees what, update frequency"
+    },
+    {
+      "step": "5. Define Reporting",
+      "description": "Determine who needs reports, how often, what format"
+    }
+  ],
+  "examples": [
+    {
+      "input": "Set up analytics for a B2B SaaS launch targeting 500 new customers in 3 months.",
+      "context": "B2B SaaS launch, revenue-focused",
+      "output": "**LAUNCH GOALS**\n\n| Goal | Target | Timeline |\n|------|--------|----------|\n| New customers | 500 | 3 months |\n| Revenue | $50K MRR | 3 months |\n| Activation rate | 40% | End of launch |\n\n**KEY METRICS**\n\n| Type | Metric | Target |\n|------|--------|--------|\n| Primary | Customers acquired | 500 |\n| Primary | Revenue | $50K MRR |\n| Secondary | CAC | < $500 |\n| Secondary | Activation rate | 40% |\n| Guardrail | Churn | < 5%/month |\n| Guardrail | Support tickets | < 50/day |\n\n**TRACKING PLAN**\n\n| Event | Description | Tool |\n|-------|-------------|------|\n| signup_complete | User completes signup | Segment |\n| account_created | Account is created | Segment |\n| feature_used | User uses key feature | Segment |\n| upgrade | User upgrades plan | Stripe + Segment |\n| churned | Customer cancels | Stripe |\n\n**DASHBOARD DESIGN**\n\n*Daily View:*\n- Signups (real-time)\n- Revenue (daily)\n- Active trials\n\n*Weekly View:*\n- Conversion funnel\n- Top acquisition channels\n- Activation rate trend\n\n**REPORTING**\n\n| Stakeholder | Frequency | Content |\n|------------|-----------|---------|\n| Exec team | Weekly | Revenue, customers, KPIs |\n| Product | Daily | Activation, usage |\n| Marketing | Weekly | Channels, CAC |\n| Sales | Weekly | Pipeline, conversions |"
+    },
+    {
+      "input": "Plan analytics for a consumer mobile app launch with 100K downloads target.",
+      "context": "Consumer app launch, downloads focus",
+      "output": "**LAUNCH GOALS**\n\n| Goal | Target | Timeline |\n|------|--------|----------|\n| Downloads | 100K | 1 month |\n| DAU | 20K | 1 month |\n| Day-7 retention | 25% | End of launch |\n\n**KEY METRICS**\n\n| Type | Metric | Target |\n|------|--------|--------|\n| Primary | Downloads | 100K |\n| Primary | DAU | 20K |\n| Secondary | D1 retention | 40% |\n| Secondary | D7 retention | 25% |\n| Guardrail | Crash rate | < 1% |\n| Guardrail | Uninstall day-7 | < 30% |\n\n**TRACKING PLAN**\n\n| Event | Description | Tool |\n|-------|-------------|------|\n| app_open | App launched | Firebase |\n| onboarding_complete | Finished onboarding | Firebase |\n| first_action | Did key action | Firebase |\n| purchase | Made IAP | Firebase + Store |\n\n**ATTRIBUTION**\n\n- Track install source via Adjust\n- Attribution windows: 7-day click, 1-day view\n- Exclude organic from paid metrics\n\n**DASHBOARD**\n\n*Daily:*\n- Downloads by source\n- Crash rate\n- DAU/MAU\n\n*Weekly:*\n- Retention curves\n- Cohort analysis\n- Revenue per user"
+    }
+  ]
+}
