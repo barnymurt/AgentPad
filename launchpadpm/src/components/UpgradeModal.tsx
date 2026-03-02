@@ -4,9 +4,10 @@ import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 
 export default function UpgradeModal() {
-  const { data: session, update } = useSession();
+  const { data: session, update, status } = useSession();
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const handleOpen = () => setIsOpen(true);
@@ -15,24 +16,35 @@ export default function UpgradeModal() {
   }, []);
 
   const handleUpgrade = async () => {
+    if (!session?.user?.id) {
+      setError('You must be logged in to upgrade');
+      return;
+    }
+    
     setLoading(true);
+    setError(null);
     try {
       const res = await fetch('/api/auth-api', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           action: 'update-tier',
-          userId: session?.user?.id,
+          userId: session.user.id,
           tier: 'premium',
         }),
       });
 
+      const data = await res.json();
+      
       if (res.ok) {
         await update({ tier: 'premium' });
         setIsOpen(false);
+      } else {
+        setError(data.error || 'Upgrade failed');
       }
     } catch (err) {
       console.error('Upgrade failed:', err);
+      setError('An error occurred during upgrade');
     } finally {
       setLoading(false);
     }
@@ -178,6 +190,11 @@ export default function UpgradeModal() {
             </ul>
             {currentTier !== 'premium' && currentTier !== 'admin' && (
               <>
+                {error && (
+                  <div className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg mb-3">
+                    <p className="text-xs text-red-800 dark:text-red-200">{error}</p>
+                  </div>
+                )}
                 <div className="p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg mb-3">
                   <p className="text-xs text-yellow-800 dark:text-yellow-200">
                     <strong>Demo Mode:</strong> Click to instantly upgrade. No payment required.
@@ -185,7 +202,7 @@ export default function UpgradeModal() {
                 </div>
                 <button
                   onClick={handleUpgrade}
-                  disabled={loading}
+                  disabled={loading || status === 'loading'}
                   className="w-full px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 font-medium disabled:opacity-50"
                 >
                   {loading ? 'Processing...' : 'Upgrade to Premium'}

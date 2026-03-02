@@ -22,6 +22,7 @@ export async function GET(
       id: job.id,
       skillId: job.skillId,
       status: job.status,
+      input: job.input,
       output: job.output,
       error: job.error,
       createdAt: job.createdAt,

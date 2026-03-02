@@ -9,10 +9,110 @@
       "location": "https://docs.google.com/spreadsheets/d/1bYDgWbErAnuSyTaPNOM4Wsk-BjVciFSZ5p3LGIeVnkE/edit?usp=sharing",
       "squads": [],
       "created_at": "2026-02-25T17:27:45.473Z"
+    },
+    {
+      "id": "ds_1772455896746",
+      "name": "Test Spreadsheet",
+      "type": "spreadsheet",
+      "location": "https://docs.google.com/spreadsheets/d/test",
+      "squads": [],
+      "created_at": "2026-03-02T12:51:36.746Z"
+    },
+    {
+      "id": "ds_1772455917045",
+      "name": "Test API",
+      "type": "api",
+      "location": "https://api.example.com/v1/data",
+      "squads": [],
+      "auth": {
+        "type": "apiKey",
+        "apiKey": "test-api-key-123"
+      },
+      "created_at": "2026-03-02T12:51:57.045Z"
+    },
+    {
+      "id": "ds_1772466683383",
+      "name": "Test Spreadsheet",
+      "type": "spreadsheet",
+      "location": "https://docs.google.com/spreadsheets/d/test",
+      "squads": [],
+      "created_at": "2026-03-02T15:51:23.383Z"
+    },
+    {
+      "id": "ds_1772466683399",
+      "name": "Test API",
+      "type": "api",
+      "location": "https://api.example.com/v1/data",
+      "squads": [],
+      "auth": {
+        "type": "apiKey",
+        "apiKey": "test-api-key-123"
+      },
+      "created_at": "2026-03-02T15:51:23.399Z"
+    },
+    {
+      "id": "ds_1772466792291",
+      "name": "Test Spreadsheet 1772466791358",
+      "type": "spreadsheet",
+      "location": "https://docs.google.com/spreadsheets/d/test",
+      "squads": [],
+      "created_at": "2026-03-02T15:53:12.291Z"
+    },
+    {
+      "id": "ds_1772466792560",
+      "name": "Test API 1772466791703",
+      "type": "api",
+      "location": "https://api.example.com/v1/data",
+      "squads": [],
+      "auth": {
+        "type": "apiKey",
+        "apiKey": "test-api-key-123"
+      },
+      "created_at": "2026-03-02T15:53:12.560Z"
+    },
+    {
+      "id": "ds_1772466856625",
+      "name": "Test Spreadsheet 1772466854924",
+      "type": "spreadsheet",
+      "location": "https://docs.google.com/spreadsheets/d/test",
+      "squads": [],
+      "created_at": "2026-03-02T15:54:16.626Z"
+    },
+    {
+      "id": "ds_1772466856686",
+      "name": "Test API 1772466855025",
+      "type": "api",
+      "location": "https://api.example.com/v1/data",
+      "squads": [],
+      "auth": {
+        "type": "apiKey",
+        "apiKey": "test-api-key-123"
+      },
+      "created_at": "2026-03-02T15:54:16.686Z"
+    },
+    {
+      "id": "ds_1772466979886",
+      "name": "Test Spreadsheet 1772466978311",
+      "type": "spreadsheet",
+      "location": "https://docs.google.com/spreadsheets/d/test",
+      "squads": [],
+      "created_at": "2026-03-02T15:56:19.886Z"
+    },
+    {
+      "id": "ds_1772466980037",
+      "name": "Test API 1772466978410",
+      "type": "api",
+      "location": "https://api.example.com/v1/data",
+      "squads": [],
+      "auth": {
+        "type": "apiKey",
+        "apiKey": "test-api-key-123"
+      },
+      "created_at": "2026-03-02T15:56:20.037Z"
     }
   ],
   "metadata": {
     "created_at": null,
-    "updated_at": "2026-02-25T17:27:45.473Z"
+    "updated_at": "2026-03-02T15:56:20.037Z"
   }
 }

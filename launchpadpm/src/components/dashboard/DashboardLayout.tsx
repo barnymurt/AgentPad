@@ -159,22 +159,22 @@ export default function DashboardLayout({ children, squads: initialSquads }: Das
 
   const textColor = darkMode ? 'text-white' : 'text-gray-900';
   const mutedColor = darkMode ? 'text-gray-400' : 'text-gray-600';
-  const cardBg = darkMode ? 'bg-[#1a1a2e]' : 'bg-white';
+  const cardBg = darkMode ? 'bg-[#1a1a2e]' : 'bg-[#F9FAFB]';
   const cardBorder = darkMode ? 'border-[#2a2a3e]' : 'border-gray-200';
   const inputBg = darkMode ? 'bg-[#0f0f1a]' : 'bg-gray-100';
   const inputBorder = darkMode ? 'border-[#2a2a3e]' : 'border-gray-300';
-  const modalBg = darkMode ? 'bg-[#1a1a2e]' : 'bg-white';
+  const modalBg = darkMode ? 'bg-[#1a1a2e]' : 'bg-[#F9FAFB]';
 
   if (loading) {
     return (
-      <div className={`min-h-screen ${darkMode ? 'bg-[#0f0f1a]' : 'bg-gray-50'} flex items-center justify-center`}>
+      <div className={`min-h-screen ${darkMode ? 'bg-[#0f0f1a]' : 'bg-[#F9FAFB]'} flex items-center justify-center`}>
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
       </div>
     );
   }
 
   return (
-    <div className={`min-h-screen ${darkMode ? 'bg-[#0f0f1a]' : 'bg-gray-50'}`}>
+    <div className={`min-h-screen ${darkMode ? 'bg-[#0f0f1a]' : 'bg-[#F9FAFB]'}`}>
       <DashboardSidebar 
         squads={squads} 
         currentPath="/dashboard"
@@ -241,7 +241,7 @@ export default function DashboardLayout({ children, squads: initialSquads }: Das
             
             {/* New Project Option */}
             {!project && (
-              <div className="mt-4 pt-4 border-t border-[#2a2a3e]">
+              <div className={`mt-4 pt-4 border-t ${cardBorder}`}>
                 <button
                   onClick={() => setShowNewProject(!showNewProject)}
                   className={`text-sm ${mutedColor} hover:text-blue-500 transition-colors`}

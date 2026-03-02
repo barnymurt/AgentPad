@@ -29,12 +29,25 @@ export async function GET(
     const content = fs.readFileSync(skillMdPath, 'utf-8');
     const metadata = parseFrontmatter(content);
     
+    // Try to load examples.json
+    let examples = null;
+    const examplesPath = path.join(skillDir, 'examples.json');
+    if (fs.existsSync(examplesPath)) {
+      try {
+        const examplesContent = fs.readFileSync(examplesPath, 'utf-8');
+        examples = JSON.parse(examplesContent);
+      } catch (e) {
+        console.error('Error loading examples:', e);
+      }
+    }
+    
     return NextResponse.json({
       id: skillId,
       name: metadata.name || skillId,
       description: metadata.description || '',
       content,
       isMvp: mvpSkills.includes(skillId),
+      examples,
     });
   } catch (error) {
     console.error('Error loading skill:', error);

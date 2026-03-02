@@ -604,19 +604,51 @@ def execute_single_skill(skill_name: str, user_input: str, answers: dict) -> dic
     """Execute a single skill and return its output"""
     skill = load_skill_prompt(skill_name)
     
-    # Check if we have context
-    has_context = False
+    # Check if we have context from validation pack answers
+    has_validation_context = False
     context_block = ""
     
     if isinstance(answers, dict) and answers:
-        has_context = True
+        has_validation_context = True
         context_block = f"USER'S ANSWERS TO DEVIL'S ADVOCATE QUESTIONS (THIS IS THE CONTEXT - USE THIS):\n{json.dumps(answers, indent=2)}\n"
     elif isinstance(answers, str) and answers.strip():
-        has_context = True
+        has_validation_context = True
         context_block = f"ADDITIONAL CONTEXT FROM VALIDATION/RESEARCH:\n{answers}\n"
     
-    # If no context, ask skill-specific questions
-    if not has_context:
+    # Use user_input as context if provided - this is the user's actual request
+    user_context = ""
+    if user_input and user_input.strip() and not user_input.startswith("Generate "):
+        user_context = f"USER'S REQUEST/INPUT:\n{user_input}\n\n"
+    
+    # If no validation context but user provided input, use that as context
+    if not has_validation_context and user_context:
+        context = f"""
+{user_context}
+
+Apply the {skill['name'].replace('-', ' ')} framework to create a tailored output based on the user's request above.
+Use the skill guidelines from the system prompt to produce high-quality, specific output.
+"""
+        result = call_minimax(
+            context,
+            f"You are a {skill['name'].replace('-', ' ')} expert. {skill.get('description', '')}\n\n{skill.get('system_prompt', '')[:2000]}",
+            max_tokens=3000
+        )
+        
+        if result:
+            import re
+            result = re.sub(r'<think>.*?</think>', '', result, flags=re.DOTALL)
+            result = re.sub(r'```markdown\n?', '', result)
+            result = re.sub(r'```\n?', '', result)
+            result = '\n'.join(line for line in result.split('\n') if line.strip())
+        
+        return {
+            'skill': skill_name,
+            'output': result if result else f"[{skill['name']} - LLM call failed]",
+            'success': bool(result)
+        }
+    
+    # If still no context, ask clarifying questions
+    if not has_validation_context:
         clarifying_questions = SKILL_QUESTIONS.get(skill_name, SKILL_QUESTIONS['default'])
         return {
             'skill': skill_name,

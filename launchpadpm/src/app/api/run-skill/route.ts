@@ -302,6 +302,10 @@ async function executeSkillAsync(jobId: string, skillId: string, input: string, 
   
   const pythonProcess = spawn('python', args, {
     cwd: executionDir,
+    env: {
+      ...process.env,
+      MINIMAX_API_KEY: process.env.MINIMAX_API_KEY,
+    },
     timeout: 120000,
   });
   

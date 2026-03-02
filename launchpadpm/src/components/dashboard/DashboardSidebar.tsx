@@ -18,11 +18,11 @@ interface SidebarProps {
 const squadCategories = [
   {
     name: 'Discovery Phase',
-    squads: ['discovery', 'research']
+    squads: ['discovery', 'research', 'product']
   },
   {
     name: 'Build Phase',
-    squads: ['product', 'design', 'technical', 'qa', 'security']
+    squads: ['design', 'technical', 'qa', 'security']
   },
   {
     name: 'Launch Phase',

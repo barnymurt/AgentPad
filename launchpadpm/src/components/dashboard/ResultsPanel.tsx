@@ -83,7 +83,7 @@ export default function ResultsPanel({ results = defaultResults, darkMode = true
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [isExpanded, setIsExpanded] = useState(true);
 
-  const cardBg = darkMode ? 'bg-[#1a1a2e]' : 'bg-white';
+  const cardBg = darkMode ? 'bg-[#1a1a2e]' : 'bg-[#F9FAFB]';
   const cardBorder = darkMode ? 'border-[#2a2a3e]' : 'border-gray-200';
   const titleColor = darkMode ? 'text-white' : 'text-gray-900';
   const mutedColor = darkMode ? 'text-gray-400' : 'text-gray-600';
