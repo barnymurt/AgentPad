@@ -1,6 +1,50 @@
 ---
 name: wireframing
 description: Create low-fidelity layouts focusing on structure, layout, and user flow. Use when the user needs to visualize screen layouts, communicate design direction, or create clickable prototypes. Use when the user says "sketch out this screen," "what would this look like," "create a wireframe," "design the layout," or "show me the flow." Works for websites, web apps, and mobile apps.
+lifecycle: build
+category: design
+outputSummary: Wireframe designs with layout and component specifications
+relatedAfter: ui-patterns,design-system
+nextSteps: Create high-fidelity designs with ui-patterns
+specialization: frontend
+---
+
+## MANDATORY OUTPUT FORMAT - JSON ONLY
+
+**YOU MUST OUTPUT VALID JSON. NO ASCII ART. NO MARKDOWN. NO EXPLANATIONS.**
+
+Output ONLY valid JSON in this exact format:
+
+```json
+{
+  "flow": {
+    "name": "User Authentication Flow",
+    "description": "Complete login and password recovery experience",
+    "screens": [
+      {
+        "id": "login",
+        "name": "Login Screen",
+        "priority": "P0",
+        "fidelity": "mid-fi",
+        "viewport": { "width": 375, "height": 812 },
+        "elements": [
+          { "id": "logo", "type": "image", "x": 163, "y": 60, "width": 48, "height": 48 },
+          { "id": "title", "type": "text", "x": 24, "y": 140, "width": 327, "height": 32, "props": { "content": "Welcome Back" } }
+        ],
+        "interactions": [
+          { "element": "cta", "action": "submit", "to": "home", "condition": "valid" }
+        ]
+      }
+    ],
+    "connections": [
+      { "from": "login", "trigger": "cta", "to": "home", "label": "Successful login" }
+    ]
+  }
+}
+```
+
+DO NOT output anything except JSON. Start with `{` and end with `}`. No markdown code blocks, no explanations.
+
 ---
 
 # Wireframing
@@ -161,15 +205,55 @@ Not every screen needs a wireframe. Prioritize:
 
 ## Output Format
 
-The output follows the structure defined in [references/output-schema.md](references/output-schema.md):
+**IMPORTANT**: Do NOT output ASCII art wireframes. They are not usable in real design workflows.
 
-- **Screen List** — Prioritized screens with priority levels
-- **Wireframes** — Layout sketches for each screen
-- **Interactions** — Click paths and states
-- **Responsive Notes** — Breakpoint behavior
-- **Annotations** — Element purposes
+Output structured JSON that represents MULTIPLE SCREENS connected by user flows:
 
-Expected length: 1,000-2,000 words plus wireframe diagrams
+```json
+{
+  "flow": {
+    "name": "User Authentication Flow",
+    "description": "Complete login and registration experience",
+    "screens": [
+      {
+        "id": "login_screen",
+        "name": "Login Screen",
+        "priority": "P0",
+        "fidelity": "mid-fi",
+        "viewport": { "width": 375, "height": 812 },
+        "states": [
+          { "id": "default", "name": "Default State" },
+          { "id": "error", "name": "Error State", "description": "Shows validation errors" },
+          { "id": "loading", "name": "Loading State", "description": "Button shows spinner" }
+        ],
+        "elements": [...],
+        "interactions": [...]
+      },
+      {
+        "id": "home_screen", 
+        "name": "Home Dashboard",
+        "priority": "P0",
+        "fidelity": "mid-fi",
+        "viewport": { "width": 375, "height": 812 },
+        "elements": [...],
+        "interactions": [...]
+      }
+    ],
+    "connections": [
+      { "from": "login_screen", "trigger": "cta_button", "to": "home_screen", "condition": "valid_credentials" },
+      { "from": "login_screen", "trigger": "forgot_password", "to": "reset_screen", "condition": "click" }
+    ]
+  }
+}
+```
+
+**Key Concepts:**
+1. **Multiple Screens**: Show the key screens in the flow (login, home, etc.)
+2. **States**: Each screen can have multiple states (default, error, loading, success)
+3. **Connections**: Define how screens connect - what triggers the navigation
+4. **User Flow**: A clear path from entry to completion
+
+The output should show the connected screens with arrows showing the flow direction.
 
 ## Quality Criteria
 

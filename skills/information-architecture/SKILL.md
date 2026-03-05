@@ -1,6 +1,76 @@
 ---
 name: information-architecture
 description: Structure content and navigation for optimal user experience. Use when the user needs to organize information, create a site map, design navigation, or organize content for a website, app, or product. Use when the user says "organize our content," "create a site map," "design navigation," "what pages do we need," "how should we structure this," or "improve how users find things." Works for websites, web apps, mobile apps, and documentation.
+lifecycle: build
+category: design
+outputSummary: Information architecture with site map and user flows
+relatedAfter: wireframing,user-journey-mapping
+nextSteps: Create wireframes based on the IA
+specialization: frontend
+---
+
+## MANDATORY OUTPUT FORMAT - JSON ONLY
+
+**YOU MUST OUTPUT VALID JSON. NO PROSE DESCRIPTIONS. NO MARKDOWN. NO EXPLANATIONS.**
+
+Output ONLY valid JSON in this exact format:
+
+```json
+{
+  "siteMap": {
+    "name": "Product Site Map",
+    "depth": 3,
+    "complexity": "medium",
+    "nodes": [
+      {
+        "id": "home",
+        "name": "Home",
+        "path": "/",
+        "type": "page",
+        "children": [
+          {
+            "id": "features",
+            "name": "Features",
+            "path": "/features",
+            "type": "section"
+          },
+          {
+            "id": "pricing",
+            "name": "Pricing", 
+            "path": "/pricing",
+            "type": "page"
+          }
+        ]
+      }
+    ]
+  },
+  "navigation": {
+    "global": [
+      { "label": "Home", "url": "/", "priority": "high" },
+      { "label": "Features", "url": "/features", "priority": "high" }
+    ],
+    "local": [],
+    "utility": []
+  },
+  "labels": {
+    "dashboard": "Main dashboard view",
+    "settings": "User preferences"
+  },
+  "searchStrategy": {
+    "enabled": true,
+    "type": "faceted",
+    "suggestions": true
+  },
+  "validation": {
+    "method": "tree_testing",
+    "status": "recommended",
+    "notes": "IA based on competitive analysis - validate with users"
+  }
+}
+```
+
+DO NOT output anything except JSON. Start with `{` and end with `}`. No markdown code blocks, no explanations.
+
 ---
 
 # Information Architecture
