@@ -1,0 +1,112 @@
+{
+  "research_metadata": {
+    "created": "2026-03-06",
+    "total_skills_analyzed": 83,
+    "total_mcps_identified": 57,
+    "squads_covered": 12
+  },
+  "priority_mcps": {
+    "phase_1": [
+      {"id": "notion", "skills_using": 61, "priority": 1},
+      {"id": "google_sheets", "skills_using": 24, "priority": 1},
+      {"id": "miro", "skills_using": 14, "priority": 1},
+      {"id": "figma", "skills_using": 12, "priority": 1},
+      {"id": "linear", "skills_using": 10, "priority": 2},
+      {"id": "github", "skills_using": 8, "priority": 2}
+    ],
+    "phase_2": [
+      {"id": "vercel", "skills_using": 4, "priority": 3},
+      {"id": "drawsql", "skills_using": 4, "priority": 3},
+      {"id": "metabase", "skills_using": 7, "priority": 3},
+      {"id": "jira", "skills_using": 8, "priority": 3}
+    ],
+    "phase_3": [
+      {"id": "hubspot", "skills_using": 2, "priority": 4},
+      {"id": "stripe", "skills_using": 2, "priority": 4},
+      {"id": "aws", "skills_using": 2, "priority": 4},
+      {"id": "netlify", "skills_using": 4, "priority": 4}
+    ]
+  },
+  "implementation_phases": {
+    "phase_1_mvp": {
+      "timeline": "Weeks 1-4",
+      "target_skills": [
+        "validation-pack",
+        "requirements-elicitation",
+        "user-persona-creation",
+        "competitor-research",
+        "business-case-modeling",
+        "feature-prioritization",
+        "user-journey-mapping"
+      ],
+      "mcps_to_build": ["notion", "google_sheets"],
+      "templates_needed": 8
+    },
+    "phase_2_design": {
+      "timeline": "Weeks 5-8",
+      "target_skills": [
+        "wireframing",
+        "ui-patterns",
+        "information-architecture",
+        "design-system"
+      ],
+      "mcps_to_build": ["figma", "miro"],
+      "templates_needed": 6
+    },
+    "phase_3_technical": {
+      "timeline": "Weeks 9-12",
+      "target_skills": [
+        "architecture-design",
+        "schema-design",
+        "api-design",
+        "ci-cd-pipeline"
+      ],
+      "mcps_to_build": ["github", "vercel"],
+      "templates_needed": 5
+    },
+    "phase_4_gtm": {
+      "timeline": "Weeks 13-16",
+      "target_skills": [
+        "launch-planning",
+        "pricing-strategy",
+        "content-strategy",
+        "seo-foundation"
+      ],
+      "mcps_to_build": ["notion", "google_sheets"],
+      "templates_needed": 4
+    }
+  },
+  "real_world_competitors": {
+    "design": [
+      {"name": "v0", "url": "https://v0.dev", "differentiator": "Agentic UI generation with deployment"},
+      {"name": "bolt.new", "url": "https://bolt.new", "differentiator": "Full-stack in browser"},
+      {"name": "Uizard", "url": "https://uizard.io", "differentiator": "Sketch to wireframe"},
+      {"name": "Framer", "url": "https://framer.com", "differentiator": "Design to production"}
+    ],
+    "technical": [
+      {"name": "Cursor", "url": "https://cursor.sh", "differentiator": "AI-first code editor"},
+      {"name": "Cline", "url": "https://cline.dev", "differentiator": "Autonomous coding agent"},
+      {"name": "Windsurf", "url": "https://windsurf.ai", "differentiator": "Agentic coding"}
+    ],
+    "pm": [
+      {"name": "ClickUp AI", "url": "https://clickup.com/features/ai", "differentiator": "AI in PM tool"},
+      {"name": "Linear", "url": "https://linear.app", "differentiator": "Issue tracking with AI"}
+    ]
+  },
+  "error_handling": {
+    "common_errors": [
+      {"error": "auth_failure", "recovery": "prompt_user_reconnect"},
+      {"error": "rate_limit", "recovery": "exponential_backoff"},
+      {"error": "timeout", "recovery": "retry_3x_then_degrade"},
+      {"error": "template_missing", "recovery": "fallback_to_default"},
+      {"error": "invalid_input", "recovery": "clear_error_message"}
+    ]
+  },
+  "quality_standards": {
+    "validation_pack": ["completeness", "actionability", "feasibility", "clarity"],
+    "wireframes": ["wcag_compliance", "mobile_responsive", "consistency", "usability"],
+    "business_case": ["financial_accuracy", "realism", "scenario_analysis", "unit_economics"],
+    "personas": ["realism", "differentiation", "actionability", "research_based"],
+    "requirements": ["testability", "traceability", "clarity", "completeness"]
+  }
+}
