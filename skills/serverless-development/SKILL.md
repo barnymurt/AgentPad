@@ -1,6 +1,12 @@
 ---
 name: serverless-development
 description: Build serverless applications. Use when using Lambda, Cloud Functions, or want serverless patterns. Covers functions, triggers, and serverless architecture.
+lifecycle: build
+category: engineering
+outputSummary: Serverless architecture design with Lambda function specs
+relatedAfter: ml-llm-integration,edge-computing
+nextSteps: Deploy serverless functions
+specialization: backend
 ---
 
 # Serverless Development

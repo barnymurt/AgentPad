@@ -1,6 +1,11 @@
 ---
 name: accessibility-review
 description: Ensure WCAG compliance. Use when you need accessible UI, want to meet compliance, or need accessibility audit. Covers WCAG guidelines, testing, and remediation.
+lifecycle: build
+category: design
+outputSummary: Accessibility audit with WCAG compliance checklist and remediation recommendations
+nextSteps: Address issues in your design with ui-patterns and wireframing
+specialization: frontend
 ---
 
 # Accessibility Review

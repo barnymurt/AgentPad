@@ -1,6 +1,12 @@
 ---
 name: product-vision
 description: Define clear product vision, mission, and positioning for your product. Use when the user needs to articulate what their product stands for, who it's for, and why it matters. Helps translate abstract ideas into clear, actionable statements that guide product decisions. Includes real-world examples from successful companies and tools to test if your vision is strong.
+lifecycle: discovery
+category: product
+relatedBefore: []
+relatedAfter: competitor-research,user-persona-creation,roadmap-planning
+outputSummary: Product vision statement, mission statement, core values, and market positioning document with examples from successful companies
+nextSteps: Run competitor-research to understand your market position, then user-persona-creation to define your target users
 ---
 
 # Product Vision

@@ -1,6 +1,11 @@
 ---
 name: survey-design
 description: Create structured quantitative surveys for customer validation, feedback collection, or market research. Use when the user needs to measure attitudes, gather feedback, validate assumptions, or collect data at scale. Use when the user says "create a survey," "write survey questions," "measure customer satisfaction," "collect feedback at scale," or "what questions should I ask in my survey." Produces research-quality surveys with proper question types, bias prevention, and analysis planning.
+lifecycle: build
+category: research
+outputSummary: User survey design with questions and sampling strategy
+relatedAfter: feedback-synthesis,cohort-analysis
+nextSteps: Conduct surveys and synthesize feedback
 ---
 
 # Survey Design

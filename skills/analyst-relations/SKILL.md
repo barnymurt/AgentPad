@@ -1,6 +1,11 @@
 ---
 name: analyst-relations
 description: Plan analyst relations for B2B. Use when the user wants analyst coverage, needs G2/Capterra presence, or asks about analyst strategy. Covers analyst identification, briefing strategy, review management, and coverage planning.
+lifecycle: launch
+category: growth
+outputSummary: Analyst engagement strategy and briefing materials
+relatedAfter: content-strategy,pr-strategy
+nextSteps: Execute analyst briefings and build relationships
 ---
 
 # Analyst Relations

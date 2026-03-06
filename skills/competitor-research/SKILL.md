@@ -1,6 +1,12 @@
 ---
 name: competitor-research
 description: Map and analyze the competitive landscape for a SaaS or digital product. Use when the user asks to analyze competitors, understand the competitive landscape, compare their product to alternatives, identify market gaps, or evaluate competitive positioning. Covers direct competitors, indirect alternatives, pricing analysis, feature comparison, and strategic positioning.
+lifecycle: discovery
+category: research
+relatedBefore: product-vision
+relatedAfter: pricing-strategy,messaging-framework
+outputSummary: Competitive landscape map with feature comparisons, pricing analysis, market gaps, and positioning recommendations
+nextSteps: Use competitive insights to inform your pricing-strategy and develop your unique messaging-framework
 ---
 
 # Competitor Research

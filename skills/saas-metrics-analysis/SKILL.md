@@ -1,6 +1,11 @@
 ---
 name: saas-metrics-analysis
 description: Analyze and interpret SaaS business metrics to diagnose health, identify root causes, and recommend prioritized actions. Use when the user asks to analyze their metrics, interpret MRR/ARR/churn data, diagnose business health, benchmark against industry standards, understand why a metric is trending, investigate metric relationships, or asks "how is my SaaS doing?" Covers health scoring, AARRR funnel analysis, cohort analysis, metric relationship mapping, benchmarking by stage, and root cause diagnosis.
+lifecycle: iterate
+category: research
+outputSummary: SaaS metrics analysis with MRR, churn, and LTV insights
+relatedAfter: kpi-tracking,cohort-analysis
+nextSteps: Use insights to improve metrics with kpi-tracking
 ---
 
 # SaaS Metrics Analysis

@@ -1,6 +1,13 @@
 ---
 name: usability-test-planning
 description: Design usability tests to evaluate if users can complete tasks effectively. Use when the user needs to conduct usability testing, evaluate a design or prototype, or assess how easily users can complete key tasks. Use when the user says "plan a usability test," "test this design," "how do we test usability," "what tasks should we test," or "usability test protocol." Creates test plans with tasks, scenarios, metrics, and facilitation guidance.
+lifecycle: build
+category: research
+relatedBefore: wireframing,user-persona-creation
+relatedAfter: feedback-synthesis,heuristic-evaluation
+outputSummary: Usability test plan with tasks, scenarios, success metrics, and facilitation script
+nextSteps: Conduct tests, then synthesize findings with feedback-synthesis and compare with heuristic-evaluation
+specialization: qa
 ---
 
 # Usability Test Planning

@@ -1,6 +1,11 @@
 ---
 name: technical-readiness-pack
 description: Chains 7 security/architecture skills into a technical readiness deliverable. Use when user wants to validate technical architecture — produces READY/NEEDS WORK/REDESIGN recommendation with threat model, compliance roadmap, and risk register.
+lifecycle: build
+category: engineering
+outputSummary: Technical readiness checklist with architecture sign-off
+relatedAfter: release-management,security-architecture-review
+nextSteps: Achieve technical readiness for launch
 ---
 
 # Technical Readiness Pack

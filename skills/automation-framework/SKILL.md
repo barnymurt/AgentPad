@@ -1,6 +1,12 @@
 ---
 name: automation-framework
 description: Build test automation. Use when automating tests, need E2E or integration tests, or want CI integration. Covers framework setup, test structure, and CI integration.
+lifecycle: build
+category: engineering
+outputSummary: Test automation framework setup with test scripts and CI/CD integration
+relatedAfter: ci-cd-pipeline,tdd
+nextSteps: Run automated tests in your ci-cd-pipeline
+specialization: qa
 ---
 
 # Automation Framework

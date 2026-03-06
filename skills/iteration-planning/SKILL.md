@@ -1,6 +1,11 @@
 ---
 name: iteration-planning
 description: Plan the next product iteration based on metrics, user feedback, and learnings. Use when the user needs to decide what to build next, prioritize backlog, or plan the next release. Includes guidance for early-stage products without metrics and real-world examples from successful companies.
+lifecycle: build
+category: product
+outputSummary: Sprint planning document with story point estimates and velocity
+relatedAfter: release-management,kpi-tracking
+nextSteps: Execute sprints and track progress with kpi-tracking
 ---
 
 # Iteration Planning
@@ -65,6 +70,11 @@ Use the prioritization framework in references.
 
 What must be true for this iteration to be successful?
 
+lifecycle: build
+category: product
+outputSummary: Sprint planning document with story point estimates and velocity
+relatedAfter: release-management,kpi-tracking
+nextSteps: Execute sprints and track progress with kpi-tracking
 ---
 
 ## Two Paths: With Data vs. Without Data
@@ -84,6 +94,11 @@ If you don't have metrics yet, focus on qualitative prioritization:
 
 This is valid and often more reliable in early stages.
 
+lifecycle: build
+category: product
+outputSummary: Sprint planning document with story point estimates and velocity
+relatedAfter: release-management,kpi-tracking
+nextSteps: Execute sprints and track progress with kpi-tracking
 ---
 
 ## Output Format
@@ -123,6 +138,11 @@ Result: [Outcome]
 
 What must be true for iteration success
 
+lifecycle: build
+category: product
+outputSummary: Sprint planning document with story point estimates and velocity
+relatedAfter: release-management,kpi-tracking
+nextSteps: Execute sprints and track progress with kpi-tracking
 ---
 
 ## Reference Files
@@ -131,6 +151,11 @@ What must be true for iteration success
 - [references/examples.md](references/examples.md) - Real-world iteration examples
 - [references/metrics-guide.md](references/metrics-guide.md) - What metrics matter at each stage
 
+lifecycle: build
+category: product
+outputSummary: Sprint planning document with story point estimates and velocity
+relatedAfter: release-management,kpi-tracking
+nextSteps: Execute sprints and track progress with kpi-tracking
 ---
 
 ## Related Skills

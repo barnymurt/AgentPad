@@ -1,6 +1,12 @@
 ---
 name: infrastructure-as-code
 description: Define infrastructure with code. Use when setting up cloud, need reproducible infrastructure, or want infrastructure automation. Covers Terraform, CloudFormation, and IaC patterns.
+lifecycle: build
+category: engineering
+outputSummary: Infrastructure as code scripts with Terraform/CloudFormation configurations
+relatedAfter: ci-cd-pipeline,cloud-platforms
+nextSteps: Deploy infrastructure and set up ci-cd-pipeline
+specialization: backend
 ---
 
 # Infrastructure as Code

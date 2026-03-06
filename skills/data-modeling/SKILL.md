@@ -1,6 +1,12 @@
 ---
 name: data-modeling
 description: Define entity relationships and data structure. Use when you need to design how data relates, want to create an ERD, need to plan entities and attributes, or are building new features requiring data structure. Covers entity identification, relationships, attributes, and data flow.
+lifecycle: build
+category: engineering
+outputSummary: Database schema design with tables, relationships, and indexes
+relatedAfter: migration-planning,schema-design
+nextSteps: Implement database with schema-design and migration-planning
+specialization: backend
 ---
 
 # Data Modeling

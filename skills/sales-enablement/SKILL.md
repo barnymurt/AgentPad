@@ -1,6 +1,11 @@
 ---
 name: sales-enablement
 description: Create materials to support sales team. Use when the user needs sales collateral, wants battlecards, pitch decks, or asks how to enable a sales team. Covers pitch deck, battlecards, demo script, FAQ, and competitive comparisons.
+lifecycle: launch
+category: growth
+outputSummary: Sales enablement materials with pitch deck and battle cards
+relatedAfter: messaging-framework,channel-strategy
+nextSteps: Equip sales team and track performance
 ---
 
 # Sales Enablement

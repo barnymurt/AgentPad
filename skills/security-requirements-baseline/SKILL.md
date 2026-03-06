@@ -1,6 +1,12 @@
 ---
 name: security-requirements-baseline
 description: Define the minimum security posture for a SaaS product at launch. Use when the user asks what security measures they need, what security requirements to implement before launching, what the minimum security bar is, or how to secure their application for production. Covers authentication standards, encryption requirements, input validation, logging, dependency management, and infrastructure hardening — prioritized as "must have at launch" vs "add within 6 months."
+lifecycle: build
+category: engineering
+outputSummary: Security requirements document with compliance checklist
+relatedAfter: security-architecture-review,threat-modeling
+nextSteps: Implement security requirements
+specialization: fullstack
 ---
 
 # Security Requirements Baseline
@@ -37,6 +43,12 @@ Use the appropriate template for your product type:
 | **Fintech** | PCI-DSS, transaction security, fraud prevention, SOC 2 |
 | **Startup MVP** | Core essentials: auth, encryption, input validation |
 
+lifecycle: build
+category: engineering
+outputSummary: Security requirements document with compliance checklist
+relatedAfter: security-architecture-review,threat-modeling
+nextSteps: Implement security requirements
+specialization: fullstack
 ---
 
 Before defining requirements, understand what you're securing:
@@ -115,6 +127,12 @@ For each category, produce specific, actionable requirements (not "use encryptio
 - Incident response plan
 - Vendor security assessments
 
+lifecycle: build
+category: engineering
+outputSummary: Security requirements document with compliance checklist
+relatedAfter: security-architecture-review,threat-modeling
+nextSteps: Implement security requirements
+specialization: fullstack
 ---
 
 Classify each requirement into one of three tiers:

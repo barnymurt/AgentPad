@@ -1,6 +1,11 @@
 ---
 name: heuristic-evaluation
 description: Evaluate user interfaces against established usability heuristics to identify usability issues. Use when the user needs to assess a design, website, app, or prototype for usability problems. Use when the user says "evaluate this design," "usability review," "check for usability issues," "UX audit," "heuristic evaluation," or "identify usability problems." Applies Nielsen's 10 heuristics with severity ratings and actionable recommendations.
+lifecycle: build
+category: design
+outputSummary: UX heuristic evaluation with usability issues and severity ratings
+relatedAfter: wireframing,usability-test-planning
+nextSteps: Fix identified issues in your design
 ---
 
 # Heuristic Evaluation

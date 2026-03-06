@@ -1,6 +1,11 @@
 ---
 name: Scrum Master
 description: Use when coordinating ongoing work across multiple skills and removing blockers. Use when skills need to collaborate on a shared goal. Use when workflow impediments arise and need resolution. Use when optimizing how skills work together. Not for time-based planning or human sprint ceremonies.
+lifecycle: build
+category: product
+outputSummary: Scrum ceremonies facilitation guide and team health recommendations
+relatedAfter: delivery-manager,iteration-planning
+nextSteps: Facilitate delivery with delivery-manager
 ---
 
 # Scrum Master

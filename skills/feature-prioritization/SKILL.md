@@ -1,6 +1,12 @@
 ---
 name: feature-prioritization
 description: Score and rank product features or ideas using structured prioritization frameworks. Use when the user asks to prioritize a feature backlog, decide what to build next, rank features by impact, compare feature ideas, or apply RICE/ICE/weighted scoring to a list of features or product ideas. Covers framework selection, multi-criteria scoring, ranking, and actionable build recommendations for SaaS and digital products.
+lifecycle: build
+category: product
+relatedBefore: requirements-elicitation,user-persona-creation
+relatedAfter: user-story-generation,iteration-planning
+outputSummary: Ranked feature backlog with ICE/RICE scores, build tiers (must-have, should-have, nice-to-have), and confidence ratings
+nextSteps: Use the ranked backlog to generate user stories with user-story-generation, then plan sprints with iteration-planning
 ---
 
 # Feature Prioritization

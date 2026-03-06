@@ -1,6 +1,10 @@
 ---
 name: user-journey-mapping
 description: Map the end-to-end user experience across a SaaS product lifecycle. Use when the user asks to map user journeys, understand user experience flows, identify friction points, map the customer lifecycle, optimize onboarding, find drop-off points, or asks "what does the user experience look like?" Covers multi-stage journey mapping from awareness through advocacy with emotion tracking, pain point scoring, and opportunity prioritization.
+lifecycle: discovery
+category: research
+outputSummary: User journey maps with touchpoints and pain points
+nextSteps: Design improvements based on journey insights
 ---
 
 # User Journey Mapping

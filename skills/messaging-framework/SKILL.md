@@ -1,6 +1,12 @@
 ---
 name: messaging-framework
 description: Create a messaging framework with value proposition, positioning, and key messages. Use when the user needs to define what to say about their product, wants to create a positioning statement, needs help with value proposition, or asks how to message their product to different audiences. Covers value proposition development, positioning statement, key messages by audience, and messaging hierarchy.
+lifecycle: build
+category: product
+relatedBefore: product-vision,competitor-research
+relatedAfter: launch-planning,content-strategy
+outputSummary: Messaging framework with value proposition, positioning statement, and key messages by audience
+nextSteps: Use messaging for launch-planning and content-strategy to communicate with your audience
 ---
 
 # Messaging Framework
@@ -47,7 +53,7 @@ Craft the core message that drives all other messaging:
    - Who [has this problem/job]
    - [Product name] is a [category]
    - That [key benefit]
-   - Unlike [competitor/d替代]
+   - Unlike [competitor/alternative]
    - Our product [main differentiation]
 
 ### Step 3: Create Positioning Statement

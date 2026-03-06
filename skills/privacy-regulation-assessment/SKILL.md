@@ -1,6 +1,12 @@
 ---
 name: privacy-regulation-assessment
 description: Determine which privacy regulations apply to a SaaS product and assess compliance. Use when the user asks about privacy compliance, GDPR, CCPA, data regulations, privacy policy, what regulations apply, compliance requirements, data protection obligations, or how to handle user data legally. Covers multi-regulation triage, per-regulation compliance assessment, gap analysis, remediation roadmap, and privacy policy generation.
+lifecycle: build
+category: engineering
+outputSummary: Privacy compliance assessment with GDPR/CCPA requirements
+relatedAfter: data-protection-assessment,security-architecture-review
+nextSteps: Implement compliance measures
+specialization: fullstack
 ---
 
 # Privacy Regulation Assessment
@@ -82,6 +88,12 @@ For each regulation, record: Applies (Yes/No/Partial), Confidence (High/Medium/L
 | HIPAA | 60 days | HHS + individuals | Up to $1.5M/violation |
 | State laws | 30-60 days | Affected individuals | Varies |
 
+lifecycle: build
+category: engineering
+outputSummary: Privacy compliance assessment with GDPR/CCPA requirements
+relatedAfter: data-protection-assessment,security-architecture-review
+nextSteps: Implement compliance measures
+specialization: fullstack
 ---
 
 ### Step 3: Per-Regulation Compliance Assessment
@@ -149,6 +161,12 @@ Produce a complete privacy policy tailored to the product's actual data practice
 | Data inventory | Maintain current list of data processed |
 | Breach response | Document incident response procedures |
 
+lifecycle: build
+category: engineering
+outputSummary: Privacy compliance assessment with GDPR/CCPA requirements
+relatedAfter: data-protection-assessment,security-architecture-review
+nextSteps: Implement compliance measures
+specialization: fullstack
 ---
 
 ## Output Format

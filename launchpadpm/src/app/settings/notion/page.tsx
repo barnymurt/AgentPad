@@ -12,7 +12,7 @@ interface NotionConnection {
 
 export default function NotionSettings() {
   const router = useRouter();
-  const { darkMode } = useAppLayout();
+  const { isDarkMode } = useAppLayout();
   const [connection, setConnection] = useState<NotionConnection>({
     connected: false,
     configured: false
@@ -26,11 +26,11 @@ export default function NotionSettings() {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
-  const bgColor = darkMode ? 'bg-[#1a1a2e]' : 'bg-[#F9FAFB]';
-  const borderColor = darkMode ? 'border-[#2a2a3e]' : 'border-gray-200';
-  const textColor = darkMode ? 'text-white' : 'text-gray-900';
-  const mutedColor = darkMode ? 'text-gray-400' : 'text-gray-600';
-  const cardBg = darkMode ? 'bg-[#0f0f1a]' : 'bg-white';
+  const bgColor = isDarkMode ? 'bg-[#1a1a2e]' : 'bg-[#F9FAFB]';
+  const borderColor = isDarkMode ? 'border-[#2a2a3e]' : 'border-gray-200';
+  const textColor = isDarkMode ? 'text-white' : 'text-gray-900';
+  const mutedColor = isDarkMode ? 'text-gray-400' : 'text-gray-600';
+  const cardBg = isDarkMode ? 'bg-[#0f0f1a]' : 'bg-white';
 
   useEffect(() => {
     checkConnection();
@@ -284,7 +284,7 @@ export default function NotionSettings() {
                 </div>
                 <button
                   onClick={handleConnect}
-                  className="w-full px-4 py-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-lg hover:bg-gray-800 dark:hover:bg-gray-100 font-medium transition-colors flex items-center justify-center gap-2"
+                  className="w-full px-4 py-3 bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 font-medium transition-colors flex items-center justify-center gap-2"
                 >
                   <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none">
                     <path d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L17.86 1.968c-.42-.326-.98-.7-2.055-.607L3.01 2.295c-.466.046-.56.28-.374.466zm.793 3.08v13.904c0 .747.373 1.027 1.214.98l14.523-.84c.84-.046.933-.56.933-1.167V6.354c0-.606-.233-.933-.746-.886l-15.177.887c-.56.047-.747.327-.747.933z" fill="currentColor"/>

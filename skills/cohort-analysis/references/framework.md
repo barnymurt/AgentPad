@@ -288,7 +288,7 @@ When comparing cohorts of different sizes:
 
 ### Cohort Retention Heatmap
 
-Classic表格 showing retention by cohort over time:
+Classic table showing retention by cohort over time:
 
 | Cohort | Size | M0 | M1 | M2 | M3 | M4 |
 |--------|------|----|----|----|----|---|

@@ -1,6 +1,11 @@
 ---
 name: ticket-refinement
 description: PM + Dev + QA collaboration. Use when refining tickets/stories, need three perspectives, or want better tickets. Covers story writing, acceptance criteria, and refinement sessions.
+lifecycle: build
+category: product
+outputSummary: Refined user stories with acceptance criteria and point estimates
+relatedAfter: iteration-planning,release-management
+nextSteps: Ready stories for sprint planning
 ---
 
 # Ticket Refinement (3 Amigos)

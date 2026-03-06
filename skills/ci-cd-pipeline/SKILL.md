@@ -1,6 +1,12 @@
 ---
 name: ci-cd-pipeline
 description: Build CI/CD pipelines. Use when automating builds, need deployment automation, or want continuous delivery. Covers GitHub Actions, GitLab CI, and deployment strategies.
+lifecycle: build
+category: engineering
+outputSummary: CI/CD pipeline configuration with build, test, and deployment scripts
+relatedAfter: release-management,monitoring-observability
+nextSteps: Deploy your application and set up release-management
+specialization: fullstack
 ---
 
 # CI/CD Pipeline

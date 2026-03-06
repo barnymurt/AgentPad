@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import StyledOutput from './skill/StyledOutput';
 
 interface InstantScorecardProps {
   result: any;
@@ -236,7 +237,7 @@ export default function InstantScorecard({ result, userInput, onEmailCapture, on
                       {skillId.replace(/-/g, ' ')}
                     </h4>
                     <div className="text-sm text-gray-600 dark:text-gray-400 overflow-y-auto">
-                      {skillResult?.output || 'No output'}
+                      <StyledOutput content={skillResult?.output || ''} skillId={skillId} />
                     </div>
                   </div>
                 ))}

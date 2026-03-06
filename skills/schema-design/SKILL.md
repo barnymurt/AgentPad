@@ -1,6 +1,12 @@
 ---
 name: schema-design
 description: Create detailed database schema. Use when you need tables or collections, want to define indexes, constraints, or need to implement data-modeling into database. Covers table design, indexes, constraints, and database-specific features.
+lifecycle: build
+category: engineering
+outputSummary: Database schema design with tables and relationships
+relatedAfter: data-modeling,migration-planning
+nextSteps: Implement database schema
+specialization: backend
 ---
 
 # Schema Design

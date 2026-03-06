@@ -1,6 +1,12 @@
 ---
 name: test-strategy
 description: Define testing strategy. Use when starting a project, need test planning, or want to define coverage targets. Covers testing pyramid, test types, and coverage goals.
+lifecycle: build
+category: engineering
+outputSummary: Test strategy document with testing approach and coverage goals
+relatedAfter: automation-framework,ci-cd-pipeline
+nextSteps: Execute test plan with automation-framework
+specialization: qa
 ---
 
 # Test Strategy

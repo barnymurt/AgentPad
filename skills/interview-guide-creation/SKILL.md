@@ -1,6 +1,11 @@
 ---
 name: interview-guide-creation
 description: Create structured interview scripts for customer discovery, user research, or idea validation. Use when the user needs to conduct user interviews, customer conversations, or discovery sessions. Use when the user says "write interview questions," "create a discussion guide," "prepare for user interviews," "conduct discovery," or "what questions should I ask customers." Produces research-ready interview guides with screener questions, main questions, follow-up probes, and facilitation tips.
+lifecycle: discovery
+category: research
+outputSummary: User interview guide with questions and facilitation tips
+relatedAfter: feedback-synthesis,user-persona-creation
+nextSteps: Conduct interviews and synthesize feedback
 ---
 
 # Interview Guide Creation

@@ -1,6 +1,12 @@
 ---
 name: mobile-ios
 description: Build iOS applications. Use when building iOS apps, need Swift/SwiftUI patterns, or want iOS best practices. Covers UIKit, SwiftUI, patterns, and App Store.
+lifecycle: build
+category: engineering
+outputSummary: iOS app architecture with SwiftUI/UIKit patterns
+relatedAfter: mobile-android,responsive-patterns
+nextSteps: Build and test your iOS app
+specialization: fullstack
 ---
 
 # Mobile iOS

@@ -1,6 +1,11 @@
 ---
 name: ab-test-design
-description: Design statistically rigorous experiments to compare two or more variants. Use when the user needs to "test a hypothesis," "compare设计方案," "run an experiment," "measure impact," or "validate a change." Defines success metrics, calculates sample size requirements, and plans analysis approach for reliable results.
+description: Design statistically rigorous experiments to compare two or more variants. Use when the user needs to "test a hypothesis," "compare design solutions," "run an experiment," "measure impact," or "validate a change." Defines success metrics, calculates sample size requirements, and plans analysis approach for reliable results.
+lifecycle: iterate
+category: research
+outputSummary: A/B test design with hypothesis, variables, sample size calculation, and success metrics
+relatedAfter: cohort-analysis,funnel-analysis
+nextSteps: Analyze results with cohort-analysis and iterate based on findings
 ---
 
 # A/B Test Design

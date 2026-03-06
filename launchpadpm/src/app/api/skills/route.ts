@@ -19,6 +19,9 @@ export async function GET() {
       id: string;
       name: string;
       description: string;
+      lifecycle?: string;
+      category?: string;
+      specialization?: string;
       isMvp: boolean;
     }> = [];
     
@@ -38,6 +41,9 @@ export async function GET() {
               id: entry.name,
               name: metadata.name || entry.name,
               description: metadata.description || '',
+              lifecycle: metadata.lifecycle || 'build',
+              category: metadata.category || 'product',
+              specialization: metadata.specialization || '',
               isMvp: mvpSkills.includes(entry.name),
             });
           }

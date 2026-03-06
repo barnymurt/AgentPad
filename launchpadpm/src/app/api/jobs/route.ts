@@ -47,3 +47,28 @@ export async function GET() {
     return NextResponse.json({ error: 'Failed to load jobs' }, { status: 500 });
   }
 }
+
+export async function DELETE(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+    
+    if (!id) {
+      return NextResponse.json({ error: 'Job ID required' }, { status: 400 });
+    }
+    
+    const db = loadDb();
+    const jobIndex = db.jobs.findIndex((j: Job) => j.id === id);
+    
+    if (jobIndex === -1) {
+      return NextResponse.json({ error: 'Job not found' }, { status: 404 });
+    }
+    
+    db.jobs.splice(jobIndex, 1);
+    fs.writeFileSync(DB_PATH, JSON.stringify(db, null, 2));
+    
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    return NextResponse.json({ error: 'Failed to delete job' }, { status: 500 });
+  }
+}

@@ -1,6 +1,11 @@
 ---
 name: devils-advocate-gtm
 description: Challenge GTM assumptions and identify blind spots. Use when the user wants a GTM review, needs to stress-test launch plans, or asks what's wrong with their launch strategy. Covers assumption challenge, blind spot identification, risk assessment, and recommendation.
+lifecycle: launch
+category: growth
+outputSummary: GTM critique with market risks and positioning concerns
+relatedAfter: channel-strategy,messaging-framework
+nextSteps: Refine your GTM strategy based on identified risks
 ---
 
 # Devil's Advocate (GTM)

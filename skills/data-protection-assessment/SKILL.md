@@ -1,6 +1,12 @@
 ---
 name: data-protection-assessment
 description: Map all data in a SaaS product and assess how it is protected. Use when the user asks about data protection, data inventory, PII exposure, data handling practices, data retention policies, data access controls, data processing mapping, or what data their system collects and where it goes. Covers data inventory, data flow classification, PII lifecycle tracking, access control assessment, retention policy evaluation, and prioritized protection recommendations.
+lifecycle: build
+category: engineering
+outputSummary: Data protection impact assessment with compliance recommendations
+relatedAfter: data-security,privacy-regulation-assessment
+nextSteps: Implement data security measures with data-security
+specialization: fullstack
 ---
 
 # Data Protection Assessment
@@ -61,6 +67,12 @@ Catalog every data type in the system:
 - Least privilege access to keys
 - Never store keys in code
 
+lifecycle: build
+category: engineering
+outputSummary: Data protection impact assessment with compliance recommendations
+relatedAfter: data-security,privacy-regulation-assessment
+nextSteps: Implement data security measures with data-security
+specialization: fullstack
 ---
 
 ### Step 3: Map Data Flows with Classification

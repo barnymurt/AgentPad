@@ -1,6 +1,11 @@
 ---
 name: launch-analytics
 description: Define metrics and tracking for product launch. Use when the user needs to know what to measure, wants to set up launch analytics, asks how to track launch success, or needs a metrics framework. Covers KPI definition, tracking setup, dashboard design, and reporting cadence.
+lifecycle: launch
+category: growth
+outputSummary: Launch analytics setup with key metrics and tracking plan
+relatedAfter: cohort-analysis,funnel-analysis
+nextSteps: Use data to optimize GTM strategy
 ---
 
 # Launch Analytics

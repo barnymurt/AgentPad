@@ -1,6 +1,11 @@
 ---
 name: validation-pack
 description: Chains 7 skills into a complete validation deliverable. Use when user wants to validate a product idea — produces GO/PAUSE/KILL recommendation with competitive analysis, financial model, and MVP scope.
+lifecycle: build
+category: product
+outputSummary: Comprehensive validation report with market and product insights
+relatedAfter: product-vision,feature-prioritization
+nextSteps: Use insights to inform your product strategy
 ---
 
 # Validation Pack

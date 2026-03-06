@@ -1,6 +1,12 @@
 ---
 name: edge-computing
 description: Implement edge computing. Use when building for global distribution, need CDN/edge, or want low latency. Covers edge functions, CDN, and edge architecture.
+lifecycle: build
+category: engineering
+outputSummary: Edge computing architecture with latency optimization
+relatedAfter: serverless-development,performance-tuning
+nextSteps: Deploy edge functions and optimize for latency
+specialization: backend
 ---
 
 # Edge Computing

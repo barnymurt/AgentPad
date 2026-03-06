@@ -1,6 +1,11 @@
 ---
 name: requirements-elicitation
 description: Extract structured functional and non-functional requirements from product ideas, user conversations, and briefs. Use when the user has a product idea, feature description, or project brief and needs it translated into clear, actionable requirements — including user stories, acceptance criteria, constraints, and assumptions. Use when the user says things like "what do I need to build," "write the requirements," "create user stories," "what should the spec include," or "turn this idea into something a developer can build." Covers functional requirements, non-functional requirements, constraints, assumptions, and dependency mapping for SaaS and digital products.
+lifecycle: discovery
+category: research
+outputSummary: Product requirements document with user stories and acceptance criteria
+relatedAfter: feature-prioritization,user-story-generation
+nextSteps: Prioritize requirements with feature-prioritization
 ---
 
 # Requirements Elicitation

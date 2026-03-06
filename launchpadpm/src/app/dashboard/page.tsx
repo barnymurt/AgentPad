@@ -7,8 +7,8 @@ import { AppLayout, useAppLayout } from '@/components/layout/AppLayout';
 import QuickActions from '@/components/dashboard/QuickActions';
 import ActiveProject from '@/components/dashboard/ActiveProject';
 import ActivityFeed from '@/components/dashboard/ActivityFeed';
-import ResultsPanel from '@/components/dashboard/ResultsPanel';
 import UpgradeModal from '@/components/UpgradeModal';
+import SkillSuggestions from '@/components/dashboard/SkillSuggestions';
 
 interface Squad {
   id: string;
@@ -29,6 +29,14 @@ interface Project {
   }[];
 }
 
+interface UserUsage {
+  tier: string;
+  validationsUsed: number;
+  skillsUsed: number;
+  canRunValidation: boolean;
+  canRunSkill: boolean;
+}
+
 const defaultLifecyclePhases = [
   { id: 'discovery', name: 'Discovery', status: 'completed' as const },
   { id: 'research', name: 'Research', status: 'completed' as const },
@@ -45,19 +53,60 @@ const defaultLifecyclePhases = [
 export default function DashboardPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const { darkMode, squads: contextSquads } = useAppLayout();
+  const { isDarkMode, squads: contextSquads } = useAppLayout();
   const [userInput, setUserInput] = useState('');
   const [project, setProject] = useState<Project | null>(null);
   const [showNewProject, setShowNewProject] = useState(false);
   const [newProjectName, setNewProjectName] = useState('');
   const [isValidating, setIsValidating] = useState(false);
   const [showValidateModal, setShowValidateModal] = useState(false);
+  const [userUsage, setUserUsage] = useState<UserUsage | null>(null);
+  const [adminPreviewTier, setAdminPreviewTier] = useState<string | null>(null);
+
+  // Get admin preview tier from localStorage
+  useEffect(() => {
+    const savedPreview = localStorage.getItem('admin-preview-tier');
+    if (savedPreview) {
+      setAdminPreviewTier(savedPreview);
+    }
+    
+    const handlePreviewChange = (e: Event) => {
+      const customEvent = e as CustomEvent;
+      setAdminPreviewTier(customEvent.detail);
+    };
+    window.addEventListener('adminPreviewTierChange', handlePreviewChange);
+    return () => window.removeEventListener('adminPreviewTierChange', handlePreviewChange);
+  }, []);
+
+  const sessionTier = session?.user?.tier as string | undefined;
+  const effectiveTier = adminPreviewTier || sessionTier || 'free';
+  const isAdmin = effectiveTier === 'admin';
+  const isPremium = effectiveTier === 'premium' || isAdmin;
+  const isBobAI = effectiveTier === 'bobai';
+  const isFree = effectiveTier === 'free' && !isAdmin;
 
   useEffect(() => {
     if (status === 'unauthenticated') {
       router.push('/auth/signin');
     }
   }, [status, router]);
+
+  useEffect(() => {
+    if (session?.user) {
+      fetch('/api/auth-api', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'check-usage' }),
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.tier) {
+            setUserUsage(data);
+          }
+        })
+        .catch(console.error);
+    }
+  }, [session]);
 
   useEffect(() => {
     const savedProject = localStorage.getItem('active-project');
@@ -72,6 +121,12 @@ export default function DashboardPage() {
 
   const handleValidate = async () => {
     if (!userInput.trim()) return;
+    
+    if (isFree && userUsage && !userUsage.canRunValidation) {
+      alert('You have reached your monthly validation limit. Upgrade to Premium for unlimited validations.');
+      return;
+    }
+    
     setIsValidating(true);
     setShowValidateModal(true);
     
@@ -106,6 +161,11 @@ export default function DashboardPage() {
   const handleCreateProject = () => {
     if (!newProjectName.trim()) return;
     
+    if (isFree) {
+      alert('Project creation is available for Premium users. Upgrade to create unlimited projects.');
+      return;
+    }
+    
     const newProject: Project = {
       id: Date.now().toString(),
       name: newProjectName.trim(),
@@ -121,16 +181,16 @@ export default function DashboardPage() {
     setNewProjectName('');
   };
 
-  const textColor = darkMode ? 'text-white' : 'text-gray-900';
-  const mutedColor = darkMode ? 'text-gray-400' : 'text-gray-600';
-  const cardBg = darkMode ? 'bg-[#1a1a2e]' : 'bg-[#F9FAFB]';
-  const cardBorder = darkMode ? 'border-[#2a2a3e]' : 'border-gray-200';
-  const inputBg = darkMode ? 'bg-[#0f0f1a]' : 'bg-white';
-  const inputBorder = darkMode ? 'border-[#2a2a3e]' : 'border-gray-300';
-  const modalBg = darkMode ? 'bg-[#1a1a2e]' : 'bg-[#F9FAFB]';
+  const textColor = isDarkMode ? 'text-white' : 'text-gray-900';
+  const mutedColor = isDarkMode ? 'text-gray-400' : 'text-gray-600';
+  const cardBg = isDarkMode ? 'bg-[#1a1a2e]' : 'bg-[#F9FAFB]';
+  const cardBorder = isDarkMode ? 'border-[#2a2a3e]' : 'border-gray-200';
+  const inputBg = isDarkMode ? 'bg-[#0f0f1a]' : 'bg-white';
+  const inputBorder = isDarkMode ? 'border-[#2a2a3e]' : 'border-gray-300';
+  const modalBg = isDarkMode ? 'bg-[#1a1a2e]' : 'bg-[#F9FAFB]';
 
   return (
-    <AppLayout title="Dashboard" key={darkMode ? 'dark' : 'light'}>
+    <AppLayout title="Dashboard">
       <div className="space-y-6">
         {/* Validate Idea Section - AT THE TOP */}
         <div className={`${cardBg} ${cardBorder} rounded-xl border p-6`}>
@@ -163,37 +223,56 @@ export default function DashboardPage() {
             Run AI-powered validation analysis on your idea
           </p>
           
-          {/* New Project Option */}
+          {/* New Project Option - Premium Only */}
           {!project && (
             <div className={`mt-4 pt-4 border-t ${cardBorder}`}>
-              <button
-                onClick={() => setShowNewProject(!showNewProject)}
-                data-testid="start-project-button"
-                className={`text-sm ${mutedColor} hover:text-blue-500 transition-colors`}
-              >
-                Or start a new project instead →
-              </button>
-              
-              {showNewProject && (
-                <div className="mt-3 flex gap-3">
-                  <input
-                    type="text"
-                    value={newProjectName}
-                    onChange={(e) => setNewProjectName(e.target.value)}
-                    placeholder="Project name..."
-                    data-testid="project-name-input"
-                    className={`flex-1 px-4 py-2 rounded-lg border ${inputBorder} ${inputBg} ${textColor} placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500`}
-                    onKeyDown={(e) => e.key === 'Enter' && handleCreateProject()}
-                  />
-                  <button
-                    onClick={handleCreateProject}
-                    disabled={!newProjectName.trim()}
-                    data-testid="create-project-button"
-                    className="px-4 py-2 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 disabled:opacity-50 transition-colors"
-                  >
-                    Create Project
-                  </button>
+              {isFree ? (
+                <div className={`p-3 rounded-lg ${isDarkMode ? 'bg-[#2a2a3e]' : 'bg-gray-100'} border ${isDarkMode ? 'border-[#3a3a4e]' : 'border-gray-200'}`}>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className={`${textColor} text-sm font-medium`}>Create New Project</p>
+                      <p className={`${mutedColor} text-xs`}>Upgrade to Premium to create unlimited projects</p>
+                    </div>
+                    <button
+                      onClick={() => document.dispatchEvent(new CustomEvent('openUpgradeModal'))}
+                      className="px-4 py-2 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
+                    >
+                      Upgrade
+                    </button>
+                  </div>
                 </div>
+              ) : (
+                <>
+                  <button
+                    onClick={() => setShowNewProject(!showNewProject)}
+                    data-testid="start-project-button"
+                    className={`text-sm ${mutedColor} hover:text-blue-500 transition-colors`}
+                  >
+                    Or start a new project instead →
+                  </button>
+                  
+                  {showNewProject && (
+                    <div className="mt-3 flex gap-3">
+                      <input
+                        type="text"
+                        value={newProjectName}
+                        onChange={(e) => setNewProjectName(e.target.value)}
+                        placeholder="Project name..."
+                        data-testid="project-name-input"
+                        className={`flex-1 px-4 py-2 rounded-lg border ${inputBorder} ${inputBg} ${textColor} placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                        onKeyDown={(e) => e.key === 'Enter' && handleCreateProject()}
+                      />
+                      <button
+                        onClick={handleCreateProject}
+                        disabled={!newProjectName.trim()}
+                        data-testid="create-project-button"
+                        className="px-4 py-2 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 disabled:opacity-50 transition-colors"
+                      >
+                        Create Project
+                      </button>
+                    </div>
+                  )}
+                </>
               )}
             </div>
           )}
@@ -205,21 +284,29 @@ export default function DashboardPage() {
           <div className="lg:col-span-2 space-y-6">
             {/* Active Project Card */}
             <ActiveProject 
-              darkMode={darkMode} 
+              darkMode={isDarkMode} 
               project={project}
+              isPremium={isPremium}
+              isBobAI={isBobAI}
             />
-            
-            {/* Results Panel */}
-            <ResultsPanel darkMode={darkMode} />
           </div>
 
           {/* Right Column - 1/3 width */}
           <div className="space-y-6">
             {/* Quick Actions */}
-            <QuickActions darkMode={darkMode} />
+            <QuickActions darkMode={isDarkMode} isPremium={isPremium} />
+            
+            {/* Skill Suggestions */}
+            {isPremium && (
+              <SkillSuggestions
+                darkMode={isDarkMode}
+                isPremium={isPremium}
+                projectDescription={project?.description}
+              />
+            )}
             
             {/* Activity Feed */}
-            <ActivityFeed darkMode={darkMode} />
+            <ActivityFeed darkMode={isDarkMode} />
           </div>
         </div>
       </div>

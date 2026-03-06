@@ -1,6 +1,10 @@
 ---
 name: security-architecture-review
 description: Evaluate a proposed system architecture for security weaknesses and produce a prioritized remediation plan. Use when the user asks to review architecture security, evaluate auth flows, assess API security, check for security weaknesses in a design, audit a system's security posture, or identify vulnerabilities in their architecture. Covers per-component security assessment, authentication flow review, API security evaluation, data handling analysis, third-party dependency risk assessment, and threat-model-linked remediation planning.
+outputSummary: Security architecture review with threat assessment
+relatedAfter: threat-modeling,security-compliance-roadmap
+nextSteps: Implement security measures
+specialization: fullstack
 ---
 
 # Security Architecture Review
@@ -55,6 +59,10 @@ For the identified cloud provider, verify the following controls are properly co
 - Secret Manager: Not in code, rotation enabled
 - VPC: Private Google Access, firewall rules restrictive
 
+outputSummary: Security architecture review with threat assessment
+relatedAfter: threat-modeling,security-compliance-roadmap
+nextSteps: Implement security measures
+specialization: fullstack
 ---
 
 For each user type defined in the architecture, trace the complete auth lifecycle:

@@ -1,6 +1,12 @@
 ---
 name: threat-modeling
 description: Apply STRIDE threat analysis to a proposed system architecture for a SaaS or digital product. Use when the user asks to identify threats, analyze attack vectors, assess security risks, run STRIDE analysis, perform threat modeling, find vulnerabilities in an architecture, or evaluate the security posture of a system design. Covers per-component STRIDE analysis, attack tree construction, risk rating, and prioritized mitigation recommendations.
+lifecycle: build
+category: engineering
+outputSummary: Threat model with security risks and mitigation strategies
+relatedAfter: security-requirements-baseline,data-security
+nextSteps: Implement threat mitigations
+specialization: fullstack
 ---
 
 # Threat Modeling
@@ -32,6 +38,12 @@ If the user cannot provide an architecture design, use a lightweight approach:
    - Recommend full architecture design as follow-up
    - Focus on generic threats that apply regardless of specific architecture
 
+lifecycle: build
+category: engineering
+outputSummary: Threat model with security risks and mitigation strategies
+relatedAfter: security-requirements-baseline,data-security
+nextSteps: Implement threat mitigations
+specialization: fullstack
 ---
 
 Before modeling threats, establish what you're analyzing:

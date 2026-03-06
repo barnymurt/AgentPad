@@ -1,6 +1,11 @@
 ---
 name: paid-acquisition
 description: Plan and execute paid acquisition channels. Use when the user needs to set up paid advertising, wants to plan Google/Facebook/LinkedIn ads, or asks how to allocate paid budget. Covers channel selection, campaign structure, creative requirements, and budget management.
+lifecycle: launch
+category: growth
+outputSummary: Paid acquisition strategy with channel recommendations and budget allocation
+relatedAfter: referral-program,community-building
+nextSteps: Launch campaigns and optimize based on ROI
 ---
 
 # Paid Acquisition

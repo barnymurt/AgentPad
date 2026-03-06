@@ -15,7 +15,7 @@ interface DataSource {
 
 export default function DataSourcesPage() {
   const router = useRouter();
-  const { darkMode } = useAppLayout();
+  const { isDarkMode } = useAppLayout();
   const [dataSources, setDataSources] = useState<DataSource[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAddForm, setShowAddForm] = useState(false);
@@ -32,11 +32,11 @@ export default function DataSourcesPage() {
   const [status, setStatus] = useState<{ type: 'success' | 'error' | null; message: string }>({ type: null, message: '' });
   const [saving, setSaving] = useState(false);
 
-  const bgColor = darkMode ? 'bg-[#1a1a2e]' : 'bg-[#F9FAFB]';
-  const borderColor = darkMode ? 'border-[#2a2a3e]' : 'border-gray-200';
-  const textColor = darkMode ? 'text-white' : 'text-gray-900';
-  const mutedColor = darkMode ? 'text-gray-400' : 'text-gray-600';
-  const cardBg = darkMode ? 'bg-[#0f0f1a]' : 'bg-white';
+  const bgColor = isDarkMode ? 'bg-[#1a1a2e]' : 'bg-[#F9FAFB]';
+  const borderColor = isDarkMode ? 'border-[#2a2a3e]' : 'border-gray-200';
+  const textColor = isDarkMode ? 'text-white' : 'text-gray-900';
+  const mutedColor = isDarkMode ? 'text-gray-400' : 'text-gray-600';
+  const cardBg = isDarkMode ? 'bg-[#0f0f1a]' : 'bg-white';
 
   useEffect(() => {
     fetchDataSources();

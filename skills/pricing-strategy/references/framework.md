@@ -301,7 +301,7 @@ Target: <12 months, <6 months excellent
 
 ### Willingness to Pay Survey Questions
 
-1. "What is the maximum you would pay for [product]?" (开放式)
+1. "What is the maximum you would pay for [product]?" (Open-ended)
 2. "If [competitor] costs $X, what is the maximum you would pay?" (Anchored)
 3. "Would you pay $Y for [product]?" (Yes/No with price Y)
 4. "What would make [product] worth $Z?" (Value justification)

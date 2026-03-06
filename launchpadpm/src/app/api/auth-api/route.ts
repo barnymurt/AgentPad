@@ -115,8 +115,8 @@ export async function POST(request: NextRequest) {
           tier: user.tier,
           validationsUsed: user.validationsUsed,
           skillsUsed: user.skillsUsed,
-          canRunValidation: user.tier === 'premium' || user.tier === 'admin' || user.validationsUsed < 3,
-          canRunSkill: user.tier === 'premium' || user.tier === 'admin' || user.skillsUsed < 3,
+          canRunValidation: user.tier === 'premium' || user.tier === 'admin' || user.tier === 'bobai' || user.validationsUsed < 3,
+          canRunSkill: user.tier === 'premium' || user.tier === 'admin' || user.tier === 'bobai' || user.skillsUsed < 3,
         });
       }
 

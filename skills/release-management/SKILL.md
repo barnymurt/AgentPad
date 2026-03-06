@@ -1,6 +1,12 @@
 ---
 name: release-management
 description: Plan and manage product releases including versioning, changelog creation, deployment coordination, and rollback planning. Use when the user needs to release new features, plan version updates, or coordinate deployments. Includes guidance on release frequency, semantic versioning, rollback strategies, and how AI agents should communicate release decisions to humans.
+lifecycle: build
+category: engineering
+outputSummary: Release management process with deployment schedule and rollback plans
+relatedAfter: ci-cd-pipeline,monitoring-observability
+nextSteps: Coordinate releases and monitor stability
+specialization: fullstack
 ---
 
 # Release Management
@@ -62,6 +68,12 @@ Create deployment checklist and rollback plan.
 
 Communicate release decisions to stakeholders appropriately.
 
+lifecycle: build
+category: engineering
+outputSummary: Release management process with deployment schedule and rollback plans
+relatedAfter: ci-cd-pipeline,monitoring-observability
+nextSteps: Coordinate releases and monitor stability
+specialization: fullstack
 ---
 
 ## Output Format
@@ -113,6 +125,12 @@ Summary for humans
 Risk level
 Required human actions (if any)
 
+lifecycle: build
+category: engineering
+outputSummary: Release management process with deployment schedule and rollback plans
+relatedAfter: ci-cd-pipeline,monitoring-observability
+nextSteps: Coordinate releases and monitor stability
+specialization: fullstack
 ---
 
 ## Reference Files
@@ -122,6 +140,12 @@ Required human actions (if any)
 - [references/rollback.md](references/rollback.md) - Rollback strategies
 - [references/ai-communication.md](references/ai-communication.md) - How AI communicates with humans
 
+lifecycle: build
+category: engineering
+outputSummary: Release management process with deployment schedule and rollback plans
+relatedAfter: ci-cd-pipeline,monitoring-observability
+nextSteps: Coordinate releases and monitor stability
+specialization: fullstack
 ---
 
 ## Related Skills

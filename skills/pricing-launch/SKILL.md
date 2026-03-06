@@ -1,6 +1,11 @@
 ---
 name: pricing-launch
 description: Finalize pricing for product launch. Use when the user needs to set launch pricing, wants to configure pricing tiers, or asks how to price at launch. Covers pricing strategy, tier structure, launch discounts, and configuration.
+lifecycle: launch
+category: growth
+outputSummary: Pricing launch plan with rollout timeline and communication plan
+relatedAfter: launch-analytics,paid-acquisition
+nextSteps: Launch pricing and monitor metrics
 ---
 
 # Pricing Launch

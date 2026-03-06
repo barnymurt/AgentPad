@@ -1,6 +1,11 @@
 ---
 name: content-strategy
 description: Create a content strategy for awareness and acquisition. Use when the user needs a content plan, wants to plan what to write, asks how to build content for their product, or needs to create a content calendar. Covers content themes, formats, distribution channels, and content calendar development.
+lifecycle: launch
+category: growth
+outputSummary: Content strategy with topics, formats, and distribution plan
+relatedAfter: seo-foundation,paid-acquisition
+nextSteps: Execute content plan and measure with launch-analytics
 ---
 
 # Content Strategy

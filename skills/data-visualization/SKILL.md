@@ -1,6 +1,11 @@
 ---
 name: data-visualization
 description: Create clear, actionable charts and dashboards that communicate insights effectively. Use when the user needs to "visualize this data," "create a chart," "build a dashboard," "show trends," "make data digestible," or "communicate findings visually." Transforms raw data into visual formats that drive decision-making.
+lifecycle: iterate
+category: product
+outputSummary: Data visualization dashboard with charts and metrics
+relatedAfter: metrics-dashboard-creation,kpi-tracking
+nextSteps: Create dashboards with metrics-dashboard-creation
 ---
 
 # Data Visualization

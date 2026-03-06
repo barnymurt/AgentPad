@@ -77,7 +77,7 @@ Is the input available from earlier task?
 
 | Severity | Indicator | Response |
 |----------|-----------|----------|
-| Minor | 1-2 fields wrong,不影响 overall | Direct fix |
+| Minor | 1-2 fields wrong, does not affect overall | Direct fix |
 | Moderate | Significant gaps, affects downstream | Request revision |
 | Major | Wrong approach, fundamental issues | Skill revision needed |
 | Critical | No usable output | Human intervention |

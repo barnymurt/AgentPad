@@ -1,6 +1,12 @@
 ---
 name: ui-patterns
 description: Apply common UI patterns. Use when building specific features, need patterns for forms, navigation, or data display. Covers forms, tables, navigation, modals, and common patterns.
+lifecycle: build
+category: design
+outputSummary: UI pattern library with component specifications
+relatedAfter: design-system,responsive-patterns
+nextSteps: Apply patterns in your design system
+specialization: frontend
 ---
 
 # UI Patterns

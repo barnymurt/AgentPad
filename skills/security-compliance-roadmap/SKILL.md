@@ -1,6 +1,12 @@
 ---
 name: security-compliance-roadmap
 description: Produce a timeline-based roadmap of which security certifications and compliance frameworks to pursue and when, mapped to business milestones. Use when the user asks what certifications they need, wants a compliance roadmap, asks when to get SOC 2, needs security planning for growth, wants a compliance timeline, or asks which frameworks to pursue. Covers certification universe assessment, milestone-based phasing, effort and cost estimation, quick wins, and decision triggers.
+lifecycle: build
+category: engineering
+outputSummary: Security compliance roadmap with certification timeline
+relatedAfter: data-protection-assessment,privacy-regulation-assessment
+nextSteps: Achieve compliance certifications
+specialization: fullstack
 ---
 
 # Security & Compliance Roadmap
@@ -57,6 +63,12 @@ Before recommending any certifications, consolidate the full security picture:
 | **GDPR** | EU data subjects | 3-6 months | $10K-40K |
 | **SOC 1** | Financial data processing | 2-4 months | $15K-40K |
 
+lifecycle: build
+category: engineering
+outputSummary: Security compliance roadmap with certification timeline
+relatedAfter: data-protection-assessment,privacy-regulation-assessment
+nextSteps: Achieve compliance certifications
+specialization: fullstack
 ---
 
 Evaluate every major certification and framework for relevance to this specific product:

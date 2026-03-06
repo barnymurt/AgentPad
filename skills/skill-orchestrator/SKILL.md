@@ -1,6 +1,11 @@
 ---
 name: Skill Orchestrator
 description: Use when managing a complex delivery involving multiple skills that need coordination. Use when you need to oversee the big picture and ensure all tasks align with the overall vision. Use when skills need to work together (mini squad) or one-on-one collaboration. Use when deciding which skills to engage for a given goal. Not for simple single-skill tasks. This is a meta-skill that coordinates other skills.
+lifecycle: build
+category: product
+outputSummary: Multi-skill orchestration plan with workflow definitions
+relatedAfter: skill-reviewer,execution-planning
+nextSteps: Run multi-skill workflows
 ---
 
 # Skill Orchestrator

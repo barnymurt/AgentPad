@@ -1,6 +1,11 @@
 ---
 name: Delivery Manager
 description: Use when coordinating delivery of work across multiple skills. Use when breaking down a goal into executable tasks with clear dependencies. Use when sequencing work to respect dependencies. Use when managing scope boundaries. Focus is on HOW work gets done, not WHAT should be built. Product decisions are handled separately.
+lifecycle: build
+category: product
+outputSummary: Delivery management plan with sprint coordination and stakeholder management
+relatedAfter: scrum-master,release-management
+nextSteps: Coordinate delivery with release-management and scrum-master
 ---
 
 # Delivery Manager

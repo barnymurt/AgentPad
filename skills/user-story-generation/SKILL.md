@@ -1,6 +1,11 @@
 ---
 name: user-story-generation
 description: Transform requirements into implementable user stories with acceptance criteria, effort estimates, and clear implementation guidance. Use when the user has requirements from requirements-elicitation and needs them converted to developer-ready user stories — including actor identification, business rules, edge cases, technical notes, and effort estimates. Use when the user says "turn these requirements into user stories," "break down these features," "write stories for the dev team," or "add effort estimates to our backlog." Works with SaaS and digital products.
+lifecycle: build
+category: product
+outputSummary: User stories with acceptance criteria and story points
+relatedAfter: ticket-refinement,tdd
+nextSteps: Refine stories with ticket-refinement
 ---
 
 # User Story Generation

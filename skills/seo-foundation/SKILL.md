@@ -1,6 +1,11 @@
 ---
 name: seo-foundation
 description: Establish SEO foundation for product launch. Use when the user needs SEO basics, wants to improve search visibility, asks how to optimize for search, or needs a technical SEO baseline. Covers keyword research, on-page SEO, technical SEO, and content SEO strategy.
+lifecycle: launch
+category: growth
+outputSummary: SEO strategy with keyword research and on-page optimization
+relatedAfter: content-strategy,paid-acquisition
+nextSteps: Optimize content and build backlinks
 ---
 
 # SEO Foundation

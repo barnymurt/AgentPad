@@ -1,6 +1,11 @@
 ---
 name: gap-analysis
 description: Identify and prioritize differences between current state and desired state for products and processes. Use when the user has a vision or requirements and needs to understand what's missing, what needs to change, and what to focus on first — including capability gaps, process inefficiencies, and resource mismatches. Use when the user says "what are we missing," "what do we need to build," "analyze our capabilities," "what's the gap between where we are and where we want to be," or "what should we focus on." Works with SaaS products, internal tools, and business processes.
+lifecycle: discovery
+category: product
+outputSummary: Gap analysis with current state, desired state, and recommendations
+relatedAfter: feature-prioritization,roadmap-planning
+nextSteps: Create action plan to close gaps with feature-prioritization
 ---
 
 # Gap Analysis
@@ -165,8 +170,8 @@ Prioritize and sequence:
 The output follows the structure defined in [references/output-schema.md](references/output-schema.md):
 
 - **Executive Summary** — Top gaps and recommendations in 2-3 sentences
-- **Current State** — Documented现状
-- **Desired State** — Documented目标
+- **Current State** — Documented current state
+- **Desired State** — Documented target state
 - **Gap Map** — All identified gaps with categories
 - **Gap Assessment** — Impact/effort scoring with prioritization
 - **Root Cause Analysis** — Surface vs. root gaps

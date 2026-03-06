@@ -1,6 +1,11 @@
 ---
 name: channel-strategy
 description: Select and prioritize acquisition channels for your product. Use when the user needs to decide where to focus marketing efforts, wants to understand which channels work for their audience, or asks how to allocate budget across channels. Covers channel audit, prioritization, budget allocation, and testing plans.
+lifecycle: launch
+category: growth
+outputSummary: Go-to-market channel strategy with channel mix recommendations
+relatedAfter: paid-acquisition,content-strategy
+nextSteps: Execute channels with paid-acquisition and content-strategy
 ---
 
 # Channel Strategy

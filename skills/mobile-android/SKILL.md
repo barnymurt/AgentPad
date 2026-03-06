@@ -1,6 +1,12 @@
 ---
 name: mobile-android
 description: Build Android applications. Use when building Android apps, need Kotlin/Jetpack patterns, or want Android best practices. Covers Jetpack Compose, architecture, and Play Store.
+lifecycle: build
+category: engineering
+outputSummary: Android app architecture with Jetpack components and patterns
+relatedAfter: mobile-ios,responsive-patterns
+nextSteps: Build and test your Android app
+specialization: fullstack
 ---
 
 # Mobile Android

@@ -20,6 +20,8 @@ interface Project {
 interface ActiveProjectProps {
   project?: Project | null;
   darkMode?: boolean;
+  isPremium?: boolean;
+  isBobAI?: boolean;
 }
 
 const defaultLifecyclePhases: LifecyclePhase[] = [
@@ -38,6 +40,8 @@ const defaultLifecyclePhases: LifecyclePhase[] = [
 export default function ActiveProject({
   project,
   darkMode = true,
+  isPremium = false,
+  isBobAI = false,
 }: ActiveProjectProps) {
   const [isExpanded, setIsExpanded] = useState(true);
 
@@ -155,6 +159,38 @@ export default function ActiveProject({
                 </Link>
               ))}
             </div>
+          </div>
+
+          {/* Run with AI Builder Button */}
+          <div className="mt-4">
+            {isBobAI ? (
+              <Link
+                href="/builder"
+                className="w-full py-2.5 px-4 rounded-lg font-medium transition-all flex items-center justify-center gap-2 bg-gradient-to-r from-purple-500 to-blue-500 text-white hover:opacity-90"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+                Launch AI Builder
+              </Link>
+            ) : isPremium ? (
+              <div className="w-full py-2.5 px-4 rounded-lg font-medium transition-all flex items-center justify-center gap-2 bg-gradient-to-r from-purple-500/50 to-blue-500/50 text-white/70">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+                Guided Builder Active
+              </div>
+            ) : (
+              <button
+                onClick={() => alert('Guided Builder is available for Premium users. Upgrade to use this feature.')}
+                className="w-full py-2.5 px-4 rounded-lg font-medium transition-all flex items-center justify-center gap-2 bg-gradient-to-r from-purple-500/50 to-blue-500/50 text-white/70 cursor-not-allowed"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+                Upgrade to Start Guided Builder
+              </button>
+            )}
           </div>
 
           {/* Current focus */}

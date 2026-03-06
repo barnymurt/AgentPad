@@ -58,15 +58,44 @@ const defaultActions: QuickAction[] = [
   },
 ];
 
+const freeTierActions: QuickAction[] = [
+  {
+    id: 'run-skill',
+    label: 'Run Skill',
+    href: '/skills',
+    color: 'from-purple-500 to-purple-600',
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+      </svg>
+    ),
+  },
+  {
+    id: 'export-notion',
+    label: 'Export to Notion',
+    href: '/settings/notion',
+    color: 'from-gray-500 to-gray-600',
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 2v4M16 2v4M2 10h20" />
+      </svg>
+    ),
+  },
+];
+
 interface QuickActionsProps {
   actions?: QuickAction[];
   darkMode?: boolean;
+  isPremium?: boolean;
 }
 
-export default function QuickActions({ actions = defaultActions, darkMode = true }: QuickActionsProps) {
+export default function QuickActions({ actions, darkMode = true, isPremium = false }: QuickActionsProps) {
   const cardBg = darkMode ? 'bg-[#1a1a2e]' : 'bg-[#F9FAFB]';
   const cardBorder = darkMode ? 'border-[#2a2a3e]' : 'border-gray-200';
   const titleColor = darkMode ? 'text-white' : 'text-gray-900';
+
+  const displayActions = isPremium ? (actions || defaultActions) : freeTierActions;
 
   return (
     <div className={`${cardBg} ${cardBorder} rounded-xl border p-5`}>
@@ -78,7 +107,7 @@ export default function QuickActions({ actions = defaultActions, darkMode = true
       </h2>
       
       <div className="grid grid-cols-2 gap-3" data-testid="quick-actions">
-        {actions.map((action) => (
+        {displayActions.map((action) => (
           <Link
             key={action.id}
             href={action.href}

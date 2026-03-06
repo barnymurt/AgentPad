@@ -1,6 +1,12 @@
 ---
 name: roadmap-planning
 description: Sequence features into phased roadmap with dependencies, milestones, and success criteria. Use when the user has prioritized features and needs them organized into a practical roadmap — including release phases, timeline, team capacity, and go/no-go criteria. Use when the user says "what should we build first," "create a roadmap," "sequence these features," "when should we launch," or "plan out our development." Works with SaaS and digital products.
+lifecycle: build
+category: product
+relatedBefore: feature-prioritization,product-vision
+relatedAfter: launch-planning,iteration-planning
+outputSummary: Phased roadmap with milestones, dependencies, timeline, team capacity planning, and go/no-go criteria
+nextSteps: Once roadmap is set, plan your launch with launch-planning and iterate based on metrics with iteration-planning
 ---
 
 # Roadmap Planning

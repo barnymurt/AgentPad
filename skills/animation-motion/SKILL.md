@@ -1,6 +1,11 @@
 ---
 name: animation-motion
 description: Create exceptional animations. Use when you want "award-winning" quality, need micro-interactions, or want to differentiate. Covers transitions, micro-interactions, loading states, and motion principles.
+lifecycle: build
+category: design
+outputSummary: Animation and motion design specifications for UI components
+nextSteps: Implement animations in your frontend with component-architecture
+specialization: frontend
 ---
 
 # Animation & Motion

@@ -226,7 +226,7 @@ function ComponentSpec({ name, description, code }: { name: string; description?
         {description && <span className="text-xs text-gray-500 dark:text-gray-400 ml-2">{description}</span>}
       </div>
       {code && (
-        <pre className="bg-gray-900 dark:bg-gray-900 p-4 text-xs font-mono text-gray-100 overflow-x-auto">
+        <pre className="bg-white dark:bg-gray-900 p-4 text-xs font-mono text-gray-900 dark:text-gray-100 overflow-x-auto">
           {code}
         </pre>
       )}
@@ -363,7 +363,7 @@ function WireframeRenderer({ data, html }: { data?: Record<string, any>; html?: 
         const viewportHeight = screen.viewport?.height || 812;
         
         return (
-          <div key={idx} className="bg-gray-100 dark:bg-gray-900 rounded-xl p-6">
+          <div key={idx} className="bg-white dark:bg-gray-900 rounded-xl p-6">
             {/* Header */}
             <div className="flex items-center justify-between mb-4">
               <div>
@@ -509,7 +509,7 @@ function FlowRenderer({ flow }: { flow: any }) {
                   </div>
                   
                   {/* Screen Preview */}
-                  <div className="p-3 bg-gray-100 dark:bg-gray-900">
+                  <div className="p-3 bg-white dark:bg-gray-900">
                     <div 
                       className="mx-auto bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden"
                       style={{ width: Math.min(viewportWidth, 240), height: Math.min(viewportHeight, 300) }}
@@ -739,7 +739,7 @@ function ResponsivePatternsRenderer({ data }: { data?: Record<string, any> }) {
           <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Breakpoints</h4>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {breakpoints.map((bp: any, idx: number) => (
-              <div key={idx} className="bg-gray-50 dark:bg-gray-900 rounded-lg p-3 text-center">
+              <div key={idx} className="bg-white dark:bg-gray-900 rounded-lg p-3 text-center">
                 <div className="font-medium text-gray-900 dark:text-white capitalize">{bp.name}</div>
                 <div className="text-xs text-gray-500 mt-1">
                   {bp.min || 0}px {bp.max ? `- ${bp.max}px` : '+'}
@@ -764,7 +764,7 @@ function ResponsivePatternsRenderer({ data }: { data?: Record<string, any> }) {
               <p className="text-xs text-gray-500 mb-3">{pattern.description}</p>
               <div className="grid grid-cols-3 gap-2">
                 {Object.entries(pattern).filter(([k]) => !['name', 'description'].includes(k)).map(([bpName, bpConfig]: [string, any], iIdx: number) => (
-                  <div key={iIdx} className="bg-gray-50 dark:bg-gray-900 rounded-lg p-2">
+                    <div key={iIdx} className="bg-white dark:bg-gray-900 rounded-lg p-2">
                     <div className="text-xs font-medium text-blue-600 dark:text-blue-400 capitalize mb-1">{bpName}</div>
                     <pre className="text-xs text-gray-600 dark:text-gray-400 overflow-x-auto">
                       {JSON.stringify(bpConfig, null, 1)}
@@ -894,7 +894,7 @@ function DesignSystemRenderer({ data }: { data?: Record<string, any> }) {
           <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Components</h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {components.map((comp: any, idx: number) => (
-              <div key={idx} className="bg-gray-50 dark:bg-gray-900 rounded-lg p-3">
+              <div key={idx} className="bg-white dark:bg-gray-900 rounded-lg p-3">
                 <div className="flex items-center justify-between mb-2">
                   <span className="font-medium text-gray-900 dark:text-white text-sm">{comp.name}</span>
                 </div>
@@ -1103,14 +1103,14 @@ function useCategoryComponents(category: SkillCategory, config: CategoryConfig) 
             <div className="bg-blue-50 dark:bg-blue-900/20 px-4 py-2 border-b border-blue-500/30">
               <span className="text-xs font-medium text-blue-700 dark:text-blue-300">Wireframe</span>
             </div>
-            <pre className="bg-gray-900 p-4 overflow-x-auto text-xs font-mono text-green-400 leading-relaxed">
+            <pre className="bg-gray-100 dark:bg-gray-900 p-4 overflow-x-auto text-xs font-mono text-green-700 dark:text-green-400 leading-relaxed">
               {children}
             </pre>
           </div>
         );
       }
       
-      return <code className={`${codeClass} block bg-gray-900 dark:bg-gray-900 p-4 rounded-lg text-xs font-mono text-gray-100 overflow-x-auto my-4`}>{children}</code>;
+      return <code className={`${codeClass} block bg-gray-100 dark:bg-gray-900 p-4 rounded-lg text-xs font-mono text-gray-700 dark:text-gray-100 overflow-x-auto my-4`}>{children}</code>;
     },
     pre: ({ children }: { children?: React.ReactNode }) => {
       // Check if this is a wireframe by checking child content
@@ -1123,7 +1123,7 @@ function useCategoryComponents(category: SkillCategory, config: CategoryConfig) 
             <div className="bg-blue-50 dark:bg-blue-900/20 px-4 py-2 border-b border-blue-500/30">
               <span className="text-xs font-medium text-blue-700 dark:text-blue-300">Wireframe</span>
             </div>
-            <pre className="bg-gray-900 p-4 overflow-x-auto text-xs font-mono text-green-400 leading-relaxed">
+            <pre className="bg-gray-100 dark:bg-gray-900 p-4 overflow-x-auto text-xs font-mono text-green-700 dark:text-green-400 leading-relaxed">
               {children}
             </pre>
           </div>
@@ -1131,7 +1131,7 @@ function useCategoryComponents(category: SkillCategory, config: CategoryConfig) 
       }
       
       return (
-        <pre className="bg-gray-900 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto my-4 text-xs font-mono text-gray-100">
+        <pre className="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto my-4 text-xs font-mono text-gray-700 dark:text-gray-100">
           {children}
         </pre>
       );
@@ -1253,7 +1253,7 @@ export default function StyledOutput({ content, skillId, className = '' }: Style
             {category} • {config.primaryOutput}
           </div>
         )}
-        <pre className="bg-gray-900 text-green-400 p-4 rounded-lg overflow-x-auto text-xs">
+        <pre className="bg-gray-100 dark:bg-gray-900 text-green-700 dark:text-green-400 p-4 rounded-lg overflow-x-auto text-xs">
           {JSON.stringify(structured, null, 2)}
         </pre>
       </div>

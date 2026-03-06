@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 interface ActivityItem {
   id: string;
@@ -116,6 +117,19 @@ export default function ActivityFeed({ darkMode = true }: ActivityFeedProps) {
     }
   };
 
+  const handleDelete = async (e: React.MouseEvent, activityId: string) => {
+    e.stopPropagation();
+    
+    try {
+      const res = await fetch(`/api/jobs?id=${activityId}`, { method: 'DELETE' });
+      if (res.ok) {
+        setActivities(activities.filter(a => a.id !== activityId));
+      }
+    } catch (err) {
+      console.error('Failed to delete activity:', err);
+    }
+  };
+
   const closeModal = () => {
     setSelectedJob(null);
   };
@@ -177,7 +191,20 @@ export default function ActivityFeed({ darkMode = true }: ActivityFeedProps) {
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center justify-between gap-2">
                             <h3 className={`${textColor} text-sm font-medium truncate`}>{activity.title}</h3>
-                            <span className={`${darkMode ? 'text-gray-500' : 'text-gray-400'} text-xs flex-shrink-0`}>{activity.timestamp}</span>
+                            <div className="flex items-center gap-2">
+                              <span className={`${darkMode ? 'text-gray-500' : 'text-gray-400'} text-xs flex-shrink-0`}>{activity.timestamp}</span>
+                              {activity.jobId && (
+                                <button
+                                  onClick={(e) => handleDelete(e, activity.id)}
+                                  className={`p-1 rounded hover:bg-red-500/20 text-gray-500 hover:text-red-400 transition-colors`}
+                                  title="Delete"
+                                >
+                                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                  </svg>
+                                </button>
+                              )}
+                            </div>
                           </div>
                           {activity.description && (
                             <p className={`${descColor} text-sm mt-0.5 truncate`}>{activity.description}</p>
@@ -199,9 +226,9 @@ export default function ActivityFeed({ darkMode = true }: ActivityFeedProps) {
                 </div>
                 
                 <div className={`p-3 border-t ${cardBorder}`}>
-                  <button className={`w-full text-center text-sm ${mutedColor} hover:text-white transition-colors`}>
+                  <Link href="/activity" className={`w-full text-center text-sm ${mutedColor} hover:text-white transition-colors block`}>
                     View all activity
-                  </button>
+                  </Link>
                 </div>
               </>
             )}
@@ -212,19 +239,19 @@ export default function ActivityFeed({ darkMode = true }: ActivityFeedProps) {
       {/* Job Result Modal */}
       {selectedJob && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-          <div className="bg-[#1a1a2e] border border-[#2a2a3e] rounded-xl shadow-xl max-w-4xl w-full max-h-[80vh] overflow-hidden flex flex-col">
-            <div className="flex items-center justify-between p-4 border-b border-[#2a2a3e]">
+          <div className={`${cardBg} border ${cardBorder} rounded-xl shadow-xl max-w-4xl w-full max-h-[80vh] overflow-hidden flex flex-col`}>
+            <div className={`flex items-center justify-between p-4 border-b ${cardBorder}`}>
               <div>
-                <h2 className="text-lg font-semibold text-white">
+                <h2 className={`text-lg font-semibold ${titleColor}`}>
                   {formatSkillName(selectedJob.skillId)}
                 </h2>
-                <p className="text-sm text-gray-400">{selectedJob.input}</p>
+                <p className={`text-sm ${mutedColor}`}>{selectedJob.input}</p>
               </div>
               <button
                 onClick={closeModal}
-                className="p-2 hover:bg-[#2a2a3e] rounded-lg transition-colors"
+                className={`p-2 ${hoverBg} rounded-lg transition-colors`}
               >
-                <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className={`w-5 h-5 ${mutedColor}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
@@ -232,7 +259,7 @@ export default function ActivityFeed({ darkMode = true }: ActivityFeedProps) {
             
             <div className="flex-1 overflow-auto p-4">
               {selectedJob.status === 'completed' ? (
-                <pre className="whitespace-pre-wrap text-sm text-gray-300 font-mono bg-[#0f0f1a] p-4 rounded-lg overflow-auto">
+                <pre className={`whitespace-pre-wrap text-sm ${darkMode ? 'text-gray-300 bg-[#0f0f1a]' : 'text-gray-700 bg-gray-100'} font-mono p-4 rounded-lg overflow-auto`}>
                   {selectedJob.output}
                 </pre>
               ) : selectedJob.status === 'failed' ? (
@@ -250,10 +277,10 @@ export default function ActivityFeed({ darkMode = true }: ActivityFeedProps) {
               )}
             </div>
             
-            <div className="flex justify-end gap-3 p-4 border-t border-[#2a2a3e]">
+            <div className={`flex justify-end gap-3 p-4 border-t ${cardBorder}`}>
               <button
                 onClick={closeModal}
-                className="px-4 py-2 bg-[#2a2a3e] text-white rounded-lg hover:bg-[#3a3a4e] transition-colors"
+                className={`px-4 py-2 ${darkMode ? 'bg-[#2a2a3e] text-white hover:bg-[#3a3a4e]' : 'bg-gray-200 text-gray-800 hover:bg-gray-300'} rounded-lg transition-colors`}
               >
                 Close
               </button>
@@ -265,9 +292,9 @@ export default function ActivityFeed({ darkMode = true }: ActivityFeedProps) {
       {/* Loading Modal */}
       {jobLoading && !selectedJob && (
         <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/50">
-          <div className="bg-[#1a1a2e] border border-[#2a2a3e] rounded-xl p-8 flex items-center gap-4">
+          <div className={`${cardBg} border ${cardBorder} rounded-xl p-8 flex items-center gap-4`}>
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-            <span className="text-white">Loading result...</span>
+            <span className={titleColor}>Loading result...</span>
           </div>
         </div>
       )}

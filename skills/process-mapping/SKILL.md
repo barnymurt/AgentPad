@@ -1,6 +1,11 @@
 ---
 name: process-mapping
 description: Visualize and analyze business workflows to identify inefficiencies, bottlenecks, and automation opportunities. Use when the user needs to understand how work flows through their business, wants to improve processes, or needs to document workflows for system design. Use when the user says "map our process," "how does X work," "find bottlenecks," "improve our workflow," "document our process," or "what can we automate." Works with business processes, software development workflows, and operational processes.
+lifecycle: build
+category: product
+outputSummary: Business process maps with workflows and optimization opportunities
+relatedAfter: automation-framework,workflow-design
+nextSteps: Optimize processes with automation-framework
 ---
 
 # Process Mapping

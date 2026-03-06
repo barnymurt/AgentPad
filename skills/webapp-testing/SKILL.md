@@ -2,6 +2,12 @@
 name: webapp-testing
 description: Toolkit for writing Playwright test scripts in your codebase. Use when teams need to implement automated tests that live in their repository, run in CI/CD pipelines, or require custom assertions and test organization. For quick browser automation tasks (open pages, fill forms, take screenshots), use agent-browser instead.
 license: Complete terms in LICENSE.txt
+lifecycle: build
+category: engineering
+outputSummary: Web app testing strategy with test cases and automation scripts
+relatedAfter: automation-framework,security-requirements-baseline
+nextSteps: Fix issues and ensure quality
+specialization: qa
 ---
 
 # Web Application Testing

@@ -1,6 +1,11 @@
 ---
 name: backup-recovery
 description: Plan backup and recovery. Use when you need data recovery strategy, want to ensure business continuity, or need disaster recovery. Covers backup strategies, recovery procedures, testing, and automation.
+lifecycle: build
+category: engineering
+outputSummary: Backup strategy and disaster recovery plan
+nextSteps: Set up monitoring-observability to verify backup health
+specialization: fullstack
 ---
 
 # Backup & Recovery

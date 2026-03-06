@@ -1,6 +1,11 @@
 ---
 name: stakeholder-analysis
 description: Map and prioritize people, teams, and groups affected by a product or project. Use when the user needs to understand who has a stake in the product, what they care about, how much influence they have, and how to communicate with them effectively. Use when the user says "who cares about this," "stakeholder map," "manage stakeholders," "who should I talk to," "build buy-in," or "what do different teams want." Works for internal projects, product launches, and organizational change.
+lifecycle: discovery
+category: product
+outputSummary: Stakeholder map with influence/interest grid and engagement plan
+relatedAfter: roadmap-planning,messaging-framework
+nextSteps: Engage stakeholders in planning
 ---
 
 # Stakeholder Analysis

@@ -1,6 +1,12 @@
 ---
 name: migration-planning
 description: Plan database schema migrations. Use when schema needs to change, you need version control for database, or need to plan rollbacks. Covers migration strategy, versioning, rollback plans, and zero-downtime migrations.
+lifecycle: build
+category: engineering
+outputSummary: System migration plan with timeline and risk mitigation
+relatedAfter: data-modeling,infrastructure-as-code
+nextSteps: Execute migration with minimal downtime
+specialization: backend
 ---
 
 # Migration Planning

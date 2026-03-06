@@ -1,6 +1,11 @@
 ---
 name: community-building
 description: Plan community engagement strategy. Use when the user wants to build a community, asks how to engage users, or needs a community strategy. Covers platform selection, engagement strategy, community management, and ambassador programs.
+lifecycle: launch
+category: growth
+outputSummary: Community building strategy with engagement tactics
+relatedAfter: content-strategy,analyst-relations
+nextSteps: Engage community members and measure growth metrics
 ---
 
 # Community Building

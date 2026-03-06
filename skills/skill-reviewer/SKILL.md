@@ -1,6 +1,11 @@
 ---
 name: Skill Reviewer
 description: Use when validating or auditing existing skills. Use when reviewing a skill's quality, completeness, and effectiveness. Use when identifying gaps in a skill's outputs. Use when comparing skills to ensure consistency. This is a meta-skill that reviews other skills, not a skill that does domain work.
+lifecycle: build
+category: product
+outputSummary: Skill review with quality assessment and improvement recommendations
+relatedAfter: skill-orchestrator,skill-improvement
+nextSteps: Improve skills based on feedback
 ---
 
 # Skill Reviewer

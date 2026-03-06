@@ -1,6 +1,12 @@
 ---
 name: state-management
 description: Design application state architecture. Use when state gets complex, need data flow patterns, or want to manage caching. Covers local state, server state, caching, and state machines.
+lifecycle: build
+category: engineering
+outputSummary: State management architecture with Redux/Context specs
+relatedAfter: component-architecture,frontend-performance
+nextSteps: Implement state in your application
+specialization: backend
 ---
 
 # State Management

@@ -1,6 +1,11 @@
 ---
 name: referral-program
 description: Design referral program for growth. Use when the user wants a referral program, asks how to get referrals, or needs a viral growth mechanism. Covers program design, incentive structure, technical implementation, and tracking.
+lifecycle: launch
+category: growth
+outputSummary: Referral program design with incentives and viral mechanics
+relatedAfter: community-building,paid-acquisition
+nextSteps: Launch and measure viral growth
 ---
 
 # Referral Program

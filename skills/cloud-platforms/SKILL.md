@@ -1,6 +1,12 @@
 ---
 name: cloud-platforms
 description: Configure cloud platforms. Use when setting up AWS, Azure, GCP, or need cloud best practices. Covers services, security, and cost optimization.
+lifecycle: build
+category: engineering
+outputSummary: Cloud platform comparison and infrastructure recommendations
+relatedAfter: infrastructure-as-code,serverless-development
+nextSteps: Provision infrastructure with infrastructure-as-code
+specialization: backend
 ---
 
 # Cloud Platforms

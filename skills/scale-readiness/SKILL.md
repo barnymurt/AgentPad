@@ -1,6 +1,11 @@
 ---
 name: scale-readiness
 description: Assess product and technical readiness for scaling. Use when the user needs to understand if their product can handle growth, prepare for increased load, or identify what needs to change to support more users, data, or features. Includes scaling triggers, cost considerations, and real-world examples.
+lifecycle: build
+category: product
+outputSummary: Scalability assessment with bottlenecks and remediation plan
+relatedAfter: performance-tuning,cloud-platforms
+nextSteps: Address bottlenecks before scaling
 ---
 
 # Scale Readiness
@@ -45,6 +50,11 @@ Start preparing when you see these signals:
 
 Rule of thumb: 1 hour of downtime costs approximately 1 month's infrastructure spend in recovery.
 
+lifecycle: build
+category: product
+outputSummary: Scalability assessment with bottlenecks and remediation plan
+relatedAfter: performance-tuning,cloud-platforms
+nextSteps: Address bottlenecks before scaling
 ---
 
 ## Workflow
@@ -95,6 +105,11 @@ What's not ready for target scale?
 
 Prioritized plan to address gaps.
 
+lifecycle: build
+category: product
+outputSummary: Scalability assessment with bottlenecks and remediation plan
+relatedAfter: performance-tuning,cloud-platforms
+nextSteps: Address bottlenecks before scaling
 ---
 
 ## Output Format
@@ -141,6 +156,11 @@ Company: [Name]
 What happened: [Scaling story]
 Lesson: [What to learn]
 
+lifecycle: build
+category: product
+outputSummary: Scalability assessment with bottlenecks and remediation plan
+relatedAfter: performance-tuning,cloud-platforms
+nextSteps: Address bottlenecks before scaling
 ---
 
 ## Reference Files
@@ -150,6 +170,11 @@ Lesson: [What to learn]
 - [references/examples.md](references/examples.md) - Real-world scaling stories
 - [references/cost-guide.md](references/cost-guide.md) - Cost considerations
 
+lifecycle: build
+category: product
+outputSummary: Scalability assessment with bottlenecks and remediation plan
+relatedAfter: performance-tuning,cloud-platforms
+nextSteps: Address bottlenecks before scaling
 ---
 
 ## Related Skills

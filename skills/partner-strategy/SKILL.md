@@ -1,6 +1,11 @@
 ---
 name: partner-strategy
 description: Plan partnership strategy for growth. Use when the user wants to identify partners, needs a partnership strategy, or asks how to build partnerships. Covers partner identification, partnership models, outreach strategy, and partnership management.
+lifecycle: launch
+category: growth
+outputSummary: Partnership strategy with partner identification and engagement plan
+relatedAfter: channel-strategy,sales-enablement
+nextSteps: Execute partnership outreach and manage relationships
 ---
 
 # Partner Strategy

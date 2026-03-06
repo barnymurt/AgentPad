@@ -1,6 +1,11 @@
 ---
 name: feedback-synthesis
 description: Synthesize user feedback from multiple sources into structured, actionable insights for SaaS product teams. Use when the user asks to analyze feedback, synthesize user research, make sense of survey results, interpret NPS comments, analyze support tickets, understand what users are saying, or asks "what are my users telling me?" Covers thematic analysis, source weighting, signal vs noise filtering, sentiment analysis, impact mapping, and prioritized recommendations.
+lifecycle: discovery
+category: research
+outputSummary: Synthesized user feedback themes with actionable insights
+relatedAfter: user-persona-creation,feature-prioritization
+nextSteps: Create actionable insights for product improvements
 ---
 
 # Feedback Synthesis

@@ -1,6 +1,12 @@
 ---
 name: performance-tuning
 description: Optimize database performance. Use when queries are slow, you need to improve performance, or want to optimize for scale. Covers query analysis, indexing strategies, caching, and query optimization.
+lifecycle: build
+category: engineering
+outputSummary: Performance optimization report with bottlenecks and solutions
+relatedAfter: frontend-performance,monitoring-observability
+nextSteps: Optimize performance and set up ongoing monitoring
+specialization: fullstack
 ---
 
 # Performance Tuning

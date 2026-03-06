@@ -1,6 +1,12 @@
 ---
 name: component-architecture
 description: Design frontend component structure. Use when building UI from scratch, need component patterns, or want reusable components. Covers component hierarchy, composition, prop design, and reusability.
+lifecycle: build
+category: engineering
+outputSummary: Frontend component architecture with component hierarchy and state management
+relatedAfter: tdd,frontend-performance
+nextSteps: Build components and integrate with state-management
+specialization: backend
 ---
 
 # Component Architecture

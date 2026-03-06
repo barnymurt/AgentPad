@@ -1,6 +1,11 @@
 ---
 name: cohort-analysis
 description: Analyze user behavior over time by grouping users into cohorts based on acquisition date or characteristics. Use when the user needs to understand "how users behave over time," "retention analysis," "user engagement patterns," "cohort comparison," or "track user lifecycle." Groups users by signup date, plan, or source and tracks key metrics over time to identify trends and patterns.
+lifecycle: iterate
+category: research
+outputSummary: Cohort analysis report with retention curves and insights
+relatedAfter: saas-metrics-analysis,kpi-tracking
+nextSteps: Use insights for kpi-tracking and iteration-planning
 ---
 
 # Cohort Analysis

@@ -1,6 +1,8 @@
 ---
 name: skill-name
 description: One-line description of what this skill does. Use when [specific trigger conditions — what the user says or asks that should activate this skill]. Covers [scope of the skill's capabilities].
+outputSummary: Structured output specific to this skill type
+nextSteps: Review output and determine next steps based on your goals
 ---
 
 # Skill Name

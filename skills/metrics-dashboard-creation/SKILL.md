@@ -1,6 +1,11 @@
 ---
 name: metrics-dashboard-creation
 description: Create operational dashboards to track key metrics and KPIs. Use when the user needs to visualize product performance, set up analytics, or understand what metrics to display. Includes guidance on dashboard tools, data sources, and real-world examples of effective dashboards.
+lifecycle: iterate
+category: product
+outputSummary: Metrics dashboard design with charts and visualization specs
+relatedAfter: kpi-tracking,data-visualization
+nextSteps: Build dashboards for ongoing monitoring
 ---
 
 # Metrics Dashboard Creation
@@ -47,6 +52,11 @@ Layout and visualization choices.
 
 When to be notified of issues.
 
+lifecycle: iterate
+category: product
+outputSummary: Metrics dashboard design with charts and visualization specs
+relatedAfter: kpi-tracking,data-visualization
+nextSteps: Build dashboards for ongoing monitoring
 ---
 
 ## Output Format
@@ -92,6 +102,11 @@ Tool recommendation
 Setup steps
 Tips
 
+lifecycle: iterate
+category: product
+outputSummary: Metrics dashboard design with charts and visualization specs
+relatedAfter: kpi-tracking,data-visualization
+nextSteps: Build dashboards for ongoing monitoring
 ---
 
 ## Reference Files

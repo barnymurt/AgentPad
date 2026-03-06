@@ -1,6 +1,12 @@
 ---
 name: data-security
 description: Implement database security. Use when you need encryption, access controls, compliance, or want to secure sensitive data. Covers encryption at rest/transit, access controls, audit logging, and compliance requirements.
+lifecycle: build
+category: engineering
+outputSummary: Data security plan with encryption, access controls, and compliance
+relatedAfter: backup-recovery,monitoring-observability
+nextSteps: Set up monitoring-observability to track security events
+specialization: fullstack
 ---
 
 # Data Security

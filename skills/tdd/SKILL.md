@@ -1,6 +1,12 @@
 ---
 name: tdd
 description: Implement test-driven development. Use when practicing TDD, want quality-first approach, or need TDD training. Covers red-green-refactor, test-first, and TDD cycles.
+lifecycle: build
+category: engineering
+outputSummary: Test-driven development setup with test patterns and code examples
+relatedAfter: ci-cd-pipeline,test-strategy
+nextSteps: Write tests and maintain code quality
+specialization: qa
 ---
 
 # TDD

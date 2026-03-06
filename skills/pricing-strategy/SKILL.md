@@ -1,6 +1,12 @@
 ---
 name: pricing-strategy
 description: Analyze and recommend pricing models for SaaS and digital products. Use when the user has a product idea or existing product and needs pricing strategy — including pricing model selection, tier structure, competitive positioning, and unit economics. Use when the user says "what should I charge," "how should I price my product," "what pricing model works for SaaS," "help me think about pricing tiers," or "is my pricing competitive." Covers per-seat, usage-based, tiered, freemium, and hybrid models with LTV/CAC analysis.
+lifecycle: build
+category: growth
+relatedBefore: competitor-research,product-vision
+relatedAfter: pricing-launch,messaging-framework
+outputSummary: Pricing model recommendation with tier structure, LTV/CAC analysis, and competitive positioning
+nextSteps: Execute pricing with pricing-launch and communicate value through messaging-framework
 ---
 
 # Pricing Strategy

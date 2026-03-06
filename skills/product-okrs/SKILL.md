@@ -1,6 +1,11 @@
 ---
 name: product-okrs
 description: Set and manage product objectives and key results. Use when the user needs to define quarterly goals, align team around outcomes, or track progress against measurable results. Includes real-world OKR examples from successful companies and guidance on setting effective objectives and key results.
+lifecycle: build
+category: product
+outputSummary: OKR framework with objectives, key results, and measurement plan
+relatedAfter: kpi-tracking,iteration-planning
+nextSteps: Track progress and adjust based on results
 ---
 
 # Product OKRs
@@ -35,6 +40,11 @@ Use when:
 Bad OKR: "Launch feature X"
 Good OKR: "Objective: Improve user activation. KR: Increase activation rate from 30% to 50%"
 
+lifecycle: build
+category: product
+outputSummary: OKR framework with objectives, key results, and measurement plan
+relatedAfter: kpi-tracking,iteration-planning
+nextSteps: Track progress and adjust based on results
 ---
 
 ## Output Format
@@ -61,6 +71,11 @@ What we need from others
 
 Risk and mitigation
 
+lifecycle: build
+category: product
+outputSummary: OKR framework with objectives, key results, and measurement plan
+relatedAfter: kpi-tracking,iteration-planning
+nextSteps: Track progress and adjust based on results
 ---
 
 ## Reference Files

@@ -1,6 +1,12 @@
 ---
 name: ml-llm-integration
 description: Integrate machine learning and LLMs. Use when adding AI features, need LLM integration, or want ML-powered features. Covers prompts, APIs, fine-tuning, and AI architecture.
+lifecycle: build
+category: engineering
+outputSummary: ML/LLM integration architecture with model selection and API design
+relatedAfter: serverless-development,api-design
+nextSteps: Integrate ML models into your application
+specialization: backend
 ---
 
 # ML/LLM Integration

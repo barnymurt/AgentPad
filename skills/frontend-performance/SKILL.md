@@ -1,6 +1,11 @@
 ---
 name: frontend-performance
 description: Optimize frontend performance. Use when you need fast load times, want to improve Core Web Vitals, or need performance optimization. Covers bundle size, loading, rendering, and monitoring.
+lifecycle: build
+category: engineering
+outputSummary: Performance optimization recommendations with metrics and benchmarks
+nextSteps: Optimize your app and set up monitoring
+specialization: frontend
 ---
 
 # Frontend Performance

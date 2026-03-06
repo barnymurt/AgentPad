@@ -1,6 +1,11 @@
 ---
 name: product-health-check
 description: Assess product health across user engagement, product-market fit, technical stability, business metrics, and competitive position. Use when the user needs to understand how their product is performing, identify risks, and determine next steps. Includes benchmarks for different stages and warning signs to watch for.
+lifecycle: build
+category: product
+outputSummary: Product health assessment with metrics and recommendations
+relatedAfter: kpi-tracking,cohort-analysis
+nextSteps: Address findings and improve product metrics
 ---
 
 # Product Health Check
@@ -75,6 +80,11 @@ Document risks with:
 
 For each issue, recommend specific actions.
 
+lifecycle: build
+category: product
+outputSummary: Product health assessment with metrics and recommendations
+relatedAfter: kpi-tracking,cohort-analysis
+nextSteps: Address findings and improve product metrics
 ---
 
 ## Output Format
@@ -115,6 +125,11 @@ Red flags that would indicate declining health
 
 How your metrics compare to industry standards
 
+lifecycle: build
+category: product
+outputSummary: Product health assessment with metrics and recommendations
+relatedAfter: kpi-tracking,cohort-analysis
+nextSteps: Address findings and improve product metrics
 ---
 
 ## Reference Files
@@ -123,6 +138,11 @@ How your metrics compare to industry standards
 - [references/benchmarks.md](references/benchmarks.md) - Industry benchmarks by stage
 - [references/warning-signs.md](references/warning-signs.md) - Warning signs to watch
 
+lifecycle: build
+category: product
+outputSummary: Product health assessment with metrics and recommendations
+relatedAfter: kpi-tracking,cohort-analysis
+nextSteps: Address findings and improve product metrics
 ---
 
 ## Related Skills

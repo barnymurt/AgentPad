@@ -1,6 +1,12 @@
 ---
 name: user-persona-creation
 description: Create structured, evidence-based user personas for SaaS and digital products. Use when the user asks to create personas, understand their users, define their target audience, segment their market, identify user types, or asks "who is my user?" or "who am I building for?" Covers behavior-driven persona creation, jobs-to-be-done mapping, pain/gain analysis, technology adoption positioning, and SaaS-specific attributes like adoption triggers, churn signals, and willingness to pay.
+lifecycle: discovery
+category: research
+relatedBefore: requirements-elicitation,interview-guide-creation
+relatedAfter: user-journey-mapping,feature-prioritization
+outputSummary: Detailed user persona cards with demographics, goals, pain points, behavior patterns, and quotes
+nextSteps: Map out the user journey with user-journey-mapping, then prioritize features based on persona needs using feature-prioritization
 ---
 
 # User Persona Creation

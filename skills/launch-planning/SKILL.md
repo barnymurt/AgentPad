@@ -1,6 +1,12 @@
 ---
 name: launch-planning
 description: Coordinate launch activities into a timeline with milestones and owners. Use when the user wants to plan a product launch, needs a launch timeline, asks when to start marketing, or needs to coordinate cross-functional launch activities. Covers launch phases, milestone definition, owner assignment, go/no-go criteria, and contingency planning.
+lifecycle: launch
+category: product
+relatedBefore: roadmap-planning,messaging-framework
+relatedAfter: launch-analytics,paid-acquisition
+outputSummary: Launch timeline with milestones, owner assignments, go/no-go criteria, and contingency plans
+nextSteps: After launch, measure success with launch-analytics and drive growth with paid-acquisition
 ---
 
 # Launch Planning

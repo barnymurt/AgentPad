@@ -1,6 +1,11 @@
 ---
 name: funnel-analysis
 description: Analyze conversion through sequential steps to identify where users drop off and why. Use when the user needs to understand "where are users leaving," "conversion optimization," "funnel visualization," "drop-off analysis," or "identify conversion bottlenecks." Maps user journeys through key steps and identifies opportunities to improve conversion rates.
+lifecycle: iterate
+category: research
+outputSummary: Conversion funnel analysis with bottleneck identification
+relatedAfter: kpi-tracking,cohort-analysis
+nextSteps: Identify bottlenecks and plan improvements with iteration-planning
 ---
 
 # Funnel Analysis

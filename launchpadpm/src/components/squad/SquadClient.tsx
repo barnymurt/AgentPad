@@ -18,7 +18,7 @@ interface Skill {
 }
 
 export default function SquadPage({ squadId }: { squadId: string }) {
-  const { darkMode } = useAppLayout();
+  const { isDarkMode } = useAppLayout();
   const [squad, setSquad] = useState<Squad | null>(null);
   const [skills, setSkills] = useState<Skill[]>([]);
   const [loading, setLoading] = useState(true);
@@ -41,15 +41,15 @@ export default function SquadPage({ squadId }: { squadId: string }) {
       .catch(() => setLoading(false));
   }, [squadId]);
 
-  const textColor = darkMode ? 'text-white' : 'text-gray-900';
-  const mutedColor = darkMode ? 'text-gray-400' : 'text-gray-600';
-  const cardBg = darkMode ? 'bg-[#1a1a2e]' : 'bg-[#F9FAFB]';
-  const cardBorder = darkMode ? 'border-[#2a2a3e]' : 'border-gray-200';
-  const inputBg = darkMode ? 'bg-[#0f0f1a]' : 'bg-gray-100';
+  const textColor = isDarkMode ? 'text-white' : 'text-gray-900';
+  const mutedColor = isDarkMode ? 'text-gray-400' : 'text-gray-600';
+  const cardBg = isDarkMode ? 'bg-[#1a1a2e]' : 'bg-[#F9FAFB]';
+  const cardBorder = isDarkMode ? 'border-[#2a2a3e]' : 'border-gray-200';
+  const inputBg = isDarkMode ? 'bg-[#0f0f1a]' : 'bg-gray-100';
 
   if (loading) {
     return (
-      <AppLayout title="Loading..." key={darkMode ? 'dark' : 'light'}>
+      <AppLayout title="Loading...">
         <div className="flex justify-center py-12">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
         </div>
@@ -59,7 +59,7 @@ export default function SquadPage({ squadId }: { squadId: string }) {
 
   if (!squad) {
     return (
-      <AppLayout title="Squad Not Found" key={darkMode ? 'dark' : 'light'}>
+      <AppLayout title="Squad Not Found">
         <div className="text-center py-12">
           <p className={`${mutedColor} mb-4`}>Squad "{squadId}" not found</p>
           <Link href="/dashboard" className="text-blue-500 hover:underline">
@@ -71,7 +71,7 @@ export default function SquadPage({ squadId }: { squadId: string }) {
   }
 
   return (
-    <AppLayout title={`${squad.name} Squad`} key={darkMode ? 'dark' : 'light'}>
+    <AppLayout title={`${squad.name} Squad`}>
       <div className="space-y-6">
         {/* Squad Info */}
         <div className={`${cardBg} ${cardBorder} border rounded-xl p-6`}>

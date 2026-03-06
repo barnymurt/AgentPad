@@ -1,6 +1,12 @@
 ---
 name: monitoring-observability
 description: Set up monitoring and observability. Use when need production monitoring, want alerting, or need debugging tools. Covers logs, metrics, tracing, and alerts.
+lifecycle: build
+category: engineering
+outputSummary: Monitoring and observability setup with alerts and dashboards
+relatedAfter: performance-tuning,alerting-setup
+nextSteps: Set up alerts and respond to incidents
+specialization: fullstack
 ---
 
 # Monitoring & Observability

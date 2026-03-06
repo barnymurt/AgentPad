@@ -1,6 +1,11 @@
 ---
 name: kpi-tracking
 description: Define and track key performance indicators for your product. Use when the user needs to establish what metrics matter, set KPI targets, or track progress over time. Includes KPI frameworks, common metrics by business model, and how to communicate KPI progress.
+lifecycle: iterate
+category: product
+outputSummary: KPI tracking framework with metrics dashboard and alerts
+relatedAfter: metrics-dashboard-creation,iteration-planning
+nextSteps: Monitor metrics and iterate based on data
 ---
 
 # KPI Tracking
@@ -37,6 +42,11 @@ Use when:
 | Revenue | MRR, ARPU, LTV |
 | Engagement | Sessions, duration, features used |
 
+lifecycle: iterate
+category: product
+outputSummary: KPI tracking framework with metrics dashboard and alerts
+relatedAfter: metrics-dashboard-creation,iteration-planning
+nextSteps: Monitor metrics and iterate based on data
 ---
 
 ## Output Format
@@ -77,6 +87,11 @@ Reporting format
 Stakeholders
 Frequency
 
+lifecycle: iterate
+category: product
+outputSummary: KPI tracking framework with metrics dashboard and alerts
+relatedAfter: metrics-dashboard-creation,iteration-planning
+nextSteps: Monitor metrics and iterate based on data
 ---
 
 ## Reference Files

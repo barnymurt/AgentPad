@@ -19,7 +19,7 @@ interface Metric {
 }
 
 export default function MetricsPage() {
-  const { darkMode } = useAppLayout();
+  const { isDarkMode } = useAppLayout();
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -33,10 +33,10 @@ export default function MetricsPage() {
       .catch(() => setLoading(false));
   }, []);
 
-  const textColor = darkMode ? 'text-white' : 'text-gray-900';
-  const mutedColor = darkMode ? 'text-gray-400' : 'text-gray-600';
-  const cardBg = darkMode ? 'bg-[#1a1a2e]' : 'bg-[#F9FAFB]';
-  const cardBorder = darkMode ? 'border-[#2a2a3e]' : 'border-gray-200';
+  const textColor = isDarkMode ? 'text-white' : 'text-gray-900';
+  const mutedColor = isDarkMode ? 'text-gray-400' : 'text-gray-600';
+  const cardBg = isDarkMode ? 'bg-[#1a1a2e]' : 'bg-[#F9FAFB]';
+  const cardBorder = isDarkMode ? 'border-[#2a2a3e]' : 'border-gray-200';
 
   const completedJobs = jobs.filter(j => j.status === 'completed').length;
   const totalJobs = jobs.length;
@@ -50,7 +50,7 @@ export default function MetricsPage() {
   ];
 
   return (
-    <AppLayout title="Metrics" key={darkMode ? 'dark' : 'light'}>
+    <AppLayout title="Metrics">
       <div className="space-y-6">
         {/* Metrics Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -82,7 +82,7 @@ export default function MetricsPage() {
           ) : (
             <div className="space-y-3">
               {jobs.slice(0, 10).map((job) => (
-                <div key={job.id} className={`flex items-center justify-between p-3 rounded-lg ${darkMode ? 'bg-[#0f0f1a]' : 'bg-gray-50'}`}>
+                <div key={job.id} className={`flex items-center justify-between p-3 rounded-lg ${isDarkMode ? 'bg-[#0f0f1a]' : 'bg-gray-50'}`}>
                   <div className="min-w-0 flex-1">
                     <p className={`${textColor} font-medium truncate`}>
                       {job.skillId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}

@@ -1,6 +1,13 @@
 ---
 name: architecture-design
 description: Produce a system architecture for an early-stage SaaS or digital product. Use when the user asks to design an architecture, plan the technical structure, define system components, choose a tech stack, or map data flows for a product transitioning from validation to build. Covers component design, data flow mapping, auth approach, storage decisions, integration points, and tech stack recommendation at the Container level of the C4 model.
+lifecycle: build
+category: engineering
+relatedBefore: requirements-elicitation,feature-prioritization
+relatedAfter: api-design,data-modeling,security-architecture-review
+outputSummary: System architecture diagram with components, data flows, tech stack recommendations, and integration points
+nextSteps: Implement the architecture with api-design and data-modeling, then review security with security-architecture-review
+specialization: fullstack
 ---
 
 # Architecture Design
