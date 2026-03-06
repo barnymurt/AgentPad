@@ -12,16 +12,20 @@ interface Squad {
 }
 
 interface AppLayoutContextType {
-  darkMode: boolean;
-  toggleDarkMode: () => void;
+  theme: 'dark' | 'light';
+  isDarkMode: boolean;
+  isLightMode: boolean;
+  toggleTheme: () => void;
   squads: Squad[];
   loading: boolean;
   mounted: boolean;
 }
 
 const AppLayoutContext = createContext<AppLayoutContextType>({
-  darkMode: true,
-  toggleDarkMode: () => {},
+  theme: 'dark',
+  isDarkMode: true,
+  isLightMode: false,
+  toggleTheme: () => {},
   squads: [],
   loading: true,
   mounted: false,
@@ -87,25 +91,48 @@ export function AppLayout({ children, title }: AppLayoutProps) {
   const pathname = usePathname();
   const { data: session } = useSession();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [darkMode, setDarkMode] = useState(getInitialDarkMode);
+  const [isDarkMode, setDarkMode] = useState(getInitialDarkMode);
   const [squads, setSquads] = useState<Squad[]>([]);
   const [loading, setLoading] = useState(true);
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set());
   const [mounted, setMounted] = useState(false);
+  const [adminPreviewTier, setAdminPreviewTier] = useState<string | null>(null);
+
+  const userTier = session?.user?.tier as string | undefined;
+  const isAdmin = userTier === 'admin';
+  
+  const effectiveTier = adminPreviewTier || userTier || 'free';
+  const isPremium = effectiveTier === 'premium' || effectiveTier === 'admin';
+  const isBobAI = effectiveTier === 'bobai';
+  const isFree = effectiveTier === 'free' && !isAdmin;
 
   useEffect(() => {
     setMounted(true);
     const savedDarkMode = localStorage.getItem('dashboard-dark-mode');
+    let initialDarkMode: boolean;
     if (savedDarkMode !== null) {
-      setDarkMode(savedDarkMode === 'true');
+      initialDarkMode = savedDarkMode === 'true';
     } else {
-      setDarkMode(window.matchMedia('(prefers-color-scheme: dark)').matches);
+      initialDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+    setDarkMode(initialDarkMode);
+    // Sync .dark class on <html> element
+    if (initialDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
     }
     
     // Load saved expanded categories
     const savedExpanded = localStorage.getItem('sidebar-expanded-categories');
     if (savedExpanded) {
       setExpandedCategories(new Set(JSON.parse(savedExpanded)));
+    }
+    
+    // Load admin preview tier
+    const savedPreviewTier = localStorage.getItem('admin-preview-tier');
+    if (savedPreviewTier) {
+      setAdminPreviewTier(savedPreviewTier);
     }
   }, []);
 
@@ -138,18 +165,49 @@ export function AppLayout({ children, title }: AppLayoutProps) {
     const handleStorageChange = () => {
       const saved = localStorage.getItem('dashboard-dark-mode');
       if (saved !== null) {
-        setDarkMode(saved === 'true');
+        const newDarkMode = saved === 'true';
+        setDarkMode(newDarkMode);
+        if (newDarkMode) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
       }
     };
     window.addEventListener('storage', handleStorageChange);
     return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
+  useEffect(() => {
+    if (adminPreviewTier !== null) {
+      localStorage.setItem('admin-preview-tier', adminPreviewTier);
+    } else {
+      localStorage.removeItem('admin-preview-tier');
+    }
+    // Dispatch event to notify other components
+    window.dispatchEvent(new CustomEvent('adminPreviewTierChange', { detail: adminPreviewTier }));
+  }, [adminPreviewTier]);
+
+  // Toggle .dark class on <html> element for Tailwind class-based dark mode
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [isDarkMode]);
+
   const toggleDarkMode = () => {
-    const newMode = !darkMode;
+    const newMode = !isDarkMode;
     setDarkMode(newMode);
     localStorage.setItem('dashboard-dark-mode', String(newMode));
   };
+
+  const theme: 'dark' | 'light' = isDarkMode ? 'dark' : 'light';
+  const isDarkMode = isDarkMode;
+  const isLightMode = !isDarkMode;
+
+  const toggleTheme = toggleDarkMode;
 
   const toggleCategory = (category: string) => {
     const newExpanded = new Set(expandedCategories);
@@ -166,12 +224,12 @@ export function AppLayout({ children, title }: AppLayoutProps) {
     return squads.filter(sq => categorySquads.includes(sq.id));
   };
 
-  const bgColor = darkMode ? 'bg-[#0f0f1a]' : 'bg-[#F9FAFB]';
-  const sidebarBg = darkMode ? 'bg-[#1a1a2e]' : 'bg-white';
-  const sidebarBorder = darkMode ? 'border-[#2a2a3e]' : 'border-gray-200';
-  const textColor = darkMode ? 'text-white' : 'text-gray-900';
-  const mutedColor = darkMode ? 'text-gray-400' : 'text-gray-600';
-  const hoverBg = darkMode ? 'hover:bg-[#2a2a3e]' : 'hover:bg-gray-100';
+  const bgColor = isDarkMode ? 'bg-[#0f0f1a]' : 'bg-[#F9FAFB]';
+  const sidebarBg = isDarkMode ? 'bg-[#1a1a2e]' : 'bg-white';
+  const sidebarBorder = isDarkMode ? 'border-[#2a2a3e]' : 'border-gray-200';
+  const textColor = isDarkMode ? 'text-white' : 'text-gray-900';
+  const mutedColor = isDarkMode ? 'text-gray-400' : 'text-gray-600';
+  const hoverBg = isDarkMode ? 'hover:bg-[#2a2a3e]' : 'hover:bg-gray-100';
 
   if (!mounted) {
     return (
@@ -183,7 +241,7 @@ export function AppLayout({ children, title }: AppLayoutProps) {
     );
   }
 
-  const contextValue = { darkMode, toggleDarkMode, squads, loading, mounted };
+  const contextValue = { theme, isDarkMode, isLightMode, toggleTheme, squads, loading, mounted };
 
   return (
     <React.Fragment>
@@ -219,9 +277,120 @@ export function AppLayout({ children, title }: AppLayoutProps) {
             </div>
 
             <nav className="flex-1 overflow-y-auto py-4">
+              {/* Quick Links Section */}
+              <div className={`px-3 border-b ${sidebarBorder} pb-4 mb-4`}>
+                {!sidebarCollapsed && (
+                  <div className={`text-xs font-medium uppercase tracking-wider px-3 mb-2 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+                    Quick Links
+                  </div>
+                )}
+                
+                <Link
+                  href="/dashboard"
+                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
+                    pathname === '/dashboard'
+                      ? 'bg-blue-600/20 text-blue-400 border-l-2 border-blue-500'
+                      : isDarkMode 
+                        ? 'text-gray-300 hover:bg-[#2a2a3e] hover:text-white'
+                        : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                  }`}
+                >
+                  <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  {!sidebarCollapsed && <span>Dashboard</span>}
+                </Link>
+
+                <Link
+                  href="/skills"
+                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
+                    pathname === '/skills'
+                      ? 'bg-blue-600/20 text-blue-400 border-l-2 border-blue-500'
+                      : isDarkMode 
+                        ? 'text-gray-300 hover:bg-[#2a2a3e] hover:text-white'
+                        : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                  }`}
+                >
+                  <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                  {!sidebarCollapsed && <span>Skills</span>}
+                </Link>
+
+                <Link
+                  href="/activity"
+                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
+                    pathname === '/activity'
+                      ? 'bg-blue-600/20 text-blue-400 border-l-2 border-blue-500'
+                      : isDarkMode 
+                        ? 'text-gray-300 hover:bg-[#2a2a3e] hover:text-white'
+                        : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                  }`}
+                >
+                  <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  {!sidebarCollapsed && <span>Activity</span>}
+                </Link>
+
+                {isBobAI && (
+                <Link
+                  href="/builder"
+                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
+                    pathname === '/builder'
+                      ? 'bg-blue-600/20 text-blue-400 border-l-2 border-blue-500'
+                      : isDarkMode 
+                        ? 'text-gray-300 hover:bg-[#2a2a3e] hover:text-white'
+                        : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                  }`}
+                >
+                  <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                  {!sidebarCollapsed && <span>AI Builder</span>}
+                </Link>
+                )}
+
+                {isPremium && (
+                <Link
+                  href="/settings/data-sources"
+                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
+                    pathname === '/settings/data-sources'
+                      ? 'bg-blue-600/20 text-blue-400 border-l-2 border-blue-500'
+                      : isDarkMode 
+                        ? 'text-gray-300 hover:bg-[#2a2a3e] hover:text-white'
+                        : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                  }`}
+                >
+                  <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                  </svg>
+                  {!sidebarCollapsed && <span>Data Sources</span>}
+                </Link>
+                )}
+
+                {isPremium && (
+                <Link
+                  href="/metrics"
+                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
+                    pathname === '/metrics'
+                      ? 'bg-blue-600/20 text-blue-400 border-l-2 border-blue-500'
+                      : isDarkMode 
+                        ? 'text-gray-300 hover:bg-[#2a2a3e] hover:text-white'
+                        : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                  }`}
+                >
+                  <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                  </svg>
+                  {!sidebarCollapsed && <span>Metrics</span>}
+                </Link>
+                )}
+              </div>
+
               <div className="px-3 mb-6">
                 {!sidebarCollapsed && (
-                  <div className={`text-xs font-medium uppercase tracking-wider px-3 mb-2 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+                  <div className={`text-xs font-medium uppercase tracking-wider px-3 mb-2 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>
                     Squads
                   </div>
                 )}
@@ -254,13 +423,13 @@ export function AppLayout({ children, title }: AppLayoutProps) {
                             className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
                               pathname === `/squads/${squad.id}`
                                 ? 'bg-blue-600/20 text-blue-400 border-l-2 border-blue-500'
-                                : darkMode 
+                                : isDarkMode 
                                   ? 'text-gray-300 hover:bg-[#2a2a3e] hover:text-white' 
                                   : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
                             }`}
                           >
                             <div className={`w-1.5 h-1.5 rounded-full ${
-                              pathname === `/squads/${squad.id}` ? 'bg-blue-500' : darkMode ? 'bg-gray-500' : 'bg-gray-400'
+                              pathname === `/squads/${squad.id}` ? 'bg-blue-500' : isDarkMode ? 'bg-gray-500' : 'bg-gray-400'
                             }`} />
                             <span className="truncate">{squad.name.replace(/-/g, ' ')}</span>
                           </Link>
@@ -273,7 +442,7 @@ export function AppLayout({ children, title }: AppLayoutProps) {
                         <button
                           onClick={() => toggleCategory(category.name)}
                           className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
-                            darkMode 
+                            isDarkMode 
                               ? 'text-gray-500 hover:bg-[#2a2a3e] hover:text-white'
                               : 'text-gray-500 hover:bg-gray-200 hover:text-gray-900'
                           }`}
@@ -293,7 +462,7 @@ export function AppLayout({ children, title }: AppLayoutProps) {
                             className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
                               pathname === `/squads/${squad.id}`
                                 ? 'bg-blue-600/20 text-blue-400'
-                                : darkMode 
+                                : isDarkMode 
                                   ? 'text-gray-500 hover:bg-[#2a2a3e] hover:text-white'
                                   : 'text-gray-600 hover:bg-gray-200 hover:text-gray-900'
                             }`}
@@ -305,7 +474,7 @@ export function AppLayout({ children, title }: AppLayoutProps) {
                         <button
                           onClick={() => toggleCategory(category.name)}
                           className={`w-6 h-6 rounded flex items-center justify-center transition-colors ${
-                            darkMode 
+                            isDarkMode 
                               ? 'text-gray-600 hover:bg-[#2a2a3e] hover:text-white'
                               : 'text-gray-400 hover:bg-gray-200 hover:text-gray-900'
                           }`}
@@ -321,91 +490,19 @@ export function AppLayout({ children, title }: AppLayoutProps) {
                 ))}
               </div>
 
-              <div className={`px-3 border-t ${sidebarBorder} pt-4`}>
-                {!sidebarCollapsed && (
-                  <div className={`text-xs font-medium uppercase tracking-wider px-3 mb-2 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
-                    Quick Links
-                  </div>
-                )}
-                
-                <Link
-                  href="/dashboard"
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
-                    pathname === '/dashboard'
-                      ? 'bg-blue-600/20 text-blue-400 border-l-2 border-blue-500'
-                      : darkMode 
-                        ? 'text-gray-300 hover:bg-[#2a2a3e] hover:text-white'
-                        : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
-                  }`}
-                >
-                  <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                  </svg>
-                  {!sidebarCollapsed && <span>Dashboard</span>}
-                </Link>
-
-                <Link
-                  href="/skills"
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
-                    pathname === '/skills'
-                      ? 'bg-blue-600/20 text-blue-400 border-l-2 border-blue-500'
-                      : darkMode 
-                        ? 'text-gray-300 hover:bg-[#2a2a3e] hover:text-white'
-                        : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
-                  }`}
-                >
-                  <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
-                  {!sidebarCollapsed && <span>Skills</span>}
-                </Link>
-
-                <Link
-                  href="/metrics"
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
-                    pathname === '/metrics'
-                      ? 'bg-blue-600/20 text-blue-400 border-l-2 border-blue-500'
-                      : darkMode 
-                        ? 'text-gray-300 hover:bg-[#2a2a3e] hover:text-white'
-                        : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
-                  }`}
-                >
-                  <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                  </svg>
-                  {!sidebarCollapsed && <span>Metrics</span>}
-                </Link>
-              </div>
-
               <div className={`px-3 border-t ${sidebarBorder} pt-4 mt-4`}>
                 {!sidebarCollapsed && (
-                  <div className={`text-xs font-medium uppercase tracking-wider px-3 mb-2 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+                  <div className={`text-xs font-medium uppercase tracking-wider px-3 mb-2 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>
                     Settings
                   </div>
                 )}
                 
                 <Link
-                  href="/settings/data-sources"
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
-                    pathname === '/settings/data-sources'
-                      ? 'bg-blue-600/20 text-blue-400 border-l-2 border-blue-500'
-                      : darkMode 
-                        ? 'text-gray-300 hover:bg-[#2a2a3e] hover:text-white'
-                        : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
-                  }`}
-                >
-                  <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M16 7V4a1 1 0 00-1-1h-2a1 1 0 00-1 1v3a4 4 0 00-4 4v5a2 2 0 002 2h6a2 2 0 002-2v-5a4 4 0 00-4-4V7h-2zM8 4a1 1 0 011-1h2a1 1 0 011 1v3a4 4 0 01-4 4v5a2 2 0 01-2 2H4a2 2 0 01-2-2v-5a4 4 0 014-4V4z"/>
-                  </svg>
-                  {!sidebarCollapsed && <span>Data Sources</span>}
-                </Link>
-
-                <Link
                   href="/settings/notion"
                   className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
                     pathname === '/settings/notion'
                       ? 'bg-blue-600/20 text-blue-400 border-l-2 border-blue-500'
-                      : darkMode 
+                      : isDarkMode 
                         ? 'text-gray-300 hover:bg-[#2a2a3e] hover:text-white'
                         : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
                   }`}
@@ -420,7 +517,7 @@ export function AppLayout({ children, title }: AppLayoutProps) {
                 <button
                   onClick={() => window.dispatchEvent(new CustomEvent('openUpgradeModal'))}
                   className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
-                    darkMode 
+                    isDarkMode 
                       ? 'text-gray-300 hover:bg-[#2a2a3e] hover:text-white'
                       : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
                   }`}
@@ -458,6 +555,58 @@ export function AppLayout({ children, title }: AppLayoutProps) {
                 </button>
               )}
 
+              {/* Admin Preview Toggle */}
+              {isAdmin && (
+                <div className={`px-3 py-2 border-t ${sidebarBorder}`}>
+                  {!sidebarCollapsed && (
+                    <div className={`text-xs font-medium uppercase tracking-wider px-3 mb-2 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+                      Preview Mode
+                    </div>
+                  )}
+                  <div className={`flex ${sidebarCollapsed ? 'flex-col' : ''} gap-2`}>
+                    <button
+                      onClick={() => setAdminPreviewTier(null)}
+                      className={`flex-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                        !adminPreviewTier 
+                          ? 'bg-blue-500 text-white' 
+                          : isDarkMode 
+                            ? 'bg-[#2a2a3e] text-gray-300 hover:bg-[#3a3a4e]' 
+                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                      }`}
+                      title="View as yourself"
+                    >
+                      {sidebarCollapsed ? 'Me' : 'My View'}
+                    </button>
+                    <button
+                      onClick={() => setAdminPreviewTier('free')}
+                      className={`flex-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                        adminPreviewTier === 'free' 
+                          ? 'bg-green-500 text-white' 
+                          : isDarkMode 
+                            ? 'bg-[#2a2a3e] text-gray-300 hover:bg-[#3a3a4e]' 
+                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                      }`}
+                      title="Preview free user experience"
+                    >
+                      {sidebarCollapsed ? 'Free' : 'Free'}
+                    </button>
+                    <button
+                      onClick={() => setAdminPreviewTier('premium')}
+                      className={`flex-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                        adminPreviewTier === 'premium' 
+                          ? 'bg-purple-500 text-white' 
+                          : isDarkMode 
+                            ? 'bg-[#2a2a3e] text-gray-300 hover:bg-[#3a3a4e]' 
+                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                      }`}
+                      title="Preview premium user experience"
+                    >
+                      {sidebarCollapsed ? 'Pro' : 'Premium'}
+                    </button>
+                  </div>
+                </div>
+              )}
+
               <div className={`flex items-center gap-3 ${sidebarCollapsed ? 'justify-center' : ''}`}>
                 <div className="w-8 h-8 bg-gradient-to-br from-teal-400 to-blue-500 rounded-full flex items-center justify-center text-white text-sm font-medium flex-shrink-0">
                   {session?.user?.name?.charAt(0).toUpperCase() || session?.user?.email?.charAt(0).toUpperCase() || 'U'}
@@ -467,7 +616,7 @@ export function AppLayout({ children, title }: AppLayoutProps) {
                     <div className={`text-sm truncate ${textColor}`}>
                       {session?.user?.name || session?.user?.email?.split('@')[0] || 'User'}
                     </div>
-                    <div className={`text-xs truncate ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+                    <div className={`text-xs truncate ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>
                       {session?.user?.email || ''}
                     </div>
                     {session?.user?.tier && (
@@ -488,7 +637,7 @@ export function AppLayout({ children, title }: AppLayoutProps) {
                 <button
                   onClick={() => signOut({ callbackUrl: '/' })}
                   className={`w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
-                    darkMode 
+                    isDarkMode 
                       ? 'text-gray-400 hover:bg-[#2a2a3e] hover:text-white' 
                       : 'text-gray-500 hover:bg-gray-100 hover:text-gray-900'
                   }`}
@@ -511,19 +660,19 @@ export function AppLayout({ children, title }: AppLayoutProps) {
               <button
                 onClick={toggleDarkMode}
                 className={`p-2 rounded-lg transition-colors ${
-                  darkMode 
+                  isDarkMode 
                     ? 'bg-[#1a1a2e] text-yellow-400 hover:bg-[#2a2a3e]' 
                     : 'bg-white text-gray-600 hover:bg-gray-100 shadow-md border border-gray-200'
                 }`}
                 aria-label="Toggle theme"
               >
-                {darkMode ? (
+                {isDarkMode ? (
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
                   </svg>
                 ) : (
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
                   </svg>
                 )}
               </button>
@@ -542,10 +691,10 @@ export function AppLayout({ children, title }: AppLayoutProps) {
   );
 }
 
-export function PageCard({ children, darkMode, title }: { children: React.ReactNode; darkMode: boolean; title?: string }) {
-  const cardBg = darkMode ? 'bg-[#1a1a2e]' : 'bg-[#F9FAFB]';
-  const cardBorder = darkMode ? 'border-[#2a2a3e]' : 'border-gray-200';
-  const textColor = darkMode ? 'text-white' : 'text-gray-900';
+export function PageCard({ children, isDarkMode, title }: { children: React.ReactNode; isDarkMode: boolean; title?: string }) {
+  const cardBg = isDarkMode ? 'bg-[#1a1a2e]' : 'bg-[#F9FAFB]';
+  const cardBorder = isDarkMode ? 'border-[#2a2a3e]' : 'border-gray-200';
+  const textColor = isDarkMode ? 'text-white' : 'text-gray-900';
 
   return (
     <div className={`${cardBg} ${cardBorder} rounded-xl border p-6`}>
