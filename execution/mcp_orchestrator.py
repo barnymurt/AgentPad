@@ -222,6 +222,12 @@ def _create_with_mcp(mcp_name: str, skill_name: str, title: str,
         return _create_miro(skill_name, title, content)
     elif mcp_name == 'linear':
         return _create_linear(skill_name, title, content)
+    elif mcp_name == 'github':
+        return _create_github(skill_name, title, content)
+    elif mcp_name == 'vercel':
+        return _create_vercel(skill_name, title, content)
+    elif mcp_name == 'jira':
+        return _create_jira(skill_name, title, content)
     else:
         return {
             'success': False, 
@@ -322,6 +328,51 @@ def _create_linear(skill_name: str, title: str, content: Any) -> Dict[str, Any]:
         }
 
 
+def _create_github(skill_name: str, title: str, content: Any) -> Dict[str, Any]:
+    """Create GitHub deliverable"""
+    try:
+        from github_mcp import create_github_deliverable
+        content_str = str(content) if not isinstance(content, str) else content
+        return create_github_deliverable(skill_name, title, content_str)
+    except Exception as e:
+        return {
+            'success': False,
+            'error': 'mcp_error',
+            'message': str(e),
+            'fallback': 'notion_document'
+        }
+
+
+def _create_vercel(skill_name: str, title: str, content: Any) -> Dict[str, Any]:
+    """Create Vercel deliverable"""
+    try:
+        from vercel_mcp import create_vercel_deliverable
+        content_str = str(content) if not isinstance(content, str) else content
+        return create_vercel_deliverable(skill_name, title, content_str)
+    except Exception as e:
+        return {
+            'success': False,
+            'error': 'mcp_error',
+            'message': str(e),
+            'fallback': 'notion_document'
+        }
+
+
+def _create_jira(skill_name: str, title: str, content: Any) -> Dict[str, Any]:
+    """Create Jira deliverable"""
+    try:
+        from jira_mcp import create_jira_deliverable
+        content_str = str(content) if not isinstance(content, str) else content
+        return create_jira_deliverable(skill_name, title, content_str)
+    except Exception as e:
+        return {
+            'success': False,
+            'error': 'mcp_error',
+            'message': str(e),
+            'fallback': 'notion_document'
+        }
+
+
 def _format_as_markdown(skill_name: str, title: str, content: Any) -> str:
     """Format content as markdown fallback"""
     if isinstance(content, str):
@@ -374,6 +425,30 @@ def get_available_mcps() -> Dict[str, bool]:
         status['linear'] = True
     except:
         status['linear'] = False
+    
+    # Check GitHub
+    try:
+        from github_mcp import GitHubMCP
+        GitHubMCP()
+        status['github'] = True
+    except:
+        status['github'] = False
+    
+    # Check Vercel
+    try:
+        from vercel_mcp import VercelMCP
+        VercelMCP()
+        status['vercel'] = True
+    except:
+        status['vercel'] = False
+    
+    # Check Jira
+    try:
+        from jira_mcp import JiraMCP
+        JiraMCP()
+        status['jira'] = True
+    except:
+        status['jira'] = False
     
     # Others not implemented yet
     status['google_docs'] = False
