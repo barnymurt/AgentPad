@@ -105,20 +105,6 @@ export function AppLayout({ children, title }: AppLayoutProps) {
 
   useEffect(() => {
     setMounted(true);
-    const savedDarkMode = localStorage.getItem('dashboard-dark-mode');
-    let initialDarkMode: boolean;
-    if (savedDarkMode !== null) {
-      initialDarkMode = savedDarkMode === 'true';
-    } else {
-      initialDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    }
-    setDarkMode(initialDarkMode);
-    // Sync .dark class on <html> element
-    if (initialDarkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
     
     // Load saved expanded categories
     const savedExpanded = localStorage.getItem('sidebar-expanded-categories');
