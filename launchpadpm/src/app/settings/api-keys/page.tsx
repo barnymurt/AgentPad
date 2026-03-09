@@ -223,6 +223,7 @@ export default function APIKeysPage() {
   const [saved, setSaved] = useState<Set<string>>(new Set());
   const [testing, setTesting] = useState<string | null>(null);
   const [testResults, setTestResults] = useState<Record<string, { success: boolean; message: string }>>({});
+  const [docsMCP, setDocsMCP] = useState<MCPConfig | null>(null);
 
   const bgColor = isDarkMode ? 'bg-[#1a1a2e]' : 'bg-[#F9FAFB]';
   const borderColor = isDarkMode ? 'border-[#2a2a3e]' : 'border-gray-200';
@@ -358,16 +359,13 @@ export default function APIKeysPage() {
                     
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
                       {mcp.features.map((feature, i) => (
-                        <a
+                        <button
                           key={i}
-                          href={mcp.docUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                          onClick={() => setDocsMCP(mcp)}
                           className={`p-3 ${cardBg} rounded-lg text-center hover:bg-blue-50 dark:hover:bg-blue-900/20 cursor-pointer group transition-colors`}
                         >
                           <p className={`text-xs ${mutedColor} group-hover:text-blue-500`}>{feature}</p>
-                          <p className={`text-[10px] ${mutedColor} mt-1 opacity-0 group-hover:opacity-100 transition-opacity`}>Learn more →</p>
-                        </a>
+                        </button>
                       ))}
                     </div>
 
@@ -466,6 +464,81 @@ export default function APIKeysPage() {
             );
           })}
         </div>
+
+        {/* Docs Modal */}
+        {docsMCP && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <div 
+              className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+              onClick={() => setDocsMCP(null)}
+            />
+            <div className={`relative ${cardBg} rounded-xl border ${borderColor} max-w-2xl w-full max-h-[80vh] overflow-hidden`}>
+              <div className="flex items-center justify-between p-4 border-b ${borderColor}">
+                <div className="flex items-center gap-3">
+                  <div className={`w-10 h-10 bg-gradient-to-br ${docsMCP.bgGradient} rounded-lg flex items-center justify-center`}>
+                    <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d={docsMCP.icon} />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className={`font-semibold ${textColor}`}>{docsMCP.name} Integration</h3>
+                    <p className={`text-sm ${mutedColor}`}>{docsMCP.description}</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setDocsMCP(null)}
+                  className={`p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 ${mutedColor}`}
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+              
+              <div className="p-6 overflow-y-auto max-h-[60vh]">
+                <p className={`text-sm ${mutedColor} mb-4`}>{docsMCP.longDescription}</p>
+                
+                <h4 className={`font-medium ${textColor} mb-2`}>Key Features</h4>
+                <ul className="space-y-2 mb-6">
+                  {docsMCP.features.map((feature, i) => (
+                    <li key={i} className="flex items-center gap-2">
+                      <svg className="w-4 h-4 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className={`text-sm ${textColor}`}>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <h4 className={`font-medium ${textColor} mb-2`}>Required Credentials</h4>
+                <ul className="space-y-2 mb-6">
+                  {docsMCP.envVars.map((env, i) => (
+                    <li key={i} className="flex items-center gap-2">
+                      <svg className="w-4 h-4 text-blue-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+                      </svg>
+                      <span className={`text-sm ${textColor}`}>{env.label}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                {docsMCP.docUrl && (
+                  <a
+                    href={docsMCP.docUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                  >
+                    View Full Documentation
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </AppLayout>
   );
