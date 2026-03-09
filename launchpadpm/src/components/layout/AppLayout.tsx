@@ -497,74 +497,6 @@ export function AppLayout({ children, title }: AppLayoutProps) {
                 </button>
               )}
 
-              {/* Admin Preview Toggle */}
-              {isAdmin && (
-                <div className={`px-3 py-2 border-t ${sidebarBorder}`}>
-                  {!sidebarCollapsed && (
-                    <div className={`text-xs font-medium uppercase tracking-wider px-3 mb-2 text-gray-400`}>
-                      Preview Plan
-                    </div>
-                  )}
-                  <div className={`grid grid-cols-2 gap-1.5`}>
-                    <button
-                      onClick={() => setAdminPreviewTier(null)}
-                      className={`px-2 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                        !adminPreviewTier 
-                          ? 'bg-blue-500 text-white' 
-                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                      }`}
-                      title="View as yourself"
-                    >
-                      {sidebarCollapsed ? 'Me' : 'Me'}
-                    </button>
-                    <button
-                      onClick={() => setAdminPreviewTier('free')}
-                      className={`px-2 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                        adminPreviewTier === 'free' 
-                          ? 'bg-green-500 text-white' 
-                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                      }`}
-                      title="Preview free user experience"
-                    >
-                      Starter
-                    </button>
-                    <button
-                      onClick={() => setAdminPreviewTier('builder')}
-                      className={`px-2 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                        adminPreviewTier === 'builder' 
-                          ? 'bg-blue-500 text-white' 
-                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                      }`}
-                      title="Preview builder user experience"
-                    >
-                      Builder
-                    </button>
-                    <button
-                      onClick={() => setAdminPreviewTier('premium')}
-                      className={`px-2 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                        adminPreviewTier === 'premium' 
-                          ? 'bg-purple-500 text-white' 
-                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                      }`}
-                      title="Preview premium (Pro) user experience"
-                    >
-                      Pro
-                    </button>
-                    <button
-                      onClick={() => setAdminPreviewTier('elite')}
-                      className={`px-2 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                        adminPreviewTier === 'elite' 
-                          ? 'bg-indigo-500 text-white' 
-                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                      }`}
-                      title="Preview elite user experience"
-                    >
-                      Elite
-                    </button>
-                  </div>
-                </div>
-              )}
-
               <div className={`flex items-center gap-3 ${sidebarCollapsed ? 'justify-center' : ''}`}>
                 <div className="w-8 h-8 bg-gradient-to-br from-teal-400 to-blue-500 rounded-full flex items-center justify-center text-white text-sm font-medium flex-shrink-0">
                   {session?.user?.name?.charAt(0).toUpperCase() || session?.user?.email?.charAt(0).toUpperCase() || 'U'}
@@ -591,6 +523,65 @@ export function AppLayout({ children, title }: AppLayoutProps) {
                          effectiveTier === 'builder' ? 'Builder' : 
                          'Starter'}
                         {adminPreviewTier && ' (Preview)'}
+                      </div>
+                    )}
+                    
+                    {/* Admin Preview Buttons - Under user email */}
+                    {isAdmin && (
+                      <div className="mt-2 pt-2 border-t border-gray-100">
+                        <div className="text-xs text-gray-400 mb-1.5">Preview:</div>
+                        <div className="grid grid-cols-2 gap-1">
+                          <button
+                            onClick={() => setAdminPreviewTier(null)}
+                            className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
+                              !adminPreviewTier 
+                                ? 'bg-blue-500 text-white' 
+                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                            }`}
+                          >
+                            Me
+                          </button>
+                          <button
+                            onClick={() => setAdminPreviewTier('free')}
+                            className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
+                              adminPreviewTier === 'free' 
+                                ? 'bg-green-500 text-white' 
+                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                            }`}
+                          >
+                            Starter
+                          </button>
+                          <button
+                            onClick={() => setAdminPreviewTier('builder')}
+                            className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
+                              adminPreviewTier === 'builder' 
+                                ? 'bg-blue-500 text-white' 
+                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                            }`}
+                          >
+                            Builder
+                          </button>
+                          <button
+                            onClick={() => setAdminPreviewTier('premium')}
+                            className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
+                              adminPreviewTier === 'premium' 
+                                ? 'bg-purple-500 text-white' 
+                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                            }`}
+                          >
+                            Pro
+                          </button>
+                          <button
+                            onClick={() => setAdminPreviewTier('elite')}
+                            className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
+                              adminPreviewTier === 'elite' 
+                                ? 'bg-indigo-500 text-white' 
+                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                            }`}
+                          >
+                            Elite
+                          </button>
+                        </div>
                       </div>
                     )}
                   </div>
