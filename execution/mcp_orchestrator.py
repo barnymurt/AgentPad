@@ -228,6 +228,12 @@ def _create_with_mcp(mcp_name: str, skill_name: str, title: str,
         return _create_vercel(skill_name, title, content)
     elif mcp_name == 'jira':
         return _create_jira(skill_name, title, content)
+    elif mcp_name == 'hubspot':
+        return _create_hubspot(skill_name, title, content)
+    elif mcp_name == 'stripe':
+        return _create_stripe(skill_name, title, content)
+    elif mcp_name == 'google_analytics':
+        return _create_google_analytics(skill_name, title, content)
     else:
         return {
             'success': False, 
@@ -373,6 +379,51 @@ def _create_jira(skill_name: str, title: str, content: Any) -> Dict[str, Any]:
         }
 
 
+def _create_hubspot(skill_name: str, title: str, content: Any) -> Dict[str, Any]:
+    """Create HubSpot deliverable"""
+    try:
+        from hubspot_mcp import create_hubspot_deliverable
+        content_str = str(content) if not isinstance(content, str) else content
+        return create_hubspot_deliverable(skill_name, title, content_str)
+    except Exception as e:
+        return {
+            'success': False,
+            'error': 'mcp_error',
+            'message': str(e),
+            'fallback': 'notion_document'
+        }
+
+
+def _create_stripe(skill_name: str, title: str, content: Any) -> Dict[str, Any]:
+    """Create Stripe deliverable"""
+    try:
+        from stripe_mcp import create_stripe_deliverable
+        content_str = str(content) if not isinstance(content, str) else content
+        return create_stripe_deliverable(skill_name, title, content_str)
+    except Exception as e:
+        return {
+            'success': False,
+            'error': 'mcp_error',
+            'message': str(e),
+            'fallback': 'notion_document'
+        }
+
+
+def _create_google_analytics(skill_name: str, title: str, content: Any) -> Dict[str, Any]:
+    """Create Google Analytics deliverable"""
+    try:
+        from analytics_mcp import create_analytics_deliverable
+        content_str = str(content) if not isinstance(content, str) else content
+        return create_analytics_deliverable(skill_name, title, content_str)
+    except Exception as e:
+        return {
+            'success': False,
+            'error': 'mcp_error',
+            'message': str(e),
+            'fallback': 'notion_document'
+        }
+
+
 def _format_as_markdown(skill_name: str, title: str, content: Any) -> str:
     """Format content as markdown fallback"""
     if isinstance(content, str):
@@ -449,6 +500,30 @@ def get_available_mcps() -> Dict[str, bool]:
         status['jira'] = True
     except:
         status['jira'] = False
+    
+    # Check HubSpot
+    try:
+        from hubspot_mcp import HubSpotMCP
+        HubSpotMCP()
+        status['hubspot'] = True
+    except:
+        status['hubspot'] = False
+    
+    # Check Stripe
+    try:
+        from stripe_mcp import StripeMCP
+        StripeMCP()
+        status['stripe'] = True
+    except:
+        status['stripe'] = False
+    
+    # Check Google Analytics
+    try:
+        from analytics_mcp import AnalyticsMCP
+        AnalyticsMCP()
+        status['google_analytics'] = True
+    except:
+        status['google_analytics'] = False
     
     # Others not implemented yet
     status['google_docs'] = False
