@@ -234,6 +234,10 @@ def _create_with_mcp(mcp_name: str, skill_name: str, title: str,
         return _create_stripe(skill_name, title, content)
     elif mcp_name == 'google_analytics':
         return _create_google_analytics(skill_name, title, content)
+    elif mcp_name == 'google_docs':
+        return _create_google_docs(skill_name, title, content)
+    elif mcp_name == 'discord':
+        return _create_discord(skill_name, title, content)
     else:
         return {
             'success': False, 
@@ -424,6 +428,36 @@ def _create_google_analytics(skill_name: str, title: str, content: Any) -> Dict[
         }
 
 
+def _create_google_docs(skill_name: str, title: str, content: Any) -> Dict[str, Any]:
+    """Create Google Docs deliverable"""
+    try:
+        from docs_mcp import create_docs_deliverable
+        content_str = str(content) if not isinstance(content, str) else content
+        return create_docs_deliverable(skill_name, title, content_str)
+    except Exception as e:
+        return {
+            'success': False,
+            'error': 'mcp_error',
+            'message': str(e),
+            'fallback': 'markdown_document'
+        }
+
+
+def _create_discord(skill_name: str, title: str, content: Any) -> Dict[str, Any]:
+    """Create Discord deliverable"""
+    try:
+        from discord_mcp import create_discord_deliverable
+        content_str = str(content) if not isinstance(content, str) else content
+        return create_discord_deliverable(skill_name, title, content_str)
+    except Exception as e:
+        return {
+            'success': False,
+            'error': 'mcp_error',
+            'message': str(e),
+            'fallback': 'notion_document'
+        }
+
+
 def _format_as_markdown(skill_name: str, title: str, content: Any) -> str:
     """Format content as markdown fallback"""
     if isinstance(content, str):
@@ -525,8 +559,21 @@ def get_available_mcps() -> Dict[str, bool]:
     except:
         status['google_analytics'] = False
     
-    # Others not implemented yet
-    status['google_docs'] = False
+    # Check Google Docs
+    try:
+        from docs_mcp import DocsMCP
+        DocsMCP()
+        status['google_docs'] = True
+    except:
+        status['google_docs'] = False
+    
+    # Check Discord
+    try:
+        from discord_mcp import DiscordMCP
+        DiscordMCP()
+        status['discord'] = True
+    except:
+        status['discord'] = False
     
     return status
 
