@@ -34,10 +34,7 @@ const AppLayoutContext = createContext<AppLayoutContextType>({
 export const useAppLayout = () => useContext(AppLayoutContext);
 
 function getInitialDarkMode(): boolean {
-  if (typeof window === 'undefined') return true;
-  const saved = localStorage.getItem('dashboard-dark-mode');
-  if (saved !== null) return saved === 'true';
-  return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  return false;
 }
 
 interface AppLayoutProps {
@@ -91,7 +88,7 @@ export function AppLayout({ children, title }: AppLayoutProps) {
   const pathname = usePathname();
   const { data: session } = useSession();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [isDarkMode, setDarkMode] = useState(getInitialDarkMode);
+  const isDarkMode = false;
   const [squads, setSquads] = useState<Squad[]>([]);
   const [loading, setLoading] = useState(true);
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set());
@@ -162,23 +159,6 @@ export function AppLayout({ children, title }: AppLayoutProps) {
   }, [pathname]);
 
   useEffect(() => {
-    const handleStorageChange = () => {
-      const saved = localStorage.getItem('dashboard-dark-mode');
-      if (saved !== null) {
-        const newDarkMode = saved === 'true';
-        setDarkMode(newDarkMode);
-        if (newDarkMode) {
-          document.documentElement.classList.add('dark');
-        } else {
-          document.documentElement.classList.remove('dark');
-        }
-      }
-    };
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
-  }, []);
-
-  useEffect(() => {
     if (adminPreviewTier !== null) {
       localStorage.setItem('admin-preview-tier', adminPreviewTier);
     } else {
@@ -223,12 +203,15 @@ export function AppLayout({ children, title }: AppLayoutProps) {
     return squads.filter(sq => categorySquads.includes(sq.id));
   };
 
-  const bgColor = isDarkMode ? 'bg-[#0f0f1a]' : 'bg-[#F9FAFB]';
-  const sidebarBg = isDarkMode ? 'bg-[#1a1a2e]' : 'bg-white';
-  const sidebarBorder = isDarkMode ? 'border-[#2a2a3e]' : 'border-gray-200';
-  const textColor = isDarkMode ? 'text-white' : 'text-gray-900';
-  const mutedColor = isDarkMode ? 'text-gray-400' : 'text-gray-600';
-  const hoverBg = isDarkMode ? 'hover:bg-[#2a2a3e]' : 'hover:bg-gray-100';
+  const bgColor = 'bg-[#F9FAFB]';
+  const sidebarBg = 'bg-white';
+  const sidebarBorder = 'border-gray-200';
+  const textColor = 'text-gray-900';
+  const mutedColor = 'text-gray-600';
+  const hoverBg = 'hover:bg-gray-100';
+  const theme: 'dark' | 'light' = 'light';
+  const isLightMode = true;
+  const toggleTheme = () => {};
 
   if (!mounted) {
     return (
