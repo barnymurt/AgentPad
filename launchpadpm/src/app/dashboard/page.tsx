@@ -53,7 +53,7 @@ const defaultLifecyclePhases = [
 export default function DashboardPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const { isDarkMode, squads: contextSquads } = useAppLayout();
+  const { squads: contextSquads } = useAppLayout();
   const [userInput, setUserInput] = useState('');
   const [project, setProject] = useState<Project | null>(null);
   const [showNewProject, setShowNewProject] = useState(false);
@@ -181,21 +181,21 @@ export default function DashboardPage() {
     setNewProjectName('');
   };
 
-  const textColor = isDarkMode ? 'text-white' : 'text-gray-900';
-  const mutedColor = isDarkMode ? 'text-gray-400' : 'text-gray-600';
-  const cardBg = isDarkMode ? 'bg-[#1a1a2e]' : 'bg-[#F9FAFB]';
-  const cardBorder = isDarkMode ? 'border-[#2a2a3e]' : 'border-gray-200';
-  const inputBg = isDarkMode ? 'bg-[#0f0f1a]' : 'bg-white';
-  const inputBorder = isDarkMode ? 'border-[#2a2a3e]' : 'border-gray-300';
-  const modalBg = isDarkMode ? 'bg-[#1a1a2e]' : 'bg-[#F9FAFB]';
+  const textColor = 'text-gray-900';
+  const mutedColor = 'text-gray-600';
+  const cardBg = 'bg-white';
+  const cardBorder = 'border-gray-200';
+  const inputBg = 'bg-white';
+  const inputBorder = 'border-gray-300';
+  const modalBg = 'bg-white';
 
   return (
     <AppLayout title="Dashboard">
       <div className="space-y-6">
         {/* Validate Idea Section - AT THE TOP */}
-        <div className={`${cardBg} ${cardBorder} rounded-xl border p-6`}>
+        <div className={`${cardBg} ${cardBorder} rounded-xl border p-6 shadow-card`}>
           <h3 className={`${textColor} font-semibold mb-3 flex items-center gap-2`}>
-            <svg className="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
             </svg>
             Validate an Idea
@@ -207,14 +207,14 @@ export default function DashboardPage() {
               onChange={(e) => setUserInput(e.target.value)}
               placeholder="Describe your startup idea..."
               data-testid="validation-input"
-              className={`flex-1 px-4 py-2.5 rounded-lg border ${inputBorder} ${inputBg} ${textColor} placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+              className={`flex-1 px-4 py-2.5 rounded-xl border ${inputBorder} ${inputBg} ${textColor} placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
               onKeyDown={(e) => e.key === 'Enter' && handleValidate()}
             />
             <button
               onClick={handleValidate}
               disabled={!userInput.trim() || isValidating}
               data-testid="validate-button"
-              className="px-6 py-2.5 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="px-6 py-2.5 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               {isValidating ? 'Validating...' : 'Validate'}
             </button>
@@ -227,7 +227,7 @@ export default function DashboardPage() {
           {!project && (
             <div className={`mt-4 pt-4 border-t ${cardBorder}`}>
               {isFree ? (
-                <div className={`p-3 rounded-lg ${isDarkMode ? 'bg-[#2a2a3e]' : 'bg-gray-100'} border ${isDarkMode ? 'border-[#3a3a4e]' : 'border-gray-200'}`}>
+                <div className="p-3 rounded-xl bg-gray-50 border border-gray-200">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className={`${textColor} text-sm font-medium`}>Create New Project</p>
@@ -235,7 +235,7 @@ export default function DashboardPage() {
                     </div>
                     <button
                       onClick={() => document.dispatchEvent(new CustomEvent('openUpgradeModal'))}
-                      className="px-4 py-2 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
+                      className="px-4 py-2 bg-blue-600 text-white rounded-xl text-sm font-medium hover:bg-blue-700 transition-colors"
                     >
                       Upgrade
                     </button>
@@ -246,7 +246,7 @@ export default function DashboardPage() {
                   <button
                     onClick={() => setShowNewProject(!showNewProject)}
                     data-testid="start-project-button"
-                    className={`text-sm ${mutedColor} hover:text-blue-500 transition-colors`}
+                    className={`text-sm ${mutedColor} hover:text-blue-600 transition-colors`}
                   >
                     Or start a new project instead →
                   </button>
@@ -259,14 +259,14 @@ export default function DashboardPage() {
                         onChange={(e) => setNewProjectName(e.target.value)}
                         placeholder="Project name..."
                         data-testid="project-name-input"
-                        className={`flex-1 px-4 py-2 rounded-lg border ${inputBorder} ${inputBg} ${textColor} placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                        className={`flex-1 px-4 py-2 rounded-xl border ${inputBorder} ${inputBg} ${textColor} placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500`}
                         onKeyDown={(e) => e.key === 'Enter' && handleCreateProject()}
                       />
                       <button
                         onClick={handleCreateProject}
                         disabled={!newProjectName.trim()}
                         data-testid="create-project-button"
-                        className="px-4 py-2 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 disabled:opacity-50 transition-colors"
+                        className="px-4 py-2 bg-green-600 text-white rounded-xl font-medium hover:bg-green-700 disabled:opacity-50 transition-colors"
                       >
                         Create Project
                       </button>
@@ -284,7 +284,6 @@ export default function DashboardPage() {
           <div className="lg:col-span-2 space-y-6">
             {/* Active Project Card */}
             <ActiveProject 
-              darkMode={isDarkMode} 
               project={project}
               isPremium={isPremium}
               isBobAI={isBobAI}
@@ -294,19 +293,18 @@ export default function DashboardPage() {
           {/* Right Column - 1/3 width */}
           <div className="space-y-6">
             {/* Quick Actions */}
-            <QuickActions darkMode={isDarkMode} isPremium={isPremium} />
+            <QuickActions isPremium={isPremium} />
             
             {/* Skill Suggestions */}
             {isPremium && (
               <SkillSuggestions
-                darkMode={isDarkMode}
                 isPremium={isPremium}
                 projectDescription={project?.description}
               />
             )}
             
             {/* Activity Feed */}
-            <ActivityFeed darkMode={isDarkMode} />
+            <ActivityFeed />
           </div>
         </div>
       </div>
@@ -314,13 +312,13 @@ export default function DashboardPage() {
       {/* Validation Modal */}
       {showValidateModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className={`${modalBg} rounded-xl p-8 max-w-md w-full mx-4 shadow-2xl`}>
+          <div className={`${modalBg} rounded-xl p-8 max-w-md w-full mx-4 shadow-xl`}>
             <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-blue-500/20 flex items-center justify-center">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-blue-100 flex items-center justify-center">
                 {isValidating ? (
-                  <div className="animate-spin rounded-full h-8 w-8 border-4 border-blue-500 border-t-transparent"></div>
+                  <div className="animate-spin rounded-full h-8 w-8 border-4 border-blue-600 border-t-transparent"></div>
                 ) : (
-                  <svg className="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                 )}

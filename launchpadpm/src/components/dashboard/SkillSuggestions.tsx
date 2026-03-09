@@ -4,7 +4,6 @@ import { useState } from 'react';
 import Link from 'next/link';
 
 interface SkillSuggestionsProps {
-  darkMode?: boolean;
   currentPhase?: string;
   completedSkills?: string[];
   projectDescription?: string;
@@ -52,7 +51,6 @@ function formatSkillName(skillId: string): string {
 }
 
 export default function SkillSuggestions({
-  darkMode = false,
   currentPhase = 'discovery',
   completedSkills = [],
   projectDescription = '',
@@ -64,23 +62,18 @@ export default function SkillSuggestions({
   const availableSuggestions = suggestions.filter(s => !completedSkills.includes(s.skill));
   const displaySuggestions = showAll ? availableSuggestions : availableSuggestions.slice(0, 2);
 
-  const cardBg = darkMode ? 'bg-[#1a1a2e]' : 'bg-white';
-  const cardBorder = darkMode ? 'border-[#2a2a3e]' : 'border-gray-200';
-  const textColor = darkMode ? 'text-white' : 'text-gray-900';
-  const mutedColor = darkMode ? 'text-gray-400' : 'text-gray-600';
-
   if (availableSuggestions.length === 0) {
     return null;
   }
 
   return (
-    <div className={`${cardBg} ${cardBorder} border rounded-xl p-4`}>
+    <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-card">
       <div className="flex items-center justify-between mb-3">
-        <h3 className={`${textColor} font-semibold text-sm`}>Recommended Skills</h3>
+        <h3 className="text-gray-900 font-semibold text-sm">Recommended Skills</h3>
         {isPremium && (
           <Link
             href="/skills"
-            className="text-xs text-blue-500 hover:text-blue-400"
+            className="text-xs text-blue-600 hover:text-blue-700"
           >
             View all skills
           </Link>
@@ -91,14 +84,14 @@ export default function SkillSuggestions({
         {displaySuggestions.map((suggestion) => (
           <div
             key={suggestion.skill}
-            className={`p-3 rounded-lg border ${darkMode ? 'border-[#2a2a3e] hover:border-blue-500/50' : 'border-gray-200 hover:border-blue-300'} transition-colors`}
+            className="p-3 rounded-xl border border-gray-200 hover:border-blue-300 transition-colors"
           >
             <div className="flex items-start justify-between gap-2">
               <div className="flex-1">
-                <h4 className={`${textColor} text-sm font-medium`}>
+                <h4 className="text-gray-900 text-sm font-medium">
                   {formatSkillName(suggestion.skill)}
                 </h4>
-                <p className={`${mutedColor} text-xs mt-1`}>
+                <p className="text-gray-600 text-xs mt-1">
                   {suggestion.reason}
                 </p>
               </div>
@@ -112,7 +105,7 @@ export default function SkillSuggestions({
               ) : (
                 <button
                   disabled
-                  className="px-3 py-1.5 bg-gray-400 text-white text-xs rounded-lg font-medium cursor-not-allowed opacity-50"
+                  className="px-3 py-1.5 bg-gray-200 text-gray-500 text-xs rounded-lg font-medium cursor-not-allowed opacity-50"
                   title="Upgrade to premium to run skills"
                 >
                   Locked
@@ -126,14 +119,14 @@ export default function SkillSuggestions({
       {availableSuggestions.length > 2 && !showAll && (
         <button
           onClick={() => setShowAll(true)}
-          className={`w-full mt-3 text-sm ${mutedColor} hover:text-blue-500`}
+          className="w-full mt-3 text-sm text-gray-500 hover:text-blue-600"
         >
           Show {availableSuggestions.length - 2} more suggestions
         </button>
       )}
 
       {!isPremium && (
-        <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+        <div className="mt-3 pt-3 border-t border-gray-200">
           <p className="text-xs text-gray-500 text-center">
             Upgrade to Premium to run more skills
           </p>

@@ -86,21 +86,16 @@ const freeTierActions: QuickAction[] = [
 
 interface QuickActionsProps {
   actions?: QuickAction[];
-  darkMode?: boolean;
   isPremium?: boolean;
 }
 
-export default function QuickActions({ actions, darkMode = true, isPremium = false }: QuickActionsProps) {
-  const cardBg = darkMode ? 'bg-[#1a1a2e]' : 'bg-[#F9FAFB]';
-  const cardBorder = darkMode ? 'border-[#2a2a3e]' : 'border-gray-200';
-  const titleColor = darkMode ? 'text-white' : 'text-gray-900';
-
+export default function QuickActions({ actions, isPremium = false }: QuickActionsProps) {
   const displayActions = isPremium ? (actions || defaultActions) : freeTierActions;
 
   return (
-    <div className={`${cardBg} ${cardBorder} rounded-xl border p-5`}>
-      <h2 className={`${titleColor} font-semibold mb-4 flex items-center gap-2`}>
-        <svg className="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-card">
+      <h2 className="text-gray-900 font-semibold mb-4 flex items-center gap-2">
+        <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
         </svg>
         Quick Actions
@@ -112,7 +107,7 @@ export default function QuickActions({ actions, darkMode = true, isPremium = fal
             key={action.id}
             href={action.href}
             data-testid={`quick-action-${action.id}`}
-            className={`flex items-center gap-3 p-3 rounded-lg bg-gradient-to-br ${action.color} hover:opacity-90 transition-opacity group`}
+            className={`flex items-center gap-3 p-3 rounded-xl transition-all group bg-gradient-to-br ${action.color} hover:opacity-90 hover:shadow-md`}
           >
             <div className="text-white/90 group-hover:text-white transition-colors">
               {action.icon}

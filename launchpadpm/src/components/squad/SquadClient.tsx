@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { AppLayout, useAppLayout } from '@/components/layout/AppLayout';
+import { AppLayout } from '@/components/layout/AppLayout';
 
 interface Squad {
   id: string;
@@ -18,7 +18,6 @@ interface Skill {
 }
 
 export default function SquadPage({ squadId }: { squadId: string }) {
-  const { isDarkMode } = useAppLayout();
   const [squad, setSquad] = useState<Squad | null>(null);
   const [skills, setSkills] = useState<Skill[]>([]);
   const [loading, setLoading] = useState(true);
@@ -41,11 +40,11 @@ export default function SquadPage({ squadId }: { squadId: string }) {
       .catch(() => setLoading(false));
   }, [squadId]);
 
-  const textColor = isDarkMode ? 'text-white' : 'text-gray-900';
-  const mutedColor = isDarkMode ? 'text-gray-400' : 'text-gray-600';
-  const cardBg = isDarkMode ? 'bg-[#1a1a2e]' : 'bg-[#F9FAFB]';
-  const cardBorder = isDarkMode ? 'border-[#2a2a3e]' : 'border-gray-200';
-  const inputBg = isDarkMode ? 'bg-[#0f0f1a]' : 'bg-gray-100';
+  const textColor = 'text-gray-900';
+  const mutedColor = 'text-gray-600';
+  const cardBg = 'bg-white';
+  const cardBorder = 'border-gray-200';
+  const inputBg = 'bg-gray-100';
 
   if (loading) {
     return (

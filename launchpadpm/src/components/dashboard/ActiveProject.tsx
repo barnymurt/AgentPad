@@ -19,7 +19,6 @@ interface Project {
 
 interface ActiveProjectProps {
   project?: Project | null;
-  darkMode?: boolean;
   isPremium?: boolean;
   isBobAI?: boolean;
 }
@@ -39,7 +38,6 @@ const defaultLifecyclePhases: LifecyclePhase[] = [
 
 export default function ActiveProject({
   project,
-  darkMode = true,
   isPremium = false,
   isBobAI = false,
 }: ActiveProjectProps) {
@@ -50,13 +48,6 @@ export default function ActiveProject({
   const progress = project?.progress || 0;
   const lifecyclePhases = project?.lifecyclePhases || defaultLifecyclePhases;
 
-  const cardBg = darkMode ? 'bg-[#1a1a2e]' : 'bg-[#F9FAFB]';
-  const cardBorder = darkMode ? 'border-[#2a2a3e]' : 'border-gray-200';
-  const textColor = darkMode ? 'text-white' : 'text-gray-900';
-  const mutedColor = darkMode ? 'text-gray-400' : 'text-gray-600';
-  const hoverBg = darkMode ? 'hover:bg-[#1f1f35]' : 'hover:bg-gray-50';
-  const progressBg = darkMode ? 'bg-[#2a2a3e]' : 'bg-gray-200';
-
   const getStatusColor = (status: LifecyclePhase['status']) => {
     switch (status) {
       case 'completed':
@@ -64,7 +55,7 @@ export default function ActiveProject({
       case 'active':
         return 'bg-blue-500';
       default:
-        return darkMode ? 'bg-gray-600' : 'bg-gray-400';
+        return 'bg-gray-400';
     }
   };
 
@@ -75,18 +66,18 @@ export default function ActiveProject({
       case 'active':
         return 'ring-blue-500/50';
       default:
-        return darkMode ? 'ring-gray-600/30' : 'ring-gray-400/30';
+        return 'ring-gray-400/30';
     }
   };
 
-  const phaseLinkBg = darkMode ? 'bg-[#0f0f1a]' : 'bg-gray-50';
+  const phaseLinkBg = 'bg-gray-50';
   const activePhaseIndex = lifecyclePhases.findIndex((p) => p.status === 'active');
 
   return (
-    <div className={`${cardBg} ${cardBorder} rounded-xl border overflow-hidden`}>
+    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-card">
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className={`w-full p-5 flex items-center justify-between ${hoverBg} transition-colors`}
+        className="w-full p-5 flex items-center justify-between hover:bg-gray-50 transition-colors"
       >
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
@@ -95,17 +86,17 @@ export default function ActiveProject({
             </svg>
           </div>
           <div className="text-left">
-            <h2 className={`${textColor} font-semibold text-lg`}>{projectName}</h2>
-            <p className={`${mutedColor} text-sm`}>{description}</p>
+            <h2 className="text-gray-900 font-semibold text-lg">{projectName}</h2>
+            <p className="text-gray-600 text-sm">{description}</p>
           </div>
         </div>
         <div className="flex items-center gap-4">
           <div className="text-right">
-            <div className={`text-2xl font-bold ${textColor}`}>{progress}%</div>
-            <div className={`text-xs ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>Complete</div>
+            <div className="text-2xl font-bold text-gray-900">{progress}%</div>
+            <div className="text-xs text-gray-400">Complete</div>
           </div>
           <svg
-            className={`w-5 h-5 ${mutedColor} transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+            className={`w-5 h-5 text-gray-400 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -116,9 +107,9 @@ export default function ActiveProject({
       </button>
 
       {isExpanded && (
-        <div className={`px-5 pb-5 border-t ${cardBorder}`}>
+        <div className="px-5 pb-5 border-t border-gray-200">
           {/* Progress bar */}
-          <div className={`mt-4 ${progressBg} rounded-full overflow-hidden`}>
+          <div className="mt-4 bg-gray-200 rounded-full overflow-hidden">
             <div
               className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full transition-all duration-500"
               style={{ width: `${progress}%` }}
@@ -127,7 +118,7 @@ export default function ActiveProject({
 
           {/* Lifecycle phases */}
           <div className="mt-4">
-            <h3 className={`text-xs font-medium ${darkMode ? 'text-gray-500' : 'text-gray-400'} uppercase tracking-wider mb-3`}>
+            <h3 className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-3">
               Lifecycle Progress
             </h3>
             <div className="flex flex-wrap gap-2">
@@ -138,7 +129,7 @@ export default function ActiveProject({
                   className={`group flex items-center gap-2 px-3 py-1.5 rounded-lg border transition-all ${
                     phase.status === 'active'
                       ? 'border-blue-500/50 bg-blue-500/10'
-                      : `${cardBorder} ${phaseLinkBg} hover:border-gray-400`
+                      : `border-gray-200 ${phaseLinkBg} hover:border-gray-400`
                   }`}
                 >
                   <span
@@ -146,7 +137,7 @@ export default function ActiveProject({
                   />
                   <span
                     className={`text-sm ${
-                      phase.status === 'active' ? 'text-blue-400 font-medium' : darkMode ? 'text-gray-400 group-hover:text-white' : 'text-gray-600 group-hover:text-gray-900'
+                      phase.status === 'active' ? 'text-blue-600 font-medium' : 'text-gray-600 group-hover:text-gray-900'
                     }`}
                   >
                     {phase.name}
@@ -166,7 +157,7 @@ export default function ActiveProject({
             {isBobAI ? (
               <Link
                 href="/builder"
-                className="w-full py-2.5 px-4 rounded-lg font-medium transition-all flex items-center justify-center gap-2 bg-gradient-to-r from-purple-500 to-blue-500 text-white hover:opacity-90"
+                className="w-full py-3 px-4 rounded-xl font-medium transition-all flex items-center justify-center gap-2 bg-blue-600 text-white hover:bg-blue-700 hover:shadow-md"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -174,7 +165,7 @@ export default function ActiveProject({
                 Launch AI Builder
               </Link>
             ) : isPremium ? (
-              <div className="w-full py-2.5 px-4 rounded-lg font-medium transition-all flex items-center justify-center gap-2 bg-gradient-to-r from-purple-500/50 to-blue-500/50 text-white/70">
+              <div className="w-full py-3 px-4 rounded-xl font-medium transition-all flex items-center justify-center gap-2 bg-gray-100 text-gray-600">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
@@ -183,7 +174,7 @@ export default function ActiveProject({
             ) : (
               <button
                 onClick={() => alert('Guided Builder is available for Premium users. Upgrade to use this feature.')}
-                className="w-full py-2.5 px-4 rounded-lg font-medium transition-all flex items-center justify-center gap-2 bg-gradient-to-r from-purple-500/50 to-blue-500/50 text-white/70 cursor-not-allowed"
+                className="w-full py-3 px-4 rounded-xl font-medium transition-all flex items-center justify-center gap-2 bg-gray-100 text-gray-400 cursor-not-allowed"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -195,10 +186,10 @@ export default function ActiveProject({
 
           {/* Current focus */}
           {activePhaseIndex >= 0 && (
-            <div className="mt-4 p-3 bg-blue-500/10 rounded-lg border border-blue-500/20">
+            <div className="mt-4 p-3 bg-blue-50 rounded-xl border border-blue-100">
               <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
-                <span className="text-sm text-blue-400">
+                <div className="w-2 h-2 bg-blue-600 rounded-full animate-pulse" />
+                <span className="text-sm text-blue-600">
                   Currently working on: <span className="font-medium">{lifecyclePhases[activePhaseIndex].name}</span>
                 </span>
               </div>

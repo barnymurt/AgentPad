@@ -178,12 +178,12 @@ export function AppLayout({ children, title }: AppLayoutProps) {
     return squads.filter(sq => categorySquads.includes(sq.id));
   };
 
-  const bgColor = 'bg-[#F9FAFB]';
+  const bgColor = 'bg-white';
   const sidebarBg = 'bg-white';
-  const sidebarBorder = 'border-gray-200';
+  const sidebarBorder = 'border-gray-100';
   const textColor = 'text-gray-900';
-  const mutedColor = 'text-gray-600';
-  const hoverBg = 'hover:bg-gray-100';
+  const mutedColor = 'text-gray-500';
+  const hoverBg = 'hover:bg-gray-50';
   const theme: 'dark' | 'light' = 'light';
   const isLightMode = true;
   const toggleTheme = () => {};
@@ -244,12 +244,10 @@ export function AppLayout({ children, title }: AppLayoutProps) {
                 
                 <Link
                   href="/dashboard"
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
+                  className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
                     pathname === '/dashboard'
-                      ? 'bg-blue-600/20 text-blue-400 border-l-2 border-blue-500'
-                      : isDarkMode 
-                        ? 'text-gray-300 hover:bg-[#2a2a3e] hover:text-white'
-                        : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                      ? 'bg-blue-50 text-blue-600'
+                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                   }`}
                 >
                   <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -260,12 +258,10 @@ export function AppLayout({ children, title }: AppLayoutProps) {
 
                 <Link
                   href="/skills"
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
+                  className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
                     pathname === '/skills'
-                      ? 'bg-blue-600/20 text-blue-400 border-l-2 border-blue-500'
-                      : isDarkMode 
-                        ? 'text-gray-300 hover:bg-[#2a2a3e] hover:text-white'
-                        : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                      ? 'bg-blue-50 text-blue-600'
+                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                   }`}
                 >
                   <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -276,12 +272,10 @@ export function AppLayout({ children, title }: AppLayoutProps) {
 
                 <Link
                   href="/activity"
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
+                  className={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-all ${
                     pathname === '/activity'
-                      ? 'bg-blue-600/20 text-blue-400 border-l-2 border-blue-500'
-                      : isDarkMode 
-                        ? 'text-gray-300 hover:bg-[#2a2a3e] hover:text-white'
-                        : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                      ? 'bg-blue-50 text-blue-600'
+                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                   }`}
                 >
                   <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -293,12 +287,10 @@ export function AppLayout({ children, title }: AppLayoutProps) {
                 {isBobAI && (
                 <Link
                   href="/builder"
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
+                  className={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-all ${
                     pathname === '/builder'
-                      ? 'bg-blue-600/20 text-blue-400 border-l-2 border-blue-500'
-                      : isDarkMode 
-                        ? 'text-gray-300 hover:bg-[#2a2a3e] hover:text-white'
-                        : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                      ? 'bg-blue-50 text-blue-600'
+                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                   }`}
                 >
                   <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -311,12 +303,10 @@ export function AppLayout({ children, title }: AppLayoutProps) {
                 {isPremium && (
                 <Link
                   href="/settings/data-sources"
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
+                  className={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-all ${
                     pathname === '/settings/data-sources'
-                      ? 'bg-blue-600/20 text-blue-400 border-l-2 border-blue-500'
-                      : isDarkMode 
-                        ? 'text-gray-300 hover:bg-[#2a2a3e] hover:text-white'
-                        : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                      ? 'bg-blue-50 text-blue-600'
+                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                   }`}
                 >
                   <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -329,12 +319,10 @@ export function AppLayout({ children, title }: AppLayoutProps) {
                 {isPremium && (
                 <Link
                   href="/metrics"
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
+                  className={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-all ${
                     pathname === '/metrics'
-                      ? 'bg-blue-600/20 text-blue-400 border-l-2 border-blue-500'
-                      : isDarkMode 
-                        ? 'text-gray-300 hover:bg-[#2a2a3e] hover:text-white'
-                        : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                      ? 'bg-blue-50 text-blue-600'
+                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                   }`}
                 >
                   <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -377,16 +365,14 @@ export function AppLayout({ children, title }: AppLayoutProps) {
                           <Link
                             key={squad.id}
                             href={`/squads/${squad.id}`}
-                            className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
+                            className={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-all ${
                               pathname === `/squads/${squad.id}`
-                                ? 'bg-blue-600/20 text-blue-400 border-l-2 border-blue-500'
-                                : isDarkMode 
-                                  ? 'text-gray-300 hover:bg-[#2a2a3e] hover:text-white' 
-                                  : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                                ? 'bg-blue-50 text-blue-600'
+                                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                             }`}
                           >
                             <div className={`w-1.5 h-1.5 rounded-full ${
-                              pathname === `/squads/${squad.id}` ? 'bg-blue-500' : isDarkMode ? 'bg-gray-500' : 'bg-gray-400'
+                              pathname === `/squads/${squad.id}` ? 'bg-blue-500' : 'bg-gray-200'
                             }`} />
                             <span className="truncate">{squad.name.replace(/-/g, ' ')}</span>
                           </Link>
@@ -398,11 +384,7 @@ export function AppLayout({ children, title }: AppLayoutProps) {
                       <div className="flex flex-col items-center gap-2 py-1">
                         <button
                           onClick={() => toggleCategory(category.name)}
-                          className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
-                            isDarkMode 
-                              ? 'text-gray-500 hover:bg-[#2a2a3e] hover:text-white'
-                              : 'text-gray-500 hover:bg-gray-200 hover:text-gray-900'
-                          }`}
+                          className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors text-gray-500 hover:bg-gray-200 hover:text-gray-900'`}
                           title={category.name}
                         >
                           {category.icon}
@@ -418,10 +400,8 @@ export function AppLayout({ children, title }: AppLayoutProps) {
                             href={`/squads/${squad.id}`}
                             className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
                               pathname === `/squads/${squad.id}`
-                                ? 'bg-blue-600/20 text-blue-400'
-                                : isDarkMode 
-                                  ? 'text-gray-500 hover:bg-[#2a2a3e] hover:text-white'
-                                  : 'text-gray-600 hover:bg-gray-200 hover:text-gray-900'
+                                ? 'bg-blue-50 text-blue-600'
+                                : 'text-gray-600 hover:bg-gray-200 hover:text-gray-900'
                             }`}
                             title={squad.name.replace(/-/g, ' ')}
                           >
@@ -430,11 +410,7 @@ export function AppLayout({ children, title }: AppLayoutProps) {
                         ))}
                         <button
                           onClick={() => toggleCategory(category.name)}
-                          className={`w-6 h-6 rounded flex items-center justify-center transition-colors ${
-                            isDarkMode 
-                              ? 'text-gray-600 hover:bg-[#2a2a3e] hover:text-white'
-                              : 'text-gray-400 hover:bg-gray-200 hover:text-gray-900'
-                          }`}
+                          className={`w-6 h-6 rounded flex items-center justify-center transition-colors text-gray-400 hover:bg-gray-200 hover:text-gray-900'`}
                           title="Collapse"
                         >
                           <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -456,12 +432,10 @@ export function AppLayout({ children, title }: AppLayoutProps) {
                 
                 <Link
                   href="/settings/notion"
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
+                  className={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-all ${
                     pathname === '/settings/notion'
-                      ? 'bg-blue-600/20 text-blue-400 border-l-2 border-blue-500'
-                      : isDarkMode 
-                        ? 'text-gray-300 hover:bg-[#2a2a3e] hover:text-white'
-                        : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                      ? 'bg-blue-50 text-blue-600'
+                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                   }`}
                 >
                   <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -473,12 +447,10 @@ export function AppLayout({ children, title }: AppLayoutProps) {
 
                 <Link
                   href="/settings/api-keys"
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
+                  className={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-all ${
                     pathname === '/settings/api-keys'
-                      ? 'bg-blue-600/20 text-blue-400 border-l-2 border-blue-500'
-                      : isDarkMode 
-                        ? 'text-gray-300 hover:bg-[#2a2a3e] hover:text-white'
-                        : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                      ? 'bg-blue-50 text-blue-600'
+                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                   }`}
                 >
                   <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -489,11 +461,7 @@ export function AppLayout({ children, title }: AppLayoutProps) {
 
                 <button
                   onClick={() => window.dispatchEvent(new CustomEvent('openUpgradeModal'))}
-                  className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
-                    isDarkMode 
-                      ? 'text-gray-300 hover:bg-[#2a2a3e] hover:text-white'
-                      : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
-                  }`}
+                  className={`w-full flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-all text-gray-600 hover:bg-gray-100 hover:text-gray-900`}
                 >
                   <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
@@ -542,9 +510,7 @@ export function AppLayout({ children, title }: AppLayoutProps) {
                       className={`flex-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                         !adminPreviewTier 
                           ? 'bg-blue-500 text-white' 
-                          : isDarkMode 
-                            ? 'bg-[#2a2a3e] text-gray-300 hover:bg-[#3a3a4e]' 
-                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                          : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                       }`}
                       title="View as yourself"
                     >
@@ -555,9 +521,7 @@ export function AppLayout({ children, title }: AppLayoutProps) {
                       className={`flex-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                         adminPreviewTier === 'free' 
                           ? 'bg-green-500 text-white' 
-                          : isDarkMode 
-                            ? 'bg-[#2a2a3e] text-gray-300 hover:bg-[#3a3a4e]' 
-                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                          : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                       }`}
                       title="Preview free user experience"
                     >
@@ -568,9 +532,7 @@ export function AppLayout({ children, title }: AppLayoutProps) {
                       className={`flex-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                         adminPreviewTier === 'premium' 
                           ? 'bg-purple-500 text-white' 
-                          : isDarkMode 
-                            ? 'bg-[#2a2a3e] text-gray-300 hover:bg-[#3a3a4e]' 
-                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                          : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                       }`}
                       title="Preview premium user experience"
                     >
@@ -589,7 +551,7 @@ export function AppLayout({ children, title }: AppLayoutProps) {
                     <div className={`text-sm truncate ${textColor}`}>
                       {session?.user?.name || session?.user?.email?.split('@')[0] || 'User'}
                     </div>
-                    <div className={`text-xs truncate ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+                    <div className={`text-xs truncate ${'text-gray-500'}`}>
                       {session?.user?.email || ''}
                     </div>
                     {session?.user?.tier && (
@@ -609,11 +571,7 @@ export function AppLayout({ children, title }: AppLayoutProps) {
               {!sidebarCollapsed && (
                 <button
                   onClick={() => signOut({ callbackUrl: '/' })}
-                  className={`w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
-                    isDarkMode 
-                      ? 'text-gray-400 hover:bg-[#2a2a3e] hover:text-white' 
-                      : 'text-gray-500 hover:bg-gray-100 hover:text-gray-900'
-                  }`}
+                  className={`w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-all text-gray-500 hover:bg-gray-100 hover:text-gray-900'`}
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -643,9 +601,9 @@ export function AppLayout({ children, title }: AppLayoutProps) {
 }
 
 export function PageCard({ children, isDarkMode, title }: { children: React.ReactNode; isDarkMode: boolean; title?: string }) {
-  const cardBg = isDarkMode ? 'bg-[#1a1a2e]' : 'bg-[#F9FAFB]';
-  const cardBorder = isDarkMode ? 'border-[#2a2a3e]' : 'border-gray-200';
-  const textColor = isDarkMode ? 'text-white' : 'text-gray-900';
+  const cardBg = 'bg-white';
+  const cardBorder = 'border-gray-100';
+  const textColor = 'text-gray-900';
 
   return (
     <div className={`${cardBg} ${cardBorder} rounded-xl border p-6`}>

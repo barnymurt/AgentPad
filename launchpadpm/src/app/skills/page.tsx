@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { AppLayout, useAppLayout } from '@/components/layout/AppLayout';
+import { AppLayout } from '@/components/layout/AppLayout';
 
 interface Squad {
   id: string;
@@ -28,17 +28,17 @@ const LIFECYCLES = [
 ];
 
 const LIFECYCLE_COLORS: Record<string, string> = {
-  discovery: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
-  build: 'bg-purple-500/20 text-purple-400 border-purple-500/30',
-  launch: 'bg-green-500/20 text-green-400 border-green-500/30',
-  iterate: 'bg-orange-500/20 text-orange-400 border-orange-500/30',
+  discovery: 'bg-blue-100 text-blue-700 border-blue-200',
+  build: 'bg-purple-100 text-purple-700 border-purple-200',
+  launch: 'bg-green-100 text-green-700 border-green-200',
+  iterate: 'bg-orange-100 text-orange-700 border-orange-200',
 };
 
 const SPECIALIZATION_COLORS: Record<string, string> = {
-  frontend: 'bg-pink-500/20 text-pink-400 border-pink-500/30',
-  backend: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30',
-  qa: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
-  fullstack: 'bg-violet-500/20 text-violet-400 border-violet-500/30',
+  frontend: 'bg-pink-100 text-pink-700 border-pink-200',
+  backend: 'bg-cyan-100 text-cyan-700 border-cyan-200',
+  qa: 'bg-emerald-100 text-emerald-700 border-emerald-200',
+  fullstack: 'bg-violet-100 text-violet-700 border-violet-200',
 };
 
 const LIFECYCLE_ORDER = [
@@ -49,7 +49,6 @@ const LIFECYCLE_ORDER = [
 ];
 
 export default function SkillsPage() {
-  const { isDarkMode } = useAppLayout();
   const [squads, setSquads] = useState<Squad[]>([]);
   const [skills, setSkills] = useState<Skill[]>([]);
   const [loading, setLoading] = useState(true);
@@ -99,13 +98,13 @@ export default function SkillsPage() {
     setSelectedSquads(newSelected);
   };
 
-  const textColor = isDarkMode ? 'text-white' : 'text-gray-900';
-  const mutedColor = isDarkMode ? 'text-gray-400' : 'text-gray-600';
-  const inputBg = isDarkMode ? 'bg-[#0f0f1a]' : 'bg-gray-100';
-  const inputBorder = isDarkMode ? 'border-[#2a2a3e]' : 'border-gray-300';
-  const cardBg = isDarkMode ? 'bg-[#1a1a2e]' : 'bg-[#F9FAFB]';
-  const cardBorder = isDarkMode ? 'border-[#2a2a3e]' : 'border-gray-200';
-  const tabActiveBg = isDarkMode ? 'bg-[#2a2a3e]' : 'bg-gray-200';
+  const textColor = 'text-gray-900';
+  const mutedColor = 'text-gray-600';
+  const inputBg = 'bg-white';
+  const inputBorder = 'border-gray-300';
+  const cardBg = 'bg-white';
+  const cardBorder = 'border-gray-200';
+  const tabActiveBg = 'bg-gray-200';
 
   return (
     <AppLayout title="Skills">
@@ -119,9 +118,7 @@ export default function SkillsPage() {
               className={`flex-1 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                 selectedLifecycle === lifecycle.id
                   ? 'bg-blue-600 text-white'
-                  : isDarkMode 
-                    ? 'text-gray-400 hover:text-white hover:bg-[#2a2a3e]'
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
               }`}
             >
               {lifecycle.label}
@@ -130,14 +127,14 @@ export default function SkillsPage() {
         </div>
 
         {/* Search and Squad Filters */}
-        <div className={`${cardBg} ${cardBorder} rounded-xl border p-4`}>
+        <div className={`${cardBg} ${cardBorder} rounded-xl border p-4 shadow-card`}>
           <div className="flex flex-col md:flex-row gap-4">
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search skills..."
-              className={`flex-1 px-4 py-2 rounded-lg border ${inputBorder} ${inputBg} ${textColor} placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              className={`flex-1 px-4 py-2.5 rounded-xl border ${inputBorder} ${inputBg} ${textColor} placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500`}
             />
           </div>
           
@@ -152,9 +149,7 @@ export default function SkillsPage() {
                   className={`px-3 py-1.5 rounded-full text-sm transition-colors ${
                     selectedSquads.has(squad.id)
                       ? 'bg-blue-600 text-white'
-                      : isDarkMode 
-                        ? 'bg-[#2a2a3e] text-gray-300 hover:bg-[#3a3a4e]'
-                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                   }`}
                 >
                   {squad.name}
@@ -163,9 +158,7 @@ export default function SkillsPage() {
               {selectedSquads.size > 0 && (
                 <button
                   onClick={() => setSelectedSquads(new Set())}
-                  className={`px-3 py-1.5 rounded-full text-sm ${
-                    isDarkMode ? 'text-gray-500 hover:text-gray-300' : 'text-gray-500 hover:text-gray-700'
-                  }`}
+                  className="px-3 py-1.5 rounded-full text-sm text-gray-500 hover:text-gray-700"
                 >
                   Clear
                 </button>
@@ -189,10 +182,10 @@ export default function SkillsPage() {
                 <Link
                   key={skill.id}
                   href={`/skills/${skill.id}`}
-                  className={`${cardBg} ${cardBorder} border rounded-xl p-5 hover:border-blue-500 transition-colors group`}
+                  className={`${cardBg} ${cardBorder} border rounded-xl p-5 hover:border-blue-300 hover:shadow-card transition-all group`}
                 >
                   <div className="flex items-start justify-between mb-2">
-                    <h3 className={`${textColor} font-semibold group-hover:text-blue-400 transition-colors`}>
+                    <h3 className={`${textColor} font-semibold group-hover:text-blue-600 transition-colors`}>
                       {(skill.name || '').replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
                     </h3>
                     <div className="flex gap-1">
@@ -212,7 +205,7 @@ export default function SkillsPage() {
                     {skillSquads.map(sqId => {
                       const squad = squads.find(s => s.id === sqId);
                       return squad ? (
-                        <span key={sqId} className={`text-xs px-2 py-0.5 rounded-full ${isDarkMode ? 'bg-[#2a2a3e]' : 'bg-gray-100'} ${mutedColor}`}>
+                        <span key={sqId} className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-600">
                           {squad.name}
                         </span>
                       ) : null;

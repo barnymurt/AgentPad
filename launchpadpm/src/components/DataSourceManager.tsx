@@ -59,7 +59,7 @@ export default function DataSourceManager() {
         setStatus({ type: 'success', message: 'Data source connected successfully!' });
         fetchDataSources();
         setShowAddForm(false);
-        setNewSource({ name: '', type: 'spreadsheet', location: '' });
+        setNewSource({ name: '', type: 'spreadsheet', location: '', authType: 'none', apiKey: '', username: '', password: '' });
         setTimeout(() => setStatus({ type: null, message: '' }), 3000);
       } else {
         const data = await res.json();
@@ -93,18 +93,18 @@ export default function DataSourceManager() {
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-md w-full mx-4 max-h-[80vh] overflow-hidden">
-        <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+      <div className="bg-white rounded-xl shadow-xl max-w-md w-full mx-4 max-h-[80vh] overflow-hidden">
+        <div className="p-6 border-b border-gray-200">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white">Connect Your Data</h2>
+            <h2 className="text-xl font-bold text-gray-900">Connect Your Data</h2>
             <button
               onClick={() => setIsOpen(false)}
-              className="text-gray-500 hover:text-gray-700 dark:text-gray-400"
+              className="text-gray-500 hover:text-gray-700"
             >
               ✕
             </button>
           </div>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+          <p className="text-sm text-gray-600 mt-1">
             Add research, analytics, or credentials to enhance analysis
           </p>
         </div>
@@ -112,7 +112,7 @@ export default function DataSourceManager() {
         <div className="p-6 overflow-y-auto max-h-96">
           {status.type && (
             <div className={`mb-4 p-3 rounded-lg ${
-              status.type === 'success' ? 'bg-green-50 dark:bg-green-900/30 text-green-800 dark:text-green-200' : 'bg-red-50 dark:bg-red-900/30 text-red-800 dark:text-red-200'
+              status.type === 'success' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'
             }`}>
               {status.message}
             </div>
@@ -122,7 +122,7 @@ export default function DataSourceManager() {
             <p className="text-center text-gray-500">Loading...</p>
           ) : dataSources.length === 0 ? (
             <div className="text-center py-8">
-              <p className="text-gray-500 dark:text-gray-400 mb-4">No data sources connected</p>
+              <p className="text-gray-500 mb-4">No data sources connected</p>
               <button
                 onClick={() => setShowAddForm(true)}
                 className="text-blue-600 hover:underline"
@@ -135,10 +135,10 @@ export default function DataSourceManager() {
               {dataSources.map((ds) => (
                 <div
                   key={ds.id}
-                  className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg"
+                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
                 >
                   <div>
-                    <p className="font-medium text-gray-900 dark:text-white">{ds.name}</p>
+                    <p className="font-medium text-gray-900">{ds.name}</p>
                     <p className="text-sm text-gray-500">{ds.type} {ds.location && `• ${ds.location.substring(0, 30)}...`}</p>
                   </div>
                   <button
@@ -153,26 +153,26 @@ export default function DataSourceManager() {
           )}
 
           {showAddForm && (
-            <form onSubmit={addDataSource} className="mt-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-              <h3 className="font-medium text-gray-900 dark:text-white mb-3">Add Data Source</h3>
+            <form onSubmit={addDataSource} className="mt-4 p-4 bg-gray-50 rounded-lg">
+              <h3 className="font-medium text-gray-900 mb-3">Add Data Source</h3>
               <div className="space-y-3">
                 <div>
-                  <label className="block text-sm text-gray-700 dark:text-gray-300 mb-1">Name</label>
+                  <label className="block text-sm text-gray-700 mb-1">Name</label>
                   <input
                     type="text"
                     value={newSource.name}
                     onChange={(e) => setNewSource({ ...newSource, name: e.target.value })}
                     placeholder="e.g., Customer Interview Data"
-                    className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                    className="w-full px-3 py-2 rounded-lg border border-gray-300 bg-white text-gray-900"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-sm text-gray-700 dark:text-gray-300 mb-1">Type</label>
+                  <label className="block text-sm text-gray-700 mb-1">Type</label>
                   <select
                     value={newSource.type}
                     onChange={(e) => setNewSource({ ...newSource, type: e.target.value, authType: 'none', apiKey: '', username: '', password: '' })}
-                    className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                    className="w-full px-3 py-2 rounded-lg border border-gray-300 bg-white text-gray-900"
                   >
                     <option value="spreadsheet">Spreadsheet (Google Sheets)</option>
                     <option value="database">Database (PostgreSQL, MySQL)</option>
@@ -185,11 +185,11 @@ export default function DataSourceManager() {
                 
                 {/* Auth Type based on data source */}
                 <div>
-                  <label className="block text-sm text-gray-700 dark:text-gray-300 mb-1">Authentication</label>
+                  <label className="block text-sm text-gray-700 mb-1">Authentication</label>
                   <select
                     value={newSource.authType}
                     onChange={(e) => setNewSource({ ...newSource, authType: e.target.value })}
-                    className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                    className="w-full px-3 py-2 rounded-lg border border-gray-300 bg-white text-gray-900"
                   >
                     <option value="none">None (public)</option>
                     <option value="apiKey">API Key</option>
@@ -201,13 +201,13 @@ export default function DataSourceManager() {
                 {/* Show auth fields based on type */}
                 {newSource.authType === 'apiKey' && (
                   <div>
-                    <label className="block text-sm text-gray-700 dark:text-gray-300 mb-1">API Key</label>
+                    <label className="block text-sm text-gray-700 mb-1">API Key</label>
                     <input
                       type="password"
                       value={newSource.apiKey}
                       onChange={(e) => setNewSource({ ...newSource, apiKey: e.target.value })}
                       placeholder="Enter your API key"
-                      className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                      className="w-full px-3 py-2 rounded-lg border border-gray-300 bg-white text-gray-900"
                     />
                   </div>
                 )}
@@ -215,23 +215,23 @@ export default function DataSourceManager() {
                 {newSource.authType === 'basic' && (
                   <>
                     <div>
-                      <label className="block text-sm text-gray-700 dark:text-gray-300 mb-1">Username</label>
+                      <label className="block text-sm text-gray-700 mb-1">Username</label>
                       <input
                         type="text"
                         value={newSource.username}
                         onChange={(e) => setNewSource({ ...newSource, username: e.target.value })}
                         placeholder="Username"
-                        className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                        className="w-full px-3 py-2 rounded-lg border border-gray-300 bg-white text-gray-900"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm text-gray-700 dark:text-gray-300 mb-1">Password</label>
+                      <label className="block text-sm text-gray-700 mb-1">Password</label>
                       <input
                         type="password"
                         value={newSource.password}
                         onChange={(e) => setNewSource({ ...newSource, password: e.target.value })}
                         placeholder="Password"
-                        className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                        className="w-full px-3 py-2 rounded-lg border border-gray-300 bg-white text-gray-900"
                       />
                     </div>
                   </>
@@ -239,19 +239,19 @@ export default function DataSourceManager() {
 
                 {newSource.authType === 'oauth' && (
                   <div>
-                    <label className="block text-sm text-gray-700 dark:text-gray-300 mb-1">OAuth Token</label>
+                    <label className="block text-sm text-gray-700 mb-1">OAuth Token</label>
                     <input
                       type="password"
                       value={newSource.apiKey}
                       onChange={(e) => setNewSource({ ...newSource, apiKey: e.target.value })}
                       placeholder="Enter OAuth token"
-                      className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                      className="w-full px-3 py-2 rounded-lg border border-gray-300 bg-white text-gray-900"
                     />
                   </div>
                 )}
                 
                 <div>
-                  <label className="block text-sm text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm text-gray-700 mb-1">
                     {newSource.type === 'spreadsheet' ? 'Spreadsheet URL' : 
                      newSource.type === 'database' ? 'Connection String' :
                      newSource.type === 'api' ? 'API Endpoint URL' :
@@ -269,7 +269,7 @@ export default function DataSourceManager() {
                       newSource.type === 'url' ? 'https://example.com/data' :
                       newSource.type === 'cloud_storage' ? 's3://my-bucket or gs://my-bucket' : '/path/to/file.csv'
                     }
-                    className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                    className="w-full px-3 py-2 rounded-lg border border-gray-300 bg-white text-gray-900"
                   />
                 </div>
                 <div className="flex gap-2">
@@ -282,7 +282,7 @@ export default function DataSourceManager() {
                   <button
                     type="button"
                     onClick={() => setShowAddForm(false)}
-                    className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300"
+                    className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700"
                   >
                     Cancel
                   </button>
@@ -294,7 +294,7 @@ export default function DataSourceManager() {
           {!showAddForm && dataSources.length > 0 && (
             <button
               onClick={() => setShowAddForm(true)}
-              className="mt-4 w-full px-4 py-2 border border-dashed border-gray-300 dark:border-gray-600 rounded-lg text-gray-500 hover:text-gray-700"
+              className="mt-4 w-full px-4 py-2 border border-dashed border-gray-300 rounded-lg text-gray-500 hover:text-gray-700"
             >
               + Add another data source
             </button>

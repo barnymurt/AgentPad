@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import { AppLayout, useAppLayout } from '@/components/layout/AppLayout';
+import { AppLayout } from '@/components/layout/AppLayout';
 import StyledOutput from './StyledOutput';
 import { getSkillCategory, getSkillConfig, CATEGORY_CONFIG } from '@/lib/skillOutputTypes';
 
@@ -41,7 +41,6 @@ interface Skill {
 export default function SkillDetailPage() {
   const params = useParams();
   const skillId = params.skill as string;
-  const { isDarkMode } = useAppLayout();
   const [skill, setSkill] = useState<Skill | null>(null);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(true);
@@ -87,9 +86,10 @@ export default function SkillDetailPage() {
       }
     } catch (err) {
       console.error('Error:', err);
+      alert('Failed to run skill');
+    } finally {
+      setRunning(false);
     }
-    
-    setRunning(false);
   };
 
   if (loading) {
@@ -117,18 +117,18 @@ export default function SkillDetailPage() {
 
   const skillName = skill.name.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
 
-  const textColor = isDarkMode ? 'text-white' : 'text-gray-900';
-  const mutedColor = isDarkMode ? 'text-gray-400' : 'text-gray-600';
-  const cardBg = isDarkMode ? 'bg-[#1a1a2e]' : 'bg-[#F9FAFB]';
-  const cardBorder = isDarkMode ? 'border-[#2a2a3e]' : 'border-gray-200';
-  const inputBg = isDarkMode ? 'bg-[#0f0f1a]' : 'bg-gray-100';
-  const inputBorder = isDarkMode ? 'border-[#2a2a3e]' : 'border-gray-300';
+  const textColor = 'text-gray-900';
+  const mutedColor = 'text-gray-600';
+  const cardBg = 'bg-white';
+  const cardBorder = 'border-gray-200';
+  const inputBg = 'bg-gray-100';
+  const inputBorder = 'border-gray-300';
 
   const lifecycleConfig: Record<string, { label: string; color: string; description: string }> = {
-    discovery: { label: 'Discovery', color: 'bg-blue-500/20 text-blue-400 border-blue-500/30', description: 'Understand your users and market' },
-    build: { label: 'Build', color: 'bg-purple-500/20 text-purple-400 border-purple-500/30', description: 'Create and develop your product' },
-    launch: { label: 'Launch', color: 'bg-green-500/20 text-green-400 border-green-500/30', description: 'Get your product to market' },
-    iterate: { label: 'Iterate', color: 'bg-orange-500/20 text-orange-400 border-orange-500/30', description: 'Measure and improve' },
+    discovery: { label: 'Discovery', color: 'bg-blue-100 text-blue-700 border-blue-200', description: 'Understand your users and market' },
+    build: { label: 'Build', color: 'bg-purple-100 text-purple-700 border-purple-200', description: 'Create and develop your product' },
+    launch: { label: 'Launch', color: 'bg-green-100 text-green-700 border-green-200', description: 'Get your product to market' },
+    iterate: { label: 'Iterate', color: 'bg-orange-100 text-orange-700 border-orange-200', description: 'Measure and improve' },
   };
 
   const categoryConfig: Record<string, { label: string; icon: React.ReactNode }> = {
@@ -140,10 +140,10 @@ export default function SkillDetailPage() {
   };
 
   const specializationConfig: Record<string, { label: string; color: string }> = {
-    frontend: { label: 'Frontend', color: 'bg-pink-500/20 text-pink-400 border-pink-500/30' },
-    backend: { label: 'Backend', color: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30' },
-    qa: { label: 'QA', color: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' },
-    fullstack: { label: 'Full-Stack', color: 'bg-violet-500/20 text-violet-400 border-violet-500/30' },
+    frontend: { label: 'Frontend', color: 'bg-pink-100 text-pink-700 border-pink-200' },
+    backend: { label: 'Backend', color: 'bg-cyan-100 text-cyan-700 border-cyan-200' },
+    qa: { label: 'QA', color: 'bg-emerald-100 text-emerald-700 border-emerald-200' },
+    fullstack: { label: 'Full-Stack', color: 'bg-violet-100 text-violet-700 border-violet-200' },
   };
 
   const formatSkillName = (id: string) => id.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
@@ -212,7 +212,7 @@ export default function SkillDetailPage() {
             <span className={`px-3 py-1.5 rounded-full text-xs font-medium border ${lifecycleInfo.color}`}>
               {lifecycleInfo.label} Phase
             </span>
-            <span className={`px-3 py-1.5 rounded-full text-xs font-medium border ${isDarkMode ? 'bg-[#2a2a3e] border-[#3a3a4e] text-gray-300' : 'bg-gray-100 border-gray-200 text-gray-700'} flex items-center gap-1.5`}>
+            <span className="px-3 py-1.5 rounded-full text-xs font-medium border bg-gray-100 border-gray-200 text-gray-700 flex items-center gap-1.5">
               {categoryInfo.icon}
               {categoryInfo.label}
             </span>
@@ -243,7 +243,7 @@ export default function SkillDetailPage() {
 
           {/* What this skill outputs */}
           {skill.outputSummary && (
-            <div className={`mb-6 p-4 rounded-lg ${isDarkMode ? 'bg-[#0f0f1a]' : 'bg-gray-50'}`}>
+            <div className="mb-6 p-4 rounded-lg bg-gray-50">
               <h4 className={`text-sm font-medium ${textColor} mb-1`}>What this skill outputs:</h4>
               <p className={`${mutedColor} text-sm mb-3`}>{skill.outputSummary}</p>
               
@@ -253,14 +253,14 @@ export default function SkillDetailPage() {
                 const config = getSkillConfig(skillId);
                 return (
                   <div className="flex flex-wrap gap-2">
-                    <span className={`px-2 py-1 rounded text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300`}>
+                    <span className={`px-2 py-1 rounded text-xs font-medium bg-blue-100 text-blue-700`}>
                       {category.charAt(0).toUpperCase() + category.slice(1)}
                     </span>
-                    <span className={`px-2 py-1 rounded text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300`}>
+                    <span className={`px-2 py-1 rounded text-xs font-medium bg-purple-100 text-purple-700`}>
                       Primary: {config.primaryOutput}
                     </span>
                     {config.secondaryOutputs.map((out) => (
-                      <span key={out} className={`px-2 py-1 rounded text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400`}>
+                      <span key={out} className={`px-2 py-1 rounded text-xs font-medium bg-gray-100 text-gray-600`}>
                         {out}
                       </span>
                     ))}
@@ -281,9 +281,7 @@ export default function SkillDetailPage() {
                       <Link
                         key={sid}
                         href={`/skills/${sid}`}
-                        className={`px-2.5 py-1 rounded-lg text-xs border transition-colors ${
-                          isDarkMode ? 'bg-[#2a2a3e] border-[#3a3a4e] text-gray-300 hover:border-blue-500 hover:text-blue-400' : 'bg-gray-100 border-gray-200 text-gray-700 hover:border-blue-500 hover:text-blue-600'
-                        }`}
+                        className="px-2.5 py-1 rounded-lg text-xs border transition-colors bg-gray-100 border-gray-200 text-gray-700 hover:border-blue-500 hover:text-blue-600"
                       >
                         {formatSkillName(sid)}
                       </Link>
@@ -299,9 +297,7 @@ export default function SkillDetailPage() {
                       <Link
                         key={sid}
                         href={`/skills/${sid}`}
-                        className={`px-2.5 py-1 rounded-lg text-xs border transition-colors ${
-                          isDarkMode ? 'bg-[#2a2a3e] border-[#3a3a4e] text-gray-300 hover:border-blue-500 hover:text-blue-400' : 'bg-gray-100 border-gray-200 text-gray-700 hover:border-blue-500 hover:text-blue-600'
-                        }`}
+                        className="px-2.5 py-1 rounded-lg text-xs border transition-colors bg-gray-100 border-gray-200 text-gray-700 hover:border-blue-500 hover:text-blue-600"
                       >
                         {formatSkillName(sid)}
                       </Link>
@@ -320,7 +316,7 @@ export default function SkillDetailPage() {
                 <div className="flex flex-nowrap justify-between items-stretch gap-2 overflow-x-auto pb-2 w-full">
                       {skill.examples?.workflow?.map((item: any, idx: number) => (
                     <div key={idx} className="flex items-center flex-1 min-w-0">
-                      <div className={`${isDarkMode ? 'bg-[#0f0f1a]' : 'bg-gray-100'} rounded-lg p-3 w-full text-center`}>
+                      <div className="bg-gray-100 rounded-lg p-3 w-full text-center">
                         <div className="flex items-center justify-center gap-1.5 mb-1">
                           <div className="w-5 h-5 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xs font-medium flex-shrink-0">
                             {idx + 1}
@@ -374,10 +370,10 @@ export default function SkillDetailPage() {
                 <div key={idx} className={`border ${cardBorder} rounded-lg overflow-hidden`}>
                   <button
                     onClick={() => setExpandedExample(expandedExample === idx ? null : idx)}
-                    className={`w-full p-4 flex items-center justify-between ${isDarkMode ? 'hover:bg-[#252540]' : 'hover:bg-gray-50'} transition-colors`}
+                    className={`w-full p-4 flex items-center justify-between hover:bg-gray-50 transition-colors`}
                   >
                     <div className="flex items-center gap-3">
-                      <span className={`px-2 py-1 rounded text-xs font-medium ${isDarkMode ? 'bg-[#0f0f1a]' : 'bg-gray-200'} ${textColor}`}>
+                      <span className={`px-2 py-1 rounded text-xs font-medium bg-gray-200 ${textColor}`}>
                         Example {idx + 1}
                       </span>
                       {example.context && (
@@ -409,7 +405,7 @@ export default function SkillDetailPage() {
 
                       <div className="p-4">
                         <span className={`text-sm font-medium ${mutedColor} block mb-2`}>Sample Output</span>
-                        <div className={`w-full rounded-lg overflow-x-auto max-h-96 ${isDarkMode ? 'bg-[#0f0f1a]' : 'bg-gray-50'} p-4`}>
+                        <div className="w-full rounded-lg overflow-x-auto max-h-96 bg-gray-50 p-4">
                           <StyledOutput content={example.output} skillId={skillId} />
                         </div>
                       </div>

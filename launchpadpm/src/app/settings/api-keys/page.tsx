@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { AppLayout, useAppLayout } from '@/components/layout/AppLayout';
+import { AppLayout } from '@/components/layout/AppLayout';
 
 interface MCPConfig {
   id: string;
@@ -214,7 +214,6 @@ const MCP_CONFIGS: MCPConfig[] = [
 ];
 
 export default function APIKeysPage() {
-  const { isDarkMode } = useAppLayout();
   const [savedMCPs, setSavedMCPs] = useState<Set<string>>(new Set());
   const [expandedMCP, setExpandedMCP] = useState<string | null>(null);
   const [showSecrets, setShowSecrets] = useState<Set<string>>(new Set());
@@ -225,11 +224,11 @@ export default function APIKeysPage() {
   const [testResults, setTestResults] = useState<Record<string, { success: boolean; message: string }>>({});
   const [docsMCP, setDocsMCP] = useState<MCPConfig | null>(null);
 
-  const bgColor = isDarkMode ? 'bg-[#1a1a2e]' : 'bg-[#F9FAFB]';
-  const borderColor = isDarkMode ? 'border-[#2a2a3e]' : 'border-gray-200';
-  const textColor = isDarkMode ? 'text-white' : 'text-gray-900';
-  const mutedColor = isDarkMode ? 'text-gray-400' : 'text-gray-600';
-  const cardBg = isDarkMode ? 'bg-[#0f0f1a]' : 'bg-white';
+  const bgColor = 'bg-white';
+  const borderColor = 'border-gray-200';
+  const textColor = 'text-gray-900';
+  const mutedColor = 'text-gray-600';
+  const cardBg = 'bg-white';
 
   useEffect(() => {
     const saved = new Set<string>();
@@ -338,7 +337,7 @@ export default function APIKeysPage() {
                   </div>
                   <div className="flex items-center gap-3">
                     {isConnected && (
-                      <span className="px-3 py-1 bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 rounded-full text-sm font-medium">
+                      <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">
                         Connected
                       </span>
                     )}
@@ -362,7 +361,7 @@ export default function APIKeysPage() {
                         <button
                           key={i}
                           onClick={() => setDocsMCP(mcp)}
-                          className={`p-3 ${cardBg} rounded-lg text-center hover:bg-blue-50 dark:hover:bg-blue-900/20 cursor-pointer group transition-colors`}
+                          className={`p-3 ${cardBg} rounded-lg text-center hover:bg-blue-50 cursor-pointer group transition-colors`}
                         >
                           <p className={`text-xs ${mutedColor} group-hover:text-blue-500`}>{feature}</p>
                         </button>
@@ -441,7 +440,7 @@ export default function APIKeysPage() {
                       {isConnected && (
                         <button
                           onClick={() => handleDisconnect(mcp.id)}
-                          className="px-4 py-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg font-medium"
+                          className="px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg font-medium"
                         >
                           Disconnect
                         </button>
@@ -452,7 +451,7 @@ export default function APIKeysPage() {
                           href={mcp.docUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="px-4 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 font-medium"
+                          className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 font-medium"
                         >
                           Docs
                         </a>
@@ -487,7 +486,7 @@ export default function APIKeysPage() {
                 </div>
                 <button
                   onClick={() => setDocsMCP(null)}
-                  className={`p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 ${mutedColor}`}
+                  className={`p-2 rounded-lg hover:bg-gray-100 ${mutedColor}`}
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />

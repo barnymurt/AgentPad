@@ -158,10 +158,10 @@ function fixMarkdownContent(text: string): string {
 
 function SectionHeader({ level, children, className = '' }: { level: number; children?: React.ReactNode; className?: string }) {
   const styles = {
-    1: 'text-2xl font-bold text-gray-900 dark:text-white mt-8 mb-4 pb-2 border-b-2 border-blue-500',
-    2: 'text-xl font-semibold text-gray-800 dark:text-white mt-6 mb-3 pb-1 border-b border-gray-200 dark:border-gray-700',
-    3: 'text-lg font-medium text-gray-800 dark:text-gray-100 mt-4 mb-2',
-    4: 'text-base font-medium text-gray-700 dark:text-gray-200 mt-3 mb-2',
+    1: 'text-2xl font-bold text-gray-900 mt-8 mb-4 pb-2 border-b-2 border-blue-500',
+    2: 'text-xl font-semibold text-gray-800 mt-6 mb-3 pb-1 border-b border-gray-200',
+    3: 'text-lg font-medium text-gray-800 mt-4 mb-2',
+    4: 'text-base font-medium text-gray-700 mt-3 mb-2',
   };
   
   const Tag = `h${level}` as keyof JSX.IntrinsicElements;
@@ -170,11 +170,11 @@ function SectionHeader({ level, children, className = '' }: { level: number; chi
 
 function InfoCard({ children, type = 'info', title }: { children?: React.ReactNode; type?: 'info' | 'warning' | 'success' | 'danger' | 'tip'; title?: string }) {
   const styles = {
-    info: { bg: 'bg-blue-50 dark:bg-blue-900/20', border: 'border-blue-200 dark:border-blue-800', icon: '💡', text: 'text-blue-800 dark:text-blue-200' },
-    warning: { bg: 'bg-yellow-50 dark:bg-yellow-900/20', border: 'border-yellow-200 dark:border-yellow-800', icon: '⚠️', text: 'text-yellow-800 dark:text-yellow-200' },
-    success: { bg: 'bg-green-50 dark:bg-green-900/20', border: 'border-green-200 dark:border-green-800', icon: '✅', text: 'text-green-800 dark:text-green-200' },
-    danger: { bg: 'bg-red-50 dark:bg-red-900/20', border: 'border-red-200 dark:border-red-800', icon: '❌', text: 'text-red-800 dark:text-red-200' },
-    tip: { bg: 'bg-purple-50 dark:bg-purple-900/20', border: 'border-purple-200 dark:border-purple-800', icon: '💡', text: 'text-purple-800 dark:text-purple-200' },
+    info: { bg: 'bg-blue-50', border: 'border-blue-200', icon: '💡', text: 'text-blue-800' },
+    warning: { bg: 'bg-yellow-50', border: 'border-yellow-200', icon: '⚠️', text: 'text-yellow-800' },
+    success: { bg: 'bg-green-50', border: 'border-green-200', icon: '✅', text: 'text-green-800' },
+    danger: { bg: 'bg-red-50', border: 'border-red-200', icon: '❌', text: 'text-red-800' },
+    tip: { bg: 'bg-purple-50', border: 'border-purple-200', icon: '💡', text: 'text-purple-800' },
   };
   
   const style = styles[type];
@@ -193,14 +193,14 @@ function ColorSwatch({ color, name }: { color: string; name: string }) {
   const isRgb = color.startsWith('rgb');
   
   return (
-    <div className="flex items-center gap-3 p-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+    <div className="flex items-center gap-3 p-2 rounded-lg bg-white border border-gray-200">
       <div 
-        className="w-12 h-12 rounded-lg border border-gray-200 dark:border-gray-600 shadow-sm"
+        className="w-12 h-12 rounded-lg border border-gray-200 shadow-sm"
         style={{ backgroundColor: isHex ? color : isRgb ? color : undefined }}
       />
       <div>
-        <div className="text-sm font-medium text-gray-900 dark:text-white">{name}</div>
-        <div className="text-xs text-gray-500 dark:text-gray-400 font-mono">{color}</div>
+        <div className="text-sm font-medium text-gray-900">{name}</div>
+        <div className="text-xs text-gray-500 font-mono">{color}</div>
       </div>
     </div>
   );
@@ -220,13 +220,13 @@ function TokenDisplay({ tokens }: { tokens: Record<string, string> }) {
 
 function ComponentSpec({ name, description, code }: { name: string; description?: string; code?: string }) {
   return (
-    <div className="my-4 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
-      <div className="bg-gray-50 dark:bg-gray-800 px-4 py-2 border-b border-gray-200 dark:border-gray-700">
-        <span className="text-sm font-medium text-gray-900 dark:text-white">{name}</span>
-        {description && <span className="text-xs text-gray-500 dark:text-gray-400 ml-2">{description}</span>}
+    <div className="my-4 rounded-lg border border-gray-200 overflow-hidden">
+      <div className="bg-gray-50 px-4 py-2 border-b border-gray-200">
+        <span className="text-sm font-medium text-gray-900">{name}</span>
+        {description && <span className="text-xs text-gray-500 ml-2">{description}</span>}
       </div>
       {code && (
-        <pre className="bg-white dark:bg-gray-900 p-4 text-xs font-mono text-gray-900 dark:text-gray-100 overflow-x-auto">
+        <pre className="bg-white  p-4 text-xs font-mono text-gray-900 dark:text-gray-100 overflow-x-auto">
           {code}
         </pre>
       )}
@@ -236,9 +236,9 @@ function ComponentSpec({ name, description, code }: { name: string; description?
 
 function VisualExample({ title, content }: { title?: string; content: string }) {
   return (
-    <div className="my-4 p-4 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
-      {title && <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{title}</div>}
-      <div className="text-sm text-gray-600 dark:text-gray-400">{content}</div>
+    <div className="my-4 p-4 rounded-lg bg-gray-50 border border-gray-200">
+      {title && <div className="text-sm font-medium text-gray-700  mb-2">{title}</div>}
+      <div className="text-sm text-gray-600">{content}</div>
     </div>
   );
 }
@@ -249,10 +249,10 @@ function WireframeRenderer({ data, html }: { data?: Record<string, any>; html?: 
     return (
       <div className="my-6">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Interactive Wireframe</h3>
+          <h3 className="text-lg font-semibold text-gray-900">Interactive Wireframe</h3>
           <span className="text-xs px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded">HTML</span>
         </div>
-        <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+        <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
           <div 
             className="prose prose-sm dark:prose-invert max-w-none"
             dangerouslySetInnerHTML={{ __html: html }}
@@ -295,7 +295,7 @@ function WireframeRenderer({ data, html }: { data?: Record<string, any>; html?: 
       case 'input':
         return (
           <div key={el.id} style={{ ...baseStyle, top: el.y, height: el.height }}>
-            <div className="w-full h-full bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 rounded-md flex items-center px-3">
+            <div className="w-full h-full bg-white  border-2 border-gray-300 rounded-md flex items-center px-3">
               <span className="text-gray-400 text-sm">
                 {el.props?.placeholder || el.props?.label || 'Input'}
               </span>
@@ -321,7 +321,7 @@ function WireframeRenderer({ data, html }: { data?: Record<string, any>; html?: 
       case 'image':
         return (
           <div key={el.id} style={{ ...baseStyle, top: el.y, height: el.height }}>
-            <div className="w-full h-full bg-gray-200 dark:bg-gray-600 rounded-md flex items-center justify-center">
+            <div className="w-full h-full bg-gray-200 rounded-md flex items-center justify-center">
               <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
@@ -348,7 +348,7 @@ function WireframeRenderer({ data, html }: { data?: Record<string, any>; html?: 
       default:
         return (
           <div key={el.id} style={{ ...baseStyle, top: el.y, height: el.height }}>
-            <div className="w-full h-full border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-md flex items-center justify-center">
+            <div className="w-full h-full border-2 border-dashed border-gray-300 rounded-md flex items-center justify-center">
               <span className="text-gray-400 text-xs">{el.type}</span>
             </div>
           </div>
@@ -363,17 +363,17 @@ function WireframeRenderer({ data, html }: { data?: Record<string, any>; html?: 
         const viewportHeight = screen.viewport?.height || 812;
         
         return (
-          <div key={idx} className="bg-white dark:bg-gray-900 rounded-xl p-6">
+          <div key={idx} className="bg-white  rounded-xl p-6">
             {/* Header */}
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{screen.name}</h3>
+                <h3 className="text-lg font-semibold text-gray-900">{screen.name}</h3>
                 <div className="flex gap-2 mt-1">
                   {screen.priority && (
                     <span className={`text-xs px-2 py-0.5 rounded font-medium ${
                       screen.priority === 'P0' ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' :
                       screen.priority === 'P1' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' :
-                      'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400'
+                      'bg-gray-100 text-gray-600  '
                     }`}>{screen.priority}</span>
                   )}
                   {screen.fidelity && (
@@ -391,7 +391,7 @@ function WireframeRenderer({ data, html }: { data?: Record<string, any>; html?: 
             {/* Wireframe Canvas */}
             <div className="flex justify-center">
               <div 
-                className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl overflow-hidden"
+                className="bg-white rounded-xl shadow-2xl overflow-hidden"
                 style={{ 
                   width: Math.min(viewportWidth, 400),
                   height: Math.min(viewportHeight, 700),
@@ -400,11 +400,11 @@ function WireframeRenderer({ data, html }: { data?: Record<string, any>; html?: 
                 }}
               >
                 {/* Status Bar Mock */}
-                <div className="h-6 bg-gray-100 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600 flex items-center justify-between px-3">
-                  <div className="w-12 h-2 bg-gray-300 dark:bg-gray-600 rounded" />
+                <div className="h-6 bg-gray-100 border-b border-gray-200 dark:border-gray-600 flex items-center justify-between px-3">
+                  <div className="w-12 h-2 bg-gray-300 rounded" />
                   <div className="flex gap-1">
-                    <div className="w-4 h-2 bg-gray-300 dark:bg-gray-600 rounded" />
-                    <div className="w-4 h-2 bg-gray-300 dark:bg-gray-600 rounded" />
+                    <div className="w-4 h-2 bg-gray-300 rounded" />
+                    <div className="w-4 h-2 bg-gray-300 rounded" />
                   </div>
                 </div>
                 
@@ -414,17 +414,17 @@ function WireframeRenderer({ data, html }: { data?: Record<string, any>; html?: 
                 </div>
                 
                 {/* Home Indicator */}
-                <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-20 h-1 bg-gray-300 dark:bg-gray-600 rounded-full" />
+                <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-20 h-1 bg-gray-300 rounded-full" />
               </div>
             </div>
             
             {/* Interactions */}
             {screen.interactions && screen.interactions.length > 0 && (
               <div className="mt-4">
-                <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">User Flows</h4>
+                <h4 className="text-sm font-medium text-gray-700  mb-2">User Flows</h4>
                 <div className="flex flex-wrap gap-2">
                   {screen.interactions.map((int: any, intIdx: number) => (
-                    <div key={intIdx} className="flex items-center gap-1 text-xs bg-white dark:bg-gray-800 px-2 py-1 rounded border border-gray-200 dark:border-gray-700">
+                    <div key={intIdx} className="flex items-center gap-1 text-xs bg-white px-2 py-1 rounded border border-gray-200">
                       <span className="font-mono text-blue-600 dark:text-blue-400">{int.element}</span>
                       <span className="text-gray-400">→</span>
                       <span className="font-medium text-purple-600 dark:text-purple-400">{int.action}</span>
@@ -445,7 +445,7 @@ function WireframeRenderer({ data, html }: { data?: Record<string, any>; html?: 
       
       {/* Element Legend */}
       <div className="mt-6">
-        <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Element Key</h4>
+        <h4 className="text-sm font-medium text-gray-700  mb-3">Element Key</h4>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
             { type: 'button', label: 'Button', style: 'bg-gray-800 rounded' },
@@ -455,7 +455,7 @@ function WireframeRenderer({ data, html }: { data?: Record<string, any>; html?: 
           ].map((item) => (
             <div key={item.type} className="flex items-center gap-2 text-xs">
               <div className={`w-4 h-4 ${item.style}`} />
-              <span className="text-gray-600 dark:text-gray-400">{item.label}</span>
+              <span className="text-gray-600">{item.label}</span>
             </div>
           ))}
         </div>
@@ -494,11 +494,11 @@ function FlowRenderer({ flow }: { flow: any }) {
             return (
               <div key={idx} className="flex items-center">
                 {/* Screen Card */}
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700" style={{ width: 280 }}>
+                <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200" style={{ width: 280 }}>
                   {/* Screen Header */}
-                  <div className="bg-gray-50 dark:bg-gray-700 px-4 py-3 border-b border-gray-200 dark:border-gray-600">
+                  <div className="bg-gray-50  px-4 py-3 border-b border-gray-200 dark:border-gray-600">
                     <div className="flex items-center justify-between">
-                      <h4 className="font-semibold text-gray-900 dark:text-white text-sm">{screen.name}</h4>
+                      <h4 className="font-semibold text-gray-900 text-sm">{screen.name}</h4>
                       {screen.priority && (
                         <span className={`text-xs px-2 py-0.5 rounded ${
                           screen.priority === 'P0' ? 'bg-red-100 text-red-700' : 
@@ -509,14 +509,14 @@ function FlowRenderer({ flow }: { flow: any }) {
                   </div>
                   
                   {/* Screen Preview */}
-                  <div className="p-3 bg-white dark:bg-gray-900">
+                  <div className="p-3 bg-white ">
                     <div 
-                      className="mx-auto bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden"
+                      className="mx-auto bg-white rounded-lg shadow overflow-hidden"
                       style={{ width: Math.min(viewportWidth, 240), height: Math.min(viewportHeight, 300) }}
                     >
                       {/* Phone frame */}
-                      <div className="h-4 bg-gray-200 dark:bg-gray-700 flex items-center px-2">
-                        <div className="w-8 h-1 bg-gray-300 dark:bg-gray-600 rounded-full" />
+                      <div className="h-4 bg-gray-200  flex items-center px-2">
+                        <div className="w-8 h-1 bg-gray-300 rounded-full" />
                       </div>
                       <div className="p-2 relative" style={{ height: Math.min(viewportHeight, 300) - 16 }}>
                         {screen.elements?.slice(0, 5).map((el: any, elIdx: number) => {
@@ -524,7 +524,7 @@ function FlowRenderer({ flow }: { flow: any }) {
                           return (
                             <div
                               key={elIdx}
-                              className="absolute bg-gray-100 dark:bg-gray-700 rounded"
+                              className="absolute bg-gray-100 rounded"
                               style={{
                                 left: el.x * scale,
                                 top: el.y * scale * 0.3,
@@ -545,8 +545,8 @@ function FlowRenderer({ flow }: { flow: any }) {
                   
                   {/* Interactions from this screen */}
                   {outgoing.length > 0 && (
-                    <div className="px-4 py-2 bg-gray-50 dark:bg-gray-700/50 border-t border-gray-200 dark:border-gray-600">
-                      <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">Flows to:</div>
+                    <div className="px-4 py-2 bg-gray-50 /50 border-t border-gray-200 dark:border-gray-600">
+                      <div className="text-xs text-gray-500 mb-1">Flows to:</div>
                       {outgoing.map((conn: any, cIdx: number) => (
                         <div key={cIdx} className="flex items-center gap-1 text-xs">
                           <span className="font-mono text-blue-600 dark:text-blue-400">{conn.via}</span>
@@ -575,10 +575,10 @@ function FlowRenderer({ flow }: { flow: any }) {
       {/* Connection Legend */}
       {connections.length > 0 && (
         <div className="mt-6">
-          <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Flow Connections</h4>
+          <h4 className="text-sm font-medium text-gray-700  mb-3">Flow Connections</h4>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
             {connections.map((conn: any, idx: number) => (
-              <div key={idx} className="flex items-center gap-2 text-xs bg-white dark:bg-gray-800 px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700">
+              <div key={idx} className="flex items-center gap-2 text-xs bg-white px-3 py-2 rounded-lg border border-gray-200">
                 <span className="font-medium text-blue-600 dark:text-blue-400">{conn.from}</span>
                 <span className="text-gray-400">→</span>
                 <span className="font-medium text-purple-600 dark:text-purple-400">{conn.to}</span>
@@ -604,7 +604,7 @@ function IARenderer({ data }: { data?: Record<string, any> }) {
       <div key={idx} style={{ marginLeft: level * 20 }}>
         <div className="flex items-center gap-2 py-1">
           {level > 0 && <span className="text-gray-300">├─</span>}
-          <span className="text-sm text-gray-700 dark:text-gray-300">
+          <span className="text-sm text-gray-700 ">
             {node.name}
             {node.path && <span className="text-gray-400 ml-2 text-xs">{node.path}</span>}
           </span>
@@ -635,8 +635,8 @@ function IARenderer({ data }: { data?: Record<string, any> }) {
       
       {/* Site Map */}
       {siteMap?.nodes && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
-          <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Site Map</h4>
+        <div className="bg-white rounded-xl border border-gray-200 p-4">
+          <h4 className="text-sm font-semibold text-gray-900 mb-3">Site Map</h4>
           <div className="font-mono text-sm">
             {renderNodes(siteMap.nodes)}
           </div>
@@ -647,18 +647,18 @@ function IARenderer({ data }: { data?: Record<string, any> }) {
       {navigation && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {Object.entries(navigation).map(([navType, items]: [string, any]) => (
-            <div key={navType} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
-              <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3 capitalize">
+            <div key={navType} className="bg-white rounded-xl border border-gray-200 p-4">
+              <h4 className="text-sm font-semibold text-gray-900 mb-3 capitalize">
                 {navType} Navigation
               </h4>
               <div className="space-y-2">
                 {Array.isArray(items) && items.map((item: any, idx: number) => (
                   <div key={idx} className="flex items-center justify-between text-xs">
-                    <span className="text-gray-700 dark:text-gray-300">{item.label}</span>
+                    <span className="text-gray-700 ">{item.label}</span>
                     <span className={`px-1.5 py-0.5 rounded ${
                       item.priority === 'high' ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' :
                       item.priority === 'medium' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' :
-                      'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400'
+                      'bg-gray-100 text-gray-600  '
                     }`}>{item.priority}</span>
                   </div>
                 ))}
@@ -670,13 +670,13 @@ function IARenderer({ data }: { data?: Record<string, any> }) {
       
       {/* Labels */}
       {labels && Object.keys(labels).length > 0 && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
-          <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Label Glossary</h4>
+        <div className="bg-white rounded-xl border border-gray-200 p-4">
+          <h4 className="text-sm font-semibold text-gray-900 mb-3">Label Glossary</h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
             {Object.entries(labels).map(([key, desc]: [string, any]) => (
               <div key={key} className="flex items-start gap-2 text-xs">
                 <span className="font-mono text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 px-1.5 py-0.5 rounded">{key}</span>
-                <span className="text-gray-600 dark:text-gray-400">{String(desc)}</span>
+                <span className="text-gray-600">{String(desc)}</span>
               </div>
             ))}
           </div>
@@ -685,8 +685,8 @@ function IARenderer({ data }: { data?: Record<string, any> }) {
       
       {/* Search Strategy */}
       {searchStrategy && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
-          <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Search Strategy</h4>
+        <div className="bg-white rounded-xl border border-gray-200 p-4">
+          <h4 className="text-sm font-semibold text-gray-900 mb-3">Search Strategy</h4>
           <div className="flex flex-wrap gap-2">
             {searchStrategy.enabled && (
               <span className="text-xs px-2 py-1 bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 rounded">Enabled</span>
@@ -735,12 +735,12 @@ function ResponsivePatternsRenderer({ data }: { data?: Record<string, any> }) {
       
       {/* Breakpoints */}
       {breakpoints?.length > 0 && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
-          <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Breakpoints</h4>
+        <div className="bg-white rounded-xl border border-gray-200 p-4">
+          <h4 className="text-sm font-semibold text-gray-900 mb-3">Breakpoints</h4>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {breakpoints.map((bp: any, idx: number) => (
-              <div key={idx} className="bg-white dark:bg-gray-900 rounded-lg p-3 text-center">
-                <div className="font-medium text-gray-900 dark:text-white capitalize">{bp.name}</div>
+              <div key={idx} className="bg-white  rounded-lg p-3 text-center">
+                <div className="font-medium text-gray-900 capitalize">{bp.name}</div>
                 <div className="text-xs text-gray-500 mt-1">
                   {bp.min || 0}px {bp.max ? `- ${bp.max}px` : '+'}
                 </div>
@@ -757,16 +757,16 @@ function ResponsivePatternsRenderer({ data }: { data?: Record<string, any> }) {
       {patterns?.length > 0 && (
         <div className="space-y-4">
           {patterns.map((pattern: any, idx: number) => (
-            <div key={idx} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
+            <div key={idx} className="bg-white rounded-xl border border-gray-200 p-4">
               <div className="flex items-center justify-between mb-3">
-                <h4 className="text-sm font-semibold text-gray-900 dark:text-white">{pattern.name}</h4>
+                <h4 className="text-sm font-semibold text-gray-900">{pattern.name}</h4>
               </div>
               <p className="text-xs text-gray-500 mb-3">{pattern.description}</p>
               <div className="grid grid-cols-3 gap-2">
                 {Object.entries(pattern).filter(([k]) => !['name', 'description'].includes(k)).map(([bpName, bpConfig]: [string, any], iIdx: number) => (
-                    <div key={iIdx} className="bg-white dark:bg-gray-900 rounded-lg p-2">
+                    <div key={iIdx} className="bg-white  rounded-lg p-2">
                     <div className="text-xs font-medium text-blue-600 dark:text-blue-400 capitalize mb-1">{bpName}</div>
-                    <pre className="text-xs text-gray-600 dark:text-gray-400 overflow-x-auto">
+                    <pre className="text-xs text-gray-600 overflow-x-auto">
                       {JSON.stringify(bpConfig, null, 1)}
                     </pre>
                   </div>
@@ -779,18 +779,18 @@ function ResponsivePatternsRenderer({ data }: { data?: Record<string, any> }) {
       
       {/* Testing */}
       {testing && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
-          <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Testing Plan</h4>
+        <div className="bg-white rounded-xl border border-gray-200 p-4">
+          <h4 className="text-sm font-semibold text-gray-900 mb-3">Testing Plan</h4>
           {testing.devices && (
             <div className="mb-2">
               <span className="text-xs font-medium text-gray-500">Devices: </span>
-              <span className="text-xs text-gray-700 dark:text-gray-300">{testing.devices.join(', ')}</span>
+              <span className="text-xs text-gray-700 ">{testing.devices.join(', ')}</span>
             </div>
           )}
           {testing.browsers && (
             <div>
               <span className="text-xs font-medium text-gray-500">Browsers: </span>
-              <span className="text-xs text-gray-700 dark:text-gray-300">{testing.browsers.join(', ')}</span>
+              <span className="text-xs text-gray-700 ">{testing.browsers.join(', ')}</span>
             </div>
           )}
         </div>
@@ -825,8 +825,8 @@ function DesignSystemRenderer({ data }: { data?: Record<string, any> }) {
       
       {/* Colors */}
       {tokens?.colors && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
-          <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Color Tokens</h4>
+        <div className="bg-white rounded-xl border border-gray-200 p-4">
+          <h4 className="text-sm font-semibold text-gray-900 mb-3">Color Tokens</h4>
           <div className="space-y-4">
             {Object.entries(tokens.colors).map(([colorName, colorValue]: [string, any]) => (
               <div key={colorName}>
@@ -840,7 +840,7 @@ function DesignSystemRenderer({ data }: { data?: Record<string, any> }) {
                           style={{ backgroundColor: hex }}
                         />
                         <div className="text-xs">
-                          <div className="text-gray-600 dark:text-gray-400">{shade}</div>
+                          <div className="text-gray-600">{shade}</div>
                           <div className="font-mono text-gray-500">{hex}</div>
                         </div>
                       </div>
@@ -863,24 +863,24 @@ function DesignSystemRenderer({ data }: { data?: Record<string, any> }) {
       
       {/* Typography */}
       {tokens?.typography && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
-          <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Typography</h4>
+        <div className="bg-white rounded-xl border border-gray-200 p-4">
+          <h4 className="text-sm font-semibold text-gray-900 mb-3">Typography</h4>
           {tokens.typography.fontFamily?.sans && (
             <div className="mb-3">
               <span className="text-xs text-gray-500">Font: </span>
-              <span className="text-xs text-gray-700 dark:text-gray-300 font-mono">{tokens.typography.fontFamily.sans}</span>
+              <span className="text-xs text-gray-700  font-mono">{tokens.typography.fontFamily.sans}</span>
             </div>
           )}
           <div className="space-y-2">
             {tokens.typography.heading && Object.entries(tokens.typography.heading).map(([tag, style]: [string, any]) => (
               <div key={tag} className="flex items-center justify-between border-b border-gray-100 dark:border-gray-700 pb-2">
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{tag}</span>
+                <span className="text-sm font-medium text-gray-700 ">{tag}</span>
                 <span className="text-xs text-gray-500 font-mono">{style}</span>
               </div>
             ))}
             {tokens.typography.body && Object.entries(tokens.typography.body).map(([tag, style]: [string, any]) => (
               <div key={tag} className="flex items-center justify-between border-b border-gray-100 dark:border-gray-700 pb-2">
-                <span className="text-sm text-gray-700 dark:text-gray-300">{tag}</span>
+                <span className="text-sm text-gray-700 ">{tag}</span>
                 <span className="text-xs text-gray-500 font-mono">{style}</span>
               </div>
             ))}
@@ -890,13 +890,13 @@ function DesignSystemRenderer({ data }: { data?: Record<string, any> }) {
       
       {/* Components */}
       {components?.length > 0 && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
-          <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Components</h4>
+        <div className="bg-white rounded-xl border border-gray-200 p-4">
+          <h4 className="text-sm font-semibold text-gray-900 mb-3">Components</h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {components.map((comp: any, idx: number) => (
-              <div key={idx} className="bg-white dark:bg-gray-900 rounded-lg p-3">
+              <div key={idx} className="bg-white  rounded-lg p-3">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="font-medium text-gray-900 dark:text-white text-sm">{comp.name}</span>
+                  <span className="font-medium text-gray-900 text-sm">{comp.name}</span>
                 </div>
                 <div className="flex flex-wrap gap-1 mb-2">
                   {comp.variants?.slice(0, 4).map((v: string, i: number) => (
@@ -917,13 +917,13 @@ function DesignSystemRenderer({ data }: { data?: Record<string, any> }) {
       {themes && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {Object.entries(themes).map(([themeName, themeValues]: [string, any]) => (
-            <div key={themeName} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
-              <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3 capitalize">{themeName} Theme</h4>
+            <div key={themeName} className="bg-white rounded-xl border border-gray-200 p-4">
+              <h4 className="text-sm font-semibold text-gray-900 mb-3 capitalize">{themeName} Theme</h4>
               <div className="space-y-2">
                 {themeValues.background && Object.entries(themeValues.background).map(([key, val]: [string, any]) => (
                   <div key={key} className="flex items-center gap-2">
                     <div className="w-4 h-4 rounded" style={{ backgroundColor: val }} />
-                    <span className="text-xs text-gray-600 dark:text-gray-400">{key}: </span>
+                    <span className="text-xs text-gray-600">{key}: </span>
                     <span className="text-xs font-mono text-gray-500">{val}</span>
                   </div>
                 ))}
@@ -944,9 +944,9 @@ function MetricBadge({ value, label, trend }: { value: string; label: string; tr
   };
   
   return (
-    <div className="inline-flex flex-col items-center px-4 py-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
-      <span className="text-2xl font-bold text-gray-900 dark:text-white">{value}</span>
-      <span className="text-xs text-gray-500 dark:text-gray-400">{label}</span>
+    <div className="inline-flex flex-col items-center px-4 py-2 bg-white rounded-lg border border-gray-200 shadow-sm">
+      <span className="text-2xl font-bold text-gray-900">{value}</span>
+      <span className="text-xs text-gray-500">{label}</span>
       {trend && <span className={`text-xs ${trendColors[trend]}`}>{trend === 'up' ? '↑' : trend === 'down' ? '↓' : '→'}</span>}
     </div>
   );
@@ -992,7 +992,7 @@ function useCategoryComponents(category: SkillCategory, config: CategoryConfig) 
         return <InfoCard type="danger">{children}</InfoCard>;
       }
       
-      return <p className="text-sm text-gray-700 dark:text-gray-300 mb-4 leading-relaxed">{children}</p>;
+      return <p className="text-sm text-gray-700  mb-4 leading-relaxed">{children}</p>;
     },
     
     ul: ({ children }: { children?: React.ReactNode }) => (
@@ -1005,13 +1005,13 @@ function useCategoryComponents(category: SkillCategory, config: CategoryConfig) 
       const text = children?.toString() || '';
       
       if (text.match(/^(IF |THEN |BECAUSE |WHEN |WHERE |HOW )/i)) {
-        return <li className="text-sm text-gray-700 dark:text-gray-300 ml-4 bg-slate-100 dark:bg-slate-800 p-2 rounded my-1 font-mono text-xs">{children}</li>;
+        return <li className="text-sm text-gray-700  ml-4 bg-slate-100 dark:bg-slate-800 p-2 rounded my-1 font-mono text-xs">{children}</li>;
       }
       if (text.match(/^(\* \[ \] |\- \[ \] |\[ \] )/)) {
-        return <li className="text-sm text-gray-700 dark:text-gray-300 flex items-start gap-2">{children}</li>;
+        return <li className="text-sm text-gray-700  flex items-start gap-2">{children}</li>;
       }
       
-      return <li className="text-sm text-gray-700 dark:text-gray-300">{children}</li>;
+      return <li className="text-sm text-gray-700 ">{children}</li>;
     },
     
     strong: ({ children }: { children?: React.ReactNode }) => {
@@ -1031,23 +1031,23 @@ function useCategoryComponents(category: SkillCategory, config: CategoryConfig) 
         return <span className="font-bold text-blue-600 dark:text-blue-400">{children}</span>;
       }
       
-      return <strong className="font-semibold text-gray-900 dark:text-white">{children}</strong>;
+      return <strong className="font-semibold text-gray-900">{children}</strong>;
     },
     
     em: ({ children }: { children?: React.ReactNode }) => (
-      <em className="italic text-gray-600 dark:text-gray-400">{children}</em>
+      <em className="italic text-gray-600">{children}</em>
     ),
     
     // Enhanced table rendering
     table: ({ children }: { children?: React.ReactNode }) => (
       <div className="overflow-x-auto my-6">
-        <table className="min-w-full border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-sm">
+        <table className="min-w-full border border-gray-200 rounded-lg overflow-hidden shadow-sm">
           {children}
         </table>
       </div>
     ),
     thead: ({ children }: { children?: React.ReactNode }) => (
-      <thead className="bg-gray-100 dark:bg-gray-700">{children}</thead>
+      <thead className="bg-gray-100">{children}</thead>
     ),
     tbody: ({ children }: { children?: React.ReactNode }) => (
       <tbody className="divide-y divide-gray-100 dark:divide-gray-700">{children}</tbody>
@@ -1056,13 +1056,13 @@ function useCategoryComponents(category: SkillCategory, config: CategoryConfig) 
       <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">{children}</tr>
     ),
     th: ({ children }: { children?: React.ReactNode }) => (
-      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider border-r border-gray-200 dark:border-gray-600">
+      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600  uppercase tracking-wider border-r border-gray-200 dark:border-gray-600">
         {children}
       </th>
     ),
     td: ({ children }: { children?: React.ReactNode }) => {
       const text = children?.toString() || '';
-      let className = 'px-4 py-3 text-sm text-gray-700 dark:text-gray-300 border-r border-gray-100 dark:border-gray-700';
+      let className = 'px-4 py-3 text-sm text-gray-700  border-r border-gray-100 dark:border-gray-700';
       
       const lower = text.toLowerCase();
       if (text.includes('✅') || lower.includes('pass') || lower.includes('yes') || lower.includes('complete') || lower.includes('high')) {
@@ -1094,7 +1094,7 @@ function useCategoryComponents(category: SkillCategory, config: CategoryConfig) 
       const isWireframe = codeClass?.includes('wireframe');
       
       if (isInline) {
-        return <code className="bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 rounded text-xs font-mono text-pink-600 dark:text-pink-400">{children}</code>;
+        return <code className="bg-gray-100 px-1.5 py-0.5 rounded text-xs font-mono text-pink-600 dark:text-pink-400">{children}</code>;
       }
       
       if (isWireframe) {
@@ -1103,14 +1103,14 @@ function useCategoryComponents(category: SkillCategory, config: CategoryConfig) 
             <div className="bg-blue-50 dark:bg-blue-900/20 px-4 py-2 border-b border-blue-500/30">
               <span className="text-xs font-medium text-blue-700 dark:text-blue-300">Wireframe</span>
             </div>
-            <pre className="bg-gray-100 dark:bg-gray-900 p-4 overflow-x-auto text-xs font-mono text-green-700 dark:text-green-400 leading-relaxed">
+            <pre className="bg-gray-100  p-4 overflow-x-auto text-xs font-mono text-green-700 dark:text-green-400 leading-relaxed">
               {children}
             </pre>
           </div>
         );
       }
       
-      return <code className={`${codeClass} block bg-gray-100 dark:bg-gray-900 p-4 rounded-lg text-xs font-mono text-gray-700 dark:text-gray-100 overflow-x-auto my-4`}>{children}</code>;
+      return <code className={`${codeClass} block bg-gray-100  p-4 rounded-lg text-xs font-mono text-gray-700 dark:text-gray-100 overflow-x-auto my-4`}>{children}</code>;
     },
     pre: ({ children }: { children?: React.ReactNode }) => {
       // Check if this is a wireframe by checking child content
@@ -1123,7 +1123,7 @@ function useCategoryComponents(category: SkillCategory, config: CategoryConfig) 
             <div className="bg-blue-50 dark:bg-blue-900/20 px-4 py-2 border-b border-blue-500/30">
               <span className="text-xs font-medium text-blue-700 dark:text-blue-300">Wireframe</span>
             </div>
-            <pre className="bg-gray-100 dark:bg-gray-900 p-4 overflow-x-auto text-xs font-mono text-green-700 dark:text-green-400 leading-relaxed">
+            <pre className="bg-gray-100  p-4 overflow-x-auto text-xs font-mono text-green-700 dark:text-green-400 leading-relaxed">
               {children}
             </pre>
           </div>
@@ -1131,12 +1131,12 @@ function useCategoryComponents(category: SkillCategory, config: CategoryConfig) 
       }
       
       return (
-        <pre className="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto my-4 text-xs font-mono text-gray-700 dark:text-gray-100">
+        <pre className="bg-gray-100  p-4 rounded-lg overflow-x-auto my-4 text-xs font-mono text-gray-700 dark:text-gray-100">
           {children}
         </pre>
       );
     },
-    hr: () => <hr className="my-8 border-gray-200 dark:border-gray-700" />,
+    hr: () => <hr className="my-8 border-gray-200" />,
     a: ({ href, children }: { href?: string; children?: React.ReactNode }) => (
       <a href={href} className="text-blue-600 dark:text-blue-400 hover:underline" target="_blank" rel="noopener noreferrer">
         {children}
@@ -1180,7 +1180,7 @@ export default function StyledOutput({ content, skillId, className = '' }: Style
         {/* Show any additional markdown if present */}
         {structured.annotations && (
           <div className="mt-6">
-            <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-3">Annotations</h4>
+            <h4 className="text-sm font-medium text-gray-900 mb-3">Annotations</h4>
             <ReactMarkdown components={components}>
               {structured.annotations.map((a: any, idx: number) => 
                 `**${a.element}**: ${a.note}`
@@ -1253,7 +1253,7 @@ export default function StyledOutput({ content, skillId, className = '' }: Style
             {category} • {config.primaryOutput}
           </div>
         )}
-        <pre className="bg-gray-100 dark:bg-gray-900 text-green-700 dark:text-green-400 p-4 rounded-lg overflow-x-auto text-xs">
+        <pre className="bg-gray-100  text-green-700 dark:text-green-400 p-4 rounded-lg overflow-x-auto text-xs">
           {JSON.stringify(structured, null, 2)}
         </pre>
       </div>
@@ -1263,7 +1263,7 @@ export default function StyledOutput({ content, skillId, className = '' }: Style
   if (!markdown) {
     return (
       <div className="text-center py-8">
-        <p className="text-gray-500 dark:text-gray-400">No output available</p>
+        <p className="text-gray-500">No output available</p>
       </div>
     );
   }

@@ -56,7 +56,6 @@ const PHASES = [
 ];
 
 export default function BuilderPage() {
-  const { isDarkMode } = useAppLayout();
   const searchParams = useSearchParams();
   const initialId = searchParams.get('id');
   
@@ -302,12 +301,12 @@ export default function BuilderPage() {
     }
   };
 
-  const cardBg = isDarkMode ? 'bg-[#1a1a2e]' : 'bg-[#F9FAFB]';
-  const cardBorder = isDarkMode ? 'border-[#2a2a3e]' : 'border-gray-200';
-  const textColor = isDarkMode ? 'text-white' : 'text-gray-900';
-  const mutedColor = isDarkMode ? 'text-gray-400' : 'text-gray-600';
-  const inputBg = isDarkMode ? 'bg-[#0f0f1a]' : 'bg-gray-100';
-  const inputBorder = isDarkMode ? 'border-[#2a2a3e]' : 'border-gray-300';
+  const cardBg = 'bg-white';
+  const cardBorder = 'border-gray-200';
+  const textColor = 'text-gray-900';
+  const mutedColor = 'text-gray-600';
+  const inputBg = 'bg-gray-100';
+  const inputBorder = 'border-gray-300';
 
   const getPhaseStatus = (phase: string) => {
     if (!currentProject) return 'pending';
@@ -477,7 +476,7 @@ export default function BuilderPage() {
                   <span className={mutedColor}>Overall Progress</span>
                   <span className={textColor}>{currentProject.progress}%</span>
                 </div>
-                <div className={`h-2 rounded-full ${isDarkMode ? 'bg-[#2a2a3e]' : 'bg-gray-200'}`}>
+                <div className="h-2 rounded-full bg-gray-200">
                   <div 
                     className="h-2 rounded-full bg-blue-600 transition-all"
                     style={{ width: `${currentProject.progress}%` }}
@@ -506,7 +505,7 @@ export default function BuilderPage() {
                             status === 'approved' ? 'bg-green-500 text-white' :
                             status === 'completed' ? 'bg-green-500/50 text-white' :
                             status === 'running' ? 'bg-blue-500 text-white' :
-                            isDarkMode ? 'bg-[#2a2a3e] text-gray-400' : 'bg-gray-200 text-gray-600'
+                            bg-gray-200 text-gray-600
                           }`}>
                             {status === 'approved' ? '✓' : index + 1}
                           </span>
@@ -579,8 +578,8 @@ export default function BuilderPage() {
                     
                     {currentProject.phaseStatus === 'failed' && (
                       <div className="space-y-3">
-                        <div className={`p-3 rounded-lg ${isDarkMode ? 'bg-red-500/10 border-red-500/20' : 'bg-red-50 border-red-200'} border`}>
-                          <p className={`text-sm ${isDarkMode ? 'text-red-400' : 'text-red-700'}`}>
+                        <div className="p-3 rounded-lg bg-red-50 border-red-200 border">
+                          <p className="text-sm text-red-700">
                             {currentProject.lastError || getStatusGuidance(currentProject.currentPhase, 'failed').message}
                           </p>
                         </div>
@@ -595,8 +594,8 @@ export default function BuilderPage() {
                     )}
                     
                     {currentProject.phaseStatus === 'running' && (
-                      <div className={`p-3 rounded-lg ${isDarkMode ? 'bg-blue-500/10 border-blue-500/20' : 'bg-blue-50 border-blue-200'} border`}>
-                        <p className={`text-sm ${isDarkMode ? 'text-blue-400' : 'text-blue-700'}`}>
+                      <div className="p-3 rounded-lg bg-blue-50 border-blue-200 border">
+                        <p className="text-sm text-blue-700">
                           {getStatusGuidance(currentProject.currentPhase, 'running').message}
                         </p>
                       </div>
@@ -675,7 +674,7 @@ export default function BuilderPage() {
                 <div className={`${cardBg} ${cardBorder} border rounded-xl p-6`}>
                   <h3 className={`${textColor} font-semibold mb-4`}>Latest Output</h3>
                   
-                  <div className={`p-4 rounded-lg ${isDarkMode ? 'bg-[#0f0f1a]' : 'bg-gray-50'} max-h-96 overflow-auto`}>
+                  <div className="p-4 rounded-lg bg-gray-50 max-h-96 overflow-auto">
                     <pre className={`text-sm ${textColor} whitespace-pre-wrap font-mono`}>
                       {currentProject.phaseOutputs[currentProject.currentPhase].summary}
                     </pre>
@@ -690,7 +689,7 @@ export default function BuilderPage() {
                     <span>Devil's Advocate Review</span>
                   </h3>
                   
-                  <div className={`p-4 rounded-lg ${isDarkMode ? 'bg-purple-500/10' : 'bg-purple-50'} border ${isDarkMode ? 'border-purple-500/20' : 'border-purple-200'}`}>
+                  <div className="p-4 rounded-lg bg-purple-50 border border-purple-200">
                     <p className={`text-sm ${textColor}`}>
                       {currentProject.qualityScores[currentProject.currentPhase].reviewDetails}
                     </p>
@@ -715,7 +714,7 @@ export default function BuilderPage() {
                     value={newProjectName}
                     onChange={(e) => setNewProjectName(e.target.value)}
                     placeholder="My SaaS Product"
-                    className={`w-full px-4 py-2 rounded-lg border ${inputBorder} ${inputBg} ${isDarkMode ? 'text-white placeholder-gray-500' : 'text-gray-900 placeholder-gray-400'} focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                    className={`w-full px-4 py-2 rounded-lg border ${inputBorder} ${inputBg} text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500`}
                   />
                 </div>
                 
@@ -726,7 +725,7 @@ export default function BuilderPage() {
                     onChange={(e) => setNewProjectDescription(e.target.value)}
                     placeholder="A B2B SaaS for..."
                     rows={4}
-                    className={`w-full px-4 py-2 rounded-lg border ${inputBorder} ${inputBg} ${isDarkMode ? 'text-white placeholder-gray-500' : 'text-gray-900 placeholder-gray-400'} focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                    className={`w-full px-4 py-2 rounded-lg border ${inputBorder} ${inputBg} text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500`}
                   />
                 </div>
               </div>
@@ -741,7 +740,7 @@ export default function BuilderPage() {
                 </button>
                 <button
                   onClick={() => setShowNewProject(false)}
-                  className={`px-4 py-2 ${isDarkMode ? 'bg-[#2a2a3e] text-white hover:bg-[#3a3a4e]' : 'bg-gray-200 text-gray-800 hover:bg-gray-300'} rounded-lg`}
+                  className="px-4 py-2 bg-gray-200 text-gray-800 hover:bg-gray-300 rounded-lg"
                 >
                   Cancel
                 </button>

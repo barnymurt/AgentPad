@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { AppLayout, useAppLayout } from '@/components/layout/AppLayout';
+import { AppLayout } from '@/components/layout/AppLayout';
 import StyledOutput from '@/components/skill/StyledOutput';
 
 interface ActivityItem {
@@ -46,22 +46,21 @@ function formatSkillName(skillId: string): string {
 const getTypeStyles = (type: ActivityItem['type']) => {
   switch (type) {
     case 'skill':
-      return 'bg-purple-500/20 text-purple-400';
+      return 'bg-purple-100 text-purple-700';
     case 'squad':
-      return 'bg-blue-500/20 text-blue-400';
+      return 'bg-blue-100 text-blue-700';
     case 'project':
-      return 'bg-green-500/20 text-green-400';
+      return 'bg-green-100 text-green-700';
     case 'export':
-      return 'bg-gray-500/20 text-gray-400';
+      return 'bg-gray-100 text-gray-700';
     case 'message':
-      return 'bg-yellow-500/20 text-yellow-400';
+      return 'bg-yellow-100 text-yellow-700';
     default:
-      return 'bg-gray-500/20 text-gray-400';
+      return 'bg-gray-100 text-gray-700';
   }
 };
 
 export default function ActivityPage() {
-  const { isDarkMode } = useAppLayout();
   const searchParams = useSearchParams();
   const initialTab = searchParams.get('status') || 'all';
   
@@ -70,18 +69,6 @@ export default function ActivityPage() {
   const [activeTab, setActiveTab] = useState(initialTab);
   const [selectedJob, setSelectedJob] = useState<ActivityItem | null>(null);
   const [jobLoading, setJobLoading] = useState(false);
-  const [localTheme, setLocalTheme] = useState<'dark' | 'light'>('dark');
-
-  useEffect(() => {
-    const saved = localStorage.getItem('dashboard-dark-mode');
-    if (saved !== null) {
-      setLocalTheme(saved === 'true' ? 'dark' : 'light');
-    } else if (typeof window !== 'undefined') {
-      setLocalTheme(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    }
-  }, []);
-
-  const theme = isDarkMode !== undefined ? (isDarkMode ? 'dark' : 'light') : localTheme;
 
   useEffect(() => {
     fetch('/api/jobs')
@@ -154,33 +141,33 @@ export default function ActivityPage() {
   const completedCount = activities.filter(a => a.status === 'completed').length;
   const failedCount = activities.filter(a => a.status === 'failed').length;
 
-  const cardBg = theme === 'dark' ? 'bg-[#1a1a2e]' : 'bg-[#F9FAFB]';
-  const cardBorder = theme === 'dark' ? 'border-[#2a2a3e]' : 'border-gray-200';
-  const titleColor = theme === 'dark' ? 'text-white' : 'text-gray-900';
-  const mutedColor = theme === 'dark' ? 'text-gray-400' : 'text-gray-600';
-  const hoverBg = theme === 'dark' ? 'hover:bg-[#1f1f35]' : 'hover:bg-gray-50';
-  const textColor = theme === 'dark' ? 'text-white' : 'text-gray-900';
-  const descColor = theme === 'dark' ? 'text-gray-400' : 'text-gray-600';
-  const tabActiveBg = theme === 'dark' ? 'bg-[#2a2a3e]' : 'bg-gray-200';
+  const cardBg = 'bg-white';
+  const cardBorder = 'border-gray-200';
+  const titleColor = 'text-gray-900';
+  const mutedColor = 'text-gray-600';
+  const hoverBg = 'hover:bg-gray-50';
+  const textColor = 'text-gray-900';
+  const descColor = 'text-gray-600';
+  const tabActiveBg = 'bg-gray-100';
 
   return (
     <AppLayout title="Activity">
       <div className="space-y-6">
         {/* Header */}
-        <div className={`${cardBg} ${cardBorder} border rounded-xl p-6`}>
+        <div className={`${cardBg} ${cardBorder} border rounded-xl p-6 shadow-card`}>
           <h1 className={`${titleColor} font-semibold text-2xl mb-2`}>Activity</h1>
           <p className={mutedColor}>View all your skill runs and their status</p>
         </div>
 
         {/* Tabs */}
-        <div className={`${cardBg} ${cardBorder} border rounded-xl overflow-hidden`}>
-          <div className="flex border-b border-gray-700">
+        <div className={`${cardBg} ${cardBorder} border rounded-xl overflow-hidden shadow-card`}>
+          <div className="flex border-b border-gray-200">
             <button
               onClick={() => setActiveTab('all')}
               className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
                 activeTab === 'all'
-                  ? 'text-blue-400 border-b-2 border-blue-400'
-                  : `${mutedColor} hover:text-white`
+                  ? 'text-blue-600 border-b-2 border-blue-600'
+                  : `${mutedColor} hover:text-gray-900`
               }`}
             >
               All ({activities.length})
@@ -189,8 +176,8 @@ export default function ActivityPage() {
               onClick={() => setActiveTab('running')}
               className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
                 activeTab === 'running'
-                  ? 'text-blue-400 border-b-2 border-blue-400'
-                  : `${mutedColor} hover:text-white`
+                  ? 'text-blue-600 border-b-2 border-blue-600'
+                  : `${mutedColor} hover:text-gray-900`
               }`}
             >
               Running ({runningCount})
@@ -199,8 +186,8 @@ export default function ActivityPage() {
               onClick={() => setActiveTab('completed')}
               className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
                 activeTab === 'completed'
-                  ? 'text-green-400 border-b-2 border-green-400'
-                  : `${mutedColor} hover:text-white`
+                  ? 'text-green-600 border-b-2 border-green-600'
+                  : `${mutedColor} hover:text-gray-900`
               }`}
             >
               Completed ({completedCount})
@@ -209,8 +196,8 @@ export default function ActivityPage() {
               onClick={() => setActiveTab('failed')}
               className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
                 activeTab === 'failed'
-                  ? 'text-red-400 border-b-2 border-red-400'
-                  : `${mutedColor} hover:text-white`
+                  ? 'text-red-600 border-b-2 border-red-600'
+                  : `${mutedColor} hover:text-gray-900`
               }`}
             >
               Failed ({failedCount})
@@ -218,7 +205,7 @@ export default function ActivityPage() {
           </div>
 
           {/* Activity List */}
-          <div className="divide-y divide-gray-700">
+          <div className="divide-y divide-gray-200">
             {loading ? (
               <div className="p-8 text-center">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
@@ -244,11 +231,11 @@ export default function ActivityPage() {
                       <div className="flex items-center justify-between gap-2">
                         <h3 className={`${textColor} text-sm font-medium truncate`}>{activity.title}</h3>
                         <div className="flex items-center gap-2">
-                          <span className={`${theme === 'dark' ? 'text-gray-500' : 'text-gray-400'} text-xs flex-shrink-0`}>{activity.timestamp}</span>
+                          <span className="text-gray-400 text-xs flex-shrink-0">{activity.timestamp}</span>
                           {activity.jobId && (
                             <button
                               onClick={(e) => handleDelete(e, activity.id)}
-                              className={`p-1 rounded hover:bg-red-500/20 text-gray-500 hover:text-red-400 transition-colors`}
+                              className="p-1 rounded hover:bg-red-50 text-gray-400 hover:text-red-500 transition-colors"
                               title="Delete"
                             >
                               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -263,10 +250,10 @@ export default function ActivityPage() {
                       )}
                       {activity.status && (
                         <span className={`inline-block mt-1 text-xs px-2 py-0.5 rounded ${
-                          activity.status === 'completed' ? 'bg-green-500/20 text-green-400' :
-                          activity.status === 'running' ? 'bg-blue-500/20 text-blue-400' :
-                          activity.status === 'failed' ? 'bg-red-500/20 text-red-400' :
-                          'bg-gray-500/20 text-gray-400'
+                          activity.status === 'completed' ? 'bg-green-100 text-green-700' :
+                          activity.status === 'running' ? 'bg-blue-100 text-blue-700' :
+                          activity.status === 'failed' ? 'bg-red-100 text-red-700' :
+                          'bg-gray-100 text-gray-700'
                         }`}>
                           {activity.status}
                         </span>
@@ -305,24 +292,24 @@ export default function ActivityPage() {
               {selectedJob.status === 'completed' ? (
                 <StyledOutput content={selectedJob.output || ''} skillId={selectedJob.skillId} />
               ) : selectedJob.status === 'failed' ? (
-                <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4">
-                  <h3 className="text-red-400 font-medium mb-2">Job Failed</h3>
-                  <pre className="text-sm text-red-300 whitespace-pre-wrap">{selectedJob.error}</pre>
+                <div className="bg-red-50 border border-red-100 rounded-lg p-4">
+                  <h3 className="text-red-700 font-medium mb-2">Job Failed</h3>
+                  <pre className="text-sm text-red-600 whitespace-pre-wrap">{selectedJob.error}</pre>
                 </div>
               ) : selectedJob.status === 'running' ? (
                 <div className="flex items-center justify-center py-8">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                  <span className="ml-3 text-gray-400">Running...</span>
+                  <span className="ml-3 text-gray-500">Running...</span>
                 </div>
               ) : (
-                <div className="text-gray-400">Pending...</div>
+                <div className="text-gray-500">Pending...</div>
               )}
             </div>
             
             <div className={`flex justify-end gap-3 p-4 border-t ${cardBorder}`}>
               <button
                 onClick={() => setSelectedJob(null)}
-                className={`px-4 py-2 ${theme === 'dark' ? 'bg-[#2a2a3e] text-white hover:bg-[#3a3a4e]' : 'bg-gray-200 text-gray-800 hover:bg-gray-300'} rounded-lg transition-colors`}
+                className="px-4 py-2 bg-gray-100 text-gray-700 hover:bg-gray-200 rounded-lg transition-colors"
               >
                 Close
               </button>

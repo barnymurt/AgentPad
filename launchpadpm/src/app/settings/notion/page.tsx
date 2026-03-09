@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { AppLayout, useAppLayout } from '@/components/layout/AppLayout';
+import { AppLayout } from '@/components/layout/AppLayout';
 
 interface NotionConnection {
   connected: boolean;
@@ -12,7 +12,6 @@ interface NotionConnection {
 
 export default function NotionSettings() {
   const router = useRouter();
-  const { isDarkMode } = useAppLayout();
   const [connection, setConnection] = useState<NotionConnection>({
     connected: false,
     configured: false
@@ -26,11 +25,11 @@ export default function NotionSettings() {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
-  const bgColor = isDarkMode ? 'bg-[#1a1a2e]' : 'bg-[#F9FAFB]';
-  const borderColor = isDarkMode ? 'border-[#2a2a3e]' : 'border-gray-200';
-  const textColor = isDarkMode ? 'text-white' : 'text-gray-900';
-  const mutedColor = isDarkMode ? 'text-gray-400' : 'text-gray-600';
-  const cardBg = isDarkMode ? 'bg-[#0f0f1a]' : 'bg-white';
+  const bgColor = 'bg-white';
+  const borderColor = 'border-gray-200';
+  const textColor = 'text-gray-900';
+  const mutedColor = 'text-gray-600';
+  const cardBg = 'bg-white';
 
   useEffect(() => {
     checkConnection();
