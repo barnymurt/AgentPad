@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -10,51 +10,118 @@ const PLANS = [
     id: 'free',
     name: 'Starter',
     description: 'Perfect for exploring LaunchPad',
-    monthlyPrice: 0,
-    yearlyPrice: 0,
+    price: 0,
+    credits: '25',
     features: [
+      'Core LaunchPad features',
       '3 validations/month',
       'Basic validation pack',
       'Community support',
-      'Essential skills access',
     ],
-    cta: 'Current Plan',
+    notIncluded: [
+      'Advanced skills',
+      'AI Builder',
+      'Export to Notion',
+    ],
+    cta: 'Start Free',
     popular: false,
   },
   {
-    id: 'premium',
-    name: 'Professional',
-    description: 'For serious builders who want more',
-    monthlyPrice: 29,
-    yearlyPrice: 24,
+    id: 'builder',
+    name: 'Builder',
+    description: 'Take your idea to the next level',
+    price: 40,
+    credits: '250',
     features: [
-      'Unlimited validations',
-      'All 78+ skills unlocked',
-      'Full validation pack',
-      'Export to Notion',
+      'Everything in Starter',
+      '10,000 integration credits',
+      'In-app code edits',
+      'Backend functions',
+      'AI model select',
+      'Connect a domain',
+    ],
+    notIncluded: [
       'Priority support',
       'Advanced analytics',
-      'AI Builder access',
     ],
-    cta: 'Upgrade Now',
+    cta: 'Start Building',
+    popular: false,
+  },
+  {
+    id: 'pro',
+    name: 'Pro',
+    description: 'Access advanced tools for complex apps',
+    price: 80,
+    credits: '500',
+    features: [
+      'Everything in Builder',
+      '20,000 integration credits',
+      'Priority support',
+      'Advanced analytics',
+      'Early access to beta features',
+      '25 credits to share with a friend',
+    ],
+    notIncluded: [],
+    cta: 'Get Pro',
     popular: true,
+  },
+  {
+    id: 'elite',
+    name: 'Elite',
+    description: 'Scale with top credits and dedicated support',
+    price: 160,
+    credits: '1,200',
+    features: [
+      'Everything in Pro',
+      '50,000 integration credits',
+      'Dedicated support',
+      'Custom integrations',
+      'SLA guarantee',
+      'Premium training',
+    ],
+    notIncluded: [],
+    cta: 'Contact Sales',
+    popular: false,
   },
 ];
 
 export default function UpgradePage() {
   const { data: session, update, status } = useSession();
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('yearly');
 
-  const handleUpgrade = async () => {
+  const handleUpgrade = async (planId: string) => {
     if (!session?.user?.id) {
       setError('You must be logged in to upgrade');
       return;
     }
     
-    setLoading(true);
+    if (planId === 'free') {
+      setLoading(planId);
+      try {
+        const res = await fetch('/api/auth-api', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'update-tier',
+            userId: session.user.id,
+            tier: 'free',
+          }),
+        });
+
+        if (res.ok) {
+          await update({ tier: 'free' });
+        }
+      } catch (err) {
+        console.error('Failed:', err);
+      } finally {
+        setLoading(null);
+      }
+      return;
+    }
+    
+    setLoading(planId);
     setError(null);
     try {
       const res = await fetch('/api/auth-api', {
@@ -63,7 +130,7 @@ export default function UpgradePage() {
         body: JSON.stringify({
           action: 'update-tier',
           userId: session.user.id,
-          tier: 'premium',
+          tier: planId === 'pro' || planId === 'elite' ? 'premium' : planId,
         }),
       });
 
@@ -79,30 +146,7 @@ export default function UpgradePage() {
       console.error('Upgrade failed:', err);
       setError('An error occurred during upgrade');
     } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleDowngrade = async () => {
-    setLoading(true);
-    try {
-      const res = await fetch('/api/auth-api', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'update-tier',
-          userId: session?.user?.id,
-          tier: 'free',
-        }),
-      });
-
-      if (res.ok) {
-        await update({ tier: 'free' });
-      }
-    } catch (err) {
-      console.error('Downgrade failed:', err);
-    } finally {
-      setLoading(false);
+      setLoading(null);
     }
   };
 
@@ -144,50 +188,31 @@ export default function UpgradePage() {
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
             Plans from first idea to full scale
           </h1>
-          <p className="text-xl text-white/80 mb-8">
+          <p className="text-xl text-white/80">
             Start for free. Upgrade when you're ready.
           </p>
-
-          {/* Billing Toggle */}
-          <div className="inline-flex items-center bg-white/10 rounded-full p-1">
-            <button
-              onClick={() => setBillingCycle('yearly')}
-              className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${
-                billingCycle === 'yearly'
-                  ? 'bg-white text-blue-600'
-                  : 'text-white hover:text-white/80'
-              }`}
-            >
-              Yearly (Save 20%)
-            </button>
-            <button
-              onClick={() => setBillingCycle('monthly')}
-              className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${
-                billingCycle === 'monthly'
-                  ? 'bg-white text-blue-600'
-                  : 'text-white hover:text-white/80'
-              }`}
-            >
-              Monthly
-            </button>
-          </div>
         </div>
       </div>
 
-      {/* Plans Section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-12 pb-20">
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+      {/* Plans Grid */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 pb-20">
+        {error && (
+          <div className="max-w-4xl mx-auto mb-8 p-4 bg-red-50 border border-red-100 rounded-xl">
+            <p className="text-sm text-red-600 text-center">{error}</p>
+          </div>
+        )}
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {PLANS.map((plan) => {
-            const isCurrentPlan = currentTier === plan.id || (currentTier === 'admin' && plan.id === 'premium');
-            const price = billingCycle === 'yearly' ? plan.yearlyPrice : plan.monthlyPrice;
+            const isCurrentPlan = currentTier === plan.id || (currentTier === 'admin' && plan.id === 'pro');
             
             return (
               <div
                 key={plan.id}
-                className={`relative rounded-2xl border-2 p-8 transition-all ${
+                className={`relative rounded-2xl border-2 p-6 transition-all ${
                   plan.popular
-                    ? 'border-blue-500 shadow-2xl bg-white scale-105 z-10'
-                    : 'border-gray-100 shadow-lg bg-white'
+                    ? 'border-blue-500 shadow-2xl bg-white scale-[1.02] z-10'
+                    : 'border-gray-100 shadow-lg bg-white hover:shadow-xl'
                 }`}
               >
                 {plan.popular && (
@@ -198,28 +223,34 @@ export default function UpgradePage() {
                   </div>
                 )}
 
-                <div className="text-center mb-6">
-                  <h3 className="text-2xl font-bold text-gray-900">{plan.name}</h3>
-                  <p className="text-gray-500 mt-2">{plan.description}</p>
+                <div className="mb-6">
+                  <h3 className="text-xl font-bold text-gray-900">{plan.name}</h3>
+                  <p className="text-gray-500 text-sm mt-1">{plan.description}</p>
                 </div>
 
-                <div className="text-center mb-8">
-                  <div className="flex items-baseline justify-center gap-1">
-                    <span className="text-5xl font-bold text-gray-900">${price}</span>
+                <div className="mb-6">
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-4xl font-bold text-gray-900">${plan.price}</span>
                     <span className="text-gray-500">/month</span>
                   </div>
-                  {billingCycle === 'yearly' && price > 0 && (
-                    <p className="text-sm text-gray-500 mt-2">
-                      Billed annually (${plan.yearlyPrice * 12}/year)
-                    </p>
-                  )}
+                  <p className="text-sm text-gray-500 mt-1">
+                    {plan.credits} credits / month
+                  </p>
                 </div>
 
-                <ul className="space-y-4 mb-8">
+                <ul className="space-y-3 mb-6">
                   {plan.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-start gap-3 text-gray-600">
-                      <svg className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                    <li key={idx} className="flex items-start gap-2 text-sm text-gray-600">
+                      <svg className="w-5 h-5 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      </svg>
+                      {feature}
+                    </li>
+                  ))}
+                  {plan.notIncluded.map((feature, idx) => (
+                    <li key={`not-${idx}`} className="flex items-start gap-2 text-sm text-gray-400">
+                      <svg className="w-5 h-5 text-gray-300 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
                       </svg>
                       {feature}
                     </li>
@@ -229,42 +260,35 @@ export default function UpgradePage() {
                 {isCurrentPlan ? (
                   <button
                     disabled
-                    className="w-full py-4 px-6 bg-gray-100 text-gray-500 rounded-xl font-medium cursor-not-allowed"
+                    className="w-full py-3 px-4 bg-gray-100 text-gray-500 rounded-xl font-medium cursor-not-allowed"
                   >
                     Current Plan
                   </button>
-                ) : plan.id === 'free' ? (
-                  <button
-                    onClick={handleDowngrade}
-                    disabled={loading}
-                    className="w-full py-4 px-6 border-2 border-gray-200 text-gray-700 rounded-xl font-medium hover:bg-gray-50 transition-colors disabled:opacity-50"
-                  >
-                    {loading ? 'Processing...' : 'Downgrade'}
-                  </button>
                 ) : (
-                  <>
-                    {error && (
-                      <div className="p-4 bg-red-50 border border-red-100 rounded-xl mb-4">
-                        <p className="text-sm text-red-600">{error}</p>
-                      </div>
-                    )}
-                    <div className="p-4 bg-blue-50 border border-blue-100 rounded-xl mb-4">
-                      <p className="text-sm text-blue-700">
-                        <strong>Demo Mode:</strong> Click to instantly upgrade. No payment required.
-                      </p>
-                    </div>
-                    <button
-                      onClick={handleUpgrade}
-                      disabled={loading || status === 'loading'}
-                      className="w-full py-4 px-6 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-medium hover:from-blue-700 hover:to-purple-700 transition-all disabled:opacity-50 shadow-xl shadow-blue-600/25"
-                    >
-                      {loading ? 'Processing...' : plan.cta}
-                    </button>
-                  </>
+                  <button
+                    onClick={() => handleUpgrade(plan.id)}
+                    disabled={loading !== null}
+                    className={`w-full py-3 px-4 rounded-xl font-medium transition-all disabled:opacity-50 ${
+                      plan.popular
+                        ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 shadow-lg shadow-blue-600/25'
+                        : 'bg-gray-900 text-white hover:bg-gray-800'
+                    }`}
+                  >
+                    {loading === plan.id ? 'Processing...' : plan.cta}
+                  </button>
                 )}
               </div>
             );
           })}
+        </div>
+
+        {/* Demo Mode Notice */}
+        <div className="max-w-2xl mx-auto mt-8">
+          <div className="p-4 bg-blue-50 border border-blue-100 rounded-xl text-center">
+            <p className="text-sm text-blue-700">
+              <strong>Demo Mode:</strong> Click any plan to instantly upgrade. No payment required.
+            </p>
+          </div>
         </div>
 
         {/* Trust Badge */}
@@ -277,7 +301,7 @@ export default function UpgradePage() {
       <div className="bg-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
-            Everything you need to validate and build your idea
+            Eliminate costly, complex add-ons. Every plan includes:
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
             {[
