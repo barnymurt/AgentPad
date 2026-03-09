@@ -278,30 +278,48 @@ def _create_google_doc(skill_name: str, title: str, content: Any) -> Dict[str, A
 
 
 def _create_figma(skill_name: str, title: str, content: Any) -> Dict[str, Any]:
-    """Create Figma deliverable (placeholder)"""
-    return {
-        'success': False,
-        'error': 'not_implemented',
-        'message': 'Figma MCP coming soon - use Notion fallback'
-    }
+    """Create Figma deliverable"""
+    try:
+        from figma_mcp import create_figma_deliverable
+        content_str = str(content) if not isinstance(content, str) else content
+        return create_figma_deliverable(skill_name, title, content_str)
+    except Exception as e:
+        return {
+            'success': False,
+            'error': 'mcp_error',
+            'message': str(e),
+            'fallback': 'notion_document'
+        }
 
 
 def _create_miro(skill_name: str, title: str, content: Any) -> Dict[str, Any]:
-    """Create Miro deliverable (placeholder)"""
-    return {
-        'success': False,
-        'error': 'not_implemented',
-        'message': 'Miro MCP coming soon - use Notion fallback'
-    }
+    """Create Miro deliverable"""
+    try:
+        from miro_mcp import create_miro_deliverable
+        content_str = str(content) if not isinstance(content, str) else content
+        return create_miro_deliverable(skill_name, title, content_str)
+    except Exception as e:
+        return {
+            'success': False,
+            'error': 'mcp_error',
+            'message': str(e),
+            'fallback': 'notion_document'
+        }
 
 
 def _create_linear(skill_name: str, title: str, content: Any) -> Dict[str, Any]:
-    """Create Linear deliverable (placeholder)"""
-    return {
-        'success': False,
-        'error': 'not_implemented',
-        'message': 'Linear MCP coming soon - use Notion fallback'
-    }
+    """Create Linear deliverable"""
+    try:
+        from linear_mcp import create_linear_deliverable
+        content_str = str(content) if not isinstance(content, str) else content
+        return create_linear_deliverable(skill_name, title, content_str)
+    except Exception as e:
+        return {
+            'success': False,
+            'error': 'mcp_error',
+            'message': str(e),
+            'fallback': 'notion_document'
+        }
 
 
 def _format_as_markdown(skill_name: str, title: str, content: Any) -> str:
@@ -333,11 +351,32 @@ def get_available_mcps() -> Dict[str, bool]:
     except:
         status['google_sheets'] = False
     
+    # Check Figma
+    try:
+        from figma_mcp import FigmaMCP
+        FigmaMCP()
+        status['figma'] = True
+    except:
+        status['figma'] = False
+    
+    # Check Miro
+    try:
+        from miro_mcp import MiroMCP
+        MiroMCP()
+        status['miro'] = True
+    except:
+        status['miro'] = False
+    
+    # Check Linear
+    try:
+        from linear_mcp import LinearMCP
+        LinearMCP()
+        status['linear'] = True
+    except:
+        status['linear'] = False
+    
     # Others not implemented yet
     status['google_docs'] = False
-    status['figma'] = False
-    status['miro'] = False
-    status['linear'] = False
     
     return status
 
