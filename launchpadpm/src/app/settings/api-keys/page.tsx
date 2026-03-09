@@ -358,9 +358,16 @@ export default function APIKeysPage() {
                     
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
                       {mcp.features.map((feature, i) => (
-                        <div key={i} className={`p-3 ${cardBg} rounded-lg text-center`}>
-                          <p className={`text-xs ${mutedColor}`}>{feature}</p>
-                        </div>
+                        <a
+                          key={i}
+                          href={mcp.docUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`p-3 ${cardBg} rounded-lg text-center hover:bg-blue-50 dark:hover:bg-blue-900/20 cursor-pointer group transition-colors`}
+                        >
+                          <p className={`text-xs ${mutedColor} group-hover:text-blue-500`}>{feature}</p>
+                          <p className={`text-[10px] ${mutedColor} mt-1 opacity-0 group-hover:opacity-100 transition-opacity`}>Learn more →</p>
+                        </a>
                       ))}
                     </div>
 
