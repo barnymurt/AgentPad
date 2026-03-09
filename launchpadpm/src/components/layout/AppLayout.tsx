@@ -177,17 +177,6 @@ export function AppLayout({ children, title }: AppLayoutProps) {
     }
   }, [isDarkMode]);
 
-  const toggleDarkMode = () => {
-    const newMode = !isDarkMode;
-    setDarkMode(newMode);
-    localStorage.setItem('dashboard-dark-mode', String(newMode));
-  };
-
-  const theme: 'dark' | 'light' = isDarkMode ? 'dark' : 'light';
-  const isLightMode = !isDarkMode;
-
-  const toggleTheme = toggleDarkMode;
-
   const toggleCategory = (category: string) => {
     const newExpanded = new Set(expandedCategories);
     if (newExpanded.has(category)) {
