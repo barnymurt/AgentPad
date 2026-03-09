@@ -203,6 +203,7 @@ export default function APIKeysPage() {
       const value = values[env.key] || '';
       if (value) {
         localStorage.setItem(env.key, value);
+        document.cookie = `${env.key}=${encodeURIComponent(value)}; path=/; max-age=31536000; SameSite=Lax`;
       }
     });
 
@@ -240,6 +241,7 @@ export default function APIKeysPage() {
 
     mcp.envVars.forEach(env => {
       localStorage.removeItem(env.key);
+      document.cookie = `${env.key}=; path=/; max-age=0`;
     });
 
     setSavedMCPs(prev => {
