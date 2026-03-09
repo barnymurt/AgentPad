@@ -7,7 +7,6 @@ import { AppLayout, useAppLayout } from '@/components/layout/AppLayout';
 import QuickActions from '@/components/dashboard/QuickActions';
 import ActiveProject from '@/components/dashboard/ActiveProject';
 import ActivityFeed from '@/components/dashboard/ActivityFeed';
-import UpgradeModal from '@/components/UpgradeModal';
 import SkillSuggestions from '@/components/dashboard/SkillSuggestions';
 
 interface Squad {
@@ -234,7 +233,7 @@ export default function DashboardPage() {
                       <p className={`${mutedColor} text-xs`}>Upgrade to Premium to create unlimited projects</p>
                     </div>
                     <button
-                      onClick={() => document.dispatchEvent(new CustomEvent('openUpgradeModal'))}
+                      onClick={() => router.push('/upgrade')}
                       className="px-4 py-2 bg-blue-600 text-white rounded-xl text-sm font-medium hover:bg-blue-700 transition-colors"
                     >
                       Upgrade
@@ -335,7 +334,6 @@ export default function DashboardPage() {
           </div>
         </div>
       )}
-      <UpgradeModal />
     </AppLayout>
   );
 }

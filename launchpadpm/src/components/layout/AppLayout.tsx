@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, createContext, useContext } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 
@@ -86,6 +86,7 @@ const squadCategories = [
 
 export function AppLayout({ children, title }: AppLayoutProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const { data: session } = useSession();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const isDarkMode = false;
@@ -460,7 +461,7 @@ export function AppLayout({ children, title }: AppLayoutProps) {
                 </Link>
 
                 <button
-                  onClick={() => window.dispatchEvent(new CustomEvent('openUpgradeModal'))}
+                  onClick={() => router.push('/upgrade')}
                   className={`w-full flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-all text-gray-600 hover:bg-gray-100 hover:text-gray-900`}
                 >
                   <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -474,7 +475,7 @@ export function AppLayout({ children, title }: AppLayoutProps) {
             <div className={`border-t ${sidebarBorder} p-3 space-y-2`}>
               {session?.user?.tier === 'free' && !sidebarCollapsed && (
                 <button
-                  onClick={() => window.dispatchEvent(new CustomEvent('openUpgradeModal'))}
+                  onClick={() => router.push('/upgrade')}
                   className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700 transition-colors"
                 >
                   <span>Upgrade to Premium</span>
@@ -486,7 +487,7 @@ export function AppLayout({ children, title }: AppLayoutProps) {
               
               {session?.user?.tier === 'free' && sidebarCollapsed && (
                 <button
-                  onClick={() => window.dispatchEvent(new CustomEvent('openUpgradeModal'))}
+                  onClick={() => router.push('/upgrade')}
                   className="w-8 h-8 mx-auto rounded-lg flex items-center justify-center bg-gradient-to-r from-purple-600 to-blue-600 text-white"
                   title="Upgrade to Premium"
                 >
