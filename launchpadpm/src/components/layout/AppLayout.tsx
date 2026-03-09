@@ -100,7 +100,7 @@ export function AppLayout({ children, title }: AppLayoutProps) {
   const isAdmin = userTier === 'admin';
   
   const effectiveTier = adminPreviewTier || userTier || 'free';
-  const isPremium = effectiveTier === 'premium' || effectiveTier === 'admin';
+  const isPremium = effectiveTier === 'premium' || effectiveTier === 'admin' || effectiveTier === 'builder' || effectiveTier === 'elite';
   const isBobAI = effectiveTier === 'bobai';
   const isFree = effectiveTier === 'free' && !isAdmin;
 
@@ -502,42 +502,64 @@ export function AppLayout({ children, title }: AppLayoutProps) {
                 <div className={`px-3 py-2 border-t ${sidebarBorder}`}>
                   {!sidebarCollapsed && (
                     <div className={`text-xs font-medium uppercase tracking-wider px-3 mb-2 text-gray-400`}>
-                      Preview Mode
+                      Preview Plan
                     </div>
                   )}
-                  <div className={`flex ${sidebarCollapsed ? 'flex-col' : ''} gap-2`}>
+                  <div className={`grid grid-cols-2 gap-1.5`}>
                     <button
                       onClick={() => setAdminPreviewTier(null)}
-                      className={`flex-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                      className={`px-2 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                         !adminPreviewTier 
                           ? 'bg-blue-500 text-white' 
-                          : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                       }`}
                       title="View as yourself"
                     >
-                      {sidebarCollapsed ? 'Me' : 'My View'}
+                      {sidebarCollapsed ? 'Me' : 'Me'}
                     </button>
                     <button
                       onClick={() => setAdminPreviewTier('free')}
-                      className={`flex-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                      className={`px-2 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                         adminPreviewTier === 'free' 
                           ? 'bg-green-500 text-white' 
-                          : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                       }`}
                       title="Preview free user experience"
                     >
-                      {sidebarCollapsed ? 'Free' : 'Free'}
+                      Starter
+                    </button>
+                    <button
+                      onClick={() => setAdminPreviewTier('builder')}
+                      className={`px-2 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                        adminPreviewTier === 'builder' 
+                          ? 'bg-blue-500 text-white' 
+                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      }`}
+                      title="Preview builder user experience"
+                    >
+                      Builder
                     </button>
                     <button
                       onClick={() => setAdminPreviewTier('premium')}
-                      className={`flex-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                      className={`px-2 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                         adminPreviewTier === 'premium' 
                           ? 'bg-purple-500 text-white' 
-                          : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                       }`}
-                      title="Preview premium user experience"
+                      title="Preview premium (Pro) user experience"
                     >
-                      {sidebarCollapsed ? 'Pro' : 'Premium'}
+                      Pro
+                    </button>
+                    <button
+                      onClick={() => setAdminPreviewTier('elite')}
+                      className={`px-2 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                        adminPreviewTier === 'elite' 
+                          ? 'bg-indigo-500 text-white' 
+                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      }`}
+                      title="Preview elite user experience"
+                    >
+                      Elite
                     </button>
                   </div>
                 </div>
@@ -555,15 +577,20 @@ export function AppLayout({ children, title }: AppLayoutProps) {
                     <div className={`text-xs truncate ${'text-gray-500'}`}>
                       {session?.user?.email || ''}
                     </div>
-                    {session?.user?.tier && (
+                    {(session?.user?.tier || adminPreviewTier) && (
                       <div className={`text-xs mt-0.5 ${
-                        session?.user?.tier === 'admin' ? 'text-yellow-400' : 
-                        session?.user?.tier === 'premium' ? 'text-purple-400' : 
-                        'text-green-400'
+                        effectiveTier === 'admin' ? 'text-yellow-500' : 
+                        effectiveTier === 'elite' ? 'text-indigo-500' : 
+                        effectiveTier === 'premium' ? 'text-purple-500' : 
+                        effectiveTier === 'builder' ? 'text-blue-500' : 
+                        'text-green-500'
                       }`}>
-                        {session?.user?.tier === 'admin' ? 'Admin' : 
-                         session?.user?.tier === 'premium' ? 'Premium' : 
-                         'Free'}
+                        {effectiveTier === 'admin' ? 'Admin' : 
+                         effectiveTier === 'elite' ? 'Elite' : 
+                         effectiveTier === 'premium' ? 'Pro' : 
+                         effectiveTier === 'builder' ? 'Builder' : 
+                         'Starter'}
+                        {adminPreviewTier && ' (Preview)'}
                       </div>
                     )}
                   </div>
