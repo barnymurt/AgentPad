@@ -204,7 +204,6 @@ export function AppLayout({ children, title }: AppLayoutProps) {
   };
 
   const theme: 'dark' | 'light' = isDarkMode ? 'dark' : 'light';
-  const isDarkMode = isDarkMode;
   const isLightMode = !isDarkMode;
 
   const toggleTheme = toggleDarkMode;
@@ -512,6 +511,22 @@ export function AppLayout({ children, title }: AppLayoutProps) {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 2v4M16 2v4M2 10h20" />
                   </svg>
                   {!sidebarCollapsed && <span>Notion</span>}
+                </Link>
+
+                <Link
+                  href="/settings/api-keys"
+                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
+                    pathname === '/settings/api-keys'
+                      ? 'bg-blue-600/20 text-blue-400 border-l-2 border-blue-500'
+                      : isDarkMode 
+                        ? 'text-gray-300 hover:bg-[#2a2a3e] hover:text-white'
+                        : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                  }`}
+                >
+                  <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+                  </svg>
+                  {!sidebarCollapsed && <span>API Keys</span>}
                 </Link>
 
                 <button
