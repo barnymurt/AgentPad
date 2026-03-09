@@ -237,7 +237,7 @@ export function AppLayout({ children, title }: AppLayoutProps) {
               {/* Quick Links Section */}
               <div className={`px-3 border-b ${sidebarBorder} pb-4 mb-4`}>
                 {!sidebarCollapsed && (
-                  <div className={`text-xs font-medium uppercase tracking-wider px-3 mb-2 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+                  <div className={`text-xs font-medium uppercase tracking-wider px-3 mb-2 text-gray-400`}>
                     Quick Links
                   </div>
                 )}
@@ -347,7 +347,7 @@ export function AppLayout({ children, title }: AppLayoutProps) {
 
               <div className="px-3 mb-6">
                 {!sidebarCollapsed && (
-                  <div className={`text-xs font-medium uppercase tracking-wider px-3 mb-2 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+                  <div className={`text-xs font-medium uppercase tracking-wider px-3 mb-2 text-gray-400`}>
                     Squads
                   </div>
                 )}
@@ -449,7 +449,7 @@ export function AppLayout({ children, title }: AppLayoutProps) {
 
               <div className={`px-3 border-t ${sidebarBorder} pt-4 mt-4`}>
                 {!sidebarCollapsed && (
-                  <div className={`text-xs font-medium uppercase tracking-wider px-3 mb-2 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+                  <div className={`text-xs font-medium uppercase tracking-wider px-3 mb-2 text-gray-400`}>
                     Settings
                   </div>
                 )}
@@ -532,7 +532,7 @@ export function AppLayout({ children, title }: AppLayoutProps) {
               {isAdmin && (
                 <div className={`px-3 py-2 border-t ${sidebarBorder}`}>
                   {!sidebarCollapsed && (
-                    <div className={`text-xs font-medium uppercase tracking-wider px-3 mb-2 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+                    <div className={`text-xs font-medium uppercase tracking-wider px-3 mb-2 text-gray-400`}>
                       Preview Mode
                     </div>
                   )}
@@ -629,28 +629,6 @@ export function AppLayout({ children, title }: AppLayoutProps) {
               sidebarCollapsed ? 'ml-16' : 'ml-64'
             }`}
           >
-            <div className="fixed top-4 right-4 z-50">
-              <button
-                onClick={toggleDarkMode}
-                className={`p-2 rounded-lg transition-colors ${
-                  isDarkMode 
-                    ? 'bg-[#1a1a2e] text-yellow-400 hover:bg-[#2a2a3e]' 
-                    : 'bg-white text-gray-600 hover:bg-gray-100 shadow-md border border-gray-200'
-                }`}
-                aria-label="Toggle theme"
-              >
-                {isDarkMode ? (
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                  </svg>
-                ) : (
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                  </svg>
-                )}
-              </button>
-            </div>
-
             <div className="p-6 max-w-7xl mx-auto">
               {title && (
                 <h1 className={`text-2xl font-bold ${textColor} mb-6`}>{title}</h1>
